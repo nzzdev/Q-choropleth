@@ -1,0 +1,38 @@
+{
+  "title": "FIXTURE: Hexagon Schweiz (Kantone) - Kategorien",
+  "subtitle": "Subtitle",
+  "basemap": "hexagonCHCantons",
+  "data": [
+    ["Aargau", "etwas"],
+    ["Appenzell Ausserrhoden", "etwas"],
+    ["Appenzell Innerrhoden", "etwas"],
+    ["Basel-Landschaft", "etwas anderes"],
+    ["Basel-Stadt", "etwas"],
+    ["Bern", "etwas"],
+    ["Freiburg", "etwas ganz anderes"],
+    ["Genf", "etwas anderes"],
+    ["Glarus", "etwas"],
+    ["Graubünden", "etwas"],
+    ["Jura", "etwas"],
+    ["Luzern", "etwas anderes"],
+    ["Neuenburg", "etwas anderes"],
+    ["Nidwalden", "etwas"],
+    ["Obwalden", "etwas"],
+    ["Schaffhausen", "etwas"],
+    ["Schwyz", "etwas"],
+    ["Solothurn", "etwas ganz anderes"],
+    ["St. Gallen", "etwas ganz anderes"],
+    ["Tessin", "etwas"],
+    ["Thurgau", "etwas"],
+    ["Uri", "etwas"],
+    ["Waadt", "etwas"],
+    ["Wallis", "etwas"],
+    ["Zug", "etwas"],
+    ["Zürich", "etwas ganz anderes"]
+  ],
+  "sources": [],
+  "notes": "",
+  "options": {
+    "valuesOnMap": true
+  }
+}

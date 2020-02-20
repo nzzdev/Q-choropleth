@@ -1,0 +1,37 @@
+{
+  "name": "q-choropleth",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "rm -rf styles && mkdir styles && node tasks/build.js",
+    "test": "lab -a @hapi/code -c -P tests --verbose --leaks"
+  },
+  "author": "",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/github/Q-choropleth.git"
+  },
+  "dependencies": {
+    "@hapi/boom": "^9.0.0",
+    "@hapi/hapi": "^19.1.1",
+    "@hapi/inert": "^6.0.1",
+    "@hapi/joi": "^17.1.0",
+    "ajv": "^6.11.0",
+    "ckmeans": "^1.0.1",
+    "d3-scale": "^3.2.1",
+    "simple-statistics": "^7.0.8",
+    "svelte": "^3.18.2"
+  },
+  "devDependencies": {
+    "@hapi/lab": "^22.0.3",
+    "@hapi/code": "^8.0.1",
+    "autoprefixer": "^9.7.4",
+    "cssnano": "^4.1.10",
+    "glob": "^7.1.6",
+    "postcss": "^7.0.27",
+    "postcss-import": "^12.0.1",
+    "sass": "^1.25.0"
+  }
+}

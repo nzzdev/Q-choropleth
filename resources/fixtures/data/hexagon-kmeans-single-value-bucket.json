@@ -1,0 +1,43 @@
+{
+  "title": "FIXTURE: Hexagon Schweiz (Kantone) - kmeans single value bucket",
+  "subtitle": "Subtitle",
+  "basemap": "hexagonCHCantons",
+  "data": [
+    ["Aargau", "8.2"],
+    ["Appenzell Ausserrhoden", "6.0"],
+    ["Appenzell Innerrhoden", "5.8"],
+    ["Basel-Landschaft", null],
+    ["Basel-Stadt", "2.8"],
+    ["Bern", null],
+    ["Freiburg", null],
+    ["Genf", null],
+    ["Glarus", "3.6"],
+    ["Graubünden", "3.2"],
+    ["Jura", "3.5"],
+    ["Luzern", "4.8"],
+    ["Neuenburg", "2.7"],
+    ["Nidwalden", null],
+    ["Obwalden", null],
+    ["Schaffhausen", null],
+    ["Schwyz", "4.9"],
+    ["Solothurn", "7.9"],
+    ["St. Gallen", "5.2"],
+    ["Tessin", "6.2"],
+    ["Thurgau", "0.8"],
+    ["Uri", "3.9"],
+    ["Waadt", null],
+    ["Wallis", "3.4"],
+    ["Zug", "2.3"],
+    ["Zürich", null]
+  ],
+  "sources": [],
+  "notes": "",
+  "options": {
+    "valuesOnMap": true,
+    "bucketOptions": {
+      "bucketType": "ckmeans",
+      "numberBuckets": 6,
+      "labelLegend": "noLabel"
+    }
+  }
+}

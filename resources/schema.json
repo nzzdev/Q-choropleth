@@ -1,0 +1,204 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "title": "Q-choropleth",
+  "properties": {
+    "title": {
+      "title": "Titel",
+      "type": "string",
+      "Q:options": {
+        "placeholder": "Der Titel bringt die Kernaussage der Grafik auf den Punkt&#46;"
+      }
+    },
+    "subtitle": {
+      "title": "Untertitel",
+      "type": "string",
+      "Q:options": {
+        "placeholder": "Der Untertitel benennt präzise, was in der Grafik zu sehen ist&#46;"
+      }
+    },
+    "baseMap": {
+      "title": "Basiskarte",
+      "type": "string",
+      "default": "hexagonCHCantons",
+      "enum": ["hexagonCHCantons"],
+      "Q:options": {
+        "enum_titles": ["Hexagon Schweiz (Kantone)"]
+      }
+    },
+    "data": {
+      "title": "Daten",
+      "type": "array",
+      "Q:type": "table",
+      "Q:options": {
+        "notificationChecks": [
+          {
+            "type": "EmptyData",
+            "config": {
+              "fields": ["data"]
+            },
+            "priority": {
+              "type": "low",
+              "value": 1
+            }
+          },
+          {
+            "type": "HasColumnTitles",
+            "config": {
+              "fields": ["data"]
+            },
+            "priority": {
+              "type": "medium",
+              "value": 1
+            }
+          },
+          {
+            "type": "TooManyColumns",
+            "config": {
+              "fields": ["data"],
+              "options": {
+                "limit": 2
+              }
+            },
+            "priority": {
+              "type": "medium",
+              "value": 2
+            }
+          }
+        ]
+      },
+      "items": {
+        "type": "array",
+        "items": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "minItems": 1
+    },
+    "sources": {
+      "title": "Quelle(n)",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "title": "Quelle",
+        "properties": {
+          "text": {
+            "title": "Quelle",
+            "type": "string"
+          },
+          "link": {
+            "Q:type": "link",
+            "title": "Link",
+            "type": "object",
+            "Q:options": {
+              "placeholder": "Direktlink zur Quelle, http://..."
+            },
+            "properties": {
+              "url": {
+                "title": "Url",
+                "type": "string"
+              },
+              "isValid": {
+                "type": "boolean"
+              }
+            }
+          }
+        },
+        "required": ["text"]
+      }
+    },
+    "notes": {
+      "title": "Anmerkungen",
+      "type": "string"
+    },
+    "options": {
+      "type": "object",
+      "properties": {
+        "valuesOnMap": {
+          "title": "Werte direkt auf der Karte beschriften",
+          "type": "boolean",
+          "default": "false"
+        },
+        "bucketOptions": {
+          "title": "Optionen für Bucketberechnung",
+          "type": "object",
+          "Q:options": {
+            "availabilityChecks": [
+              {
+                "type": "ToolEndpoint",
+                "config": {
+                  "endpoint": "option-availability/buckets",
+                  "fields": ["data"]
+                }
+              }
+            ]
+          },
+          "properties": {
+            "bucketType": {
+              "title": "Bucketing Methode",
+              "type": "string",
+              "default": "ckmeans",
+              "enum": ["ckmeans", "quantile", "equal", "custom"],
+              "Q:options": {
+                "enum_titles": [
+                  "Jenks Natural Breaks",
+                  "Quantile",
+                  "gleich grosse Intervalle",
+                  "manuelle Grenzen"
+                ]
+              }
+            },
+            "customBuckets": {
+              "title": "Manuelle Bucketgrenzen",
+              "type": "string",
+              "Q:options": {
+                "placeholder": "z.B. 5, 15, 20, 30",
+                "availabilityChecks": [
+                  {
+                    "type": "ToolEndpoint",
+                    "config": {
+                      "endpoint": "option-availability/customBuckets",
+                      "fields": ["options.bucketOptions.bucketType"]
+                    }
+                  }
+                ]
+              }
+            },
+            "numberBuckets": {
+              "title": "Anzahl Buckets",
+              "type": "number",
+              "Q:options": {
+                "availabilityChecks": [
+                  {
+                    "type": "ToolEndpoint",
+                    "config": {
+                      "endpoint": "option-availability/numberBuckets",
+                      "fields": ["options.bucketOptions.bucketType"]
+                    }
+                  }
+                ]
+              }
+            },
+            "labelLegend": {
+              "title": "Beschriftung der Legende",
+              "type": "string",
+              "default": "noLabel",
+              "enum": ["noLabel", "average", "median"],
+              "Q:options": {
+                "enum_titles": ["keine Beschriftung", "Durchschnitt", "Median"]
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "required": ["title"]
+}
