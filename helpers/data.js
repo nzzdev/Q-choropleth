@@ -1,17 +1,31 @@
 function getChoroplethType(data) {
-  if (data.length > 0) {
-    // we do not support more than two columns, TODO: remove that later
-    if (data[0].length > 2) {
-      return "qualitative";
-    } else {
-      for (let i = 0; i < data.length; i++) {
-        if (i !== 0 && data[i].length > 1 && isNaN(data[i][1])) {
-          return "qualitative";
-        }
+  // first column contains base map entities
+  // second column contains values
+  // we do not support more than one value column
+  if (data.length > 0 && data[0].length < 3) {
+    // if at least one of the values is not a number we have a
+    // qualitative choropleth aka clustermap
+    for (let i = 0; i < data.length; i++) {
+      if (i !== 0 && data[i].length > 1 && isNaN(data[i][1])) {
+        return "qualitative";
       }
     }
   }
   return "quantitative";
+}
+
+function getUniqueCategories(data) {
+  const values = data.map(row => {
+    return row[1];
+  });
+  return [...new Set(values)];
+}
+
+function getCustomBucketBorders(customBuckets) {
+  const customBorderStrings = customBuckets.split(",");
+  return customBorderStrings.map(borderValue => {
+    return parseFloat(borderValue.trim());
+  });
 }
 
 function getValues(data) {
@@ -23,7 +37,25 @@ function getValues(data) {
   });
 }
 
+function getNumberBuckets(bucketOptions) {
+  try {
+    if (bucketOptions.bucketType !== "custom") {
+      return bucketOptions.numberBuckets;
+    } else {
+      const bucketBorderValues = getCustomBucketBorders(
+        bucketOptions.customBuckets
+      );
+      return bucketBorderValues.length - 1; // min value is part of border values and has to be excluded here
+    }
+  } catch {
+    return 0;
+  }
+}
+
 module.exports = {
   getChoroplethType,
-  getValues
+  getUniqueCategories,
+  getCustomBucketBorders,
+  getValues,
+  getNumberBuckets
 };

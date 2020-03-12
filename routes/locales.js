@@ -1,4 +1,4 @@
-const Joi = require("@hapi/joi");
+const Joi = require("../helpers/custom-joi.js");
 const localesDir = __dirname + "/../resources/locales/";
 
 module.exports = {

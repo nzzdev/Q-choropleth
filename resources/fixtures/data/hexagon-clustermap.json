@@ -1,7 +1,7 @@
 {
   "title": "FIXTURE: Hexagon Schweiz (Kantone) - Kategorien",
   "subtitle": "Subtitle",
-  "basemap": "hexagonCHCantons",
+  "baseMap": "hexagonCHCantons",
   "data": [
     ["Aargau", "etwas"],
     ["Appenzell Ausserrhoden", "etwas"],

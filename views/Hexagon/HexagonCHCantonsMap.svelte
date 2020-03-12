@@ -44,9 +44,15 @@
 
   function getColor(cantonCode, legendData) {
     const value = getValue(cantonCode);
+    if (value === null || value === undefined) {
+      return {
+        colorClass: "s-color-gray-4",
+        customColor: ""
+      };
+    }
     if (legendData.type === "quantitative") {
       const buckets = legendData.buckets;
-      return buckets.find((bucket, index) => {
+      const bucket = buckets.find((bucket, index) => {
         if (index === 0) {
           return value <= bucket.to;
         } else if (index === buckets.length - 1) {
@@ -54,10 +60,32 @@
         } else {
           return bucket.from < value && value <= bucket.to;
         }
-      }).colorClass;
+      });
+      if (bucket) {
+        return {
+          colorClass: bucket.color.colorClass,
+          customColor: bucket.color.customColor
+        };
+      } else {
+        return {
+          colorClass: "s-color-gray-4",
+          customColor: ""
+        };
+      }
     } else {
       const categories = legendData.categories;
-      return categories.find(category => category.label === value).sophieColor;
+      const category = categories.find(category => category.label === value);
+      if (category) {
+        return {
+          colorClass: category.color.colorClass,
+          customColor: category.color.customColor
+        };
+      } else {
+        return {
+          colorClass: "s-color-gray-4",
+          customColor: ""
+        };
+      }
     }
   }
 </script>

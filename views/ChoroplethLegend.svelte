@@ -26,8 +26,8 @@
     <div class="s-legend-icon-label">
       {#each legendData.categories as category}
         <div
-          class="s-legend-item-label__item {category.sophieColor !== undefined ? category.sophieColor : ''}"
-          style="color: {category.colorOverwrite !== undefined ? category.colorOverwrite : ''}">
+          class="s-legend-item-label__item {category.color.colorClass !== undefined ? category.color.colorClass : ''}"
+          style="color: {category.color.customColor !== undefined ? category.color.customColor : ''}">
           <div
             class="s-legend-item-label__item__icon
             s-legend-item-label__item__icon--default" />
@@ -42,7 +42,8 @@
         <svg class="q-choropleth-single-value-bucket">
           <g>
             <rect
-              class="q-choropleth-legend-bucket {legendData.buckets[0].colorClass}"
+              class="q-choropleth-legend-bucket {legendData.buckets[0].color.colorClass}"
+              style="fill: {legendData.buckets[0].color.customColor}"
               width={singleValueBucketWidth}
               height={legendBarHeight}
               x="0"
@@ -55,7 +56,8 @@
           {#each legendData.buckets as bucket, index}
             {#if !(hasSingleValueBucket(legendData) && index === 0)}
               <rect
-                class="q-choropleth-legend-bucket {bucket.colorClass}"
+                class="q-choropleth-legend-bucket {bucket.color.colorClass}"
+                style="fill: {bucket.color.customColor}"
                 width="{getAspectWidth(legendData, bucket)}%"
                 height={legendBarHeight}
                 x="{getAspectXValue(legendData, bucket)}%"

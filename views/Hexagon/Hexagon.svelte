@@ -4,19 +4,41 @@
   export let value;
   export let color;
 
+  // adjust this for small number of buckets
+  // adjust this for custom colors
   function getFontColor(color) {
     if (color === "s-color-gray-4") {
       return "s-color-gray-6";
     }
     let colorSplit = color.split("-");
-    let colorIntensity = colorSplit[colorSplit.length - 1];
+    let colorScaleNumber = parseInt(colorSplit[colorSplit.length - 2]);
+    let colorIntensity = parseInt(colorSplit[colorSplit.length - 1]);
 
     if (colorSplit.includes("diverging")) {
-      return colorIntensity > 3 && colorIntensity < 8
+      if (colorScaleNumber === 2) {
+        return "s-color-gray-1";
+      }
+      if (colorScaleNumber > 2 && colorScaleNumber < 8) {
+        return (colorIntensity > 2) & (colorIntensity < colorScaleNumber - 2)
+          ? "s-color-gray-9"
+          : "s-color-gray-1";
+      }
+      return colorIntensity > 3 && colorIntensity < colorScaleNumber - 3
         ? "s-color-gray-9"
         : "s-color-gray-1";
     }
-    return colorIntensity < 4 ? "s-color-gray-1" : "s-color-gray-9";
+
+    if (colorScaleNumber === 2) {
+      return colorIntensity === 1 ? "s-color-gray-1" : "s-color-gray-9";
+    }
+
+    if (colorScaleNumber >= 5) {
+      colorIntensity < 4 ? "s-color-gray-1" : "s-color-gray-9";
+    }
+
+    return colorScaleNumber - colorIntensity >= 2
+      ? "s-color-gray-1"
+      : "s-color-gray-9";
   }
 
   function getStrokeColor(color) {
@@ -32,8 +54,10 @@
   <div
     class="swiss-hexagon-map-row-element swiss-hexagon-map-row-element--half
     s-viz-color-one-5" />
-{:else if value === null}
-  <div class="swiss-hexagon-map-row-element {color}">
+{:else if value === null || value === undefined}
+  <div
+    class="swiss-hexagon-map-row-element {color.colorClass}"
+    style="color: {color.customColor}">
     <svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 70 80">
       <path
         shape-rendering="geometricPrecision"
@@ -44,19 +68,30 @@
         d="M34.64101615137754 0L70 20L70 60L34.64101615137754 80L0 60L0 20Z" />
       <g class="s-font-note">
         <text
-          class="s-color-gray-6"
+          class="s-color-gray-4"
           x="50%"
-          y="50%"
+          y="35%"
           text-anchor="middle"
           dy="5px"
           fill="currentColor">
           {cantonCode}
         </text>
+        <text
+          class="s-color-gray-4"
+          x="50%"
+          y="65%"
+          text-anchor="middle"
+          dy="5px"
+          fill="currentColor">
+          --
+        </text>
       </g>
     </svg>
   </div>
 {:else}
-  <div class="swiss-hexagon-map-row-element {color}">
+  <div
+    class="swiss-hexagon-map-row-element {color.colorClass}"
+    style="color: {color.customColor}">
     <svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 70 80">
       <path
         shape-rendering="geometricPrecision"
@@ -67,13 +102,22 @@
         d="M34.64101615137754 0L70 20L70 60L34.64101615137754 80L0 60L0 20Z" />
       <g class="s-font-note">
         <text
-          class={getFontColor(color)}
+          class={getFontColor(color.colorClass)}
           x="50%"
-          y="50%"
+          y="35%"
           text-anchor="middle"
           dy="5px"
           fill="currentColor">
           {cantonCode}
+        </text>
+        <text
+          class={getFontColor(color.colorClass)}
+          x="50%"
+          y="65%"
+          text-anchor="middle"
+          dy="5px"
+          fill="currentColor">
+          {value}
         </text>
       </g>
     </svg>

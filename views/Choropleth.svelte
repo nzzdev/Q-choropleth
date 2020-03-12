@@ -8,9 +8,11 @@
 
 <div class="s-q-item q-choropleth">
   <h3 class="s-q-item__title">{item.title}</h3>
-  <div class="s-q-item__subtitle">{item.subtitle}</div>
+  {#if item.subtitle}
+    <div class="s-q-item__subtitle">{item.subtitle}</div>
+  {/if}
   <ChoroplethLegend {legendData} />
-  {#if item.basemap === 'hexagonCHCantons'}
+  {#if item.baseMap === 'hexagonCHCantons'}
     <HexagonCHCantonsMap data={item.data} {legendData} />
   {/if}
 </div>

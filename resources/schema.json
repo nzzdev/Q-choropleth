@@ -31,6 +31,7 @@
       "type": "array",
       "Q:type": "table",
       "Q:options": {
+        "allowTranspose": false,
         "notificationChecks": [
           {
             "type": "EmptyData",
@@ -39,16 +40,6 @@
             },
             "priority": {
               "type": "low",
-              "value": 1
-            }
-          },
-          {
-            "type": "HasColumnTitles",
-            "config": {
-              "fields": ["data"]
-            },
-            "priority": {
-              "type": "medium",
               "value": 1
             }
           },
@@ -65,7 +56,14 @@
               "value": 2
             }
           }
-        ]
+        ],
+        "dynamicSchema": {
+          "type": "ToolEndpoint",
+          "config": {
+            "endpoint": "dynamic-schema/baseMap",
+            "fields": ["baseMap"]
+          }
+        }
       },
       "items": {
         "type": "array",
@@ -124,7 +122,7 @@
         "valuesOnMap": {
           "title": "Werte direkt auf der Karte beschriften",
           "type": "boolean",
-          "default": "false"
+          "default": false
         },
         "bucketOptions": {
           "title": "Optionen für Bucketberechnung",
@@ -134,13 +132,26 @@
               {
                 "type": "ToolEndpoint",
                 "config": {
-                  "endpoint": "option-availability/buckets",
+                  "endpoint": "option-availability/hasBuckets",
                   "fields": ["data"]
                 }
               }
             ]
           },
           "properties": {
+            "labelLegend": {
+              "title": "Mittelwert-Markierung",
+              "type": "string",
+              "default": "noLabel",
+              "enum": ["noLabel", "average", "median"],
+              "Q:options": {
+                "enum_titles": [
+                  "ausblenden",
+                  "zeigt Durchschnitt an",
+                  "zeigt Median an"
+                ]
+              }
+            },
             "bucketType": {
               "title": "Bucketing Methode",
               "type": "string",
@@ -186,13 +197,107 @@
                 ]
               }
             },
-            "labelLegend": {
-              "title": "Beschriftung der Legende",
+            "scale": {
+              "title": "Skala",
               "type": "string",
-              "default": "noLabel",
-              "enum": ["noLabel", "average", "median"],
               "Q:options": {
-                "enum_titles": ["keine Beschriftung", "Durchschnitt", "Median"]
+                "selectType": "select",
+                "dynamicSchema": {
+                  "type": "ToolEndpoint",
+                  "config": {
+                    "endpoint": "dynamic-schema/scale",
+                    "fields": ["options.bucketOptions"]
+                  }
+                }
+              },
+              "default": "sequential"
+            }
+          }
+        },
+
+        "colorScheme": {
+          "title": "Farbschema",
+          "type": "string",
+          "default": "one",
+          "Q:options": {
+            "selectType": "select",
+            "dynamicSchema": {
+              "type": "ToolEndpoint",
+              "config": {
+                "endpoint": "dynamic-schema/colorScheme",
+                "fields": ["options.bucketOptions.scale"]
+              }
+            },
+            "availabilityChecks": [
+              {
+                "type": "ToolEndpoint",
+                "config": {
+                  "endpoint": "option-availability/hasBuckets",
+                  "fields": ["data"]
+                }
+              }
+            ]
+          }
+        },
+        "colorOverwrites": {
+          "type": "array",
+          "Q:options": {
+            "availabilityChecks": [
+              {
+                "type": "UserHasRole",
+                "config": {
+                  "role": "expert-choropleth"
+                }
+              },
+              {
+                "type": "ToolEndpoint",
+                "config": {
+                  "endpoint": "option-availability/customColors",
+                  "fields": ["data", "options.bucketOptions"]
+                }
+              }
+            ],
+            "dynamicSchema": {
+              "type": "ToolEndpoint",
+              "config": {
+                "endpoint": "dynamic-schema/colorOverwrites",
+                "fields": ["data", "options.bucketOptions"]
+              }
+            },
+            "layout": "compact",
+            "expandable": {
+              "itemLabelTemplate": "${color} - ${position}"
+            },
+            "sortable": false
+          },
+          "items": {
+            "type": "object",
+            "properties": {
+              "color": {
+                "title": "Farbe",
+                "type": "string",
+                "Q:type": "color"
+              },
+              "position": {
+                "title": "Position",
+                "oneOf": [
+                  {
+                    "type": "number"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "Q:options": {
+                  "dynamicSchema": {
+                    "selectType": "select",
+                    "type": "ToolEndpoint",
+                    "config": {
+                      "endpoint": "dynamic-schema/colorOverwritesItem",
+                      "fields": ["data", "options.bucketOptions"]
+                    }
+                  }
+                }
               }
             }
           }
