@@ -278,6 +278,16 @@
                 "type": "string",
                 "Q:type": "color"
               },
+              "textColor": {
+                "title": "Textfarbe",
+                "type": "string",
+                "default": "light",
+                "enum": ["light", "dark"],
+                "Q:options": {
+                  "selectType": "select",
+                  "enum_titles": ["hell", "dunkel"]
+                }
+              },
               "position": {
                 "title": "Position",
                 "oneOf": [

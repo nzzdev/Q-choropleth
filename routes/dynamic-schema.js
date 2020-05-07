@@ -108,7 +108,7 @@ function getColorOverwriteEnumAndTitles(data, bucketOptions) {
         enum: enumValues,
         "Q:options": {
           enum_titles: enumValues.map(value =>
-            value === null ? "" : `Bucket ${value}`
+            value === null ? "" : `${value}. Bucket `
           )
         }
       };

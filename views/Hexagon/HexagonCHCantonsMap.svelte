@@ -64,7 +64,8 @@
       if (bucket) {
         return {
           colorClass: bucket.color.colorClass,
-          customColor: bucket.color.customColor
+          customColor: bucket.color.customColor,
+          customTextColor: bucket.color.customTextColor
         };
       } else {
         return {
@@ -78,7 +79,8 @@
       if (category) {
         return {
           colorClass: category.color.colorClass,
-          customColor: category.color.customColor
+          customColor: category.color.customColor,
+          customTextColor: category.color.customTextColor
         };
       } else {
         return {

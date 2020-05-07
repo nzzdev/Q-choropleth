@@ -13,7 +13,14 @@ function getColor(numberBuckets, index, scale, colorOptions) {
     return {
       colorClass: `s-viz-color-sequential-${colorScheme}-${numberBuckets}-${numberBuckets -
         index}`,
-      customColor: customColor !== undefined ? customColor : ""
+      customColor:
+        customColor !== undefined && customColor.color !== undefined
+          ? customColor.color
+          : "",
+      customTextColor:
+        customColor !== undefined && customColor.textColor !== undefined
+          ? customColor.textColor
+          : ""
     };
   } else {
     // if we have a diverging scale we deal with two cases:
@@ -57,7 +64,14 @@ function getColor(numberBuckets, index, scale, colorOptions) {
 
     return {
       colorClass: `s-viz-color-diverging-${colorScheme}-${scaleSize}-${scalePosition}`,
-      customColor: customColor !== undefined ? customColor : ""
+      customColor:
+        customColor !== undefined && customColor.color !== undefined
+          ? customColor.color
+          : "",
+      customTextColor:
+        customColor !== undefined && customColor.textColor !== undefined
+          ? customColor.textColor
+          : ""
     };
   }
 }
@@ -204,9 +218,9 @@ function getLegend(item) {
   }
 
   const customColorMap = new Map(
-    item.options.colorOverwrites.map(({ position, color }) => [
+    item.options.colorOverwrites.map(({ position, color, textColor }) => [
       position - 1,
-      color
+      { color, textColor }
     ])
   );
 
@@ -219,7 +233,14 @@ function getLegend(item) {
         label,
         color: {
           colorClass: `s-viz-color-${mappings.digitWords[index]}-5`,
-          customColor: customColor !== undefined ? customColor : ""
+          customColor:
+            customColor !== undefined && customColor.color !== undefined
+              ? customColor.color
+              : "",
+          customTextColor:
+            customColor !== undefined && customColor.textColor !== undefined
+              ? customColor.textColor
+              : ""
         }
       });
     });

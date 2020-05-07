@@ -5,12 +5,19 @@
   export let color;
 
   // adjust this for small number of buckets
-  // adjust this for custom colors
   function getFontColor(color) {
-    if (color === "s-color-gray-4") {
+    const colorClass = color.colorClass;
+    if (color.customColor !== "" && color.customTextColor !== undefined) {
+      if (color.customTextColor === "light") {
+        return "s-color-gray-1";
+      } else {
+        return "s-color-gray-9";
+      }
+    }
+    if (colorClass === "s-color-gray-4") {
       return "s-color-gray-6";
     }
-    let colorSplit = color.split("-");
+    let colorSplit = colorClass.split("-");
     let colorScaleNumber = parseInt(colorSplit[colorSplit.length - 2]);
     let colorIntensity = parseInt(colorSplit[colorSplit.length - 1]);
 
@@ -102,7 +109,7 @@
         d="M34.64101615137754 0L70 20L70 60L34.64101615137754 80L0 60L0 20Z" />
       <g class="s-font-note">
         <text
-          class={getFontColor(color.colorClass)}
+          class={getFontColor(color)}
           x="50%"
           y="35%"
           text-anchor="middle"
@@ -111,7 +118,7 @@
           {cantonCode}
         </text>
         <text
-          class={getFontColor(color.colorClass)}
+          class={getFontColor(color)}
           x="50%"
           y="65%"
           text-anchor="middle"
