@@ -50,7 +50,7 @@
         customColor: ""
       };
     }
-    if (legendData.type === "quantitative") {
+    if (legendData.type === "numerical") {
       const buckets = legendData.buckets;
       const bucket = buckets.find((bucket, index) => {
         if (index === 0) {

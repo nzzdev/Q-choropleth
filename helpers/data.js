@@ -4,18 +4,18 @@ function getChoroplethType(data) {
   // we do not support more than one value column
   if (data.length > 0 && data[0].length < 3) {
     // if at least one of the values is not a number we have a
-    // qualitative choropleth aka clustermap
+    // categorical choropleth
     for (let i = 0; i < data.length; i++) {
       if (i !== 0 && data[i].length > 1 && isNaN(data[i][1])) {
-        return "qualitative";
+        return "categorical";
       }
     }
   }
-  return "quantitative";
+  return "numerical";
 }
 
 function getUniqueCategories(data) {
-  const values = data.map(row => {
+  const values = data.map((row) => {
     return row[1];
   });
   return [...new Set(values)];
@@ -23,13 +23,13 @@ function getUniqueCategories(data) {
 
 function getCustomBucketBorders(customBuckets) {
   const customBorderStrings = customBuckets.split(",");
-  return customBorderStrings.map(borderValue => {
+  return customBorderStrings.map((borderValue) => {
     return parseFloat(borderValue.trim());
   });
 }
 
 function getValues(data) {
-  return data.map(row => {
+  return data.map((row) => {
     if (row[1] !== null) {
       return parseFloat(row[1]);
     }
@@ -57,5 +57,5 @@ module.exports = {
   getUniqueCategories,
   getCustomBucketBorders,
   getValues,
-  getNumberBuckets
+  getNumberBuckets,
 };

@@ -21,7 +21,7 @@
 </script>
 
 {#if legendData !== undefined}
-  {#if legendData.type === 'qualitative'}
+  {#if legendData.type === 'categorical'}
     <!-- display categorical legend -->
     <div class="s-legend-icon-label">
       {#each legendData.categories as category}
@@ -35,7 +35,7 @@
         </div>
       {/each}
     </div>
-  {:else if legendData.type === 'quantitative'}
+  {:else if legendData.type === 'numerical'}
     <!-- display bucket legend -->
     <div class="q-choropleth-legend-container">
       {#if hasSingleValueBucket(legendData)}

@@ -11,8 +11,9 @@ function getColor(numberBuckets, index, scale, colorOptions) {
 
   if (scale === "sequential") {
     return {
-      colorClass: `s-viz-color-sequential-${colorScheme}-${numberBuckets}-${numberBuckets -
-        index}`,
+      colorClass: `s-viz-color-sequential-${colorScheme}-${numberBuckets}-${
+        numberBuckets - index
+      }`,
       customColor:
         customColor !== undefined && customColor.color !== undefined
           ? customColor.color
@@ -20,7 +21,7 @@ function getColor(numberBuckets, index, scale, colorOptions) {
       customTextColor:
         customColor !== undefined && customColor.textColor !== undefined
           ? customColor.textColor
-          : ""
+          : "",
     };
   } else {
     // if we have a diverging scale we deal with two cases:
@@ -71,7 +72,7 @@ function getColor(numberBuckets, index, scale, colorOptions) {
       customTextColor:
         customColor !== undefined && customColor.textColor !== undefined
           ? customColor.textColor
-          : ""
+          : "",
     };
   }
 }
@@ -88,7 +89,7 @@ function getBucketsForLegend(
   const scale = options.bucketOptions.scale;
   const colorOptions = {
     colorScheme: options.colorScheme,
-    colorOverwrites: customColorMap
+    colorOverwrites: customColorMap,
   }; // TODO tbd how to deal with custom colors!
 
   // TODO add checks (maybe also add notifications and don't render graphic otherwiese):
@@ -135,7 +136,7 @@ function getCkMeansBuckets(filteredValues, numberBuckets, scale, colorOptions) {
     return {
       from,
       to,
-      color: getColor(numberBuckets, index, scale, colorOptions)
+      color: getColor(numberBuckets, index, scale, colorOptions),
     };
   });
 }
@@ -158,7 +159,7 @@ function getQuantileBuckets(
     return {
       from,
       to: quantileBorder,
-      color: getColor(numberBuckets, index, scale, colorOptions)
+      color: getColor(numberBuckets, index, scale, colorOptions),
     };
   });
 }
@@ -179,7 +180,7 @@ function getEqualBuckets(
     equalBuckets.push({
       from,
       to,
-      color: getColor(numberBuckets, i, scale, colorOptions)
+      color: getColor(numberBuckets, i, scale, colorOptions),
     });
   }
   return equalBuckets;
@@ -199,7 +200,7 @@ function getCustomBuckets(options, scale, colorOptions) {
       customBuckets.push({
         from: index === 0 ? minBorder : customBorderValues[index - 1],
         to: borderValue,
-        color: getColor(numberBuckets, index, scale, colorOptions)
+        color: getColor(numberBuckets, index, scale, colorOptions),
       });
     });
     return customBuckets;
@@ -210,7 +211,7 @@ function getLegend(item) {
   const data = item.data;
   const choroplethType = dataHelpers.getChoroplethType(data);
   const legendData = {
-    type: choroplethType
+    type: choroplethType,
   };
 
   if (item.options.colorOverwrites === undefined) {
@@ -220,11 +221,11 @@ function getLegend(item) {
   const customColorMap = new Map(
     item.options.colorOverwrites.map(({ position, color, textColor }) => [
       position - 1,
-      { color, textColor }
+      { color, textColor },
     ])
   );
 
-  if (choroplethType === "qualitative") {
+  if (choroplethType === "categorical") {
     const categoryLabels = dataHelpers.getUniqueCategories(data);
     let categories = [];
     categoryLabels.forEach((label, index) => {
@@ -240,22 +241,23 @@ function getLegend(item) {
           customTextColor:
             customColor !== undefined && customColor.textColor !== undefined
               ? customColor.textColor
-              : ""
-        }
+              : "",
+        },
       });
     });
     legendData.categories = categories;
-  } else if (choroplethType === "quantitative") {
+  } else if (choroplethType === "numerical") {
     const values = dataHelpers.getValues(data);
     const filteredValues = values.filter(
-      value => value !== null && value !== 0
+      (value) => value !== null && value !== 0
     );
     const minValue = Math.min(...filteredValues);
     const maxValue = Math.max(...filteredValues);
 
     legendData.hasNullValues =
-      values.find(value => value === null) !== undefined;
-    legendData.hasZeroValues = values.find(value => value === 0) !== undefined;
+      values.find((value) => value === null) !== undefined;
+    legendData.hasZeroValues =
+      values.find((value) => value === 0) !== undefined;
     legendData.maxValue = maxValue;
     legendData.minValue = minValue;
 
@@ -283,5 +285,5 @@ function getLegend(item) {
 }
 
 module.exports = {
-  getLegend
+  getLegend,
 };

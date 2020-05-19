@@ -29,8 +29,8 @@ function getScaleEnumWithTitles(bucketOptions) {
   return {
     enum: enumValues,
     "Q:options": {
-      enum_titles: enumTitles
-    }
+      enum_titles: enumTitles,
+    },
   };
 }
 
@@ -44,27 +44,27 @@ function getColorSchemeEnumWithTitles(scale) {
           "Skala 2",
           "Skala 3",
           "Skala Weiblich",
-          "Skala Männlich"
-        ]
-      }
+          "Skala Männlich",
+        ],
+      },
     };
   }
   return {
     enum: ["one", "two", "three", "gender"],
     "Q:options": {
-      enum_titles: ["Skala 1", "Skala 2", "Skala 3", "Skala Weiblich/Männlich"]
-    }
+      enum_titles: ["Skala 1", "Skala 2", "Skala 3", "Skala Weiblich/Männlich"],
+    },
   };
 }
 
 function getTitleAndMaxItems(data, bucketOptions) {
   const choroplethType = dataHelpers.getChoroplethType(data);
   const colorOverwritesSchema = {
-    title: choroplethType === "qualitative" ? "Kategorienfarbe" : "Bucketfarbe"
+    title: choroplethType === "categorical" ? "Kategorienfarbe" : "Bucketfarbe",
   };
 
   try {
-    if (choroplethType === "qualitative") {
+    if (choroplethType === "categorical") {
       const categories = dataHelpers.getUniqueCategories(data);
       colorOverwritesSchema.maxItems = categories.length;
     } else {
@@ -85,7 +85,7 @@ function getColorOverwriteEnumAndTitles(data, bucketOptions) {
     let numberItems = 0;
     let enumValues = [null];
 
-    if (choroplethType === "qualitative") {
+    if (choroplethType === "categorical") {
       const categories = dataHelpers.getUniqueCategories(data);
       numberItems = categories.length;
       for (let index = 0; index < numberItems; index++) {
@@ -96,8 +96,8 @@ function getColorOverwriteEnumAndTitles(data, bucketOptions) {
         "Q:options": {
           enum_titles: [""].concat(
             categories.map((category, index) => `${index + 1} - ${category}`)
-          )
-        }
+          ),
+        },
       };
     } else {
       numberItems = dataHelpers.getNumberBuckets(bucketOptions);
@@ -107,10 +107,10 @@ function getColorOverwriteEnumAndTitles(data, bucketOptions) {
       return {
         enum: enumValues,
         "Q:options": {
-          enum_titles: enumValues.map(value =>
+          enum_titles: enumValues.map((value) =>
             value === null ? "" : `${value}. Bucket `
-          )
-        }
+          ),
+        },
       };
     }
   } catch {
@@ -123,11 +123,11 @@ module.exports = {
   path: "/dynamic-schema/{optionName}",
   options: {
     validate: {
-      payload: Joi.object()
+      payload: Joi.object(),
     },
-    cors: true
+    cors: true,
   },
-  handler: function(request, h) {
+  handler: function (request, h) {
     const item = request.payload.item;
     if (request.params.optionName === "scale") {
       return getScaleEnumWithTitles(item.options.bucketOptions);
@@ -151,11 +151,11 @@ module.exports = {
     if (request.params.optionName === "baseMap") {
       return {
         "Q:options": {
-          defaultArrayValues: [["Aargau"], ["Zürich"]]
-        }
+          defaultArrayValues: [["Aargau"], ["Zürich"]],
+        },
       };
     }
 
     return Boom.badRequest();
-  }
+  },
 };
