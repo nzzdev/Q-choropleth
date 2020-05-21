@@ -6,9 +6,13 @@ const digitWords = [
   "five",
   "six",
   "seven",
-  "eight"
+  "eight",
+  "nine",
+  "ten",
+  "eleven",
+  "twelve",
 ];
 
 module.exports = {
-  digitWords
+  digitWords,
 };

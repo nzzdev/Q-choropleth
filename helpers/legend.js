@@ -79,16 +79,16 @@ function getColor(numberBuckets, index, scale, colorOptions) {
 
 function getBucketsForLegend(
   filteredValues,
-  options,
+  numericalOptions,
   minValue,
   maxValue,
   customColorMap
 ) {
-  const bucketType = options.bucketOptions.bucketType;
-  const numberBuckets = options.bucketOptions.numberBuckets;
-  const scale = options.bucketOptions.scale;
+  const bucketType = numericalOptions.bucketType;
+  const numberBuckets = numericalOptions.numberBuckets;
+  const scale = numericalOptions.scale;
   const colorOptions = {
-    colorScheme: options.colorScheme,
+    colorScheme: numericalOptions.colorScheme,
     colorOverwrites: customColorMap,
   }; // TODO tbd how to deal with custom colors!
 
@@ -119,7 +119,7 @@ function getBucketsForLegend(
       colorOptions
     );
   } else if (bucketType === "custom") {
-    return getCustomBuckets(options, scale, colorOptions);
+    return getCustomBuckets(numericalOptions, scale, colorOptions);
   }
   return [];
 }
@@ -186,10 +186,10 @@ function getEqualBuckets(
   return equalBuckets;
 }
 
-function getCustomBuckets(options, scale, colorOptions) {
-  if (options.bucketOptions.customBuckets !== undefined) {
+function getCustomBuckets(numericalOptions, scale, colorOptions) {
+  if (numericalOptions.customBuckets !== undefined) {
     const customBorderValues = dataHelpers.getCustomBucketBorders(
-      options.bucketOptions.customBuckets
+      numericalOptions.customBuckets
     );
 
     const numberBuckets = customBorderValues.length;
@@ -209,17 +209,21 @@ function getCustomBuckets(options, scale, colorOptions) {
 
 function getLegend(item) {
   const data = item.data;
-  const choroplethType = dataHelpers.getChoroplethType(data);
+  const choroplethType = item.options.choroplethType;
   const legendData = {
     type: choroplethType,
   };
 
-  if (item.options.colorOverwrites === undefined) {
-    item.options.colorOverwrites = [];
+  const choroplethTypeOptions = `${choroplethType}Options`;
+
+  if (item.options[choroplethTypeOptions].colorOverwrites === undefined) {
+    item.options[choroplethTypeOptions].colorOverwrites = [];
   }
 
   const customColorMap = new Map(
-    item.options.colorOverwrites.map(({ position, color, textColor }) => [
+    item.options[
+      choroplethTypeOptions
+    ].colorOverwrites.map(({ position, color, textColor }) => [
       position - 1,
       { color, textColor },
     ])
@@ -254,6 +258,8 @@ function getLegend(item) {
     const minValue = Math.min(...filteredValues);
     const maxValue = Math.max(...filteredValues);
 
+    const numericalOptions = item.options.numericalOptions;
+
     legendData.hasNullValues =
       values.find((value) => value === null) !== undefined;
     legendData.hasZeroValues =
@@ -263,13 +269,13 @@ function getLegend(item) {
 
     legendData.buckets = getBucketsForLegend(
       filteredValues,
-      item.options,
+      numericalOptions,
       minValue,
       maxValue,
       customColorMap
     );
 
-    if (item.options.bucketOptions.bucketType === "custom") {
+    if (numericalOptions.bucketType === "custom") {
       const minBucketValue = legendData.buckets[0].from;
       if (minValue > minBucketValue) {
         legendData.minValue = minBucketValue;

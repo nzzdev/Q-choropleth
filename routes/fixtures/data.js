@@ -8,7 +8,7 @@ const fixtureData = [
   require(`${fixtureDataDirectory}/hexagon-quantile.json`),
   require(`${fixtureDataDirectory}/hexagon-equal.json`),
   require(`${fixtureDataDirectory}/hexagon-custom.json`),
-  require(`${fixtureDataDirectory}/hexagon-clustermap.json`)
+  require(`${fixtureDataDirectory}/hexagon-categorical-map.json`),
 ];
 
 module.exports = {
@@ -16,9 +16,9 @@ module.exports = {
   method: "GET",
   options: {
     tags: ["api"],
-    cors: true
+    cors: true,
   },
   handler: (request, h) => {
     return fixtureData;
-  }
+  },
 };

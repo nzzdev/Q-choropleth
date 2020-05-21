@@ -2,16 +2,16 @@ const Boom = require("@hapi/boom");
 const Joi = require("../helpers/custom-joi.js");
 const dataHelpers = require("../helpers/data.js");
 
-function getScaleEnumWithTitles(bucketOptions) {
+function getScaleEnumWithTitles(numericalOptions) {
   let enumValues = ["sequential"];
   let enumTitles = ["Sequentiell"];
 
   let bucketNumber = 0;
-  if (bucketOptions.bucketType === "custom") {
-    const buckets = bucketOptions.customBuckets.split(",");
+  if (numericalOptions.bucketType === "custom") {
+    const buckets = numericalOptions.customBuckets.split(",");
     bucketNumber = buckets.length - 1;
   } else {
-    bucketNumber = bucketOptions.numberBuckets;
+    bucketNumber = numericalOptions.numberBuckets;
   }
 
   // Add valid bucket borders to enum as diverging values
@@ -57,65 +57,59 @@ function getColorSchemeEnumWithTitles(scale) {
   };
 }
 
-function getTitleAndMaxItems(data, bucketOptions) {
-  const choroplethType = dataHelpers.getChoroplethType(data);
-  const colorOverwritesSchema = {
-    title: choroplethType === "categorical" ? "Kategorienfarbe" : "Bucketfarbe",
+function getMaxItemsNumerical(numericalOptions) {
+  return {
+    maxItems: dataHelpers.getNumberBuckets(numericalOptions),
   };
-
-  try {
-    if (choroplethType === "categorical") {
-      const categories = dataHelpers.getUniqueCategories(data);
-      colorOverwritesSchema.maxItems = categories.length;
-    } else {
-      colorOverwritesSchema.maxItems = dataHelpers.getNumberBuckets(
-        bucketOptions
-      );
-    }
-  } catch {
-    // we just do not set maxItems if anything goes wrong
-  }
-  return colorOverwritesSchema;
 }
 
-function getColorOverwriteEnumAndTitles(data, bucketOptions) {
+function getMaxItemsCategorical(data) {
   try {
-    const choroplethType = dataHelpers.getChoroplethType(data);
+    return {
+      maxItems: dataHelpers.getUniqueCategories(data).length,
+    };
+  } catch {
+    return {
+      maxItems: undefined,
+    };
+  }
+}
 
-    let numberItems = 0;
+function getColorOverwriteEnumAndTitlesNumerical(numericalOptions) {
+  try {
     let enumValues = [null];
-
-    if (choroplethType === "categorical") {
-      const categories = dataHelpers.getUniqueCategories(data);
-      numberItems = categories.length;
-      for (let index = 0; index < numberItems; index++) {
-        enumValues.push(index + 1);
-      }
-      return {
-        enum: enumValues,
-        "Q:options": {
-          enum_titles: [""].concat(
-            categories.map((category, index) => `${index + 1} - ${category}`)
-          ),
-        },
-      };
-    } else {
-      numberItems = dataHelpers.getNumberBuckets(bucketOptions);
-      for (let index = 0; index < numberItems; index++) {
-        enumValues.push(index + 1);
-      }
-      return {
-        enum: enumValues,
-        "Q:options": {
-          enum_titles: enumValues.map((value) =>
-            value === null ? "" : `${value}. Bucket `
-          ),
-        },
-      };
+    const numberItems = dataHelpers.getNumberBuckets(numericalOptions);
+    for (let index = 0; index < numberItems; index++) {
+      enumValues.push(index + 1);
     }
+    return {
+      enum: enumValues,
+      "Q:options": {
+        enum_titles: enumValues.map((value) =>
+          value === null ? "" : `${value}. Bucket `
+        ),
+      },
+    };
   } catch {
     return {};
   }
+}
+
+function getColorOverwriteEnumAndTitlesCategorical(data) {
+  let enumValues = [null];
+  const categories = dataHelpers.getUniqueCategories(data);
+  const numberItems = categories.length;
+  for (let index = 0; index < numberItems; index++) {
+    enumValues.push(index + 1);
+  }
+  return {
+    enum: enumValues,
+    "Q:options": {
+      enum_titles: [""].concat(
+        categories.map((category, index) => `${index + 1} - ${category}`)
+      ),
+    },
+  };
 }
 
 module.exports = {
@@ -130,22 +124,27 @@ module.exports = {
   handler: function (request, h) {
     const item = request.payload.item;
     if (request.params.optionName === "scale") {
-      return getScaleEnumWithTitles(item.options.bucketOptions);
+      return getScaleEnumWithTitles(item.options.numericalOptions);
     }
 
     if (request.params.optionName === "colorScheme") {
-      return getColorSchemeEnumWithTitles(item.options.bucketOptions.scale);
+      return getColorSchemeEnumWithTitles(item.options.numericalOptions.scale);
     }
 
-    if (request.params.optionName === "colorOverwrites") {
-      return getTitleAndMaxItems(item.data, item.options.bucketOptions);
+    if (request.params.optionName === "colorOverwritesMaxItems") {
+      if (item.options.choroplethType === "numerical") {
+        getMaxItemsNumerical(item.options.numericalOptions);
+      } else {
+        getMaxItemsCategorical(item.data);
+      }
     }
 
     if (request.params.optionName === "colorOverwritesItem") {
-      return getColorOverwriteEnumAndTitles(
-        item.data,
-        item.options.bucketOptions
-      );
+      if (item.options.choroplethType === "numerical") {
+        getColorOverwriteEnumAndTitlesNumerical(item.options.numericalOptions);
+      } else {
+        getColorOverwriteEnumAndTitlesCategorical(item.data);
+      }
     }
 
     if (request.params.optionName === "baseMap") {

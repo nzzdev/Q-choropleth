@@ -33,11 +33,14 @@
   "sources": [],
   "notes": "",
   "options": {
-    "valuesOnMap": true,
-    "bucketOptions": {
+    "choroplethType": "numerical",
+    "numericalOptions": {
+      "valuesOnMap": true,
       "bucketType": "custom",
       "customBuckets": "0,4,10,15,20,30",
-      "labelLegend": "noLabel"
+      "labelLegend": "noLabel",
+      "scale": "sequential",
+      "colorScheme": "one"
     }
   }
 }

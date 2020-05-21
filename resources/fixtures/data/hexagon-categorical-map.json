@@ -33,6 +33,9 @@
   "sources": [],
   "notes": "",
   "options": {
-    "valuesOnMap": true
+    "choroplethType": "categorical",
+    "categoricalOptions": {
+      "valuesOnMap": true
+    }
   }
 }

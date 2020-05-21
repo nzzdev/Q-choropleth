@@ -1,10 +1,5 @@
 const Boom = require("@hapi/boom");
 const Joi = require("../helpers/custom-joi.js");
-const getChoroplethType = require("../helpers/data.js").getChoroplethType;
-
-function isQuantitative(data) {
-  return getChoroplethType(data) === "numerical";
-}
 
 function hasCustomBuckets(bucketType) {
   return bucketType === "custom";
@@ -21,27 +16,30 @@ module.exports = {
   },
   handler: function (request, h) {
     const item = request.payload.item;
-    if (request.params.optionName === "hasBuckets") {
+    if (request.params.optionName === "isNumerical") {
       return {
-        available: isQuantitative(item.data),
+        available: item.options.choroplethType === "numerical",
+      };
+    }
+    if (request.params.optionName === "isCategorical") {
+      return {
+        available: item.options.choroplethType === "categorical",
       };
     }
     if (request.params.optionName === "customBuckets") {
       return {
-        available: hasCustomBuckets(item.options.bucketOptions.bucketType),
+        available: hasCustomBuckets(item.options.numericalOptions.bucketType),
       };
     }
     if (request.params.optionName === "numberBuckets") {
       return {
-        available: !hasCustomBuckets(item.options.bucketOptions.bucketType),
+        available: !hasCustomBuckets(item.options.numericalOptions.bucketType),
       };
     }
 
     if (request.params.optionName === "customColors") {
       return {
-        available:
-          !isQuantitative(item.data) ||
-          item.options.bucketOptions.scale === "sequential",
+        available: item.options.numericalOptions.scale === "sequential",
       };
     }
     return Boom.badRequest();
