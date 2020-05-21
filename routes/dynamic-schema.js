@@ -131,19 +131,21 @@ module.exports = {
       return getColorSchemeEnumWithTitles(item.options.numericalOptions.scale);
     }
 
-    if (request.params.optionName === "colorOverwritesMaxItems") {
+    if (request.params.optionName === "colorOverwrites") {
       if (item.options.choroplethType === "numerical") {
-        getMaxItemsNumerical(item.options.numericalOptions);
+        return getMaxItemsNumerical(item.options.numericalOptions);
       } else {
-        getMaxItemsCategorical(item.data);
+        return getMaxItemsCategorical(item.data);
       }
     }
 
     if (request.params.optionName === "colorOverwritesItem") {
       if (item.options.choroplethType === "numerical") {
-        getColorOverwriteEnumAndTitlesNumerical(item.options.numericalOptions);
+        return getColorOverwriteEnumAndTitlesNumerical(
+          item.options.numericalOptions
+        );
       } else {
-        getColorOverwriteEnumAndTitlesCategorical(item.data);
+        return getColorOverwriteEnumAndTitlesCategorical(item.data);
       }
     }
 

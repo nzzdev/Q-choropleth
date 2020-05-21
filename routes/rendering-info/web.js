@@ -59,8 +59,19 @@ module.exports = {
 
     const context = {
       item,
-      legendData: legendHelpers.getLegend(item),
     };
+
+    if (item.options.choroplethType === "numerical") {
+      context.legendData = legendHelpers.getNumericalLegend(
+        item.data,
+        item.options.numericalOptions
+      );
+    } else {
+      context.legendData = legendHelpers.getCategoricalLegend(
+        item.data,
+        item.options.categoricalOptions
+      );
+    }
 
     console.log(context.legendData);
     const renderingInfo = {

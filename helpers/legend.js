@@ -1,96 +1,24 @@
 const dataHelpers = require("../helpers/data.js");
-const mappings = require("../helpers/mappings.js");
+const colorHelpers = require("../helpers/color.js");
 const simpleStatistics = require("simple-statistics");
 
 const ckmeans = simpleStatistics.ckmeans;
 const quantile = simpleStatistics.quantile;
 
-function getColor(numberBuckets, index, scale, colorOptions) {
-  const colorScheme = colorOptions.colorScheme;
-  const customColor = colorOptions.colorOverwrites.get(index);
-
-  if (scale === "sequential") {
-    return {
-      colorClass: `s-viz-color-sequential-${colorScheme}-${numberBuckets}-${
-        numberBuckets - index
-      }`,
-      customColor:
-        customColor !== undefined && customColor.color !== undefined
-          ? customColor.color
-          : "",
-      customTextColor:
-        customColor !== undefined && customColor.textColor !== undefined
-          ? customColor.textColor
-          : "",
-    };
-  } else {
-    // if we have a diverging scale we deal with two cases:
-    // a) diverging value = one of bucket border values,
-    //    i.e. we do not have a bucket with a neutral color value
-    // b) diverging value = one of the buckets,
-    //    i.e. this bucket has a neutral color value
-    // scale values could be e.g. border-1, border-2 or bucket-1, bucket-2
-    const divergingSpecification = scale.split("-");
-    const divergingIndex = parseInt(divergingSpecification[1]);
-
-    // in order to know which diverging scale size we have to use,
-    // we have to check which side is bigger first and then calculate
-    // the size depending on the number of buckets of the bigger side
-    const numberBucketsLeft = divergingIndex;
-    let numberBucketsRight = numberBuckets - divergingIndex;
-
-    if (divergingSpecification[0] === "bucket") {
-      numberBucketsRight -= 1;
-    }
-
-    const numberBucketsBiggerSide = Math.max(
-      numberBucketsLeft,
-      numberBucketsRight
-    );
-
-    let scaleSize = numberBucketsBiggerSide * 2;
-    if (divergingSpecification[0] === "bucket") {
-      scaleSize += 1;
-    }
-
-    // if the left side is smaller we cannot start with scale position 1
-    // instead we have to calculate the position depending on scale size
-    // and number of buckets
-    let scalePosition;
-    if (numberBucketsLeft < numberBucketsRight) {
-      scalePosition = scaleSize - numberBuckets + index + 1;
-    } else {
-      scalePosition = index + 1;
-    }
-
-    return {
-      colorClass: `s-viz-color-diverging-${colorScheme}-${scaleSize}-${scalePosition}`,
-      customColor:
-        customColor !== undefined && customColor.color !== undefined
-          ? customColor.color
-          : "",
-      customTextColor:
-        customColor !== undefined && customColor.textColor !== undefined
-          ? customColor.textColor
-          : "",
-    };
-  }
-}
-
 function getBucketsForLegend(
   filteredValues,
-  numericalOptions,
+  options,
   minValue,
   maxValue,
   customColorMap
 ) {
-  const bucketType = numericalOptions.bucketType;
-  const numberBuckets = numericalOptions.numberBuckets;
-  const scale = numericalOptions.scale;
+  const bucketType = options.bucketType;
+  const numberBuckets = options.numberBuckets;
+  const scale = options.scale;
   const colorOptions = {
-    colorScheme: numericalOptions.colorScheme,
+    colorScheme: options.colorScheme,
     colorOverwrites: customColorMap,
-  }; // TODO tbd how to deal with custom colors!
+  };
 
   // TODO add checks (maybe also add notifications and don't render graphic otherwiese):
   // a) numberBuckets <= filteredValues.length
@@ -119,7 +47,7 @@ function getBucketsForLegend(
       colorOptions
     );
   } else if (bucketType === "custom") {
-    return getCustomBuckets(numericalOptions, scale, colorOptions);
+    return getCustomBuckets(options, scale, colorOptions);
   }
   return [];
 }
@@ -136,7 +64,12 @@ function getCkMeansBuckets(filteredValues, numberBuckets, scale, colorOptions) {
     return {
       from,
       to,
-      color: getColor(numberBuckets, index, scale, colorOptions),
+      color: colorHelpers.getBucketColor(
+        numberBuckets,
+        index,
+        scale,
+        colorOptions
+      ),
     };
   });
 }
@@ -159,7 +92,12 @@ function getQuantileBuckets(
     return {
       from,
       to: quantileBorder,
-      color: getColor(numberBuckets, index, scale, colorOptions),
+      color: colorHelpers.getBucketColor(
+        numberBuckets,
+        index,
+        scale,
+        colorOptions
+      ),
     };
   });
 }
@@ -180,7 +118,7 @@ function getEqualBuckets(
     equalBuckets.push({
       from,
       to,
-      color: getColor(numberBuckets, i, scale, colorOptions),
+      color: colorHelpers.getBucketColor(numberBuckets, i, scale, colorOptions),
     });
   }
   return equalBuckets;
@@ -200,96 +138,95 @@ function getCustomBuckets(numericalOptions, scale, colorOptions) {
       customBuckets.push({
         from: index === 0 ? minBorder : customBorderValues[index - 1],
         to: borderValue,
-        color: getColor(numberBuckets, index, scale, colorOptions),
+        color: colorHelpers.getBucketColor(
+          numberBuckets,
+          index,
+          scale,
+          colorOptions
+        ),
       });
     });
     return customBuckets;
   }
 }
 
-function getLegend(item) {
-  const data = item.data;
-  const choroplethType = item.options.choroplethType;
-  const legendData = {
-    type: choroplethType,
-  };
-
-  const choroplethTypeOptions = `${choroplethType}Options`;
-
-  if (item.options[choroplethTypeOptions].colorOverwrites === undefined) {
-    item.options[choroplethTypeOptions].colorOverwrites = [];
+function getCustomColorMap(colorOverwrites) {
+  if (colorOverwrites === undefined) {
+    colorOverwrites = [];
   }
 
-  const customColorMap = new Map(
-    item.options[
-      choroplethTypeOptions
-    ].colorOverwrites.map(({ position, color, textColor }) => [
+  return new Map(
+    colorOverwrites.map(({ position, color, textColor }) => [
       position - 1,
       { color, textColor },
     ])
   );
+}
 
-  if (choroplethType === "categorical") {
-    const categoryLabels = dataHelpers.getUniqueCategories(data);
-    let categories = [];
-    categoryLabels.forEach((label, index) => {
-      const customColor = customColorMap.get(index);
-      categories.push({
-        label,
-        color: {
-          colorClass: `s-viz-color-${mappings.digitWords[index]}-5`,
-          customColor:
-            customColor !== undefined && customColor.color !== undefined
-              ? customColor.color
-              : "",
-          customTextColor:
-            customColor !== undefined && customColor.textColor !== undefined
-              ? customColor.textColor
-              : "",
-        },
-      });
-    });
-    legendData.categories = categories;
-  } else if (choroplethType === "numerical") {
-    const values = dataHelpers.getValues(data);
-    const filteredValues = values.filter(
-      (value) => value !== null && value !== 0
-    );
-    const minValue = Math.min(...filteredValues);
-    const maxValue = Math.max(...filteredValues);
+function getNumericalLegend(data, options) {
+  const legendData = {
+    type: "numerical",
+  };
 
-    const numericalOptions = item.options.numericalOptions;
+  const customColorMap = getCustomColorMap(options.colorOverwrites);
+  const values = dataHelpers.getValues(data);
+  const filteredValues = values.filter(
+    (value) => value !== null && value !== 0
+  );
 
-    legendData.hasNullValues =
-      values.find((value) => value === null) !== undefined;
-    legendData.hasZeroValues =
-      values.find((value) => value === 0) !== undefined;
-    legendData.maxValue = maxValue;
-    legendData.minValue = minValue;
+  legendData.hasNullValues =
+    values.find((value) => value === null) !== undefined;
+  legendData.hasZeroValues = values.find((value) => value === 0) !== undefined;
+  legendData.maxValue = Math.max(...filteredValues);
+  legendData.minValue = Math.min(...filteredValues);
 
-    legendData.buckets = getBucketsForLegend(
-      filteredValues,
-      numericalOptions,
-      minValue,
-      maxValue,
-      customColorMap
-    );
+  legendData.buckets = getBucketsForLegend(
+    filteredValues,
+    options,
+    legendData.minValue,
+    legendData.maxValue,
+    customColorMap
+  );
 
-    if (numericalOptions.bucketType === "custom") {
-      const minBucketValue = legendData.buckets[0].from;
-      if (minValue > minBucketValue) {
-        legendData.minValue = minBucketValue;
-      }
-      const maxBucketValue =
-        legendData.buckets[legendData.buckets.length - 1].to;
-      if (maxValue < maxBucketValue) {
-        legendData.maxValue = maxBucketValue;
-      }
+  // for all bucket types we calculate the resulting buckets out of given data set
+  // custom bucketing need a special handling of min/max values because the first and the last
+  // custom bucket value could be lower/higher than min/max
+  if (options.bucketType === "custom") {
+    // if first custom bucket value is less than min value in given data set
+    // we set min value of legend to starting value of custom buckets
+    const minBucketValue = legendData.buckets[0].from;
+    if (minValue > minBucketValue) {
+      legendData.minValue = minBucketValue;
+    }
+    // if last custom bucket value is higher that max value in given data set
+    // we set max value of legend to last custom bucket value
+    const maxBucketValue = legendData.buckets[legendData.buckets.length - 1].to;
+    if (maxValue < maxBucketValue) {
+      legendData.maxValue = maxBucketValue;
     }
   }
   return legendData;
 }
 
+function getCategoricalLegend(data, options) {
+  const legendData = {
+    type: "categorical",
+  };
+
+  const customColorMap = getCustomColorMap(options.colorOverwrites);
+  const categoryLabels = dataHelpers.getUniqueCategories(data);
+  let categories = [];
+  categoryLabels.forEach((label, index) => {
+    categories.push({
+      label,
+      color: colorHelpers.getCategoryColor(index, customColorMap),
+    });
+  });
+  legendData.categories = categories;
+  return legendData;
+}
+
 module.exports = {
-  getLegend,
+  getNumericalLegend,
+  getCategoricalLegend,
 };

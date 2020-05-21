@@ -47,7 +47,8 @@
     if (value === null || value === undefined) {
       return {
         colorClass: "s-color-gray-4",
-        customColor: ""
+        customColor: "",
+        textColor: "s-color-gray-6"
       };
     }
     if (legendData.type === "numerical") {
@@ -65,12 +66,13 @@
         return {
           colorClass: bucket.color.colorClass,
           customColor: bucket.color.customColor,
-          customTextColor: bucket.color.customTextColor
+          textColor: bucket.color.textColor
         };
       } else {
         return {
           colorClass: "s-color-gray-4",
-          customColor: ""
+          customColor: "",
+          textColor: "s-color-gray-6"
         };
       }
     } else {
@@ -80,7 +82,7 @@
         return {
           colorClass: category.color.colorClass,
           customColor: category.color.customColor,
-          customTextColor: category.color.customTextColor
+          textColor: category.color.textColor
         };
       } else {
         return {
