@@ -2,6 +2,8 @@ const Boom = require("@hapi/boom");
 const fs = require("fs");
 const path = require("path");
 const legendHelpers = require("../../helpers/legend.js");
+const getExactPixelWidth = require("../../helpers/toolRuntimeConfig.js")
+  .getExactPixelWidth;
 
 const stylesDir = path.join(__dirname, "/../../styles/");
 const styleHashMap = require(path.join(stylesDir, "hashMap.json"));
@@ -71,6 +73,13 @@ module.exports = {
         item.data,
         item.options.categoricalOptions
       );
+    }
+
+    const exactPixelWidth = getExactPixelWidth(toolRuntimeConfig);
+    if (typeof exactPixelWidth === "number") {
+      console.log("with toolRuntimeConfig");
+    } else {
+      console.log("without toolRuntimeConfig");
     }
 
     console.log(context.legendData);
