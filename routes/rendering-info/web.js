@@ -75,14 +75,6 @@ module.exports = {
       );
     }
 
-    const exactPixelWidth = getExactPixelWidth(toolRuntimeConfig);
-    if (typeof exactPixelWidth === "number") {
-      console.log("with toolRuntimeConfig");
-    } else {
-      console.log("without toolRuntimeConfig");
-    }
-
-    console.log(context.legendData);
     const renderingInfo = {
       polyfills: ["Promise"],
       stylesheets: [
