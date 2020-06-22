@@ -7,6 +7,8 @@ const stylesDir = path.join(__dirname, "/../../styles/");
 const styleHashMap = require(path.join(stylesDir, "hashMap.json"));
 const viewsDir = `${__dirname}/../../views/`;
 
+const baseMapHelpers = require("../../helpers/baseMap.js");
+
 // setup svelte
 require("svelte/register");
 const staticTemplate = require(viewsDir + "Choropleth.svelte").default;
@@ -60,6 +62,25 @@ module.exports = {
     const context = {
       item,
     };
+
+    // TODO: check overall wording (entityCollection, baseMapEntity ...)
+    // TODO: check if we should use the type (in json file) somewhere
+    // => maybe different handling for geometry/topoJSON
+    const baseMapEntityCollectionResponse = await request.server.inject({
+      method: "GET",
+      url: `/entityCollection/${item.baseMap}`,
+    });
+
+    if (baseMapEntityCollectionResponse.statusCode === 200) {
+      const baseMapEntityCollection = baseMapEntityCollectionResponse.result;
+      if (item.baseMap === "hexagonCHCantons") {
+        context.entityMapping = baseMapHelpers.getGeometryMapping(
+          baseMapEntityCollection,
+          item.baseMap,
+          item.entityType
+        );
+      }
+    }
 
     if (item.options.choroplethType === "numerical") {
       context.legendData = legendHelpers.getNumericalLegend(

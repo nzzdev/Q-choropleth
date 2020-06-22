@@ -21,9 +21,31 @@
       "title": "Basiskarte",
       "type": "string",
       "default": "hexagonCHCantons",
-      "enum": ["hexagonCHCantons"],
+      "enum": ["hexagonCHCantons", "testMap"],
       "Q:options": {
-        "enum_titles": ["Hexagon Schweiz (Kantone)"]
+        "enum_titles": ["Hexagon Schweiz (Kantone)", "Testkarte"],
+        "notificationChecks": [
+          {
+            "type": "ToolEndpoint",
+            "config": {
+              "endpoint": "notification/hasValues",
+              "fields": ["data"]
+            },
+            "priority": {
+              "type": "medium",
+              "value": 2
+            }
+          }
+        ]
+      }
+    },
+    "entityType": {
+      "title": "Geo-Code",
+      "type": "string",
+      "default": "name",
+      "enum": ["bfsNumber", "name"],
+      "Q:options": {
+        "enum_titles": ["BfS Nummer", "Name"]
       }
     },
     "data": {
@@ -32,6 +54,11 @@
       "Q:type": "table",
       "Q:options": {
         "allowTranspose": false,
+        "predefinedContent": {
+          "readOnly": true,
+          "type": "column",
+          "index": 0
+        },
         "notificationChecks": [
           {
             "type": "EmptyData",
@@ -61,7 +88,7 @@
           "type": "ToolEndpoint",
           "config": {
             "endpoint": "dynamic-schema/baseMap",
-            "fields": ["baseMap"]
+            "fields": ["baseMap", "entityType"]
           }
         }
       },

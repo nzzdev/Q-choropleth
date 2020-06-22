@@ -2,43 +2,13 @@
   import Hexagon from "./Hexagon.svelte";
   export let data;
   export let legendData;
+  export let entityMapping;
 
   const dataMapping = new Map(data);
 
-  // just temporary - mapping will be done separately
-  const cantons = [
-    { id: 1, code: "ZH", name: "Zürich", article: "in" },
-    { id: 2, code: "BE", name: "Bern", article: "in" },
-    { id: 3, code: "LU", name: "Luzern", article: "in" },
-    { id: 4, code: "UR", name: "Uri", article: "in" },
-    { id: 5, code: "SZ", name: "Schwyz", article: "in" },
-    { id: 6, code: "OW", name: "Obwalden", article: "in" },
-    { id: 7, code: "NW", name: "Nidwalden", article: "in" },
-    { id: 8, code: "GL", name: "Glarus", article: "in" },
-    { id: 9, code: "ZG", name: "Zug", article: "in" },
-    { id: 10, code: "FR", name: "Freiburg", article: "in" },
-    { id: 11, code: "SO", name: "Solothurn", article: "in" },
-    { id: 12, code: "BS", name: "Basel-Stadt", article: "in" },
-    { id: 13, code: "BL", name: "Basel-Landschaft", article: "in" },
-    { id: 14, code: "SH", name: "Schaffhausen", article: "in" },
-    { id: 15, code: "AR", name: "Appenzell Ausserrhoden", article: "in" },
-    { id: 16, code: "AI", name: "Appenzell Innerrhoden", article: "in" },
-    { id: 17, code: "SG", name: "St. Gallen", article: "in" },
-    { id: 18, code: "GR", name: "Graubünden", article: "in" },
-    { id: 19, code: "AG", name: "Aargau", article: "im" },
-    { id: 20, code: "TG", name: "Thurgau", article: "im" },
-    { id: 21, code: "TI", name: "Tessin", article: "im" },
-    { id: 22, code: "VD", name: "Waadt", article: "in der" },
-    { id: 23, code: "VS", name: "Wallis", article: "im" },
-    { id: 24, code: "NE", name: "Neuenburg", article: "in" },
-    { id: 25, code: "GE", name: "Genf", article: "in" },
-    { id: 26, code: "JU", name: "Jura", article: "im" }
-  ];
-
-  const codeToName = new Map(cantons.map(({ code, name }) => [code, name]));
-
+  // TODO: does it still make sense with entityMapping AND dataMapping?
   function getValue(cantonCode, data) {
-    const cantonName = codeToName.get(cantonCode);
+    const cantonName = entityMapping.get(cantonCode);
     return dataMapping.get(cantonName);
   }
 

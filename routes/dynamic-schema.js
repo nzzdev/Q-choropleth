@@ -121,7 +121,7 @@ module.exports = {
     },
     cors: true,
   },
-  handler: function (request, h) {
+  handler: async function (request, h) {
     const item = request.payload.item;
     if (request.params.optionName === "scale") {
       return getScaleEnumWithTitles(item.options.numericalOptions);
@@ -149,12 +149,58 @@ module.exports = {
       }
     }
 
+    // TODO: remove test baseMap
+
     if (request.params.optionName === "baseMap") {
-      return {
-        "Q:options": {
-          defaultArrayValues: [["Aargau"], ["Zürich"]],
-        },
-      };
+      const baseMapEntityCollectionResponse = await request.server.inject({
+        method: "GET",
+        url: `/entityCollection/${item.baseMap}`,
+      });
+
+      if (baseMapEntityCollectionResponse.statusCode === 200) {
+        const baseMapEntityCollection = baseMapEntityCollectionResponse.result;
+
+        if (item.baseMap === "hexagonCHCantons") {
+          const cantons = baseMapEntityCollection.cantons;
+          let predefinedValues;
+          if (item.entityType === "name") {
+            predefinedValues = cantons
+              .sort((cantonA, cantonB) =>
+                cantonA.name.localeCompare(cantonB.name)
+              )
+              .map((canton) => {
+                return [canton.name];
+              });
+          } else if (item.entityType === "bfsNumber") {
+            predefinedValues = cantons
+              .sort((cantonA, cantonB) => cantonA.id - cantonB.id)
+              .map((canton) => {
+                return [canton.id];
+              });
+          }
+          return {
+            "Q:options": {
+              predefinedContent: { values: predefinedValues },
+            },
+          };
+        } else {
+          if (item.entityType === "name") {
+            return {
+              "Q:options": {
+                predefinedContent: {
+                  values: [["Aeugst am Albis"], ["Affoltern am Albis"]],
+                },
+              },
+            };
+          } else {
+            return {
+              "Q:options": {
+                predefinedContent: { values: [[1], [2]] },
+              },
+            };
+          }
+        }
+      }
     }
 
     return Boom.badRequest();

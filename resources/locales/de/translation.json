@@ -1,1 +1,8 @@
-{}
+{
+  "notifications": {
+    "hasValues": {
+      "title": "Basiskarte und Geo-Code",
+      "body": "Du hast bereits Werte in der Datentabelle erfasst, damit kann die Basiskarte und der Geo-Code nicht mehr geändert werden."
+    }
+  }
+}
