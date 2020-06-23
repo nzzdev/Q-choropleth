@@ -2,6 +2,7 @@ const Boom = require("@hapi/boom");
 const fs = require("fs");
 const path = require("path");
 const legendHelpers = require("../../helpers/legend.js");
+const dataHelpers = require("../../helpers/data.js");
 
 const stylesDir = path.join(__dirname, "/../../styles/");
 const styleHashMap = require(path.join(stylesDir, "hashMap.json"));
@@ -63,9 +64,6 @@ module.exports = {
       item,
     };
 
-    // TODO: check overall wording (entityCollection, baseMapEntity ...)
-    // TODO: check if we should use the type (in json file) somewhere
-    // => maybe different handling for geometry/topoJSON
     const baseMapEntityCollectionResponse = await request.server.inject({
       method: "GET",
       url: `/entityCollection/${item.baseMap}`,
@@ -73,7 +71,7 @@ module.exports = {
 
     if (baseMapEntityCollectionResponse.statusCode === 200) {
       const baseMapEntityCollection = baseMapEntityCollectionResponse.result;
-      if (item.baseMap === "hexagonCHCantons") {
+      if (baseMapEntityCollection.type === "Geometry") {
         context.entityMapping = baseMapHelpers.getGeometryMapping(
           baseMapEntityCollection,
           item.baseMap,
@@ -83,10 +81,14 @@ module.exports = {
     }
 
     if (item.options.choroplethType === "numerical") {
-      context.legendData = legendHelpers.getNumericalLegend(
-        item.data,
-        item.options.numericalOptions
-      );
+      try {
+        context.legendData = legendHelpers.getNumericalLegend(
+          item.data,
+          item.options.numericalOptions
+        );
+      } catch (e) {
+        throw new Boom.Boom(e);
+      }
     } else {
       context.legendData = legendHelpers.getCategoricalLegend(
         item.data,

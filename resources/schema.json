@@ -153,7 +153,20 @@
           "default": "numerical",
           "Q:options": {
             "selectType": "radio",
-            "enum_titles": ["numerisch", "kategorisch"]
+            "enum_titles": ["numerisch", "kategorisch"],
+            "notificationChecks": [
+              {
+                "type": "ToolEndpoint",
+                "config": {
+                  "endpoint": "notification/unsupportedValuesForType",
+                  "fields": ["data", "options.choroplethType"]
+                },
+                "priority": {
+                  "type": "medium",
+                  "value": 2
+                }
+              }
+            ]
           }
         },
         "numericalOptions": {
@@ -216,6 +229,19 @@
                       "fields": ["options.numericalOptions.bucketType"]
                     }
                   }
+                ],
+                "notificationChecks": [
+                  {
+                    "type": "ToolEndpoint",
+                    "config": {
+                      "endpoint": "notification/customBuckets",
+                      "fields": ["data", "options"]
+                    },
+                    "priority": {
+                      "type": "medium",
+                      "value": 2
+                    }
+                  }
                 ]
               }
             },
@@ -231,6 +257,19 @@
                     "config": {
                       "endpoint": "option-availability/numberBuckets",
                       "fields": ["options.numericalOptions.bucketType"]
+                    }
+                  }
+                ],
+                "notificationChecks": [
+                  {
+                    "type": "ToolEndpoint",
+                    "config": {
+                      "endpoint": "notification/numberBucketsTooLarge",
+                      "fields": ["data", "options"]
+                    },
+                    "priority": {
+                      "type": "medium",
+                      "value": 2
                     }
                   }
                 ]

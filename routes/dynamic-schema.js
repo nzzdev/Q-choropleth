@@ -2,6 +2,7 @@ const Boom = require("@hapi/boom");
 const Joi = require("../helpers/custom-joi.js");
 const dataHelpers = require("../helpers/data.js");
 
+// TODO: error handling: custom buckets, but no borders defined yet
 function getScaleEnumWithTitles(numericalOptions) {
   let enumValues = ["sequential"];
   let enumTitles = ["Sequentiell"];
@@ -149,8 +150,6 @@ module.exports = {
       }
     }
 
-    // TODO: remove test baseMap
-
     if (request.params.optionName === "baseMap") {
       const baseMapEntityCollectionResponse = await request.server.inject({
         method: "GET",
@@ -183,22 +182,6 @@ module.exports = {
               predefinedContent: { values: predefinedValues },
             },
           };
-        } else {
-          if (item.entityType === "name") {
-            return {
-              "Q:options": {
-                predefinedContent: {
-                  values: [["Aeugst am Albis"], ["Affoltern am Albis"]],
-                },
-              },
-            };
-          } else {
-            return {
-              "Q:options": {
-                predefinedContent: { values: [[1], [2]] },
-              },
-            };
-          }
         }
       }
     }
