@@ -75,6 +75,12 @@ module.exports = {
       );
     }
 
+    const exactPixelWidth = getExactPixelWidth(request.payload.toolRuntimeConfig);	
+    if (typeof exactPixelWidth === "number") {	
+      context.contentWidth = exactPixelWidth;
+    } // add script here to meassure 
+
+
     const renderingInfo = {
       polyfills: ["Promise"],
       stylesheets: [

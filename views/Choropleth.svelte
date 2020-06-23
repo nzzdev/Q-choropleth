@@ -4,7 +4,7 @@
 
   export let item;
   export let legendData;
-  export let containerWidth = 800;
+  export let contentWidth;
 </script>
 
 <div class="s-q-item q-choropleth">
@@ -14,6 +14,6 @@
   {/if}
   <ChoroplethLegend {legendData} />
   {#if item.baseMap === 'hexagonCHCantons'}
-    <HexagonCHCantonsMap data={item.data} {legendData} {containerWidth} />
+    <HexagonCHCantonsMap data={item.data} {legendData} {contentWidth}/>
   {/if}
 </div>

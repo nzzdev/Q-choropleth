@@ -1,33 +1,18 @@
 <script>
-  export let type;
   export let cantonCode;
   export let value;
   export let color;
   export let width;
   export let xIndex;
-  export let yIndex;
 
   function getXCoordinate(width, xIndex) {
     return width * xIndex;
   }
-
-  function getYCoordinate(width, yIndex) {
-    let height = width * 1.1;
-    return (yIndex > 0) ? height * yIndex - ((height/2 - 30) * yIndex) : height * yIndex  ;
-  }
 </script>
 
-{#if type === 'empty'}
-  <svg width={width} height={width*1.1} y={getYCoordinate(width, yIndex)} x={getXCoordinate(width, xIndex)} class="swiss-hexagon-map-row-element" />
-{:else if type === 'empty-half'}
+{#if value === null || value === undefined}
   <svg
-    y={getYCoordinate(width, yIndex)} x={getXCoordinate(width, xIndex)}
-    class="swiss-hexagon-map-row-element swiss-hexagon-map-row-element--half
-    s-viz-color-one-5" />
-{:else if value === null || value === undefined}
-  <svg
-    width={width} height={width*1.1}
-    y={getYCoordinate(width, yIndex)} x={getXCoordinate(width, xIndex)}
+    width="{width}px" height="{width * 1.2}px" x="{getXCoordinate(width, xIndex)}px"
     class="swiss-hexagon-map-row-element {color.colorClass}"
     style="color: {color.customColor}">
     <svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 70 80">
@@ -62,8 +47,7 @@
   </svg>
 {:else}
   <svg
-    width={width} height={width*1.1}
-    y={getYCoordinate(width, yIndex)} x={getXCoordinate(width, xIndex)}
+    width="{width}px" height="{width * 1.2}px" x="{getXCoordinate(width, xIndex)}px"
     class="swiss-hexagon-map-row-element {color.colorClass}"
     style="color: {color.customColor}">
     <svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 70 80">
