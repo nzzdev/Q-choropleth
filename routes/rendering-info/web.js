@@ -104,6 +104,8 @@ module.exports = {
     );
     if (typeof exactPixelWidth === "number") {
       context.contentWidth = exactPixelWidth;
+    } else {
+      context.contentWidth = 600;
     } // add script here to meassure
 
     const renderingInfo = {

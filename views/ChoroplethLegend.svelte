@@ -1,7 +1,7 @@
 <script>
   export let legendData;
 
-  const legendBarHeight = 8;
+  const legendBarHeight = 12;
   const singleValueBucketWidth = 8;
 
   function hasSingleValueBucket(legendData) {
@@ -47,7 +47,7 @@
               width={singleValueBucketWidth}
               height={legendBarHeight}
               x="0"
-              y="24" />
+              y="20" />
           </g>
         </svg>
       {/if}
@@ -61,9 +61,29 @@
                 width="{getAspectWidth(legendData, bucket)}%"
                 height={legendBarHeight}
                 x="{getAspectXValue(legendData, bucket)}%"
-                y="24" />
+                y="20" />
             {/if}
           {/each}
+        </g>
+        <g>          
+          <rect
+                class="s-color-gray-9"
+                style="fill: currentColor;"
+                width="0.5px"
+                height={legendBarHeight * 2}
+                x="0%"
+                y="12" />
+          <text class="s-font-note" x="0%" y="0">1</text>
+        </g>
+        <g>
+          <rect
+                class="s-color-gray-9"
+                style="fill: currentColor;"
+                width="0.5px"
+                height={legendBarHeight * 2}
+                x="99.92%"
+                y="12" />
+          <text class="s-font-note" x="99%" y="0">100</text>
         </g>
       </svg>
     </div>
