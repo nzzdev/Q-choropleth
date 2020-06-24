@@ -1,7 +1,7 @@
 <script>
   export let legendData;
 
-  const legendBarHeight = 12;
+  const legendBarHeight = 16;
   const singleValueBucketWidth = 8;
 
   function hasSingleValueBucket(legendData) {
@@ -51,6 +51,10 @@
           </g>
         </svg>
       {/if}
+      <div style="width: 100%; display: flex; justify-content: space-between;">
+        <span style="margin-left: 2px" class="s-font-note">{legendData.minValue}</span>
+        <span style="margin-right: 2px" class="s-font-note">{legendData.maxValue}</span>
+      </div>
       <svg class="q-choropleth-legend">
         <g>
           {#each legendData.buckets as bucket, index}
@@ -61,7 +65,7 @@
                 width="{getAspectWidth(legendData, bucket)}%"
                 height={legendBarHeight}
                 x="{getAspectXValue(legendData, bucket)}%"
-                y="20" />
+                y={legendBarHeight} />
             {/if}
           {/each}
         </g>
@@ -70,20 +74,18 @@
                 class="s-color-gray-9"
                 style="fill: currentColor;"
                 width="0.5px"
-                height={legendBarHeight * 2}
+                height={legendBarHeight * 1.8}
                 x="0%"
-                y="12" />
-          <text class="s-font-note" x="0%" y="0">1</text>
+                y="3" />
         </g>
         <g>
           <rect
                 class="s-color-gray-9"
                 style="fill: currentColor;"
                 width="0.5px"
-                height={legendBarHeight * 2}
+                height={legendBarHeight * 1.8}
                 x="99.92%"
-                y="12" />
-          <text class="s-font-note" x="99%" y="0">100</text>
+                y="3" />
         </g>
       </svg>
     </div>

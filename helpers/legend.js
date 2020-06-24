@@ -171,6 +171,19 @@ function getNumericalLegend(data, options) {
     ...metaData,
   };
 
+  const customColorMap = getCustomColorMap(options.colorOverwrites);
+  const values = dataHelpers.getValues(data);
+  const filteredValues = values.filter(
+    (value) => value !== null && value !== 0
+  );
+
+  legendData.hasNullValues =
+    values.find((value) => value === null) !== undefined;
+  legendData.hasZeroValues = values.find((value) => value === 0) !== undefined;
+  legendData.maxValue = Math.max(...filteredValues);
+  legendData.minValue = Math.min(...filteredValues);
+  legendData.averageValue = (legendData.minValue + legendData.maxValue) / 2;
+
   legendData.buckets = getBucketsForLegend(
     nonNullValues,
     options,
