@@ -2,7 +2,7 @@
   "notifications": {
     "hasValues": {
       "title": "Basiskarte und Geo-Code",
-      "body": "Du hast bereits Werte in der Datentabelle erfasst, damit kann die Basiskarte und der Geo-Code nicht mehr geändert werden."
+      "body": "Du hast bereits Werte in der Datentabelle erfasst. Änderungen an der Basiskarte oder am Geo-Code sind nur möglich, wenn die Werte gelöscht sind."
     },
     "customBuckets": {
       "title": "Manuelle Grenzen",

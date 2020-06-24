@@ -179,7 +179,6 @@ function getNumericalLegend(data, options) {
     customColorMap
   );
 
-  // TODO: error handling if custom buckets but no borders defined yet
   // for all bucket types we calculate the resulting buckets out of given data set
   // custom bucketing need a special handling of min/max values because the first and the last
   // custom bucket value could be lower/higher than min/max

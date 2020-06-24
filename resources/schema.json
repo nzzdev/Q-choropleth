@@ -55,9 +55,15 @@
       "Q:options": {
         "allowTranspose": false,
         "predefinedContent": {
-          "readOnly": true,
           "type": "column",
           "index": 0
+        },
+        "dynamicSchema": {
+          "type": "ToolEndpoint",
+          "config": {
+            "endpoint": "dynamic-schema/baseMap",
+            "fields": ["baseMap", "entityType"]
+          }
         },
         "notificationChecks": [
           {
@@ -83,14 +89,7 @@
               "value": 2
             }
           }
-        ],
-        "dynamicSchema": {
-          "type": "ToolEndpoint",
-          "config": {
-            "endpoint": "dynamic-schema/baseMap",
-            "fields": ["baseMap", "entityType"]
-          }
-        }
+        ]
       },
       "items": {
         "type": "array",

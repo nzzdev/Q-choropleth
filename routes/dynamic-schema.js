@@ -2,7 +2,6 @@ const Boom = require("@hapi/boom");
 const Joi = require("../helpers/custom-joi.js");
 const dataHelpers = require("../helpers/data.js");
 
-// TODO: error handling: custom buckets, but no borders defined yet
 function getScaleEnumWithTitles(numericalOptions) {
   let enumValues = ["sequential"];
   let enumTitles = ["Sequentiell"];
