@@ -1,11 +1,11 @@
 .q-choropleth-legend-container {
   display: flex;
   flex-direction: column;
+  width: 45%;
 }
 
 .q-choropleth-legend {
   height: 32px;
-  width: 100%;
 
   &-bucket {
     fill: currentColor;
