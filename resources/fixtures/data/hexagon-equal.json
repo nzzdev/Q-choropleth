@@ -2,6 +2,7 @@
   "title": "FIXTURE: Hexagon Schweiz (Kantone) - Gleichgrosse Buckets",
   "subtitle": "Subtitle",
   "baseMap": "hexagonCHCantons",
+  "entityType": "name",
   "data": [
     ["Aargau", "6.91111"],
     ["Appenzell Ausserrhoden", "8.51111"],

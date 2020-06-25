@@ -2,6 +2,7 @@
   "title": "FIXTURE: Hexagon Schweiz (Kantone) - kmeans single value bucket",
   "subtitle": "Subtitle",
   "baseMap": "hexagonCHCantons",
+  "entityType": "name",
   "data": [
     ["Aargau", "8.2"],
     ["Appenzell Ausserrhoden", "6.0"],
