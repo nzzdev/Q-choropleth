@@ -66,7 +66,7 @@
                   width="{getAspectWidth(legendData, bucket)}%"
                   height={legendBarHeight}
                   x="{getAspectXValue(legendData, bucket)}%"
-                  y={legendBarHeight} />
+                  y={legendBarHeight-4} />
               {/if}
             {/each}
           </g>
@@ -77,7 +77,7 @@
                   width="0.5px"
                   height={legendBarHeight * 1.8}
                   x="0%"
-                  y="3" />
+                  y="-1" />
           </g>
           <g>
             <rect
@@ -85,10 +85,23 @@
                   style="fill: currentColor;"
                   width="0.5px"
                   height={legendBarHeight * 1.8}
-                  x="99.92%"
-                  y="3" />
+                  x="99.8%"
+                  y="-1" />
+          </g>
+          <g>
+             <circle cx="50%" cy="20" r="4" stroke="white" stroke-width="1" fill="none"  />
+              <rect
+                class="s-color-gray-9"
+                style="fill: currentColor;"
+                width="0.5px"
+                height={legendBarHeight * 1.8}
+                x="50%"
+                y="20" />
           </g>
         </svg>
+        <div class="s-font-note" style="margin-left: 50%;">
+          Durchschnitt: {legendData.averageValue}
+        </div>
       </div>
     </div>
   {/if}
