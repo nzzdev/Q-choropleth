@@ -160,6 +160,12 @@ function getCustomColorMap(colorOverwrites) {
   );
 }
 
+function getMedian(arr) {
+  const mid = Math.floor(arr.length / 2),
+    nums = [...arr].sort((a, b) => a - b);
+  return arr.length % 2 !== 0 ? nums[mid] : (nums[mid - 1] + nums[mid]) / 2;
+};
+
 function getNumericalLegend(data, options) {
   const customColorMap = getCustomColorMap(options.colorOverwrites);
   const values = dataHelpers.getNumericalValues(data);
@@ -182,7 +188,12 @@ function getNumericalLegend(data, options) {
   legendData.hasZeroValues = values.find((value) => value === 0) !== undefined;
   legendData.maxValue = Math.max(...filteredValues);
   legendData.minValue = Math.min(...filteredValues);
+<<<<<<< HEAD
   legendData.averageValue = (legendData.minValue + legendData.maxValue) / 2;
+=======
+  legendData.averageValue = Math.round(filteredValues.reduce((a,b) => a + b, 0) / filteredValues.length, 2)
+  legendData.medianValue = getMedian(filteredValues);
+>>>>>>> dynamic legend label
 
   legendData.buckets = getBucketsForLegend(
     nonNullValues,

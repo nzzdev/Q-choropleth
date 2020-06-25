@@ -1,5 +1,6 @@
 <script>
   export let legendData;
+  let labelLegend = getLabelLegend(legendData)
 
   const legendBarHeight = 16;
   const singleValueBucketWidth = 8;
@@ -18,6 +19,24 @@
     const range = legendData.maxValue - legendData.minValue;
     return ((bucket.from - legendData.minValue) * 100) / range;
   }
+
+  function getLabelLegend(legendData) {
+    if (legendData.labelLegend === "median") {
+      return {
+        label:  "Median",
+        value: legendData.medianValue,
+        position: legendData.medianValue*100/legendData.maxValue, 
+      }
+    } else if (legendData.labelLegend === "noLabel") {
+      return {label: "noLabel"};
+    }
+    return {
+        label:  "Durchschnitt",
+        value: legendData.averageValue,
+        position: 50, 
+      }
+  }
+
 </script>
 
 {#if legendData !== undefined}
@@ -88,19 +107,27 @@
                   x="99.8%"
                   y="-1" />
           </g>
-          <g>
-             <circle cx="50%" cy="20" r="4" stroke="white" stroke-width="1" fill="none"  />
-              <rect
-                class="s-color-gray-9"
-                style="fill: currentColor;"
-                width="0.5px"
-                height={legendBarHeight * 1.8}
-                x="50%"
-                y="20" />
-          </g>
+          {#if labelLegend.label !== "noLabel"} 
+            <g>
+              <circle cx="{labelLegend.position}%" cy="20" r="4" stroke="white" stroke-width="1" fill="none"  />
+                <rect
+                  class="s-color-gray-9"
+                  style="fill: currentColor;"
+                  width="0.5px"
+                  height={legendBarHeight * 1.8}
+                  x="{labelLegend.position}%"
+                  y="20" />
+            </g>
+          {/if}   
         </svg>
-        <div class="s-font-note" style="margin-left: 50%;">
-          Durchschnitt: {legendData.averageValue}
+        {#if labelLegend.label !== "noLabel"} 
+          <div class="s-font-note" style="margin-left: {labelLegend.position}%;">
+            {labelLegend.label}: {labelLegend.value}
+          </div>
+        {/if} 
+        <div>
+          <div>Keine Daten</div>
+          <div>0</div>
         </div>
       </div>
     </div>
