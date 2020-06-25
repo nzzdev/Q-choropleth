@@ -2,6 +2,8 @@ const Boom = require("@hapi/boom");
 const fs = require("fs");
 const path = require("path");
 const legendHelpers = require("../../helpers/legend.js");
+const getExactPixelWidth = require("../../helpers/toolRuntimeConfig.js")
+  .getExactPixelWidth;
 
 const stylesDir = path.join(__dirname, "/../../styles/");
 const styleHashMap = require(path.join(stylesDir, "hashMap.json"));
@@ -73,7 +75,12 @@ module.exports = {
       );
     }
 
-    console.log(context.legendData);
+    const exactPixelWidth = getExactPixelWidth(request.payload.toolRuntimeConfig);	
+    if (typeof exactPixelWidth === "number") {	
+      context.contentWidth = exactPixelWidth;
+    } // add script here to meassure 
+
+
     const renderingInfo = {
       polyfills: ["Promise"],
       stylesheets: [

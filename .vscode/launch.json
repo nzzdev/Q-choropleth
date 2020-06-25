@@ -9,7 +9,7 @@
       "request": "launch",
       "name": "Launch Program",
       "program": "${workspaceFolder}/index.js",
-      "runtimeVersion": "12.14.1"
+      "runtimeVersion": "12.6.0"
     }
   ]
 }
