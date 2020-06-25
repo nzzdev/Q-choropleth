@@ -1,18 +1,18 @@
 <script>
-  export let type;
   export let cantonCode;
   export let value;
   export let color;
+  export let width;
+  export let xIndex;
+
+  function getXCoordinate(width, xIndex) {
+    return width * xIndex;
+  }
 </script>
 
-{#if type === 'empty'}
-  <div class="swiss-hexagon-map-row-element" />
-{:else if type === 'empty-half'}
-  <div
-    class="swiss-hexagon-map-row-element swiss-hexagon-map-row-element--half
-    s-viz-color-one-5" />
-{:else if value === null || value === undefined}
-  <div
+{#if value === null || value === undefined}
+  <svg
+    width="{width}px" height="{width * 1.2}px" x="{getXCoordinate(width, xIndex)}px"
     class="swiss-hexagon-map-row-element {color.colorClass}"
     style="color: {color.customColor}">
     <svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 70 80">
@@ -44,9 +44,10 @@
         </text>
       </g>
     </svg>
-  </div>
+  </svg>
 {:else}
-  <div
+  <svg
+    width="{width}px" height="{width * 1.2}px" x="{getXCoordinate(width, xIndex)}px"
     class="swiss-hexagon-map-row-element {color.colorClass}"
     style="color: {color.customColor}">
     <svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 70 80">
@@ -78,5 +79,5 @@
         </text>
       </g>
     </svg>
-  </div>
+  </svg>
 {/if}

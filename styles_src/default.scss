@@ -1,5 +1,3 @@
-$hexagonWidth: 100% / 7.5;
-
 .q-choropleth-legend-container {
   display: flex;
 }
@@ -16,29 +14,4 @@ $hexagonWidth: 100% / 7.5;
 .q-choropleth-single-value-bucket {
   width: 8px;
   height: 32px;
-}
-
-.swiss-hexagon-map-row {
-  display: flex;
-
-  &-element {
-    width: $hexagonWidth;
-
-    > svg {
-      width: 100%;
-      height: 100%;
-    }
-
-    &--half {
-      width: $hexagonWidth / 2;
-    }
-
-    &--no-data {
-      color: #fff;
-    }
-  }
-
-  &--pushed {
-    margin-top: -5%;
-  }
 }
