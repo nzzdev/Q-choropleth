@@ -1,47 +1,20 @@
 <script>
   import Hexagon from "./Hexagon.svelte";
   export let data;
-  export let legendData;  
+  export let legendData;
   export let contentWidth;
+  export let entityMapping;
 
   const dataMapping = new Map(data);
   const baseSpacing = 18;
 
-  // just temporary - mapping will be done separately
-  const cantons = [
-    { id: 1, code: "ZH", name: "Zürich", article: "in" },
-    { id: 2, code: "BE", name: "Bern", article: "in" },
-    { id: 3, code: "LU", name: "Luzern", article: "in" },
-    { id: 4, code: "UR", name: "Uri", article: "in" },
-    { id: 5, code: "SZ", name: "Schwyz", article: "in" },
-    { id: 6, code: "OW", name: "Obwalden", article: "in" },
-    { id: 7, code: "NW", name: "Nidwalden", article: "in" },
-    { id: 8, code: "GL", name: "Glarus", article: "in" },
-    { id: 9, code: "ZG", name: "Zug", article: "in" },
-    { id: 10, code: "FR", name: "Freiburg", article: "in" },
-    { id: 11, code: "SO", name: "Solothurn", article: "in" },
-    { id: 12, code: "BS", name: "Basel-Stadt", article: "in" },
-    { id: 13, code: "BL", name: "Basel-Landschaft", article: "in" },
-    { id: 14, code: "SH", name: "Schaffhausen", article: "in" },
-    { id: 15, code: "AR", name: "Appenzell Ausserrhoden", article: "in" },
-    { id: 16, code: "AI", name: "Appenzell Innerrhoden", article: "in" },
-    { id: 17, code: "SG", name: "St. Gallen", article: "in" },
-    { id: 18, code: "GR", name: "Graubünden", article: "in" },
-    { id: 19, code: "AG", name: "Aargau", article: "im" },
-    { id: 20, code: "TG", name: "Thurgau", article: "im" },
-    { id: 21, code: "TI", name: "Tessin", article: "im" },
-    { id: 22, code: "VD", name: "Waadt", article: "in der" },
-    { id: 23, code: "VS", name: "Wallis", article: "im" },
-    { id: 24, code: "NE", name: "Neuenburg", article: "in" },
-    { id: 25, code: "GE", name: "Genf", article: "in" },
-    { id: 26, code: "JU", name: "Jura", article: "im" }
-  ];
-
-  const codeToName = new Map(cantons.map(({ code, name }) => [code, name]));
-
-  function getValue(cantonCode, data) {
-    const cantonName = codeToName.get(cantonCode);
-    return dataMapping.get(cantonName);
+  function getValue(cantonCode) {
+    try {
+      const entity = entityMapping.get(cantonCode);
+      return dataMapping.get(entity);
+    } catch (e) {
+      return null;
+    }
   }
 
   function getColor(cantonCode, legendData) {
@@ -99,143 +72,169 @@
 <div class="swiss-hexagon-map">
   <svg style="width: {contentWidth}px; height: {contentWidth * 0.6}px;">
     <svg class="swiss-hexagon-map-row" y="0%">
-      <Hexagon width={contentWidth/8}
-        xIndex=2
+      <Hexagon
+        width={contentWidth / 8}
+        xIndex="2"
         cantonCode="BS"
-        value={getValue('BS', data)}
+        value={getValue('BS')}
         color={getColor('BS', legendData)} />
-      <Hexagon width={contentWidth/8}
-        xIndex=3
+      <Hexagon
+        width={contentWidth / 8}
+        xIndex="3"
         cantonCode="BL"
-        value={getValue('BL', data)}
+        value={getValue('BL')}
         color={getColor('BL', legendData)} />
-      <Hexagon width={contentWidth/8}
-        xIndex=4
+      <Hexagon
+        width={contentWidth / 8}
+        xIndex="4"
         cantonCode="SH"
-        value={getValue('SH', data)}
+        value={getValue('SH')}
         color={getColor('SH', legendData)} />
-      <Hexagon width={contentWidth/8}
-        xIndex=5
+      <Hexagon
+        width={contentWidth / 8}
+        xIndex="5"
         cantonCode="TG"
-        value={getValue('TG', data)}
+        value={getValue('TG')}
         color={getColor('TG', legendData)} />
     </svg>
     <svg class="swiss-hexagon-map-row" y="{baseSpacing * 1}%">
-      <Hexagon width={contentWidth/8}
-        xIndex=1.5
+      <Hexagon
+        width={contentWidth / 8}
+        xIndex="1.5"
         cantonCode="JU"
-        value={getValue('JU', data)}
+        value={getValue('JU')}
         color={getColor('JU', legendData)} />
-      <Hexagon width={contentWidth/8}
-        xIndex=2.5
+      <Hexagon
+        width={contentWidth / 8}
+        xIndex="2.5"
         cantonCode="SO"
-        value={getValue('SO', data)}
+        value={getValue('SO')}
         color={getColor('SO', legendData)} />
-      <Hexagon width={contentWidth/8}
-        xIndex=3.5
+      <Hexagon
+        width={contentWidth / 8}
+        xIndex="3.5"
         cantonCode="AG"
-        value={getValue('AG', data)}
+        value={getValue('AG')}
         color={getColor('AG', legendData)} />
-      <Hexagon width={contentWidth/8}
-        xIndex=4.5
+      <Hexagon
+        width={contentWidth / 8}
+        xIndex="4.5"
         cantonCode="ZH"
-        value={getValue('ZH', data)}
+        value={getValue('ZH')}
         color={getColor('ZH', legendData)} />
-      <Hexagon width={contentWidth/8}
-        xIndex=5.5
+      <Hexagon
+        width={contentWidth / 8}
+        xIndex="5.5"
         cantonCode="AR"
-        value={getValue('AR', data)}
+        value={getValue('AR')}
         color={getColor('AR', legendData)} />
-      <Hexagon width={contentWidth/8}
-        xIndex=6.5
+      <Hexagon
+        width={contentWidth / 8}
+        xIndex="6.5"
         cantonCode="AI"
-        value={getValue('AI', data)}
+        value={getValue('AI')}
         color={getColor('AI', legendData)} />
     </svg>
     <svg class="swiss-hexagon-map-row" y="{baseSpacing * 2}%">
-      <Hexagon width={contentWidth/8}
-        xIndex=1
+      <Hexagon
+        width={contentWidth / 8}
+        xIndex="1"
         cantonCode="NE"
-        value={getValue('NE', data)}
+        value={getValue('NE')}
         color={getColor('NE', legendData)} />
-      <Hexagon width={contentWidth/8}
-        xIndex=2
+      <Hexagon
+        width={contentWidth / 8}
+        xIndex="2"
         cantonCode="BE"
-        value={getValue('BE', data)}
+        value={getValue('BE')}
         color={getColor('BE', legendData)} />
-      <Hexagon width={contentWidth/8}
-        xIndex=3
+      <Hexagon
+        width={contentWidth / 8}
+        xIndex="3"
         cantonCode="LU"
-        value={getValue('LU', data)}
+        value={getValue('LU')}
         color={getColor('LU', legendData)} />
-      <Hexagon width={contentWidth/8}
-        xIndex=4
+      <Hexagon
+        width={contentWidth / 8}
+        xIndex="4"
         cantonCode="ZG"
-        value={getValue('ZG', data)}
+        value={getValue('ZG')}
         color={getColor('ZG', legendData)} />
-      <Hexagon width={contentWidth/8}
-        xIndex=5
+      <Hexagon
+        width={contentWidth / 8}
+        xIndex="5"
         cantonCode="SZ"
-        value={getValue('SZ', data)}
+        value={getValue('SZ')}
         color={getColor('SZ', legendData)} />
-      <Hexagon width={contentWidth/8}
-        xIndex=6
+      <Hexagon
+        width={contentWidth / 8}
+        xIndex="6"
         cantonCode="SG"
-        value={getValue('SG', data)}
+        value={getValue('SG')}
         color={getColor('SG', legendData)} />
     </svg>
     <svg class="swiss-hexagon-map-row" y="{baseSpacing * 3}%">
-      <Hexagon width={contentWidth/8}
-        xIndex=0.5
+      <Hexagon
+        width={contentWidth / 8}
+        xIndex="0.5"
         cantonCode="VD"
-        value={getValue('VD', data)}
+        value={getValue('VD')}
         color={getColor('VD', legendData)} />
-      <Hexagon width={contentWidth/8}
-        xIndex=1.5
+      <Hexagon
+        width={contentWidth / 8}
+        xIndex="1.5"
         cantonCode="FR"
-        value={getValue('FR', data)}
+        value={getValue('FR')}
         color={getColor('FR', legendData)} />
-      <Hexagon width={contentWidth/8}
-        xIndex=2.5
+      <Hexagon
+        width={contentWidth / 8}
+        xIndex="2.5"
         cantonCode="OW"
-        value={getValue('OW', data)}
+        value={getValue('OW')}
         color={getColor('OW', legendData)} />
-      <Hexagon width={contentWidth/8}
-        xIndex=3.5
+      <Hexagon
+        width={contentWidth / 8}
+        xIndex="3.5"
         cantonCode="NW"
-        value={getValue('NW', data)}
+        value={getValue('NW')}
         color={getColor('NW', legendData)} />
-      <Hexagon width={contentWidth/8}
-        xIndex=4.5
+      <Hexagon
+        width={contentWidth / 8}
+        xIndex="4.5"
         cantonCode="UR"
-        value={getValue('UR', data)}
+        value={getValue('UR')}
         color={getColor('UR', legendData)} />
-      <Hexagon width={contentWidth/8}
-        xIndex=5.5
+      <Hexagon
+        width={contentWidth / 8}
+        xIndex="5.5"
         cantonCode="GL"
-        value={getValue('GL', data)}
+        value={getValue('GL')}
         color={getColor('GL', legendData)} />
-      <Hexagon width={contentWidth/8}
-        xIndex=6.5
+      <Hexagon
+        width={contentWidth / 8}
+        xIndex="6.5"
         cantonCode="GR"
-        value={getValue('GR', data)}
+        value={getValue('GR')}
         color={getColor('GR', legendData)} />
     </svg>
     <svg class="swiss-hexagon-map-row" y="{baseSpacing * 4}%">
-      <Hexagon width={contentWidth/8}
-        xIndex=0
+      <Hexagon
+        width={contentWidth / 8}
+        xIndex="0"
         cantonCode="GE"
-        value={getValue('GE', data)}
+        value={getValue('GE')}
         color={getColor('GE', legendData)} />
-      <Hexagon width={contentWidth/8}
-        xIndex=2
+      <Hexagon
+        width={contentWidth / 8}
+        xIndex="2"
         cantonCode="VS"
-        value={getValue('VS', data)}
+        value={getValue('VS')}
         color={getColor('VS', legendData)} />
-      <Hexagon width={contentWidth/8}
-        xIndex=5
+      <Hexagon
+        width={contentWidth / 8}
+        xIndex="5"
         cantonCode="TI"
-        value={getValue('TI', data)}
+        value={getValue('TI')}
         color={getColor('TI', legendData)} />
     </svg>
   </svg>

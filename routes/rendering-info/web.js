@@ -9,6 +9,8 @@ const stylesDir = path.join(__dirname, "/../../styles/");
 const styleHashMap = require(path.join(stylesDir, "hashMap.json"));
 const viewsDir = `${__dirname}/../../views/`;
 
+const baseMapHelpers = require("../../helpers/baseMap.js");
+
 // setup svelte
 require("svelte/register");
 const staticTemplate = require(viewsDir + "Choropleth.svelte").default;
@@ -63,11 +65,31 @@ module.exports = {
       item,
     };
 
+    const baseMapEntityCollectionResponse = await request.server.inject({
+      method: "GET",
+      url: `/entityCollection/${item.baseMap}`,
+    });
+
+    if (baseMapEntityCollectionResponse.statusCode === 200) {
+      const baseMapEntityCollection = baseMapEntityCollectionResponse.result;
+      if (baseMapEntityCollection.type === "Geometry") {
+        context.entityMapping = baseMapHelpers.getGeometryMapping(
+          baseMapEntityCollection,
+          item.baseMap,
+          item.entityType
+        );
+      }
+    }
+
     if (item.options.choroplethType === "numerical") {
-      context.legendData = legendHelpers.getNumericalLegend(
-        item.data,
-        item.options.numericalOptions
-      );
+      try {
+        context.legendData = legendHelpers.getNumericalLegend(
+          item.data,
+          item.options.numericalOptions
+        );
+      } catch (e) {
+        throw new Boom.Boom(e);
+      }
     } else {
       context.legendData = legendHelpers.getCategoricalLegend(
         item.data,
@@ -75,11 +97,12 @@ module.exports = {
       );
     }
 
-    const exactPixelWidth = getExactPixelWidth(request.payload.toolRuntimeConfig);	
-    if (typeof exactPixelWidth === "number") {	
+    const exactPixelWidth = getExactPixelWidth(
+      request.payload.toolRuntimeConfig
+    );
+    if (typeof exactPixelWidth === "number") {
       context.contentWidth = exactPixelWidth;
-    } // add script here to meassure 
-
+    } // add script here to meassure
 
     const renderingInfo = {
       polyfills: ["Promise"],

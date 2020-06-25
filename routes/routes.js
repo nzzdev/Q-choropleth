@@ -6,5 +6,10 @@ module.exports = [
   require("./fixtures/data.js"),
   require("./locales.js"),
   require("./option-availability.js"),
-  require("./dynamic-schema.js")
+  require("./notifications/hasValues.js"),
+  require("./notifications/customBuckets.js"),
+  require("./notifications/numberBucketsTooLarge.js"),
+  require("./notifications/unsupportedValuesForType.js"),
+  require("./dynamic-schema.js"),
+  require("./entityCollection.js"),
 ].concat(require("./schema.js"));

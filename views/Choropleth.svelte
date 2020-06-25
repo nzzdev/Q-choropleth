@@ -4,6 +4,7 @@
 
   export let item;
   export let legendData;
+  export let entityMapping;
   export let contentWidth;
 </script>
 
@@ -14,6 +15,10 @@
   {/if}
   <ChoroplethLegend {legendData} />
   {#if item.baseMap === 'hexagonCHCantons'}
-    <HexagonCHCantonsMap data={item.data} {legendData} {contentWidth}/>
+    <HexagonCHCantonsMap
+      data={item.data}
+      {legendData}
+      {entityMapping}
+      {contentWidth} />
   {/if}
 </div>

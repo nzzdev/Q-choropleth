@@ -4,3 +4,4 @@ node_modules
 .env.json
 scripts
 styles
+node_modules

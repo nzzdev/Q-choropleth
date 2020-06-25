@@ -12,13 +12,29 @@ function getCustomBucketBorders(customBuckets) {
   });
 }
 
-function getValues(data) {
+function getMetaData(values, numberValues) {
+  return {
+    hasNullValues: values.find((value) => value === null) !== undefined,
+    hasZeroValues: numberValues.find((value) => value === 0) !== undefined,
+    maxValue: Math.max(...numberValues),
+    minValue: Math.min(...numberValues),
+  };
+}
+
+function getNumericalValues(data) {
   return data.map((row) => {
     if (row[1] !== null) {
+      if (row[1].match(/^[+-]?\d+(\.\d+)?$/) === null) {
+        throw new Error("value is not a valid floating point number");
+      }
       return parseFloat(row[1]);
     }
     return row[1];
   });
+}
+
+function getNonNullNumericalValues(values) {
+  return values.filter((value) => value !== null);
 }
 
 function getNumberBuckets(numericalOptions) {
@@ -39,6 +55,8 @@ function getNumberBuckets(numericalOptions) {
 module.exports = {
   getUniqueCategories,
   getCustomBucketBorders,
-  getValues,
+  getNumericalValues,
+  getNonNullNumericalValues,
+  getMetaData,
   getNumberBuckets,
 };

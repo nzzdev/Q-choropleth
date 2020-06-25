@@ -1,1 +1,53 @@
-{}
+{
+  "notifications": {
+    "hasValues": {
+      "title": "Base map and geo code",
+      "body": "You've already entered values in data table. If you want to change the base map or geo code you have to remove these values first."
+    },
+    "customBuckets": {
+      "title": "Custom borders",
+      "body": "Some values in data table are not covered by custom borders."
+    },
+    "numberBucketsTooLarge": {
+      "title": "Number buckets",
+      "body": "Number of buckets exceeds the number of different values in data table."
+    },
+    "unsupportedValuesForType": {
+      "title": "Unsupported values",
+      "body": "All values have to be numerical in order to create a numerical choropleth map."
+    },
+    "Titel": "Title",
+    "Der Titel bringt die Kernaussage der Grafik auf den Punkt&#46;": "The title brings the core message of the graphic to the point.",
+    "Untertitel": "Subtitle",
+    "Der Untertitel benennt präzise, was in der Grafik zu sehen ist, inklusive Einheiten&#46;": "The subtitle names precisely what can be seen in the graphic, including units.",
+    "Daten": "Data",
+    "Quelle(n)": "Sources",
+    "Quelle": "Source",
+    "Link": "Link",
+    "Direktlink zur Quelle, http://...": "Direct link to the source, http://...",
+    "Url": "Url",
+    "Anmerkungen": "Annotation",
+    "Basiskarte": "Base map",
+    "Geo-Code": "Geo code",
+    "Choroplethentyp": "Choropleth type",
+    "Optionen numerische Karte": "Numerical options",
+    "Beschriftung der Werte auf der Karte entfernen": "Remove direct labelling",
+    "Mittelwert-Markierung": "Average",
+    "ausblenden": "Hide",
+    "zeigt Durchschnitt an": "Show arithmetic means",
+    "zeigt Median an": "Show median",
+    "Bucketing Methode": "Bucketing type",
+    "Quantile": "Quantiles",
+    "gleich grosse Intervalle": "Equal intervals",
+    "manuelle Grenzen": "Custom",
+    "Manuelle Bucketgrenzen": "Custom borders",
+    "Anzahl Buckets": "Number buckets",
+    "Skala": "Scale",
+    "Farbschema": "Color scheme",
+    "Bucketfarbe": "Bucket color",
+    "Farbe": "Color",
+    "Textfarbe": "Text color",
+    "Optionen kategorische Karte": "Categorical options",
+    "Werte direkt auf der Karte beschriften": "Direct labelling"
+  }
+}
