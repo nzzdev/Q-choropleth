@@ -203,6 +203,9 @@ function getNumericalLegend(data, options) {
     customColorMap
   );
 
+  // check if the first bucket contains only one value  
+  legendData.hasSingleBucketValue = legendData.buckets[0].from === legendData.buckets[0].to;
+
   // for all bucket types we calculate the resulting buckets out of given data set
   // custom bucketing need a special handling of min/max values because the first and the last
   // custom bucket value could be lower/higher than min/max

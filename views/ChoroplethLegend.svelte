@@ -1,6 +1,6 @@
 <script>
   export let legendData;
-  let labelLegend = getLabelLegend(legendData)
+  let labelLegend = getLabelLegend(legendData);
 
   const legendBarHeight = 16;
   const singleValueBucketWidth = 8;
@@ -23,20 +23,19 @@
   function getLabelLegend(legendData) {
     if (legendData.labelLegend === "median") {
       return {
-        label:  "Median",
+        label: "Median",
         value: legendData.medianValue,
-        position: legendData.medianValue*100/legendData.maxValue, 
-      }
+        position: (legendData.medianValue * 100) / legendData.maxValue
+      };
     } else if (legendData.labelLegend === "noLabel") {
-      return {label: "noLabel"};
+      return { label: "noLabel" };
     }
     return {
-        label:  "Durchschnitt",
-        value: legendData.averageValue,
-        position: 50, 
-      }
+      label: "Durchschnitt",
+      value: legendData.averageValue,
+      position: 50
+    };
   }
-
 </script>
 
 {#if legendData !== undefined}
@@ -71,9 +70,14 @@
             </g>
           </svg>
         {/if}
-        <div style="width: 100%; display: flex; justify-content: space-between;">
-          <span style="margin-left: 2px" class="s-font-note">{legendData.minValue}</span>
-          <span style="margin-right: 2px" class="s-font-note">{legendData.maxValue}</span>
+        <div
+          style="width: 100%; display: flex; justify-content: space-between;">
+          <span style="margin-left: 2px" class="s-font-note">
+            {legendData.minValue}
+          </span>
+          <span style="margin-right: 2px" class="s-font-note">
+            {legendData.maxValue}
+          </span>
         </div>
         <svg class="q-choropleth-legend">
           <g>
@@ -85,49 +89,89 @@
                   width="{getAspectWidth(legendData, bucket)}%"
                   height={legendBarHeight}
                   x="{getAspectXValue(legendData, bucket)}%"
-                  y={legendBarHeight-4} />
+                  y={legendBarHeight - 4} />
               {/if}
             {/each}
           </g>
-          <g>          
+          <g>
             <rect
-                  class="s-color-gray-9"
-                  style="fill: currentColor;"
-                  width="0.5px"
-                  height={legendBarHeight * 1.8}
-                  x="0%"
-                  y="-1" />
+              class="s-color-gray-9"
+              style="fill: currentColor;"
+              width="0.5px"
+              height={legendBarHeight * 1.8}
+              x="0%"
+              y="-1" />
           </g>
           <g>
             <rect
-                  class="s-color-gray-9"
-                  style="fill: currentColor;"
-                  width="0.5px"
-                  height={legendBarHeight * 1.8}
-                  x="99.8%"
-                  y="-1" />
+              class="s-color-gray-9"
+              style="fill: currentColor;"
+              width="0.5px"
+              height={legendBarHeight * 1.8}
+              x="99.8%"
+              y="-1" />
           </g>
-          {#if labelLegend.label !== "noLabel"} 
+          {#if labelLegend.label !== 'noLabel'}
             <g>
-              <circle cx="{labelLegend.position}%" cy="20" r="4" stroke="white" stroke-width="1" fill="none"  />
-                <rect
-                  class="s-color-gray-9"
-                  style="fill: currentColor;"
-                  width="0.5px"
-                  height={legendBarHeight * 1.8}
-                  x="{labelLegend.position}%"
-                  y="20" />
+              <circle
+                cx="{labelLegend.position}%"
+                cy="20"
+                r="4"
+                stroke="white"
+                stroke-width="1"
+                fill="none" />
+              <rect
+                class="s-color-gray-9"
+                style="fill: currentColor;"
+                width="0.5px"
+                height={legendBarHeight * 1.8}
+                x="{labelLegend.position}%"
+                y="20" />
             </g>
-          {/if}   
+          {/if}
         </svg>
-        {#if labelLegend.label !== "noLabel"} 
-          <div class="s-font-note" style="margin-left: {labelLegend.position}%;">
+        {#if labelLegend.label !== 'noLabel'}
+          <div
+            class="s-font-note"
+            style="margin-left: {labelLegend.position}%;">
             {labelLegend.label}: {labelLegend.value}
           </div>
-        {/if} 
-        <div>
-          <div>Keine Daten</div>
-          <div>0</div>
+        {/if}
+        <div style="display: flex; flex-direction: row;">
+          <!-- {#if legendData.hasNullValues} -->
+          <div
+            style="display: flex; flex-direction: row; margin-right: 16px;"
+            class="s-font-note">
+            <svg
+              width="11"
+              height="11"
+              style="margin-top:4px; margin-right: 8px;">
+              <rect
+                width="11"
+                height="11"
+                class="s-color-gray-2"
+                fill="currentColor" />
+            </svg>
+            {legendData.buckets[0].from}
+          </div>
+          <!-- {/if} -->
+          <!-- {#if legendData.hasSingleValueBucket} -->
+          <div style="display: flex; flex-direction: row;" class="s-font-note">
+            <svg
+              width="11"
+              height="11"
+              style="margin-top:4px; margin-right: 8px;">
+              <rect
+                width="11"
+                height="11"
+                class="s-color-gray-2"
+                fill="white"
+                stroke="currentColor" />
+
+            </svg>
+            Keine Daten
+          </div>
+          <!-- {/if} -->
         </div>
       </div>
     </div>
