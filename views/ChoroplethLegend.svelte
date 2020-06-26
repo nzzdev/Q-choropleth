@@ -57,21 +57,7 @@
     <!-- display bucket legend -->
     <div style="display: flex; justify-content: center;">
       <div class="q-choropleth-legend-container">
-        {#if hasSingleValueBucket(legendData)}
-          <svg class="q-choropleth-single-value-bucket">
-            <g>
-              <rect
-                class="q-choropleth-legend-bucket {legendData.buckets[0].color.colorClass}"
-                style="fill: {legendData.buckets[0].color.customColor}"
-                width={singleValueBucketWidth}
-                height={legendBarHeight}
-                x="0"
-                y="20" />
-            </g>
-          </svg>
-        {/if}
-        <div
-          style="width: 100%; display: flex; justify-content: space-between;">
+        <div class="q-choropleth-legend-value-container">
           <span style="margin-left: 2px" class="s-font-note">
             {legendData.minValue}
           </span>
@@ -138,40 +124,41 @@
           </div>
         {/if}
         <div style="display: flex; flex-direction: row;">
-          <!-- {#if legendData.hasNullValues} -->
-          <div
-            style="display: flex; flex-direction: row; margin-right: 16px;"
-            class="s-font-note">
-            <svg
-              width="11"
-              height="11"
-              style="margin-top:4px; margin-right: 8px;">
-              <rect
+          {#if hasSingleValueBucket(legendData)}
+            <div
+              style="display: flex; flex-direction: row; margin-right: 16px;"
+              class="s-font-note">
+              <svg
                 width="11"
                 height="11"
-                class="s-color-gray-2"
-                fill="currentColor" />
-            </svg>
-            {legendData.buckets[0].from}
-          </div>
-          <!-- {/if} -->
-          <!-- {#if legendData.hasSingleValueBucket} -->
-          <div style="display: flex; flex-direction: row;" class="s-font-note">
-            <svg
-              width="11"
-              height="11"
-              style="margin-top:4px; margin-right: 8px;">
-              <rect
+                style="margin-top:4px; margin-right: 8px;">
+                <rect
+                  width="11"
+                  height="11"
+                  class="s-color-gray-2"
+                  fill="currentColor" />
+              </svg>
+              {legendData.buckets[0].from}
+            </div>
+          {/if}
+          {#if legendData.hasNullValues}
+            <div
+              style="display: flex; flex-direction: row;"
+              class="s-font-note">
+              <svg
                 width="11"
                 height="11"
-                class="s-color-gray-2"
-                fill="white"
-                stroke="currentColor" />
-
-            </svg>
-            Keine Daten
-          </div>
-          <!-- {/if} -->
+                style="margin-top:4px; margin-right: 8px;">
+                <rect
+                  width="11"
+                  height="11"
+                  class="s-color-gray-2"
+                  fill="white"
+                  stroke="currentColor" />
+              </svg>
+              Keine Daten
+            </div>
+          {/if}
         </div>
       </div>
     </div>

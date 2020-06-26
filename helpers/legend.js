@@ -164,7 +164,7 @@ function getMedian(arr) {
   const mid = Math.floor(arr.length / 2),
     nums = [...arr].sort((a, b) => a - b);
   return arr.length % 2 !== 0 ? nums[mid] : (nums[mid - 1] + nums[mid]) / 2;
-};
+}
 
 function getNumericalLegend(data, options) {
   const customColorMap = getCustomColorMap(options.colorOverwrites);
@@ -177,23 +177,16 @@ function getNumericalLegend(data, options) {
     ...metaData,
   };
 
-  const customColorMap = getCustomColorMap(options.colorOverwrites);
-  const values = dataHelpers.getValues(data);
-  const filteredValues = values.filter(
-    (value) => value !== null && value !== 0
-  );
-
   legendData.hasNullValues =
     values.find((value) => value === null) !== undefined;
   legendData.hasZeroValues = values.find((value) => value === 0) !== undefined;
-  legendData.maxValue = Math.max(...filteredValues);
-  legendData.minValue = Math.min(...filteredValues);
-<<<<<<< HEAD
-  legendData.averageValue = (legendData.minValue + legendData.maxValue) / 2;
-=======
-  legendData.averageValue = Math.round(filteredValues.reduce((a,b) => a + b, 0) / filteredValues.length, 2)
-  legendData.medianValue = getMedian(filteredValues);
->>>>>>> dynamic legend label
+  legendData.maxValue = Math.max(...nonNullValues);
+  legendData.minValue = Math.min(...nonNullValues);
+  legendData.averageValue = Math.round(
+    nonNullValues.reduce((a, b) => a + b, 0) / nonNullValues.length,
+    2
+  );
+  legendData.medianValue = getMedian(nonNullValues);
 
   legendData.buckets = getBucketsForLegend(
     nonNullValues,
@@ -202,9 +195,6 @@ function getNumericalLegend(data, options) {
     legendData.maxValue,
     customColorMap
   );
-
-  // check if the first bucket contains only one value  
-  legendData.hasSingleBucketValue = legendData.buckets[0].from === legendData.buckets[0].to;
 
   // for all bucket types we calculate the resulting buckets out of given data set
   // custom bucketing need a special handling of min/max values because the first and the last

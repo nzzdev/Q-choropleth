@@ -4,6 +4,12 @@
   width: 55%;
 }
 
+.q-choropleth-legend-value-container {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
 .q-choropleth-legend {
   height: 32px;
 
