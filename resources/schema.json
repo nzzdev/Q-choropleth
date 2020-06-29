@@ -183,7 +183,7 @@
             ]
           },
           "properties": {
-            "valuesOnMap": {
+            "noValuesOnMap": {
               "title": "Beschriftung der Werte auf der Karte entfernen",
               "type": "boolean",
               "default": false
