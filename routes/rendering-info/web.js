@@ -87,6 +87,7 @@ module.exports = {
           item.data,
           item.options.numericalOptions
         );
+        context.valuesOnMap = !item.options.numericalOptions.noValuesOnMap;
       } catch (e) {
         throw new Boom.Boom(e);
       }
@@ -95,6 +96,7 @@ module.exports = {
         item.data,
         item.options.categoricalOptions
       );
+      context.valuesOnMap = item.options.categoricalOptions.valuesOnMap;
     }
 
     const exactPixelWidth = getExactPixelWidth(

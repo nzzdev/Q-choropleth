@@ -1,7 +1,9 @@
 function getUniqueCategories(data) {
-  const values = data.map((row) => {
-    return row[1];
-  });
+  const values = data
+    .map((row) => {
+      return row[1];
+    })
+    .filter((value) => value !== null);
   return [...new Set(values)];
 }
 
