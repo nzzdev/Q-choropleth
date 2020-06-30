@@ -65,57 +65,42 @@
             {legendData.maxValue}
           </span>
         </div>
-        <svg class="q-choropleth-legend">
-          <g>
-            {#each legendData.buckets as bucket, index}
-              {#if !(hasSingleValueBucket(legendData) && index === 0)}
-                <rect
-                  class="q-choropleth-legend-bucket {bucket.color.colorClass}"
-                  style="fill: {bucket.color.customColor}"
-                  width="{getAspectWidth(legendData, bucket)}%"
-                  height={legendBarHeight}
-                  x="{getAspectXValue(legendData, bucket)}%"
-                  y={legendBarHeight - 4} />
-              {/if}
-            {/each}
-          </g>
-          <g>
-            <rect
-              class="s-color-gray-9"
-              style="fill: currentColor;"
-              width="0.5px"
-              height={legendBarHeight * 1.8}
-              x="0%"
-              y="-1" />
-          </g>
-          <g>
-            <rect
-              class="s-color-gray-9"
-              style="fill: currentColor;"
-              width="0.5px"
-              height={legendBarHeight * 1.8}
-              x="99.8%"
-              y="-1" />
-          </g>
-          {#if labelLegend.label !== 'noLabel'}
+        <div class="q-choropleth-legend-border-container">
+          <svg class="q-choropleth-legend">
             <g>
-              <circle
-                cx="{labelLegend.position}%"
-                cy="20"
-                r="4"
-                stroke="white"
-                stroke-width="1"
-                fill="none" />
-              <rect
-                class="s-color-gray-9"
-                style="fill: currentColor;"
-                width="0.5px"
-                height={legendBarHeight * 1.8}
-                x="{labelLegend.position}%"
-                y="20" />
+              {#each legendData.buckets as bucket, index}
+                {#if !(hasSingleValueBucket(legendData) && index === 0)}
+                  <rect
+                    class="q-choropleth-legend-bucket {bucket.color.colorClass}"
+                    style="fill: {bucket.color.customColor}"
+                    width="{getAspectWidth(legendData, bucket)}%"
+                    height={legendBarHeight}
+                    x="{getAspectXValue(legendData, bucket)}%"
+                    y={legendBarHeight - 4} />
+                {/if}
+              {/each}
             </g>
-          {/if}
-        </svg>
+            {#if labelLegend.label !== 'noLabel'}
+              <g>
+                <circle
+                  cx="{labelLegend.position}%"
+                  cy="20"
+                  r="4"
+                  stroke="white"
+                  stroke-width="1"
+                  fill="none" />
+                <rect
+                  class="s-color-gray-9"
+                  style="fill: currentColor;"
+                  width="0.5px"
+                  height={legendBarHeight * 1.8}
+                  x="{labelLegend.position}%"
+                  y="20" />
+              </g>
+            {/if}
+          </svg>
+          <div class="q-choropleth-legend-borders s-color-gray-6" />
+        </div>
         {#if labelLegend.label !== 'noLabel'}
           <div
             class="s-font-note-s"
@@ -123,6 +108,7 @@
             {labelLegend.label}: {labelLegend.value}
           </div>
         {/if}
+        {#if hasSingleValueBucket(legendData) || legendData.hasNullValues}
         <div style="display: flex; flex-direction: row;">
           {#if hasSingleValueBucket(legendData)}
             <div
@@ -160,6 +146,7 @@
             </div>
           {/if}
         </div>
+      {/if}
       </div>
     </div>
   {/if}

@@ -12,13 +12,31 @@
 
 .q-choropleth-legend {
   height: 32px;
+  width: 100%;
 
   &-bucket {
     fill: currentColor;
   }
 }
 
+.q-choropleth-legend-border-container {
+  position: relative;
+}
+
+.q-choropleth-legend-borders {
+  position: absolute; 
+  height: 28px; 
+  top:0px; 
+  border-right: 0.5px solid currentColor; 
+  border-left: 0.5px solid currentColor; 
+  width: 100%; 
+} 
+
 .q-choropleth-single-value-bucket {
   width: 8px;
   height: 32px;
+}
+
+.swiss-hexagon-map {
+  margin-top: 8px;
 }
