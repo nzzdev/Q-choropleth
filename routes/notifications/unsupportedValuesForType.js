@@ -17,6 +17,7 @@ module.exports = {
   handler: function (request, h) {
     try {
       const item = request.payload.item;
+      item.data.shift();
 
       if (item.options.choroplethType === "numerical") {
         try {

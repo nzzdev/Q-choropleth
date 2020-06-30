@@ -60,6 +60,7 @@ module.exports = {
   },
   handler: async function (request, h) {
     const item = request.payload.item;
+    item.data.shift();
 
     const context = {
       item,
