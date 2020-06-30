@@ -7,6 +7,8 @@ const getExactPixelWidth = require("../../helpers/toolRuntimeConfig.js")
 
 const stylesDir = path.join(__dirname, "/../../styles/");
 const styleHashMap = require(path.join(stylesDir, "hashMap.json"));
+const scriptsDir = "../../scripts/";
+const scriptHashMap = require(`${scriptsDir}/hashMap.json`);
 const viewsDir = `${__dirname}/../../views/`;
 
 const baseMapHelpers = require("../../helpers/baseMap.js");
@@ -60,9 +62,12 @@ module.exports = {
   },
   handler: async function (request, h) {
     const item = request.payload.item;
+    const toolRuntimeConfig = request.payload.toolRuntimeConfig;
 
+    // add display options
     const context = {
       item,
+      id: `q_choropleth_${toolRuntimeConfig.requestId}`,
     };
 
     const baseMapEntityCollectionResponse = await request.server.inject({
@@ -105,10 +110,24 @@ module.exports = {
     } // add script here to meassure
 
     const renderingInfo = {
-      polyfills: ["Promise"],
+      polyfills: ["Promise", "Element.prototype.classList"],
       stylesheets: [
         {
           name: styleHashMap["default"],
+        },
+      ],
+      scripts: [
+        {
+          name: scriptHashMap["default"],
+        },
+        {
+          content: `
+          new window._q_choropleth.Choropleth(document.querySelector('#${
+            context.id
+          }_container'), ${JSON.stringify({
+            qId: context.item.id,
+            requestId: context.id,
+          })})`,
         },
       ],
       markup: staticTemplate.render(context).html,

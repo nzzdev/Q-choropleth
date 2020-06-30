@@ -15,3 +15,37 @@
   width: 8px;
   height: 32px;
 }
+
+.q-choropleth-methods {
+  &-link {
+    margin-top: 8px;
+
+    &-text {
+      cursor: pointer;
+      text-decoration: underline;
+
+      &:hover {
+        opacity: 0.6;
+      }
+
+      & svg {
+        height: 10px;
+
+        &.hidden {
+          display: none;
+        }
+      }
+    }
+  }
+
+  &-container {
+    margin-top: 8px;
+    box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.1);
+    border: 1px solid #f0f0f2;
+    padding: 8px;
+
+    &.hidden {
+      display: none;
+    }
+  }
+}
