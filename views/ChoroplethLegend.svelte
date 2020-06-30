@@ -58,10 +58,10 @@
     <div style="display: flex; justify-content: center;">
       <div class="q-choropleth-legend-container">
         <div class="q-choropleth-legend-value-container">
-          <span style="margin-left: 2px" class="s-font-note">
+          <span style="margin-left: 2px" class="s-font-note-s">
             {legendData.minValue}
           </span>
-          <span style="margin-right: 2px" class="s-font-note">
+          <span style="margin-right: 2px" class="s-font-note-s">
             {legendData.maxValue}
           </span>
         </div>
@@ -118,7 +118,7 @@
         </svg>
         {#if labelLegend.label !== 'noLabel'}
           <div
-            class="s-font-note"
+            class="s-font-note-s"
             style="margin-left: {labelLegend.position}%;">
             {labelLegend.label}: {labelLegend.value}
           </div>
@@ -127,7 +127,7 @@
           {#if hasSingleValueBucket(legendData)}
             <div
               style="display: flex; flex-direction: row; margin-right: 16px;"
-              class="s-font-note">
+              class="s-font-note-s">
               <svg
                 width="11"
                 height="11"
@@ -144,7 +144,7 @@
           {#if legendData.hasNullValues}
             <div
               style="display: flex; flex-direction: row;"
-              class="s-font-note">
+              class="s-font-note-s">
               <svg
                 width="11"
                 height="11"
