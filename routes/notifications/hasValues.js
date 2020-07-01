@@ -16,7 +16,13 @@ module.exports = {
   handler: function (request, h) {
     try {
       const item = request.payload.item;
-      if (item.data[0].length > 1) {
+      const data = item.data.splice(1); // exclude header row
+      const values = data
+        .filter((row) => row[1] !== null && row[1] !== undefined)
+        .map((row) => {
+          return row[1];
+        });
+      if (values.length > 0) {
         return {
           message: {
             title: "notifications.hasValues.title",

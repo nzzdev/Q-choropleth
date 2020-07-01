@@ -1,7 +1,5 @@
-node_modules
-.idea
+node_modules/
+.vscode/
 .DS_STORE
-.env.json
-scripts
-styles
-node_modules
+scripts/
+styles/

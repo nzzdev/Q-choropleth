@@ -1,7 +1,8 @@
 <script>
   export let legendData;
+  let labelLegend = getLabelLegend(legendData);
 
-  const legendBarHeight = 8;
+  const legendBarHeight = 16;
   const singleValueBucketWidth = 8;
 
   function hasSingleValueBucket(legendData) {
@@ -17,6 +18,23 @@
   function getAspectXValue(legendData, bucket) {
     const range = legendData.maxValue - legendData.minValue;
     return ((bucket.from - legendData.minValue) * 100) / range;
+  }
+
+  function getLabelLegend(legendData) {
+    if (legendData.labelLegend === "median") {
+      return {
+        label: "Median",
+        value: legendData.medianValue,
+        position: (legendData.medianValue * 100) / legendData.maxValue
+      };
+    } else if (legendData.labelLegend === "noLabel") {
+      return { label: "noLabel" };
+    }
+    return {
+      label: "Durchschnitt",
+      value: legendData.averageValue,
+      position: 50
+    };
   }
 </script>
 
@@ -37,35 +55,97 @@
     </div>
   {:else if legendData.type === 'numerical'}
     <!-- display bucket legend -->
-    <div class="q-choropleth-legend-container">
-      {#if hasSingleValueBucket(legendData)}
-        <svg class="q-choropleth-single-value-bucket">
-          <g>
-            <rect
-              class="q-choropleth-legend-bucket {legendData.buckets[0].color.colorClass}"
-              style="fill: {legendData.buckets[0].color.customColor}"
-              width={singleValueBucketWidth}
-              height={legendBarHeight}
-              x="0"
-              y="24" />
-          </g>
-        </svg>
-      {/if}
-      <svg class="q-choropleth-legend">
-        <g>
-          {#each legendData.buckets as bucket, index}
-            {#if !(hasSingleValueBucket(legendData) && index === 0)}
-              <rect
-                class="q-choropleth-legend-bucket {bucket.color.colorClass}"
-                style="fill: {bucket.color.customColor}"
-                width="{getAspectWidth(legendData, bucket)}%"
-                height={legendBarHeight}
-                x="{getAspectXValue(legendData, bucket)}%"
-                y="24" />
+    <div class="q-choropleth-legend--numerical">
+      <div class="q-choropleth-legend-container">
+        <div class="q-choropleth-legend-value-container">
+          <span class="q-choropleth-legend-value-container--minVal s-font-note-s">
+            {legendData.minValue}
+          </span>
+          <span class="q-choropleth-legend-value-container--maxVal s-font-note-s">
+            {legendData.maxValue}
+          </span>
+        </div>
+        <div class="q-choropleth-legend-border-container">
+          <svg class="q-choropleth-legend">
+            <g>
+              {#each legendData.buckets as bucket, index}
+                {#if !(hasSingleValueBucket(legendData) && index === 0)}
+                  <rect
+                    class="q-choropleth-legend-bucket {bucket.color.colorClass}"
+                    fill="{bucket.color.customColor}"
+                    width="{getAspectWidth(legendData, bucket)}%"
+                    height={legendBarHeight}
+                    x="{getAspectXValue(legendData, bucket)}%"
+                    y={legendBarHeight - 4} />
+                {/if}
+              {/each}
+            </g>
+            {#if labelLegend.label !== 'noLabel'}
+              <g>
+                <circle
+                  cx="{labelLegend.position}%"
+                  cy="20"
+                  r="4"
+                  stroke="white"
+                  stroke-width="1"
+                  fill="none" />
+                <rect
+                  class="s-color-gray-9"
+                  fill="currentColor"
+                  width="0.5px"
+                  height={legendBarHeight * 1.8}
+                  x="{labelLegend.position}%"
+                  y="20" />
+              </g>
             {/if}
-          {/each}
-        </g>
-      </svg>
+          </svg>
+          <div class="q-choropleth-legend-borders s-color-gray-6" />
+        </div>
+        {#if labelLegend.label !== 'noLabel'}
+          <div
+            class="s-font-note-s"
+            style="margin-left: {labelLegend.position}%;">
+            {labelLegend.label}: {labelLegend.value}
+          </div>
+        {/if}
+        {#if hasSingleValueBucket(legendData) || legendData.hasNullValues}
+        <div class="q-choropleth-legend-info-container">
+          {#if hasSingleValueBucket(legendData)}
+            <div
+              class="q-choropleth-legned-info--single-bucket s-font-note-s">
+              <svg
+                width="11"
+                height="11"
+                class="q-choropleth-legned-info-icon">
+                <rect
+                  width="11"
+                  height="11"
+                  class="s-color-gray-2"
+                  fill="currentColor" />
+              </svg>
+              {legendData.buckets[0].from}
+            </div>
+          {/if}
+          {#if legendData.hasNullValues}
+            <div
+              class="q-choropleth-legend-info--no-data s-font-note-s">
+              <svg
+                width="11"
+                height="11"
+                class="q-choropleth-legned-info-icon">
+                <rect
+                  width="11"
+                  height="11"
+                  class="s-color-gray-2"
+                  fill="white"
+                  stroke="currentColor" />
+              </svg>
+              Keine Daten
+            </div>
+          {/if}
+        </div>
+      {/if}
+      </div>
     </div>
   {/if}
 {/if}
