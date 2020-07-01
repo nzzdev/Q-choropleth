@@ -72,7 +72,7 @@
                 {#if !(hasSingleValueBucket(legendData) && index === 0)}
                   <rect
                     class="q-choropleth-legend-bucket {bucket.color.colorClass}"
-                    style="fill: {bucket.color.customColor}"
+                    fill="{bucket.color.customColor}"
                     width="{getAspectWidth(legendData, bucket)}%"
                     height={legendBarHeight}
                     x="{getAspectXValue(legendData, bucket)}%"
@@ -91,7 +91,7 @@
                   fill="none" />
                 <rect
                   class="s-color-gray-9"
-                  style="fill: currentColor;"
+                  fill="currentColor"
                   width="0.5px"
                   height={legendBarHeight * 1.8}
                   x="{labelLegend.position}%"
