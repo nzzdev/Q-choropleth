@@ -92,6 +92,7 @@ module.exports = {
           item.options.numericalOptions
         );
         context.valuesOnMap = !item.options.numericalOptions.noValuesOnMap;
+        context.legendData.labelLegend = item.options.numericalOptions.labelLegend;
       } catch (e) {
         throw new Boom.Boom(e);
       }
@@ -108,6 +109,8 @@ module.exports = {
     );
     if (typeof exactPixelWidth === "number") {
       context.contentWidth = exactPixelWidth;
+    } else {
+      context.contentWidth = 600;
     } // add script here to meassure
 
     const renderingInfo = {
