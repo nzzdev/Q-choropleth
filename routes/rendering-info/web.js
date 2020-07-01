@@ -134,6 +134,7 @@ module.exports = {
           }_container'), ${JSON.stringify({
             qId: context.item.id,
             requestId: context.id,
+            choroplethType: context.item.choroplethType,
           })})`,
         },
       ],

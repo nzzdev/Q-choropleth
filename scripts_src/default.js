@@ -7,8 +7,10 @@ export default class Choropleth {
         this.data.width || this.element.getBoundingClientRect().width;
       this.requestId = this.data.requestId;
       this.isMethodBoxVisible = false;
-      this.prepareMethodBoxElements();
-      this.addEventListenerToMethodBoxLink();
+      if (this.data.choroplethType === "numerical") {
+        this.prepareMethodBoxElements();
+        this.addEventListenerToMethodBoxLink();
+      }
     }
   }
 
