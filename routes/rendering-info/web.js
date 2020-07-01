@@ -65,13 +65,11 @@ module.exports = {
     const item = request.payload.item;
     const toolRuntimeConfig = request.payload.toolRuntimeConfig;
 
-<<<<<<< HEAD
-    // add display options
-=======
+    // TODO: add display options
+
     // since we do not need header row for further processing we remove it here first
     item.data = dataHelpers.getDataWithoutHeaderRow(item.data);
 
->>>>>>> dev
     const context = {
       item,
       id: `q_choropleth_${toolRuntimeConfig.requestId}`,
