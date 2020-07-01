@@ -55,13 +55,13 @@
     </div>
   {:else if legendData.type === 'numerical'}
     <!-- display bucket legend -->
-    <div style="display: flex; justify-content: center;">
+    <div class="q-choropleth-legend--numerical">
       <div class="q-choropleth-legend-container">
         <div class="q-choropleth-legend-value-container">
-          <span style="margin-left: 2px" class="s-font-note-s">
+          <span class="q-choropleth-legend-value-container--minVal s-font-note-s">
             {legendData.minValue}
           </span>
-          <span style="margin-right: 2px" class="s-font-note-s">
+          <span class="q-choropleth-legend-value-container--maxVal s-font-note-s">
             {legendData.maxValue}
           </span>
         </div>
@@ -109,15 +109,14 @@
           </div>
         {/if}
         {#if hasSingleValueBucket(legendData) || legendData.hasNullValues}
-        <div style="display: flex; flex-direction: row;">
+        <div class="q-choropleth-legend-info-container">
           {#if hasSingleValueBucket(legendData)}
             <div
-              style="display: flex; flex-direction: row; margin-right: 16px;"
-              class="s-font-note-s">
+              class="q-choropleth-legned-info--single-bucket s-font-note-s">
               <svg
                 width="11"
                 height="11"
-                style="margin-top:4px; margin-right: 8px;">
+                class="q-choropleth-legned-info-icon">
                 <rect
                   width="11"
                   height="11"
@@ -129,12 +128,11 @@
           {/if}
           {#if legendData.hasNullValues}
             <div
-              style="display: flex; flex-direction: row;"
-              class="s-font-note-s">
+              class="q-choropleth-legend-info--no-data s-font-note-s">
               <svg
                 width="11"
                 height="11"
-                style="margin-top:4px; margin-right: 8px;">
+                class="q-choropleth-legned-info-icon">
                 <rect
                   width="11"
                   height="11"

@@ -4,12 +4,6 @@
   width: 55%;
 }
 
-.q-choropleth-legend-value-container {
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-}
-
 .q-choropleth-legend {
   height: 32px;
   width: 100%;
@@ -17,6 +11,20 @@
   &-bucket {
     fill: currentColor;
   }
+}
+
+.q-choropleth-legend-value-container {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.q-choropleth-legend-value-container--minVal {
+  margin-left: 2px
+}
+
+.q-choropleth-legend-value-container--maxVal {
+  margin-right: 2px
 }
 
 .q-choropleth-legend-border-container {
@@ -36,6 +44,33 @@
   width: 8px;
   height: 32px;
 }
+
+
+.q-choropleth-legend-info-container {
+  display: flex;
+  flex-direction: row;
+}
+
+.q-choropleth-legned-info--single-bucket {
+  display: flex; 
+  flex-direction: row; 
+  margin-right: 16px;
+}
+
+.q-choropleth-legned-info-icon {
+  margin-top: 2px; margin-right: 8px;
+}
+
+.q-choropleth-legend-info--no-data {
+  display: flex;
+  flex-direction: row;
+}
+
+.q-choropleth-legend--numerical {
+  display: flex;
+  justify-content: center;
+}
+
 
 .swiss-hexagon-map {
   margin-top: 8px;
