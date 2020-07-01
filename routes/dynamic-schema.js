@@ -178,7 +178,9 @@ module.exports = {
           }
           return {
             "Q:options": {
-              predefinedContent: { values: predefinedValues },
+              predefinedContent: {
+                values: [["Kanton", "Wert"]].concat(predefinedValues),
+              },
             },
           };
         }

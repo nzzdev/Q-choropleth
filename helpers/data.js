@@ -1,3 +1,7 @@
+function getDataWithoutHeaderRow(data) {
+  return data.slice(1);
+}
+
 function getUniqueCategories(data) {
   const values = data
     .map((row) => {
@@ -55,6 +59,7 @@ function getNumberBuckets(numericalOptions) {
 }
 
 module.exports = {
+  getDataWithoutHeaderRow,
   getUniqueCategories,
   getCustomBucketBorders,
   getNumericalValues,
