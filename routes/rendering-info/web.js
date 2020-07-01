@@ -2,6 +2,7 @@ const Boom = require("@hapi/boom");
 const fs = require("fs");
 const path = require("path");
 const legendHelpers = require("../../helpers/legend.js");
+const dataHelpers = require("../../helpers/data.js");
 const getExactPixelWidth = require("../../helpers/toolRuntimeConfig.js")
   .getExactPixelWidth;
 
@@ -60,7 +61,9 @@ module.exports = {
   },
   handler: async function (request, h) {
     const item = request.payload.item;
-    item.data.shift();
+
+    // since we do not need header row for further processing we remove it here first
+    item.data = dataHelpers.getDataWithoutHeaderRow(item.data);
 
     const context = {
       item,
