@@ -14,12 +14,20 @@ function getCustomBucketBorders(customBuckets) {
   });
 }
 
+function getMedian(values) {
+  let middleIndex = Math.floor(values.length / 2);
+  let sortedNumbers = [...values].sort((a, b) => a - b);
+  return values.length % 2 !== 0 ? sortedNumbers[middleIndex] : (sortedNumbers[middleIndex - 1] + sortedNumbers[middleIndex]) / 2;
+}
+
 function getMetaData(values, numberValues) {
   return {
     hasNullValues: values.find((value) => value === null) !== undefined,
     hasZeroValues: numberValues.find((value) => value === 0) !== undefined,
     maxValue: Math.max(...numberValues),
     minValue: Math.min(...numberValues),
+    averageValue: Math.round(numberValues.reduce((a, b) => a + b, 0) / numberValues.length, 2),
+    medianValue: getMedian(numberValues)
   };
 }
 
