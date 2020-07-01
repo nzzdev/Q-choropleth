@@ -2,6 +2,7 @@ const Boom = require("@hapi/boom");
 const fs = require("fs");
 const path = require("path");
 const legendHelpers = require("../../helpers/legend.js");
+const dataHelpers = require("../../helpers/data.js");
 const getExactPixelWidth = require("../../helpers/toolRuntimeConfig.js")
   .getExactPixelWidth;
 
@@ -64,7 +65,13 @@ module.exports = {
     const item = request.payload.item;
     const toolRuntimeConfig = request.payload.toolRuntimeConfig;
 
+<<<<<<< HEAD
     // add display options
+=======
+    // since we do not need header row for further processing we remove it here first
+    item.data = dataHelpers.getDataWithoutHeaderRow(item.data);
+
+>>>>>>> dev
     const context = {
       item,
       id: `q_choropleth_${toolRuntimeConfig.requestId}`,
@@ -92,6 +99,7 @@ module.exports = {
           item.data,
           item.options.numericalOptions
         );
+        context.valuesOnMap = !item.options.numericalOptions.noValuesOnMap;
       } catch (e) {
         throw new Boom.Boom(e);
       }
@@ -100,6 +108,7 @@ module.exports = {
         item.data,
         item.options.categoricalOptions
       );
+      context.valuesOnMap = item.options.categoricalOptions.valuesOnMap;
     }
 
     const exactPixelWidth = getExactPixelWidth(

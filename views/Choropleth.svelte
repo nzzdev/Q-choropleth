@@ -6,6 +6,7 @@
   export let item;
   export let id;
   export let legendData;
+  export let valuesOnMap;
   export let entityMapping;
   export let contentWidth;
 </script>
@@ -16,10 +17,13 @@
     <div class="s-q-item__subtitle">{item.subtitle}</div>
   {/if}
   <div id="{id}_container" class="q-choropleth-container">
-    <ChoroplethLegend {legendData} />
+    {#if !(legendData.type === 'categorical' && valuesOnMap)}
+      <ChoroplethLegend {legendData} />
+    {/if}
     {#if item.baseMap === 'hexagonCHCantons'}
       <HexagonCHCantonsMap
         data={item.data}
+        {valuesOnMap}
         {legendData}
         {entityMapping}
         {contentWidth} />
