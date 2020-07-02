@@ -160,6 +160,11 @@ function getCustomColorMap(colorOverwrites) {
   );
 }
 
+function hasSingleValueBucket(legendData) {
+  const firstBucket = legendData.buckets[0];
+  return firstBucket.from === firstBucket.to;
+}
+
 function getNumericalLegend(data, options) {
   const customColorMap = getCustomColorMap(options.colorOverwrites);
   const values = dataHelpers.getNumericalValues(data);
@@ -178,6 +183,8 @@ function getNumericalLegend(data, options) {
     legendData.maxValue,
     customColorMap
   );
+
+  legendData.hasSingleValueBucket = hasSingleValueBucket(legendData);
 
   // for all bucket types we calculate the resulting buckets out of given data set
   // custom bucketing need a special handling of min/max values because the first and the last

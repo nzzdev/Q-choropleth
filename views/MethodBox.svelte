@@ -28,7 +28,12 @@
 </div>
 <div class="q-choropleth-methods-container s-font-note-s">
   <div class="q-choropleth-methods-item">
-    {#each legendData.buckets as bucket}
+    {#each legendData.buckets as bucket, index}
+      {#if index === 0 && legendData.hasSingleValueBucket}
+        <div class="q-choropleth-methods-buckets">
+          {bucket.from} (nur ein Datenpukt)
+        </div>
+      {/if}
       <div class="q-choropleth-methods-buckets">
         {bucket.from} - {bucket.to}
       </div>
