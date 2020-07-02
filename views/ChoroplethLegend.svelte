@@ -59,7 +59,7 @@
       id: "average",
       label: "Durchschnitt",
       value: legendData.averageValue,
-      position: 50
+      position: (legendData.averageValue * 100) / legendData.maxValue
     };
   }
 
