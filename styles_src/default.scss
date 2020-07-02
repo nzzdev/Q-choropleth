@@ -105,6 +105,16 @@
       display: none;
     }
   }
+
+  &-buckets {
+    display: flex;
+    flex-direction: row;
+    text-align: right;
+
+    &--separator {
+      margin: 0 4px;
+    }
+  }
 }
 
 .q-choropleth-legend-info-container {

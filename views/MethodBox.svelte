@@ -17,6 +17,10 @@
     });
     event.target.dispatchEvent(trackingEvent);
   }
+
+  function getSpanWidth(maxValue) {
+    return maxValue.toString().length * 7;
+  }
 </script>
 
 <div class="q-choropleth-methods-link s-font-note-s">
@@ -39,7 +43,17 @@
           </div>
         {/if}
         <div class="q-choropleth-methods-buckets">
-          {bucket.from} - {bucket.to}
+          <div
+            class="q-choropleth-methods-buckets-values"
+            style="width: {getSpanWidth(legendData.maxValue)}px;">
+            {bucket.from}
+          </div>
+          <span class="q-choropleth-methods-buckets--separator">-</span>
+          <div
+            class="q-choropleth-methods-buckets-values"
+            style="width: {getSpanWidth(legendData.maxValue)}px;">
+            {bucket.to}
+          </div>
         </div>
       </div>
     {/each}
