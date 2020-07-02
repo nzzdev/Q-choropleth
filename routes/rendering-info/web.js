@@ -125,7 +125,7 @@ module.exports = {
       : null;
 
     const renderingInfo = {
-      polyfills: ["Promise", "Element.prototype.classList"],
+      polyfills: ["Promise", "Element.prototype.classList", "CustomEvent"],
       stylesheets: [
         {
           name: styleHashMap["default"],

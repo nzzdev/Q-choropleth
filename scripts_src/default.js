@@ -42,6 +42,16 @@ export default class Choropleth {
   }
 
   handleClickOnMethodBoxLink(event) {
+    const eventDetail = {
+      eventInfo: {
+        componentName: "q-choropleth",
+        eventAction: this.isMethodBoxVisible
+          ? "close-methods-box"
+          : "open-methods-box",
+        eventNonInteractive: false,
+      },
+    };
+
     this.isMethodBoxVisible = !this.isMethodBoxVisible;
     if (this.isMethodBoxVisible) {
       this.methodBoxContainerElement.classList.remove("hidden");
@@ -52,5 +62,11 @@ export default class Choropleth {
       this.methodBoxCloseIcon.classList.add("hidden");
       this.methodBoxOpenIcon.classList.remove("hidden");
     }
+
+    const trackingEvent = new CustomEvent("q-tracking-event", {
+      bubbles: true,
+      detail: eventDetail,
+    });
+    event.target.dispatchEvent(trackingEvent);
   }
 }
