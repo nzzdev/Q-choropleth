@@ -27,10 +27,6 @@ export default class Choropleth {
     this.methodBoxCloseIcon = this.element.querySelector(
       ".q-choropleth-methods-close"
     );
-    if (!this.isMethodBoxVisible) {
-      this.methodBoxContainerElement.classList.add("hidden");
-      this.methodBoxCloseIcon.classList.add("hidden");
-    }
   }
 
   addEventListenerToMethodBoxLink() {

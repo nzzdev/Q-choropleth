@@ -30,7 +30,7 @@
     Daten und Methodik
   </span>
 </div>
-<div class="q-choropleth-methods-container s-font-note-s">
+<div class="q-choropleth-methods-container hidden s-font-note-s">
   <div class="q-choropleth-methods-item">
     {#each legendData.buckets as bucket, index}
       <div style="display: flex; flex-direction: row;">
