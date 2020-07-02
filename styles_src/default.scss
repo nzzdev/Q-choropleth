@@ -67,6 +67,24 @@
     }
   }
 
+  &-description {
+    margin-top: 4px;
+  }
+
+  &-cirlcle {
+    position: relative;
+    box-sizing: content-box;
+    width: 7px;
+    height: 7px;
+    margin: 2px 8px 2px 2px;
+    border: 1px solid;
+    border-radius: 50%;
+
+    &--circle-fill {
+      background-color: currentColor;
+    }
+  }
+
   &-article {
     &-container {
       margin-top: 4px;

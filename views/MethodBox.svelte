@@ -29,15 +29,22 @@
 <div class="q-choropleth-methods-container s-font-note-s">
   <div class="q-choropleth-methods-item">
     {#each legendData.buckets as bucket, index}
-      {#if index === 0 && legendData.hasSingleValueBucket}
+      <div style="display: flex; flex-direction: row;">
+        <div
+          class="q-choropleth-methods-cirlcle
+          q-choropleth-methods-cirlcle--circle-fill {bucket.color.colorClass}" />
+        {#if index === 0 && legendData.hasSingleValueBucket}
+          <div class="q-choropleth-methods-buckets">
+            {bucket.from} (nur ein Datenpukt)
+          </div>
+        {/if}
         <div class="q-choropleth-methods-buckets">
-          {bucket.from} (nur ein Datenpukt)
+          {bucket.from} - {bucket.to}
         </div>
-      {/if}
-      <div class="q-choropleth-methods-buckets">
-        {bucket.from} - {bucket.to}
       </div>
     {/each}
+  </div>
+  <div class="q-choropleth-methods-description">
     Text zu den Buckets. (Muss unterschieden werden zwischen Jenks, Quantiles,
     gleich grosse Intervallle und manuelle Grenzen)
   </div>
