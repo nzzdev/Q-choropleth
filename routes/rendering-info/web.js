@@ -98,7 +98,8 @@ module.exports = {
           item.options.numericalOptions
         );
         context.valuesOnMap = !item.options.numericalOptions.noValuesOnMap;
-        context.legendData.labelLegend = item.options.numericalOptions.labelLegend;
+        context.legendData.labelLegend =
+          item.options.numericalOptions.labelLegend;
       } catch (e) {
         throw new Boom.Boom(e);
       }
@@ -137,7 +138,7 @@ module.exports = {
           }_container'), ${JSON.stringify({
             qId: context.item.id,
             requestId: context.id,
-            choroplethType: context.item.choroplethType,
+            choroplethType: context.item.options.choroplethType,
           })})`,
         },
       ],
