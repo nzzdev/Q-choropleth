@@ -62,12 +62,14 @@
     Text zu den Buckets. (Muss unterschieden werden zwischen Jenks, Quantiles,
     gleich grosse Intervallle und manuelle Grenzen)
   </div>
-  <div class="q-choropleth-methods-article-container">
-    <a
-      href={methodBoxArticle.url}
-      on:click={handleLinkClick}
-      class="q-choropleth-methods-article-link">
-      {methodBoxArticle.title}
-    </a>
-  </div>
+  {#if methodBoxArticle}
+    <div class="q-choropleth-methods-article-container">
+      <a
+        href={methodBoxArticle.url}
+        on:click={handleLinkClick}
+        class="q-choropleth-methods-article-link">
+        {methodBoxArticle.title}
+      </a>
+    </div>
+  {/if}
 </div>
