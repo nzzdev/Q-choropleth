@@ -15,7 +15,7 @@
     <div class="s-q-item__subtitle">{item.subtitle}</div>
   {/if}
   {#if !(legendData.type === 'categorical' && valuesOnMap)}
-    <ChoroplethLegend {legendData} />
+    <ChoroplethLegend {legendData} {contentWidth} />
   {/if}
   {#if item.baseMap === 'hexagonCHCantons'}
     <HexagonCHCantonsMap

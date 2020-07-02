@@ -1,9 +1,33 @@
 <script>
   export let legendData;
+  export let contentWidth;
   let labelLegend = getLabelLegend(legendData);
 
   const legendBarHeight = 16;
   const singleValueBucketWidth = 8;
+  const alignmentConfig = [
+    {
+      size: 272,
+      breakPoints: {
+        median: 57,
+        average: 43
+      }
+    },
+    {
+      size: 640,
+      breakPoints: {
+        median: 81,
+        average: 76
+      }
+    },
+    {
+      size: 1120,
+      breakPoints: {
+        median: 89,
+        average: 86
+      }
+    }
+  ];
 
   function hasSingleValueBucket(legendData) {
     const firstBucket = legendData.buckets[0];
@@ -23,6 +47,7 @@
   function getLabelLegend(legendData) {
     if (legendData.labelLegend === "median") {
       return {
+        id: "median",
         label: "Median",
         value: legendData.medianValue,
         position: (legendData.medianValue * 100) / legendData.maxValue
@@ -31,10 +56,23 @@
       return { label: "noLabel" };
     }
     return {
+      id: "average",
       label: "Durchschnitt",
       value: legendData.averageValue,
       position: 50
     };
+  }
+
+  function getDescriptionAlignment(labelLegend) {
+    let currentConfig = alignmentConfig.find(
+      configWidth => configWidth.size === contentWidth
+    );
+
+    if (labelLegend.position > currentConfig.breakPoints[labelLegend.id]) {
+      return "text-align: right;";
+    }
+
+    return `margin-left: ${labelLegend.position}%`;
   }
 </script>
 
@@ -58,10 +96,12 @@
     <div class="q-choropleth-legend--numerical">
       <div class="q-choropleth-legend-container">
         <div class="q-choropleth-legend-value-container">
-          <span class="q-choropleth-legend-value-container--minVal s-font-note-s">
+          <span
+            class="q-choropleth-legend-value-container--minVal s-font-note-s">
             {legendData.minValue}
           </span>
-          <span class="q-choropleth-legend-value-container--maxVal s-font-note-s">
+          <span
+            class="q-choropleth-legend-value-container--maxVal s-font-note-s">
             {legendData.maxValue}
           </span>
         </div>
@@ -72,7 +112,7 @@
                 {#if !(hasSingleValueBucket(legendData) && index === 0)}
                   <rect
                     class="q-choropleth-legend-bucket {bucket.color.colorClass}"
-                    fill="{bucket.color.customColor}"
+                    fill={bucket.color.customColor}
                     width="{getAspectWidth(legendData, bucket)}%"
                     height={legendBarHeight}
                     x="{getAspectXValue(legendData, bucket)}%"
@@ -104,47 +144,46 @@
         {#if labelLegend.label !== 'noLabel'}
           <div
             class="s-font-note-s"
-            style="margin-left: {labelLegend.position}%;">
+            style={getDescriptionAlignment(labelLegend)}>
             {labelLegend.label}: {labelLegend.value}
           </div>
         {/if}
         {#if hasSingleValueBucket(legendData) || legendData.hasNullValues}
-        <div class="q-choropleth-legend-info-container">
-          {#if hasSingleValueBucket(legendData)}
-            <div
-              class="q-choropleth-legned-info--single-bucket s-font-note-s">
-              <svg
-                width="11"
-                height="11"
-                class="q-choropleth-legned-info-icon">
-                <rect
+          <div class="q-choropleth-legend-info-container">
+            {#if hasSingleValueBucket(legendData)}
+              <div
+                class="q-choropleth-legned-info--single-bucket s-font-note-s">
+                <svg
                   width="11"
                   height="11"
-                  class="s-color-gray-2"
-                  fill="currentColor" />
-              </svg>
-              {legendData.buckets[0].from}
-            </div>
-          {/if}
-          {#if legendData.hasNullValues}
-            <div
-              class="q-choropleth-legend-info--no-data s-font-note-s">
-              <svg
-                width="11"
-                height="11"
-                class="q-choropleth-legned-info-icon">
-                <rect
+                  class="q-choropleth-legned-info-icon">
+                  <rect
+                    width="11"
+                    height="11"
+                    class="s-color-gray-2"
+                    fill="currentColor" />
+                </svg>
+                {legendData.buckets[0].from}
+              </div>
+            {/if}
+            {#if legendData.hasNullValues}
+              <div class="q-choropleth-legend-info--no-data s-font-note-s">
+                <svg
                   width="11"
                   height="11"
-                  class="s-color-gray-2"
-                  fill="white"
-                  stroke="currentColor" />
-              </svg>
-              Keine Daten
-            </div>
-          {/if}
-        </div>
-      {/if}
+                  class="q-choropleth-legned-info-icon">
+                  <rect
+                    width="11"
+                    height="11"
+                    class="s-color-gray-2"
+                    fill="white"
+                    stroke="currentColor" />
+                </svg>
+                Keine Daten
+              </div>
+            {/if}
+          </div>
+        {/if}
       </div>
     </div>
   {/if}
