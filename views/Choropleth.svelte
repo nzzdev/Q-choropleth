@@ -9,6 +9,7 @@
   export let valuesOnMap;
   export let entityMapping;
   export let contentWidth;
+  export let methodBoxArticle;
 </script>
 
 <div {id} class="s-q-item q-choropleth">
@@ -29,7 +30,7 @@
         {contentWidth} />
     {/if}
     {#if legendData.type === 'numerical'}
-      <MethodBox {legendData} />
+      <MethodBox {legendData} {methodBoxArticle} />
     {/if}
   </div>
 </div>

@@ -120,6 +120,10 @@ module.exports = {
       context.contentWidth = 600;
     } // add script here to meassure
 
+    context.methodBoxArticle = process.env.METHOD_BOX_ARTICLE
+      ? JSON.parse(process.env.METHOD_BOX_ARTICLE)
+      : null;
+
     const renderingInfo = {
       polyfills: ["Promise", "Element.prototype.classList"],
       stylesheets: [
