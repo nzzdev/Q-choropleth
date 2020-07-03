@@ -45,12 +45,13 @@
   }
 
   function getLabelLegend(legendData) {
+    const range = legendData.maxValue - legendData.minValue;
     if (legendData.labelLegend === "median") {
       return {
         id: "median",
         label: "Median",
         value: legendData.medianValue,
-        position: (legendData.medianValue * 100) / legendData.maxValue
+        position: (legendData.medianValue * 100) / range
       };
     } else if (legendData.labelLegend === "noLabel") {
       return { label: "noLabel" };
@@ -59,7 +60,7 @@
       id: "average",
       label: "Durchschnitt",
       value: legendData.averageValue,
-      position: (legendData.averageValue * 100) / legendData.maxValue
+      position: (legendData.averageValue * 100) / range
     };
   }
 
