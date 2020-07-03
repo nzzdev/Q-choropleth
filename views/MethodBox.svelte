@@ -41,20 +41,21 @@
           <div class="q-choropleth-methods-buckets">
             {bucket.from} (nur ein Datenpukt)
           </div>
+        {:else}
+          <div class="q-choropleth-methods-buckets">
+            <div
+              class="q-choropleth-methods-buckets-values"
+              style="width: {getSpanWidth(legendData.maxValue)}px;">
+              {bucket.from}
+            </div>
+            <span class="q-choropleth-methods-buckets--separator">-</span>
+            <div
+              class="q-choropleth-methods-buckets-values"
+              style="width: {getSpanWidth(legendData.maxValue)}px;">
+              {bucket.to}
+            </div>
+          </div>
         {/if}
-        <div class="q-choropleth-methods-buckets">
-          <div
-            class="q-choropleth-methods-buckets-values"
-            style="width: {getSpanWidth(legendData.maxValue)}px;">
-            {bucket.from}
-          </div>
-          <span class="q-choropleth-methods-buckets--separator">-</span>
-          <div
-            class="q-choropleth-methods-buckets-values"
-            style="width: {getSpanWidth(legendData.maxValue)}px;">
-            {bucket.to}
-          </div>
-        </div>
       </div>
     {/each}
   </div>
