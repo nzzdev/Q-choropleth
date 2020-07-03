@@ -33,7 +33,7 @@
 <div class="q-choropleth-methods-container hidden s-font-note-s">
   <div class="q-choropleth-methods-item">
     {#each legendData.buckets as bucket, index}
-      <div style="display: flex; flex-direction: row;">
+      <div class="q-choropleth-methods-buckets-container">
         <div
           class="q-choropleth-methods-circle
           q-choropleth-methods-circle--circle-fill {bucket.color.colorClass}" />
