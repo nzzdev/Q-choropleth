@@ -4,20 +4,6 @@
   export let legendData;
   export let methodBoxArticle;
 
-  function handleLinkClick(event) {
-    const trackingEvent = new CustomEvent("q-tracking-event", {
-      bubbles: true,
-      detail: {
-        eventInfo: {
-          componentName: "q-choropleth",
-          eventAction: `click-on-method-article-url`,
-          eventNonInteractive: false
-        }
-      }
-    });
-    event.target.dispatchEvent(trackingEvent);
-  }
-
   function getSpanWidth(maxValue) {
     return maxValue.toString().length * 7;
   }
@@ -65,10 +51,7 @@
   </div>
   {#if methodBoxArticle}
     <div class="q-choropleth-methods-article-container">
-      <a
-        href={methodBoxArticle.url}
-        on:click={handleLinkClick}
-        class="q-choropleth-methods-article-link">
+      <a href={methodBoxArticle.url} class="q-choropleth-methods-article-link">
         {methodBoxArticle.title}
       </a>
     </div>

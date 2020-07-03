@@ -10,6 +10,7 @@ export default class Choropleth {
       if (this.data.choroplethType === "numerical") {
         this.prepareMethodBoxElements();
         this.addEventListenerToMethodBoxLink();
+        this.addEventListenerToMethodBoxArticleLink();
       }
     }
   }
@@ -26,6 +27,9 @@ export default class Choropleth {
     );
     this.methodBoxCloseIcon = this.element.querySelector(
       ".q-choropleth-methods-close"
+    );
+    this.methodBoxArticleLink = this.element.querySelector(
+      ".q-choropleth-methods-article-container"
     );
   }
 
@@ -58,6 +62,30 @@ export default class Choropleth {
       this.methodBoxCloseIcon.classList.add("hidden");
       this.methodBoxOpenIcon.classList.remove("hidden");
     }
+
+    const trackingEvent = new CustomEvent("q-tracking-event", {
+      bubbles: true,
+      detail: eventDetail,
+    });
+    event.target.dispatchEvent(trackingEvent);
+  }
+
+  addEventListenerToMethodBoxArticleLink() {
+    if (this.methodBoxArticleLink) {
+      this.methodBoxArticleLink.addEventListener("click", (event) => {
+        this.handleClickOnMethodBoxArticleLink(event);
+      });
+    }
+  }
+
+  handleClickOnMethodBoxArticleLink(event) {
+    const eventDetail = {
+      eventInfo: {
+        componentName: "q-choropleth",
+        eventAction: "open-method-box-article-link",
+        eventNonInteractive: false,
+      },
+    };
 
     const trackingEvent = new CustomEvent("q-tracking-event", {
       bubbles: true,
