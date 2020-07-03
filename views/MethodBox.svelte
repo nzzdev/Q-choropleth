@@ -35,8 +35,8 @@
     {#each legendData.buckets as bucket, index}
       <div style="display: flex; flex-direction: row;">
         <div
-          class="q-choropleth-methods-cirlcle
-          q-choropleth-methods-cirlcle--circle-fill {bucket.color.colorClass}" />
+          class="q-choropleth-methods-circle
+          q-choropleth-methods-circle--circle-fill {bucket.color.colorClass}" />
         {#if index === 0 && legendData.hasSingleValueBucket}
           <div class="q-choropleth-methods-buckets">
             {bucket.from} (nur ein Datenpukt)
