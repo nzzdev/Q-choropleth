@@ -25,7 +25,7 @@
           q-choropleth-methods-circle--circle-fill {bucket.color.colorClass}" />
         {#if index === 0 && legendData.hasSingleValueBucket}
           <div class="q-choropleth-methods-buckets">
-            {bucket.from} (nur ein Datenpukt)
+            {bucket.from} (nur ein Datenpunkt)
           </div>
         {:else}
           <div class="q-choropleth-methods-buckets">
