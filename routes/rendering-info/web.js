@@ -5,6 +5,7 @@ const legendHelpers = require("../../helpers/legend.js");
 const dataHelpers = require("../../helpers/data.js");
 const getExactPixelWidth = require("../../helpers/toolRuntimeConfig.js")
   .getExactPixelWidth;
+const methodBoxConfig = require("../../helpers/methodBox");
 
 const stylesDir = path.join(__dirname, "/../../styles/");
 const styleHashMap = require(path.join(stylesDir, "hashMap.json"));
@@ -26,6 +27,7 @@ const schemaString = JSON.parse(
   })
 );
 const Ajv = require("ajv");
+const methodBoxTextConfig = require("../../helpers/methodBox");
 const ajv = new Ajv();
 
 const validate = ajv.compile(schemaString);
@@ -100,6 +102,10 @@ module.exports = {
         context.valuesOnMap = !item.options.numericalOptions.noValuesOnMap;
         context.legendData.labelLegend =
           item.options.numericalOptions.labelLegend;
+
+        const methodBoxText =
+          methodBoxTextConfig[item.options.numericalOptions.bucketType];
+        context.methodBoxText = methodBoxText || "";
       } catch (e) {
         throw new Boom.Boom(e);
       }

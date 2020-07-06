@@ -9,14 +9,14 @@ export default class Choropleth {
       this.isMethodBoxVisible = false;
       if (this.data.choroplethType === "numerical") {
         this.prepareMethodBoxElements();
-        this.addEventListenerToMethodBoxLink();
+        this.addEventListenerToMethodBoxToggle();
         this.addEventListenerToMethodBoxArticleLink();
       }
     }
   }
 
   prepareMethodBoxElements() {
-    this.methodBoxLinkElement = this.element.querySelector(
+    this.methodBoxToggleElement = this.element.querySelector(
       `.q-choropleth-methods-link-text`
     );
     this.methodBoxContainerElement = this.element.querySelector(
@@ -33,15 +33,15 @@ export default class Choropleth {
     );
   }
 
-  addEventListenerToMethodBoxLink() {
-    if (this.methodBoxLinkElement) {
-      this.methodBoxLinkElement.addEventListener("click", (event) => {
-        this.handleClickOnMethodBoxLink(event);
+  addEventListenerToMethodBoxToggle() {
+    if (this.methodBoxToggleElement) {
+      this.methodBoxToggleElement.addEventListener("click", (event) => {
+        this.handleClickOnMethodBoxToogle(event);
       });
     }
   }
 
-  handleClickOnMethodBoxLink(event) {
+  handleClickOnMethodBoxToogle(event) {
     const eventDetail = {
       eventInfo: {
         componentName: "q-choropleth",

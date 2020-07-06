@@ -2,6 +2,7 @@
   import OpenIcon from "./svg/MethodBoxOpenIcon.svelte";
   import CloseIcon from "./svg/MethodBoxCloseIcon.svelte";
   export let legendData;
+  export let methodBoxText;
   export let methodBoxArticle;
 
   function getSpanWidth(maxValue) {
@@ -45,13 +46,14 @@
       </div>
     {/each}
   </div>
-  <div class="q-choropleth-methods-description">
-    Text zu den Buckets. (Muss unterschieden werden zwischen Jenks, Quantiles,
-    gleich grosse Intervallle und manuelle Grenzen)
-  </div>
+  <div class="q-choropleth-methods-description">{methodBoxText}</div>
   {#if methodBoxArticle}
     <div class="q-choropleth-methods-article-container">
-      <a href={methodBoxArticle.url} class="q-choropleth-methods-article-link">
+      <a
+        href={methodBoxArticle.url}
+        class="q-choropleth-methods-article-link"
+        target="_blank"
+        rel="noopener noreferrer">
         {methodBoxArticle.title}
       </a>
     </div>
