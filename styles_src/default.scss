@@ -120,6 +120,20 @@
       margin: 0 4px;
     }
   }
+
+  &-legend {
+    &-table {
+      table-layout: auto !important;
+
+      tr {
+        text-align: right;
+      }
+
+      td {
+        width: auto !important;
+      }
+    }
+  }
 }
 
 .q-choropleth-legend-info-container {
