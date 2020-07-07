@@ -31,7 +31,8 @@ npm run build
 
 ## Configuration
 
-If env variables, explained here
+There's one env variable `METHOD_BOX_ARTICLE` that needs to be defined. `METHOD_BOX_ARTICLE` is an object that contains two properties: `title` and `url`.
+Those properties will be used in the `MethodBox`-component. The defined article will lead to the article where we show how we caluclate the bucketing method.
 
 ## Development
 

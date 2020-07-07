@@ -110,8 +110,13 @@ function getEqualBuckets(
   const range = maxValue - minValue;
   let equalBuckets = [];
   for (let i = 0; i < numberBuckets; i++) {
-    const from = i === 0 ? minValue : minValue + range * portion * i;
-    const to = minValue + range * portion * (i + 1);
+    let from = i === 0 ? minValue : minValue + range * portion * i;
+    let to = minValue + range * portion * (i + 1);
+
+    // round numbers
+    from = Math.round(from * 10) / 10;
+    to = Math.round(to * 10) / 10;
+
     equalBuckets.push({
       from,
       to,
@@ -160,6 +165,11 @@ function getCustomColorMap(colorOverwrites) {
   );
 }
 
+function hasSingleValueBucket(legendData) {
+  const firstBucket = legendData.buckets[0];
+  return firstBucket.from === firstBucket.to;
+}
+
 function getNumericalLegend(data, options) {
   const customColorMap = getCustomColorMap(options.colorOverwrites);
   const values = dataHelpers.getNumericalValues(data);
@@ -178,6 +188,8 @@ function getNumericalLegend(data, options) {
     legendData.maxValue,
     customColorMap
   );
+
+  legendData.hasSingleValueBucket = hasSingleValueBucket(legendData);
 
   // for all bucket types we calculate the resulting buckets out of given data set
   // custom bucketing need a special handling of min/max values because the first and the last

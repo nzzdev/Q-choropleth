@@ -8,8 +8,10 @@ function getScaleEnumWithTitles(numericalOptions) {
 
   let bucketNumber = 0;
   if (numericalOptions.bucketType === "custom") {
-    const buckets = numericalOptions.customBuckets.split(",");
-    bucketNumber = buckets.length - 1;
+    if (numericalOptions.customBuckets) {
+      const buckets = numericalOptions.customBuckets.split(",");
+      bucketNumber = buckets.length - 1;
+    }
   } else {
     bucketNumber = numericalOptions.numberBuckets;
   }
