@@ -24,11 +24,15 @@
               q-choropleth-methods-circle--circle-fill {bucket.color.colorClass}" />
           </td>
           {#if index === 0 && legendData.hasSingleValueBucket}
-            <td>{bucket.from} (nur ein Datenpunkt)</td>
+            <td />
+            <td />
+            <td>{bucket.from}</td>
+            <td>(nur ein Datenpunkt)</td>
           {:else}
             <td>{bucket.from}</td>
             <td>-</td>
             <td>{bucket.to}</td>
+            <td />
           {/if}
         </tr>
       {/each}

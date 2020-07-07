@@ -106,21 +106,6 @@
     }
   }
 
-  &-buckets {
-    display: flex;
-    flex-direction: row;
-    text-align: right;
-
-    &-container {
-      display: flex;
-      flex-direction: row;
-    }
-
-    &--separator {
-      margin: 0 4px;
-    }
-  }
-
   &-legend {
     &-table {
       table-layout: auto !important;
