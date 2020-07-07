@@ -98,6 +98,7 @@ function getColorOverwriteEnumAndTitlesNumerical(numericalOptions) {
 }
 
 function getColorOverwriteEnumAndTitlesCategorical(data) {
+  data = dataHelpers.getDataWithoutHeaderRow(data);
   let enumValues = [null];
   const categories = dataHelpers.getUniqueCategories(data);
   const numberItems = categories.length;
