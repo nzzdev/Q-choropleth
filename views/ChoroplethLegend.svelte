@@ -5,29 +5,20 @@
 
   const legendBarHeight = 16;
   const singleValueBucketWidth = 8;
-  const alignmentConfig = [
-    {
-      size: 272,
-      breakPoints: {
-        median: 57,
-        average: 43
-      }
+  const alignmentConfig = {
+    small: {
+      median: 57,
+      average: 43
     },
-    {
-      size: 640,
-      breakPoints: {
-        median: 81,
-        average: 76
-      }
+    medium: {
+      median: 81,
+      average: 76
     },
-    {
-      size: 1120,
-      breakPoints: {
-        median: 89,
-        average: 86
-      }
+    large: {
+      median: 89,
+      average: 86
     }
-  ];
+  };
 
   function hasSingleValueBucket(legendData) {
     const firstBucket = legendData.buckets[0];
@@ -65,11 +56,17 @@
   }
 
   function getDescriptionAlignment(labelLegend) {
-    let currentConfig = alignmentConfig.find(
-      configWidth => configWidth.size === contentWidth
-    );
+    let currentConfig;
 
-    if (labelLegend.position > currentConfig.breakPoints[labelLegend.id]) {
+    if (contentWidth <= 272) {
+      currentConfig = alignmentConfig.small;
+    } else if (contentWidth > 272 && contentWidth < 640) {
+      currentConfig = alignmentConfig.medium;
+    } else if (contentWidth >= 640) {
+      currentConfig = alignmentConfig.large;
+    }
+
+    if (labelLegend.position > currentConfig[labelLegend.id]) {
       return "text-align: right;";
     }
 
