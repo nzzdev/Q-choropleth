@@ -5,6 +5,7 @@
   export let valuesOnMap;
   export let contentWidth;
   export let entityMapping;
+  export let hasFloatingNumbers;
 
   const dataMapping = new Map(data);
   const baseSpacing = 18;

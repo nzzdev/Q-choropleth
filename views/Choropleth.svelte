@@ -12,6 +12,7 @@
   export let methodBoxText;
   export let methodBoxArticle;
   export let displayOptions;
+  export let hasFloatingNumbers;
 </script>
 
 <div {id} class="s-q-item q-choropleth">
@@ -31,7 +32,8 @@
         {valuesOnMap}
         {legendData}
         {entityMapping}
-        {contentWidth} />
+        {contentWidth}
+        {hasFloatingNumbers} />
     {/if}
     {#if legendData.type === 'numerical'}
       <MethodBox {legendData} {methodBoxText} {methodBoxArticle} />

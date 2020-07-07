@@ -103,10 +103,13 @@ module.exports = {
         context.valuesOnMap = !item.options.numericalOptions.noValuesOnMap;
         context.legendData.labelLegend =
           item.options.numericalOptions.labelLegend;
+<<<<<<< HEAD
 
         const methodBoxText =
           methodBoxTextConfig[item.options.numericalOptions.bucketType];
         context.methodBoxText = methodBoxText || "";
+=======
+>>>>>>> check for floating numbers
       } catch (e) {
         throw new Boom.Boom(e);
       }
@@ -117,6 +120,11 @@ module.exports = {
       );
       context.valuesOnMap = item.options.categoricalOptions.valuesOnMap;
     }
+
+    context.hasFloatingNumbers = dataHelpers.getNumberType(
+      context.legendData,
+      item.data
+    );
 
     const exactPixelWidth = getExactPixelWidth(
       request.payload.toolRuntimeConfig

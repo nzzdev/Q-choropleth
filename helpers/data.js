@@ -21,7 +21,9 @@ function getCustomBucketBorders(customBuckets) {
 function getMedian(values) {
   let middleIndex = Math.floor(values.length / 2);
   let sortedNumbers = [...values].sort((a, b) => a - b);
-  return values.length % 2 !== 0 ? sortedNumbers[middleIndex] : (sortedNumbers[middleIndex - 1] + sortedNumbers[middleIndex]) / 2;
+  return values.length % 2 !== 0
+    ? sortedNumbers[middleIndex]
+    : (sortedNumbers[middleIndex - 1] + sortedNumbers[middleIndex]) / 2;
 }
 
 function getMetaData(values, numberValues) {
@@ -30,8 +32,11 @@ function getMetaData(values, numberValues) {
     hasZeroValues: numberValues.find((value) => value === 0) !== undefined,
     maxValue: Math.max(...numberValues),
     minValue: Math.min(...numberValues),
-    averageValue: Math.round(numberValues.reduce((a, b) => a + b, 0) / numberValues.length, 2),
-    medianValue: getMedian(numberValues)
+    averageValue: Math.round(
+      numberValues.reduce((a, b) => a + b, 0) / numberValues.length,
+      2
+    ),
+    medianValue: getMedian(numberValues),
   };
 }
 
@@ -66,6 +71,37 @@ function getNumberBuckets(numericalOptions) {
   }
 }
 
+function getNumberType(legendData, data) {
+  let hasFloatingNumbers = false;
+
+  legendData.buckets.forEach((bucket) => {
+    if (!hasFloatingNumbers) {
+      hasFloatingNumbers = isFloat(bucket.from) || isFloat(bucket.to);
+    }
+  });
+
+  if (!hasFloatingNumbers) {
+    data.forEach((row) => {
+      if (!hasFloatingNumbers) {
+        console.log("isFloat(parseFloat(row[1]))");
+        console.log(isFloat(parseFloat(row[1])));
+        hasFloatingNumbers = isFloat(parseFloat(row[1]));
+      }
+    });
+  }
+
+  return hasFloatingNumbers;
+}
+
+function isFloat(val) {
+  var floatRegex = /^-?\d+(?:[.,]\d*?)?$/;
+  if (!floatRegex.test(val)) return false;
+
+  val = parseFloat(val);
+  if (isNaN(val)) return false;
+  return true;
+}
+
 module.exports = {
   getDataWithoutHeaderRow,
   getUniqueCategories,
@@ -74,4 +110,5 @@ module.exports = {
   getNonNullNumericalValues,
   getMetaData,
   getNumberBuckets,
+  getNumberType,
 };

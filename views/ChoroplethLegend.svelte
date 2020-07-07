@@ -1,6 +1,7 @@
 <script>
   export let legendData;
   export let contentWidth;
+  export let hasFloatingNumbers;
   let labelLegend = getLabelLegend(legendData);
 
   const legendBarHeight = 16;
