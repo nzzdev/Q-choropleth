@@ -20,7 +20,7 @@
   {/if}
   <div id="{id}_container" class="q-choropleth-container">
     {#if !(legendData.type === 'categorical' && valuesOnMap)}
-      <ChoroplethLegend {legendData} />
+      <ChoroplethLegend {legendData} {contentWidth} />
     {/if}
     {#if item.baseMap === 'hexagonCHCantons'}
       <HexagonCHCantonsMap

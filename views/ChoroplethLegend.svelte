@@ -1,9 +1,24 @@
 <script>
   export let legendData;
+  export let contentWidth;
   let labelLegend = getLabelLegend(legendData);
 
   const legendBarHeight = 16;
   const singleValueBucketWidth = 8;
+  const alignmentConfig = {
+    small: {
+      median: 57,
+      average: 43
+    },
+    medium: {
+      median: 81,
+      average: 76
+    },
+    large: {
+      median: 89,
+      average: 86
+    }
+  };
 
   function hasSingleValueBucket(legendData) {
     const firstBucket = legendData.buckets[0];
@@ -21,20 +36,41 @@
   }
 
   function getLabelLegend(legendData) {
+    const range = legendData.maxValue - legendData.minValue;
     if (legendData.labelLegend === "median") {
       return {
+        id: "median",
         label: "Median",
         value: legendData.medianValue,
-        position: (legendData.medianValue * 100) / legendData.maxValue
+        position: (legendData.medianValue * 100) / range
       };
     } else if (legendData.labelLegend === "noLabel") {
       return { label: "noLabel" };
     }
     return {
+      id: "average",
       label: "Durchschnitt",
       value: legendData.averageValue,
-      position: 50
+      position: (legendData.averageValue * 100) / range
     };
+  }
+
+  function getDescriptionAlignment(labelLegend) {
+    let currentConfig;
+
+    if (contentWidth <= 272) {
+      currentConfig = alignmentConfig.small;
+    } else if (contentWidth > 272 && contentWidth < 640) {
+      currentConfig = alignmentConfig.medium;
+    } else if (contentWidth >= 640) {
+      currentConfig = alignmentConfig.large;
+    }
+
+    if (labelLegend.position > currentConfig[labelLegend.id]) {
+      return "text-align: right;";
+    }
+
+    return `margin-left: ${labelLegend.position}%`;
   }
 </script>
 
@@ -106,13 +142,13 @@
         {#if labelLegend.label !== 'noLabel'}
           <div
             class="s-font-note-s"
-            style="margin-left: {labelLegend.position}%;">
+            style={getDescriptionAlignment(labelLegend)}>
             {labelLegend.label}: {labelLegend.value}
           </div>
         {/if}
-        {#if legendData.hasSingleValueBucket || legendData.hasNullValues}
+        {#if hasSingleValueBucket(legendData) || legendData.hasNullValues}
           <div class="q-choropleth-legend-info-container">
-            {#if legendData.hasSingleValueBucket}
+            {#if hasSingleValueBucket(legendData)}
               <div
                 class="q-choropleth-legend-info--single-bucket s-font-note-s">
                 <svg
