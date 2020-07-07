@@ -5,9 +5,12 @@ const legendHelpers = require("../../helpers/legend.js");
 const dataHelpers = require("../../helpers/data.js");
 const getExactPixelWidth = require("../../helpers/toolRuntimeConfig.js")
   .getExactPixelWidth;
+const methodBoxConfig = require("../../helpers/methodBox");
 
 const stylesDir = path.join(__dirname, "/../../styles/");
 const styleHashMap = require(path.join(stylesDir, "hashMap.json"));
+const scriptsDir = "../../scripts/";
+const scriptHashMap = require(`${scriptsDir}/hashMap.json`);
 const viewsDir = `${__dirname}/../../views/`;
 
 const baseMapHelpers = require("../../helpers/baseMap.js");
@@ -24,6 +27,7 @@ const schemaString = JSON.parse(
   })
 );
 const Ajv = require("ajv");
+const methodBoxTextConfig = require("../../helpers/methodBox");
 const ajv = new Ajv();
 
 const validate = ajv.compile(schemaString);
@@ -61,12 +65,16 @@ module.exports = {
   },
   handler: async function (request, h) {
     const item = request.payload.item;
+    const toolRuntimeConfig = request.payload.toolRuntimeConfig;
+
+    // TODO: add display options
 
     // since we do not need header row for further processing we remove it here first
     item.data = dataHelpers.getDataWithoutHeaderRow(item.data);
 
     const context = {
       item,
+      id: `q_choropleth_${toolRuntimeConfig.requestId}`,
     };
 
     const baseMapEntityCollectionResponse = await request.server.inject({
@@ -92,7 +100,12 @@ module.exports = {
           item.options.numericalOptions
         );
         context.valuesOnMap = !item.options.numericalOptions.noValuesOnMap;
-        context.legendData.labelLegend = item.options.numericalOptions.labelLegend;
+        context.legendData.labelLegend =
+          item.options.numericalOptions.labelLegend;
+
+        const methodBoxText =
+          methodBoxTextConfig[item.options.numericalOptions.bucketType];
+        context.methodBoxText = methodBoxText || "";
       } catch (e) {
         throw new Boom.Boom(e);
       }
@@ -113,11 +126,30 @@ module.exports = {
       context.contentWidth = 600;
     } // add script here to meassure
 
+    context.methodBoxArticle = process.env.METHOD_BOX_ARTICLE
+      ? JSON.parse(process.env.METHOD_BOX_ARTICLE)
+      : null;
+
     const renderingInfo = {
-      polyfills: ["Promise"],
+      polyfills: ["Promise", "Element.prototype.classList", "CustomEvent"],
       stylesheets: [
         {
           name: styleHashMap["default"],
+        },
+      ],
+      scripts: [
+        {
+          name: scriptHashMap["default"],
+        },
+        {
+          content: `
+          new window._q_choropleth.Choropleth(document.querySelector('#${
+            context.id
+          }_container'), ${JSON.stringify({
+            qId: context.item.id,
+            requestId: context.id,
+            choroplethType: context.item.options.choroplethType,
+          })})`,
         },
       ],
       markup: staticTemplate.render(context).html,

@@ -107,7 +107,7 @@
           <svg class="q-choropleth-legend">
             <g>
               {#each legendData.buckets as bucket, index}
-                {#if !(hasSingleValueBucket(legendData) && index === 0)}
+                {#if !(legendData.hasSingleValueBucket && index === 0)}
                   <rect
                     class="q-choropleth-legend-bucket {bucket.color.colorClass}"
                     fill={bucket.color.customColor}
@@ -150,11 +150,11 @@
           <div class="q-choropleth-legend-info-container">
             {#if hasSingleValueBucket(legendData)}
               <div
-                class="q-choropleth-legned-info--single-bucket s-font-note-s">
+                class="q-choropleth-legend-info--single-bucket s-font-note-s">
                 <svg
                   width="11"
                   height="11"
-                  class="q-choropleth-legned-info-icon">
+                  class="q-choropleth-legend-info-icon">
                   <rect
                     width="11"
                     height="11"
@@ -169,7 +169,7 @@
                 <svg
                   width="11"
                   height="11"
-                  class="q-choropleth-legned-info-icon">
+                  class="q-choropleth-legend-info-icon">
                   <rect
                     width="11"
                     height="11"
