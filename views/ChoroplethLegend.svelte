@@ -72,6 +72,20 @@
 
     return `margin-left: ${labelLegend.position}%`;
   }
+
+  function getColorClass(legendItem) {
+    if (legendItem.color.colorClass !== undefined) {
+      return legendItem.color.colorClass;
+    }
+    return "";
+  }
+
+  function getCustomColor(legendItem) {
+    if (legendItem.color.customColor !== undefined) {
+      return legendItem.color.customColor;
+    }
+    return "";
+  }
 </script>
 
 {#if legendData !== undefined}
@@ -80,8 +94,8 @@
     <div class="s-legend-icon-label">
       {#each legendData.categories as category}
         <div
-          class="s-legend-item-label__item {category.color.colorClass !== undefined ? category.color.colorClass : ''}"
-          style="color: {category.color.customColor !== undefined ? category.color.customColor : ''}">
+          class="s-legend-item-label__item {getColorClass(category)}"
+          style="color: {getCustomColor(category)}">
           <div
             class="s-legend-item-label__item__icon
             s-legend-item-label__item__icon--default" />
@@ -109,8 +123,8 @@
               {#each legendData.buckets as bucket, index}
                 {#if !(legendData.hasSingleValueBucket && index === 0)}
                   <rect
-                    class="q-choropleth-legend-bucket {bucket.color.colorClass}"
-                    fill={bucket.color.customColor}
+                    class="q-choropleth-legend-bucket {getColorClass(bucket)}"
+                    style="fill: {getCustomColor(bucket)}"
                     width="{getAspectWidth(legendData, bucket)}%"
                     height={legendBarHeight}
                     x="{getAspectXValue(legendData, bucket)}%"
@@ -158,8 +172,8 @@
                   <rect
                     width="11"
                     height="11"
-                    class="s-color-gray-2"
-                    fill="currentColor" />
+                    class="q-choropleth-legend-bucket {getColorClass(legendData.buckets[0])}"
+                    style="fill: {getCustomColor(legendData.buckets[0])}" />
                 </svg>
                 {legendData.buckets[0].from}
               </div>

@@ -20,8 +20,10 @@
         <tr>
           <td>
             <div
-              class="q-choropleth-methods-circle
-              q-choropleth-methods-circle--circle-fill {bucket.color.colorClass}" />
+              class="{bucket.color.colorClass !== undefined ? bucket.color.colorClass : ''}
+              q-choropleth-methods-circle
+              q-choropleth-methods-circle--circle-fill"
+              style="color: {bucket.color.customColor !== undefined ? bucket.color.customColor : ''}" />
           </td>
           {#if index === 0 && legendData.hasSingleValueBucket}
             <td />
