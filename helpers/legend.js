@@ -110,8 +110,13 @@ function getEqualBuckets(
   const range = maxValue - minValue;
   let equalBuckets = [];
   for (let i = 0; i < numberBuckets; i++) {
-    const from = i === 0 ? minValue : minValue + range * portion * i;
-    const to = minValue + range * portion * (i + 1);
+    let from = i === 0 ? minValue : minValue + range * portion * i;
+    let to = minValue + range * portion * (i + 1);
+
+    // round numbers
+    from = Math.round(from * 10) / 10;
+    to = Math.round(to * 10) / 10;
+
     equalBuckets.push({
       from,
       to,
