@@ -152,7 +152,7 @@ module.exports = {
       }
     }
 
-    if (request.params.optionName === "baseMap") {
+    if (request.params.optionName === "predefinedContent") {
       const baseMapEntityCollectionResponse = await request.server.inject({
         method: "GET",
         url: `/entityCollection/${item.baseMap}`,
@@ -163,26 +163,32 @@ module.exports = {
 
         if (item.baseMap === "hexagonCHCantons") {
           const cantons = baseMapEntityCollection.cantons;
-          let predefinedValues;
+          let predefinedContent;
           if (item.entityType === "name") {
-            predefinedValues = cantons
+            predefinedContent = cantons
               .sort((cantonA, cantonB) =>
                 cantonA.name.localeCompare(cantonB.name)
               )
               .map((canton) => {
-                return [canton.name];
+                return [{ value: canton.name, readOnly: true }];
               });
           } else if (item.entityType === "bfsNumber") {
-            predefinedValues = cantons
+            predefinedContent = cantons
               .sort((cantonA, cantonB) => cantonA.id - cantonB.id)
               .map((canton) => {
-                return [canton.id];
+                return [{ value: canton.id, readOnly: true }];
               });
           }
+
+          // we have a problem here: the object {value: "text", readOnly: true} will be
+          // transformed to "text", if it's e.g. {cantonName: "text", readOnly: true} we'll
+          // get undefined
+          // most probably some magic is happening in Q editor :-o
           return {
             "Q:options": {
               predefinedContent: {
-                values: [["Kanton", "Wert"]].concat(predefinedValues),
+                protectOverwrites: true,
+                data: [["Kanton", "Wert"]].concat(predefinedContent),
               },
             },
           };
