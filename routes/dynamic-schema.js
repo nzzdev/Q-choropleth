@@ -180,10 +180,6 @@ module.exports = {
               });
           }
 
-          // we have a problem here: the object {value: "text", readOnly: true} will be
-          // transformed to "text", if it's e.g. {cantonName: "text", readOnly: true} we'll
-          // get undefined
-          // most probably some magic is happening in Q editor :-o
           return {
             "Q:options": {
               predefinedContent: {
