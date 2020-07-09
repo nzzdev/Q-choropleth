@@ -54,14 +54,10 @@
       "Q:type": "table",
       "Q:options": {
         "allowTranspose": false,
-        "predefinedContent": {
-          "type": "column",
-          "index": 0
-        },
         "dynamicSchema": {
           "type": "ToolEndpoint",
           "config": {
-            "endpoint": "dynamic-schema/baseMap",
+            "endpoint": "dynamic-schema/predefinedContent",
             "fields": ["baseMap", "entityType"]
           }
         },
