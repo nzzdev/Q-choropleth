@@ -4,6 +4,10 @@
       "title": "Basiskarte und Geo-Code",
       "body": "Du hast bereits Werte in der Datentabelle erfasst. Änderungen an der Basiskarte oder am Geo-Code sind nur möglich, wenn die Werte gelöscht sind."
     },
+    "predefinedContent": {
+      "title": "Vordefinierte Werte",
+      "body": "Die erste Spalte ist auf Basis der Basiskarte und des Geo-Codes vorausgefüllt. Diese Werte können nicht geändert werden. Du kannst in der zweiten Spalte die passenden Werte eintragen."
+    },
     "customBuckets": {
       "title": "Manuelle Grenzen",
       "body": "Die manuellen Grenzen umfassen nicht alle der in der Datentabelle eingegebenen Werte."
