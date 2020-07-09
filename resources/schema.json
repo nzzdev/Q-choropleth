@@ -67,8 +67,9 @@
         },
         "notificationChecks": [
           {
-            "type": "EmptyData",
+            "type": "ToolEndpoint",
             "config": {
+              "endpoint": "notification/predefinedContent",
               "fields": ["data"]
             },
             "priority": {

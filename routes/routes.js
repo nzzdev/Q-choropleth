@@ -7,6 +7,7 @@ module.exports = [
   require("./locales.js"),
   require("./option-availability.js"),
   require("./notifications/hasValues.js"),
+  require("./notifications/predefinedContent.js"),
   require("./notifications/customBuckets.js"),
   require("./notifications/numberBucketsTooLarge.js"),
   require("./notifications/unsupportedValuesForType.js"),
