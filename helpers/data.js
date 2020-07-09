@@ -161,7 +161,7 @@ function getDivisorForValue(value) {
     divisor = Math.pow(10, 9);
   } else if (value >= Math.pow(10, 6)) {
     divisor = Math.pow(10, 6);
-  } else if (value >= Math.pow(10, 4)) {
+  } else if (value >= Math.pow(10, 3)) {
     divisor = Math.pow(10, 3);
   }
   return divisor;
