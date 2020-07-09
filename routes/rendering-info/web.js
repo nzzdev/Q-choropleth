@@ -96,7 +96,7 @@ module.exports = {
 
     const divisor = dataHelpers.getDivisor(data);
     if (divisor > 1) {
-      data = dataHelper.getDividedData(data, divisor);
+      //data = dataHelpers.getDividedData(data, divisor);
       if (item.subtitle && item.subtitle !== "") {
         item.subtitleSuffix = ` (in ${dataHelpers.getDivisorString(divisor)})`;
       } else {
