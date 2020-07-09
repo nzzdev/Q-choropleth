@@ -86,8 +86,6 @@ function getNumberType(legendData, data) {
   if (!hasFloatingNumbers) {
     data.forEach((row) => {
       if (!hasFloatingNumbers) {
-        console.log("isFloat(parseFloat(row[1]))");
-        console.log(isFloat(parseFloat(row[1])));
         hasFloatingNumbers = isFloat(parseFloat(row[1]));
       }
     });
@@ -96,13 +94,8 @@ function getNumberType(legendData, data) {
   return hasFloatingNumbers;
 }
 
-function isFloat(val) {
-  var floatRegex = /^-?\d+(?:[.,]\d*?)?$/;
-  if (!floatRegex.test(val)) return false;
-
-  val = parseFloat(val);
-  if (isNaN(val)) return false;
-  return true;
+function isFloat(value) {
+  return value.toString().indexOf(".") !== -1;
 }
 
 function getFlatData(data) {

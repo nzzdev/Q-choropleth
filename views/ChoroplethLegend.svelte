@@ -159,7 +159,7 @@
           <div
             class="s-font-note-s"
             style={getDescriptionAlignment(labelLegend)}>
-            {labelLegend.label}: {labelLegend.value}
+            {labelLegend.label}: {getFormatedValue(labelLegend.value, hasFloatingNumbers)}
           </div>
         {/if}
         {#if hasSingleValueBucket(legendData) || legendData.hasNullValues}

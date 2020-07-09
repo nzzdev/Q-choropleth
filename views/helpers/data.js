@@ -3,7 +3,7 @@ function getFormatedValue(value, hasFloatingNumbers) {
     if (value.toString().indexOf(".") === -1) {
       value += ",0";
     } else {
-      value = value.replace(".", ",");
+      value = value.toString().replace(".", ",");
     }
   }
   return value;

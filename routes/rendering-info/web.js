@@ -116,6 +116,10 @@ module.exports = {
         const methodBoxText =
           methodBoxTextConfig[item.options.numericalOptions.bucketType];
         context.methodBoxText = methodBoxText || "";
+        context.hasFloatingNumbers = dataHelpers.getNumberType(
+          context.legendData,
+          data
+        );
       } catch (e) {
         throw new Boom.Boom(e);
       }
