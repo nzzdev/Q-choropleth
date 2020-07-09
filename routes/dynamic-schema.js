@@ -183,7 +183,7 @@ module.exports = {
           return {
             "Q:options": {
               predefinedContent: {
-                protectOverwrites: true,
+                allowOverwrites: false,
                 data: [["Kanton", "Wert"]].concat(predefinedContent),
               },
             },
