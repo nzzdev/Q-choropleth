@@ -80,28 +80,32 @@
         cantonCode="BS"
         value={getValue('BS')}
         color={getColor('BS', legendData)}
-        {valuesOnMap} />
+        {valuesOnMap}
+        {hasFloatingNumbers} />
       <Hexagon
         width={contentWidth / 8}
         xIndex="3"
         cantonCode="BL"
         value={getValue('BL')}
         color={getColor('BL', legendData)}
-        {valuesOnMap} />
+        {valuesOnMap}
+        {hasFloatingNumbers} />
       <Hexagon
         width={contentWidth / 8}
         xIndex="4"
         cantonCode="SH"
         value={getValue('SH')}
         color={getColor('SH', legendData)}
-        {valuesOnMap} />
+        {valuesOnMap}
+        {hasFloatingNumbers} />
       <Hexagon
         width={contentWidth / 8}
         xIndex="5"
         cantonCode="TG"
         value={getValue('TG')}
         color={getColor('TG', legendData)}
-        {valuesOnMap} />
+        {valuesOnMap}
+        {hasFloatingNumbers} />
     </svg>
     <svg class="swiss-hexagon-map-row" y="{baseSpacing * 1}%">
       <Hexagon
@@ -110,42 +114,48 @@
         cantonCode="JU"
         value={getValue('JU')}
         color={getColor('JU', legendData)}
-        {valuesOnMap} />
+        {valuesOnMap}
+        {hasFloatingNumbers} />
       <Hexagon
         width={contentWidth / 8}
         xIndex="2.5"
         cantonCode="SO"
         value={getValue('SO')}
         color={getColor('SO', legendData)}
-        {valuesOnMap} />
+        {valuesOnMap}
+        {hasFloatingNumbers} />
       <Hexagon
         width={contentWidth / 8}
         xIndex="3.5"
         cantonCode="AG"
         value={getValue('AG')}
         color={getColor('AG', legendData)}
-        {valuesOnMap} />
+        {valuesOnMap}
+        {hasFloatingNumbers} />
       <Hexagon
         width={contentWidth / 8}
         xIndex="4.5"
         cantonCode="ZH"
         value={getValue('ZH')}
         color={getColor('ZH', legendData)}
-        {valuesOnMap} />
+        {valuesOnMap}
+        {hasFloatingNumbers} />
       <Hexagon
         width={contentWidth / 8}
         xIndex="5.5"
         cantonCode="AR"
         value={getValue('AR')}
         color={getColor('AR', legendData)}
-        {valuesOnMap} />
+        {valuesOnMap}
+        {hasFloatingNumbers} />
       <Hexagon
         width={contentWidth / 8}
         xIndex="6.5"
         cantonCode="AI"
         value={getValue('AI')}
         color={getColor('AI', legendData)}
-        {valuesOnMap} />
+        {valuesOnMap}
+        {hasFloatingNumbers} />
     </svg>
     <svg class="swiss-hexagon-map-row" y="{baseSpacing * 2}%">
       <Hexagon
@@ -154,42 +164,48 @@
         cantonCode="NE"
         value={getValue('NE')}
         color={getColor('NE', legendData)}
-        {valuesOnMap} />
+        {valuesOnMap}
+        {hasFloatingNumbers} />
       <Hexagon
         width={contentWidth / 8}
         xIndex="2"
         cantonCode="BE"
         value={getValue('BE')}
         color={getColor('BE', legendData)}
-        {valuesOnMap} />
+        {valuesOnMap}
+        {hasFloatingNumbers} />
       <Hexagon
         width={contentWidth / 8}
         xIndex="3"
         cantonCode="LU"
         value={getValue('LU')}
         color={getColor('LU', legendData)}
-        {valuesOnMap} />
+        {valuesOnMap}
+        {hasFloatingNumbers} />
       <Hexagon
         width={contentWidth / 8}
         xIndex="4"
         cantonCode="ZG"
         value={getValue('ZG')}
         color={getColor('ZG', legendData)}
-        {valuesOnMap} />
+        {valuesOnMap}
+        {hasFloatingNumbers} />
       <Hexagon
         width={contentWidth / 8}
         xIndex="5"
         cantonCode="SZ"
         value={getValue('SZ')}
         color={getColor('SZ', legendData)}
-        {valuesOnMap} />
+        {valuesOnMap}
+        {hasFloatingNumbers} />
       <Hexagon
         width={contentWidth / 8}
         xIndex="6"
         cantonCode="SG"
         value={getValue('SG')}
         color={getColor('SG', legendData)}
-        {valuesOnMap} />
+        {valuesOnMap}
+        {hasFloatingNumbers} />
     </svg>
     <svg class="swiss-hexagon-map-row" y="{baseSpacing * 3}%">
       <Hexagon
@@ -198,49 +214,56 @@
         cantonCode="VD"
         value={getValue('VD')}
         color={getColor('VD', legendData)}
-        {valuesOnMap} />
+        {valuesOnMap}
+        {hasFloatingNumbers} />
       <Hexagon
         width={contentWidth / 8}
         xIndex="1.5"
         cantonCode="FR"
         value={getValue('FR')}
         color={getColor('FR', legendData)}
-        {valuesOnMap} />
+        {valuesOnMap}
+        {hasFloatingNumbers} />
       <Hexagon
         width={contentWidth / 8}
         xIndex="2.5"
         cantonCode="OW"
         value={getValue('OW')}
         color={getColor('OW', legendData)}
-        {valuesOnMap} />
+        {valuesOnMap}
+        {hasFloatingNumbers} />
       <Hexagon
         width={contentWidth / 8}
         xIndex="3.5"
         cantonCode="NW"
         value={getValue('NW')}
         color={getColor('NW', legendData)}
-        {valuesOnMap} />
+        {valuesOnMap}
+        {hasFloatingNumbers} />
       <Hexagon
         width={contentWidth / 8}
         xIndex="4.5"
         cantonCode="UR"
         value={getValue('UR')}
         color={getColor('UR', legendData)}
-        {valuesOnMap} />
+        {valuesOnMap}
+        {hasFloatingNumbers} />
       <Hexagon
         width={contentWidth / 8}
         xIndex="5.5"
         cantonCode="GL"
         value={getValue('GL')}
         color={getColor('GL', legendData)}
-        {valuesOnMap} />
+        {valuesOnMap}
+        {hasFloatingNumbers} />
       <Hexagon
         width={contentWidth / 8}
         xIndex="6.5"
         cantonCode="GR"
         value={getValue('GR')}
         color={getColor('GR', legendData)}
-        {valuesOnMap} />
+        {valuesOnMap}
+        {hasFloatingNumbers} />
     </svg>
     <svg class="swiss-hexagon-map-row" y="{baseSpacing * 4}%">
       <Hexagon
@@ -249,21 +272,24 @@
         cantonCode="GE"
         value={getValue('GE')}
         color={getColor('GE', legendData)}
-        {valuesOnMap} />
+        {valuesOnMap}
+        {hasFloatingNumbers} />
       <Hexagon
         width={contentWidth / 8}
         xIndex="2"
         cantonCode="VS"
         value={getValue('VS')}
         color={getColor('VS', legendData)}
-        {valuesOnMap} />
+        {valuesOnMap}
+        {hasFloatingNumbers} />
       <Hexagon
         width={contentWidth / 8}
         xIndex="5"
         cantonCode="TI"
         value={getValue('TI')}
         color={getColor('TI', legendData)}
-        {valuesOnMap} />
+        {valuesOnMap}
+        {hasFloatingNumbers} />
     </svg>
   </svg>
 </div>

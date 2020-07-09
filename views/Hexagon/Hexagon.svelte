@@ -1,10 +1,12 @@
 <script>
+  import { getFormatedValue } from "../helpers/data.js";
   export let cantonCode;
   export let value;
   export let color;
   export let width;
   export let xIndex;
   export let valuesOnMap;
+  export let hasFloatingNumbers;
 
   function getXCoordinate(width, xIndex) {
     return width * xIndex;
@@ -93,7 +95,7 @@
             text-anchor="middle"
             dy="5px"
             fill="currentColor">
-            {value}
+            {getFormatedValue(value, hasFloatingNumbers)}
           </text>
         {:else}
           <text
