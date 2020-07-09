@@ -70,7 +70,7 @@ module.exports = {
     // TODO: add display options
 
     // since we do not need header row for further processing we remove it here first
-    item.data = dataHelpers.getDataWithoutHeaderRow(item.data);
+    let data = dataHelpers.getDataWithoutHeaderRow(item.data);
 
     const context = {
       item,
@@ -94,10 +94,20 @@ module.exports = {
       }
     }
 
+    const divisor = dataHelpers.getDivisor(data);
+    if (divisor > 1) {
+      data = dataHelper.getDividedData(data, divisor);
+      if (item.subtitle && item.subtitle !== "") {
+        item.subtitleSuffix = ` (in ${dataHelpers.getDivisorString(divisor)})`;
+      } else {
+        item.subtitleSuffix = `in ${dataHelpers.getDivisorString(divisor)}`;
+      }
+    }
+
     if (item.options.choroplethType === "numerical") {
       try {
         context.legendData = legendHelpers.getNumericalLegend(
-          item.data,
+          data,
           item.options.numericalOptions
         );
         context.valuesOnMap = !item.options.numericalOptions.noValuesOnMap;
@@ -115,7 +125,7 @@ module.exports = {
       }
     } else {
       context.legendData = legendHelpers.getCategoricalLegend(
-        item.data,
+        data,
         item.options.categoricalOptions
       );
       context.valuesOnMap = item.options.categoricalOptions.valuesOnMap;
@@ -123,7 +133,7 @@ module.exports = {
 
     context.hasFloatingNumbers = dataHelpers.getNumberType(
       context.legendData,
-      item.data
+      data
     );
 
     const exactPixelWidth = getExactPixelWidth(
