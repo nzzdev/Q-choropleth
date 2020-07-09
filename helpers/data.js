@@ -181,7 +181,12 @@ function getDivisor(data) {
   }
 }
 
-function getDividedData(data, divisor) {}
+function getDividedData(data, divisor) {
+  return data.map((row) => {
+    row[1] = parseFloat(row[1] / divisor).toString();
+    return row;
+  });
+}
 
 module.exports = {
   getDataWithoutHeaderRow,
