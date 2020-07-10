@@ -30,12 +30,24 @@
           {#if index === 0 && legendData.hasSingleValueBucket}
             <td />
             <td />
-            <td>{getFormatedValue(bucket.from, hasFloatingNumbers)}</td>
+            <td>
+              {#if hasFloatingNumbers}
+                {getFormatedValue(bucket.from)}
+              {:else}{bucket.from}{/if}
+            </td>
             <td>(nur ein Datenpunkt)</td>
           {:else}
-            <td>{getFormatedValue(bucket.from, hasFloatingNumbers)}</td>
+            <td>
+              {#if hasFloatingNumbers}
+                {getFormatedValue(bucket.from)}
+              {:else}{bucket.from}{/if}
+            </td>
             <td>-</td>
-            <td>{getFormatedValue(bucket.to, hasFloatingNumbers)}</td>
+            <td>
+              {#if hasFloatingNumbers}
+                {getFormatedValue(bucket.to)}
+              {:else}{bucket.to}{/if}
+            </td>
             <td />
           {/if}
         </tr>

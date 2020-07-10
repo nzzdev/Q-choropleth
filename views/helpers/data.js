@@ -1,5 +1,5 @@
-function getFormatedValue(value, hasFloatingNumbers) {
-  if (hasFloatingNumbers) {
+function getFormatedValue(value) {
+  if (value) {
     if (value.toString().indexOf(".") === -1) {
       value += ",0";
     } else {
