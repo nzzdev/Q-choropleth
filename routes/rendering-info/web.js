@@ -67,8 +67,6 @@ module.exports = {
     const item = request.payload.item;
     const toolRuntimeConfig = request.payload.toolRuntimeConfig;
 
-    // TODO: add display options
-
     // since we do not need header row for further processing we remove it here first
     item.data = dataHelpers.getDataWithoutHeaderRow(item.data);
 
