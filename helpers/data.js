@@ -149,7 +149,6 @@ function getDivisorForValue(value) {
     return divisor;
   }
 
-  // use the max value to calculate the divisor
   if (value >= Math.pow(10, 9)) {
     divisor = Math.pow(10, 9);
   } else if (value >= Math.pow(10, 6)) {
