@@ -21,22 +21,20 @@
   {#if item.subtitle}
     <div class="s-q-item__subtitle">{item.subtitle}</div>
   {/if}
-  {#if contentWidth}
-    <div class="q-choropleth-container">
-      {#if !(legendData.type === 'categorical' && valuesOnMap)}
-        <ChoroplethLegend {legendData} {contentWidth} />
-      {/if}
-      {#if item.baseMap === 'hexagonCHCantons'}
-        <HexagonCHCantonsMap
-          data={item.data}
-          {valuesOnMap}
-          {legendData}
-          {entityMapping}
-          {contentWidth} />
-      {/if}
-      {#if legendData.type === 'numerical'}
-        <MethodBox {legendData} {methodBoxText} {methodBoxArticle} />
-      {/if}
-    </div>
-  {/if}
+  <div class="q-choropleth-container">
+    {#if !(legendData.type === 'categorical' && valuesOnMap)}
+      <ChoroplethLegend {legendData} {contentWidth} />
+    {/if}
+    {#if item.baseMap === 'hexagonCHCantons'}
+      <HexagonCHCantonsMap
+        data={item.data}
+        {valuesOnMap}
+        {legendData}
+        {entityMapping}
+        {contentWidth} />
+    {/if}
+    {#if legendData.type === 'numerical'}
+      <MethodBox {legendData} {methodBoxText} {methodBoxArticle} />
+    {/if}
+  </div>
 </div>

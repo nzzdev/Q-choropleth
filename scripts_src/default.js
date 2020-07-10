@@ -4,18 +4,14 @@ export default class Choropleth {
       this.element = element;
       this.data = data;
       this.width = this.data.width;
+      this.isMethodBoxVisible = false;
+
       if (!this.width) {
         this.width = this.element.getBoundingClientRect().width;
         this.addResizeEventListenerToContainer();
         this.callRenderingInfo();
-      }
-
-      this.requestId = this.data.requestId;
-      this.isMethodBoxVisible = false;
-      if (this.data.choroplethType === "numerical") {
-        this.prepareMethodBoxElements();
-        this.addEventListenerToMethodBoxToggle();
-        this.addEventListenerToMethodBoxArticleLink();
+      } else if (this.data.choroplethType === "numerical") {
+        this.setupMethodBox();
       }
     }
   }
@@ -62,8 +58,18 @@ export default class Choropleth {
       .then((renderingInfo) => {
         if (renderingInfo.markup) {
           this.element.innerHTML = renderingInfo.markup;
+          if (this.data.choroplethType === "numerical") {
+            this.setupMethodBox();
+          }
         }
       });
+  }
+
+  setupMethodBox() {
+    this.prepareMethodBoxElements();
+    this.setVisibilityOfElements();
+    this.addEventListenerToMethodBoxToggle();
+    this.addEventListenerToMethodBoxArticleLink();
   }
 
   prepareMethodBoxElements() {
@@ -82,6 +88,18 @@ export default class Choropleth {
     this.methodBoxArticleLink = this.element.querySelector(
       ".q-choropleth-methods-article-container"
     );
+  }
+
+  setVisibilityOfElements() {
+    if (this.isMethodBoxVisible) {
+      this.methodBoxContainerElement.classList.remove("hidden");
+      this.methodBoxOpenIcon.classList.add("hidden");
+      this.methodBoxCloseIcon.classList.remove("hidden");
+    } else {
+      this.methodBoxContainerElement.classList.add("hidden");
+      this.methodBoxCloseIcon.classList.add("hidden");
+      this.methodBoxOpenIcon.classList.remove("hidden");
+    }
   }
 
   addEventListenerToMethodBoxToggle() {
@@ -104,15 +122,7 @@ export default class Choropleth {
     };
 
     this.isMethodBoxVisible = !this.isMethodBoxVisible;
-    if (this.isMethodBoxVisible) {
-      this.methodBoxContainerElement.classList.remove("hidden");
-      this.methodBoxOpenIcon.classList.add("hidden");
-      this.methodBoxCloseIcon.classList.remove("hidden");
-    } else {
-      this.methodBoxContainerElement.classList.add("hidden");
-      this.methodBoxCloseIcon.classList.add("hidden");
-      this.methodBoxOpenIcon.classList.remove("hidden");
-    }
+    this.setVisibilityOfElements();
 
     const trackingEvent = new CustomEvent("q-tracking-event", {
       bubbles: true,
