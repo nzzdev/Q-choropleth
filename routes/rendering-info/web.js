@@ -75,6 +75,7 @@ module.exports = {
     const context = {
       item,
       id: `q_choropleth_${toolRuntimeConfig.requestId}`,
+      displayOptions: request.payload.toolRuntimeConfig.displayOptions || {},
     };
 
     const baseMapEntityCollectionResponse = await request.server.inject({
