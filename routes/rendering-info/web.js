@@ -67,10 +67,8 @@ module.exports = {
     const item = request.payload.item;
     const toolRuntimeConfig = request.payload.toolRuntimeConfig;
 
-    // TODO: add display options
-
     // since we do not need header row for further processing we remove it here first
-    let data = dataHelpers.getDataWithoutHeaderRow(item.data);
+    item.data = dataHelpers.getDataWithoutHeaderRow(item.data);
 
     const context = {
       item,
@@ -94,9 +92,9 @@ module.exports = {
       }
     }
 
-    const divisor = dataHelpers.getDivisor(data);
+    const divisor = dataHelpers.getDivisor(item.data);
     if (divisor > 1) {
-      data = dataHelpers.getDividedData(data, divisor);
+      item.data = dataHelpers.getDividedData(item.data, divisor);
       if (item.subtitle && item.subtitle !== "") {
         item.subtitleSuffix = ` (in ${dataHelpers.getDivisorString(divisor)})`;
       } else {
@@ -107,7 +105,7 @@ module.exports = {
     if (item.options.choroplethType === "numerical") {
       try {
         context.legendData = legendHelpers.getNumericalLegend(
-          data,
+          item.data,
           item.options.numericalOptions
         );
         context.valuesOnMap = !item.options.numericalOptions.noValuesOnMap;
@@ -118,14 +116,14 @@ module.exports = {
         context.methodBoxText = methodBoxText || "";
         context.hasFloatingNumbers = dataHelpers.getNumberType(
           context.legendData,
-          data
+          item.data
         );
       } catch (e) {
         throw new Boom.Boom(e);
       }
     } else {
       context.legendData = legendHelpers.getCategoricalLegend(
-        data,
+        item.data,
         item.options.categoricalOptions
       );
       context.valuesOnMap = item.options.categoricalOptions.valuesOnMap;
