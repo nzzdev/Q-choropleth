@@ -27,7 +27,6 @@ export default class Choropleth {
         requestAnimationFrame(() => {
           const newWidth = this.element.getBoundingClientRect().width;
           if (newWidth !== this.width) {
-            console.log(`${this.width} + ${newWidth}`);
             this.width = newWidth;
             this.callRenderingInfo();
           }
