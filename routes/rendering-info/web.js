@@ -67,8 +67,6 @@ module.exports = {
     const item = request.payload.item;
     const toolRuntimeConfig = request.payload.toolRuntimeConfig;
 
-    // TODO: add display options
-
     // since we do not need header row for further processing we remove it here first
     item.data = dataHelpers.getDataWithoutHeaderRow(item.data);
 
@@ -94,6 +92,16 @@ module.exports = {
       }
     }
 
+    const divisor = dataHelpers.getDivisor(item.data);
+    if (divisor > 1) {
+      item.data = dataHelpers.getDividedData(item.data, divisor);
+      if (item.subtitle && item.subtitle !== "") {
+        item.subtitleSuffix = ` (in ${dataHelpers.getDivisorString(divisor)})`;
+      } else {
+        item.subtitleSuffix = `in ${dataHelpers.getDivisorString(divisor)}`;
+      }
+    }
+
     if (item.options.choroplethType === "numerical") {
       try {
         context.legendData = legendHelpers.getNumericalLegend(
@@ -103,10 +111,13 @@ module.exports = {
         context.valuesOnMap = !item.options.numericalOptions.noValuesOnMap;
         context.legendData.labelLegend =
           item.options.numericalOptions.labelLegend;
-
         const methodBoxText =
           methodBoxTextConfig[item.options.numericalOptions.bucketType];
         context.methodBoxText = methodBoxText || "";
+        context.hasFloatingNumbers = dataHelpers.hasFloatingNumbers(
+          context.legendData,
+          item.data
+        );
       } catch (e) {
         throw new Boom.Boom(e);
       }

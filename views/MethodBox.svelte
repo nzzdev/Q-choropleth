@@ -1,9 +1,11 @@
 <script>
   import OpenIcon from "./svg/MethodBoxOpenIcon.svelte";
   import CloseIcon from "./svg/MethodBoxCloseIcon.svelte";
+  import { getFormatedValue } from "./helpers/data.js";
   export let legendData;
   export let methodBoxText;
   export let methodBoxArticle;
+  export let hasFloatingNumbers;
 </script>
 
 <div class="q-choropleth-methods-link s-font-note-s">
@@ -28,12 +30,24 @@
           {#if index === 0 && legendData.hasSingleValueBucket}
             <td />
             <td />
-            <td>{bucket.from}</td>
+            <td>
+              {#if hasFloatingNumbers}
+                {getFormatedValue(bucket.from)}
+              {:else}{bucket.from}{/if}
+            </td>
             <td>(nur ein Datenpunkt)</td>
           {:else}
-            <td>{bucket.from}</td>
+            <td>
+              {#if hasFloatingNumbers}
+                {getFormatedValue(bucket.from)}
+              {:else}{bucket.from}{/if}
+            </td>
             <td>-</td>
-            <td>{bucket.to}</td>
+            <td>
+              {#if hasFloatingNumbers}
+                {getFormatedValue(bucket.to)}
+              {:else}{bucket.to}{/if}
+            </td>
             <td />
           {/if}
         </tr>

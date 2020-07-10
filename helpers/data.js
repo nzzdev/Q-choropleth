@@ -1,3 +1,6 @@
+const clone = require("clone");
+const array2d = require("array2d");
+
 function getDataWithoutHeaderRow(data) {
   return data.slice(1);
 }
@@ -21,7 +24,9 @@ function getCustomBucketBorders(customBuckets) {
 function getMedian(values) {
   let middleIndex = Math.floor(values.length / 2);
   let sortedNumbers = [...values].sort((a, b) => a - b);
-  return values.length % 2 !== 0 ? sortedNumbers[middleIndex] : (sortedNumbers[middleIndex - 1] + sortedNumbers[middleIndex]) / 2;
+  return values.length % 2 !== 0
+    ? sortedNumbers[middleIndex]
+    : (sortedNumbers[middleIndex - 1] + sortedNumbers[middleIndex]) / 2;
 }
 
 function getMetaData(values, numberValues) {
@@ -30,8 +35,11 @@ function getMetaData(values, numberValues) {
     hasZeroValues: numberValues.find((value) => value === 0) !== undefined,
     maxValue: Math.max(...numberValues),
     minValue: Math.min(...numberValues),
-    averageValue: Math.round(numberValues.reduce((a, b) => a + b, 0) / numberValues.length, 2),
-    medianValue: getMedian(numberValues)
+    averageValue: Math.round(
+      numberValues.reduce((a, b) => a + b, 0) / numberValues.length,
+      2
+    ),
+    medianValue: getMedian(numberValues),
   };
 }
 
@@ -66,6 +74,105 @@ function getNumberBuckets(numericalOptions) {
   }
 }
 
+function hasFloatingNumbers(legendData, data) {
+  let hasFloatingNumbers = legendData.buckets.some(
+    (bucket) => isFloat(bucket.from) || isFloat(bucket.to)
+  );
+
+  if (hasFloatingNumbers) {
+    return true;
+  } else {
+    // proceed with data array
+    return data.some((row) => isFloat(parseFloat(row[1])));
+  }
+}
+
+function isFloat(value) {
+  return value.toString().indexOf(".") !== -1;
+}
+
+function getFlatData(data) {
+  const dataOnly = array2d.crop(
+    clone(data),
+    0,
+    1,
+    array2d.width(data) - 1,
+    array2d.height(data) - 1
+  );
+  const flatData = array2d.flatten(dataOnly);
+  return flatData;
+}
+
+function getMaxValue(data) {
+  const flatData = getFlatData(data).filter((value) => {
+    return value !== null && value !== undefined;
+  });
+  return Math.max.apply(null, flatData);
+}
+
+function getMinValue(data) {
+  const flatData = getFlatData(data).filter((value) => {
+    return value !== null && value !== undefined;
+  });
+  return Math.min.apply(null, flatData);
+}
+
+function getDivisorString(divisor) {
+  let divisorString = "";
+  switch (divisor) {
+    case Math.pow(10, 9):
+      divisorString = "Milliarden";
+      break;
+    case Math.pow(10, 6):
+      divisorString = "Millionen";
+      break;
+    case Math.pow(10, 3):
+      divisorString = "Tausend";
+      break;
+    default:
+      divisorString = "";
+      break;
+  }
+  return divisorString;
+}
+
+function getDivisorForValue(value) {
+  let divisor = 1;
+  if (!value || value === 0) {
+    return divisor;
+  }
+
+  if (value >= Math.pow(10, 9)) {
+    divisor = Math.pow(10, 9);
+  } else if (value >= Math.pow(10, 6)) {
+    divisor = Math.pow(10, 6);
+  } else if (value >= Math.pow(10, 3)) {
+    divisor = Math.pow(10, 3);
+  }
+  return divisor;
+}
+
+function getDivisor(data) {
+  try {
+    const minValue = getMinValue(data);
+    const maxValue = getMaxValue(data);
+    return Math.max(
+      getDivisorForValue(maxValue),
+      getDivisorForValue(Math.abs(minValue))
+    );
+  } catch (err) {
+    // if something goes wrong, the divisor is just 1
+    return 1;
+  }
+}
+
+function getDividedData(data, divisor) {
+  return data.map((row) => {
+    row[1] = parseFloat(row[1] / divisor).toString();
+    return row;
+  });
+}
+
 module.exports = {
   getDataWithoutHeaderRow,
   getUniqueCategories,
@@ -74,4 +181,8 @@ module.exports = {
   getNonNullNumericalValues,
   getMetaData,
   getNumberBuckets,
+  hasFloatingNumbers,
+  getDivisor,
+  getDivisorString,
+  getDividedData,
 };

@@ -1,6 +1,8 @@
 <script>
+  import { getFormatedValue } from "./helpers/data.js";
   export let legendData;
   export let contentWidth;
+  export let hasFloatingNumbers;
   let labelLegend = getLabelLegend(legendData);
 
   const legendBarHeight = 16;
@@ -110,11 +112,15 @@
         <div class="q-choropleth-legend-value-container">
           <span
             class="q-choropleth-legend-value-container--minVal s-font-note-s">
-            {legendData.minValue}
+            {#if hasFloatingNumbers}
+              {getFormatedValue(legendData.minValue)}
+            {:else}{legendData.minValue}{/if}
           </span>
           <span
             class="q-choropleth-legend-value-container--maxVal s-font-note-s">
-            {legendData.maxValue}
+            {#if hasFloatingNumbers}
+              {getFormatedValue(legendData.maxValue)}
+            {:else}{legendData.maxValue}{/if}
           </span>
         </div>
         <div class="q-choropleth-legend-border-container">
@@ -157,7 +163,10 @@
           <div
             class="s-font-note-s"
             style={getDescriptionAlignment(labelLegend)}>
-            {labelLegend.label}: {labelLegend.value}
+            {labelLegend.label}:
+            {#if hasFloatingNumbers}
+              {getFormatedValue(legendData.minValue)}
+            {:else}{legendData.minValue}{/if}
           </div>
         {/if}
         {#if hasSingleValueBucket(legendData) || legendData.hasNullValues}
@@ -175,7 +184,9 @@
                     class="q-choropleth-legend-bucket {getColorClass(legendData.buckets[0])}"
                     style="fill: {getCustomColor(legendData.buckets[0])}" />
                 </svg>
-                {legendData.buckets[0].from}
+                {#if hasFloatingNumbers}
+                  {getFormatedValue(legendData.buckets[0].from)}
+                {:else}{legendData.buckets[0].from}{/if}
               </div>
             {/if}
             {#if legendData.hasNullValues}
