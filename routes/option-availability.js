@@ -1,5 +1,5 @@
 const Boom = require("@hapi/boom");
-const Joi = require("../helpers/custom-joi.js");
+const Joi = require("@hapi/joi");
 
 function hasCustomBuckets(bucketType) {
   return bucketType === "custom";

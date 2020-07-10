@@ -1,4 +1,4 @@
-const Joi = require("../helpers/custom-joi.js");
+const Joi = require("@hapi/joi");
 
 const geometricBaseMaps = ["hexagonCHCantons"];
 
