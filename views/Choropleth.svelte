@@ -13,25 +13,27 @@
   export let methodBoxArticle;
 </script>
 
-<div {id} class="s-q-item q-choropleth">
+<div id="{id}_container" class="s-q-item q-choropleth">
   <h3 class="s-q-item__title">{item.title}</h3>
   {#if item.subtitle}
     <div class="s-q-item__subtitle">{item.subtitle}</div>
   {/if}
-  <div id="{id}_container" class="q-choropleth-container">
-    {#if !(legendData.type === 'categorical' && valuesOnMap)}
-      <ChoroplethLegend {legendData} {contentWidth} />
-    {/if}
-    {#if item.baseMap === 'hexagonCHCantons'}
-      <HexagonCHCantonsMap
-        data={item.data}
-        {valuesOnMap}
-        {legendData}
-        {entityMapping}
-        {contentWidth} />
-    {/if}
-    {#if legendData.type === 'numerical'}
-      <MethodBox {legendData} {methodBoxText} {methodBoxArticle} />
-    {/if}
-  </div>
+  {#if contentWidth}
+    <div class="q-choropleth-container">
+      {#if !(legendData.type === 'categorical' && valuesOnMap)}
+        <ChoroplethLegend {legendData} {contentWidth} />
+      {/if}
+      {#if item.baseMap === 'hexagonCHCantons'}
+        <HexagonCHCantonsMap
+          data={item.data}
+          {valuesOnMap}
+          {legendData}
+          {entityMapping}
+          {contentWidth} />
+      {/if}
+      {#if legendData.type === 'numerical'}
+        <MethodBox {legendData} {methodBoxText} {methodBoxArticle} />
+      {/if}
+    </div>
+  {/if}
 </div>

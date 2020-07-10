@@ -3,8 +3,13 @@ export default class Choropleth {
     if (element) {
       this.element = element;
       this.data = data;
-      this.width =
-        this.data.width || this.element.getBoundingClientRect().width;
+      this.width = this.data.width;
+      if (!this.width) {
+        this.width = this.element.getBoundingClientRect().width;
+        this.addResizeEventListenerToContainer();
+        this.callRenderingInfo();
+      }
+
       this.requestId = this.data.requestId;
       this.isMethodBoxVisible = false;
       if (this.data.choroplethType === "numerical") {
@@ -13,6 +18,53 @@ export default class Choropleth {
         this.addEventListenerToMethodBoxArticleLink();
       }
     }
+  }
+
+  addResizeEventListenerToContainer() {
+    window.addEventListener(
+      "resize",
+      debounce(() => {
+        requestAnimationFrame(() => {
+          const newWidth = this.element.getBoundingClientRect().width;
+          if (newWidth !== this.width) {
+            console.log(`${this.width} + ${newWidth}`);
+            this.width = newWidth;
+            this.callRenderingInfo();
+          }
+        });
+      }, 250)
+    );
+  }
+
+  callRenderingInfo() {
+    let toolRuntimeConfig = this.data.toolRuntimeConfig;
+    toolRuntimeConfig.size = {
+      width: [
+        {
+          comparison: "=",
+          value: this.width,
+        },
+      ],
+    };
+
+    fetch(`${toolRuntimeConfig.toolBaseUrl}/rendering-info/web`, {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify({ item: this.data.item, toolRuntimeConfig }),
+    })
+      .then((response) => {
+        if (!response) {
+          return {};
+        }
+        return response.json();
+      })
+      .then((renderingInfo) => {
+        if (renderingInfo.markup) {
+          this.element.innerHTML = renderingInfo.markup;
+        }
+      });
   }
 
   prepareMethodBoxElements() {
@@ -93,4 +145,20 @@ export default class Choropleth {
     });
     event.target.dispatchEvent(trackingEvent);
   }
+}
+
+function debounce(func, wait, immediate) {
+  var timeout;
+  return function () {
+    var context = this,
+      args = arguments;
+    var later = function () {
+      timeout = null;
+      if (!immediate) func.apply(context, args);
+    };
+    var callNow = immediate && !timeout;
+    clearTimeout(timeout);
+    timeout = setTimeout(later, wait);
+    if (callNow) func.apply(context, args);
+  };
 }

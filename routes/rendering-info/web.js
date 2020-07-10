@@ -120,11 +120,12 @@ module.exports = {
     const exactPixelWidth = getExactPixelWidth(
       request.payload.toolRuntimeConfig
     );
+
+    // if we have the exact pixel width we add it to context
+    // if not the client side script will handle client side measuring
     if (typeof exactPixelWidth === "number") {
       context.contentWidth = exactPixelWidth;
-    } else {
-      context.contentWidth = 600;
-    } // add script here to meassure
+    }
 
     context.methodBoxArticle = process.env.METHOD_BOX_ARTICLE
       ? JSON.parse(process.env.METHOD_BOX_ARTICLE)
@@ -149,6 +150,9 @@ module.exports = {
             qId: context.item.id,
             requestId: context.id,
             choroplethType: context.item.options.choroplethType,
+            width: context.contentWidth,
+            item: item,
+            toolRuntimeConfig: toolRuntimeConfig,
           })})`,
         },
       ],
