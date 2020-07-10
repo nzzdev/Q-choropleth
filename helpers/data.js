@@ -101,7 +101,7 @@ function isFloat(value) {
 function getFlatData(data) {
   const dataOnly = array2d.crop(
     clone(data),
-    1,
+    0,
     1,
     array2d.width(data) - 1,
     array2d.height(data) - 1
