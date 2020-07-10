@@ -88,7 +88,7 @@
   }
 </script>
 
-{#if legendData !== undefined && contentWidth !== undefined}
+{#if legendData !== undefined}
   {#if legendData.type === 'categorical'}
     <!-- display categorical legend -->
     <div class="s-legend-icon-label">
