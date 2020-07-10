@@ -74,7 +74,7 @@ function getNumberBuckets(numericalOptions) {
   }
 }
 
-function getNumberType(legendData, data) {
+function hasFloatingNumbers(legendData, data) {
   let hasFloatingNumbers = false;
 
   legendData.buckets.forEach((bucket) => {
@@ -188,7 +188,7 @@ module.exports = {
   getNonNullNumericalValues,
   getMetaData,
   getNumberBuckets,
-  getNumberType,
+  hasFloatingNumbers,
   getDivisor,
   getDivisorString,
   getDividedData,
