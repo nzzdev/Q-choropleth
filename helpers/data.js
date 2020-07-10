@@ -75,23 +75,16 @@ function getNumberBuckets(numericalOptions) {
 }
 
 function hasFloatingNumbers(legendData, data) {
-  let hasFloatingNumbers = false;
+  let hasFloatingNumbers = legendData.buckets.some(
+    (bucket) => isFloat(bucket.from) || isFloat(bucket.to)
+  );
 
-  legendData.buckets.forEach((bucket) => {
-    if (!hasFloatingNumbers) {
-      hasFloatingNumbers = isFloat(bucket.from) || isFloat(bucket.to);
-    }
-  });
-
-  if (!hasFloatingNumbers) {
-    data.forEach((row) => {
-      if (!hasFloatingNumbers) {
-        hasFloatingNumbers = isFloat(parseFloat(row[1]));
-      }
-    });
+  if (hasFloatingNumbers) {
+    return true;
+  } else {
+    // proceed with data array
+    return data.some((row) => isFloat(parseFloat(row[1])));
   }
-
-  return hasFloatingNumbers;
 }
 
 function isFloat(value) {
