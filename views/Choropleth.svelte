@@ -12,19 +12,23 @@
   export let methodBoxText;
   export let methodBoxArticle;
   export let displayOptions;
+  export let hasFloatingNumbers;
 </script>
 
 <div id="{id}_container" class="s-q-item q-choropleth">
   {#if !displayOptions.hideTitle}
     <h3 class="s-q-item__title">{item.title}</h3>
   {/if}
-  {#if item.subtitle}
-    <div class="s-q-item__subtitle">{item.subtitle}</div>
+  {#if item.subtitle || item.subtitleSuffix}
+    <div class="s-q-item__subtitle">
+      {#if item.subtitle}{item.subtitle}{/if}
+      {#if item.subtitleSuffix}{item.subtitleSuffix}{/if}
+    </div>
   {/if}
   {#if contentWidth}
     <div class="q-choropleth-container">
       {#if !(legendData.type === 'categorical' && valuesOnMap)}
-        <ChoroplethLegend {legendData} {contentWidth} />
+        <ChoroplethLegend {legendData} {contentWidth} {hasFloatingNumbers} />
       {/if}
       {#if item.baseMap === 'hexagonCHCantons'}
         <HexagonCHCantonsMap
@@ -32,10 +36,15 @@
           {valuesOnMap}
           {legendData}
           {entityMapping}
-          {contentWidth} />
+          {contentWidth}
+          {hasFloatingNumbers} />
       {/if}
       {#if legendData.type === 'numerical'}
-        <MethodBox {legendData} {methodBoxText} {methodBoxArticle} />
+        <MethodBox
+          {legendData}
+          {methodBoxText}
+          {methodBoxArticle}
+          {hasFloatingNumbers} />
       {/if}
     </div>
   {/if}
