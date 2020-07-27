@@ -17,6 +17,8 @@ module.exports = {
   handler: function (request, h) {
     try {
       const item = request.payload.item;
+      // removing the header row first
+      item.data = dataHelpers.getDataWithoutHeaderRow(item.data);
 
       if (
         item.options.choroplethType === "numerical" &&

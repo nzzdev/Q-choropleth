@@ -16,8 +16,10 @@ module.exports = {
   handler: function (request, h) {
     try {
       const item = request.payload.item;
-      const data = item.data.splice(1); // exclude header row
-      const values = data
+      // removing the header row first
+      item.data = dataHelpers.getDataWithoutHeaderRow(item.data);
+
+      const values = item.data
         .filter((row) => row[1] !== null && row[1] !== undefined)
         .map((row) => {
           return row[1];
