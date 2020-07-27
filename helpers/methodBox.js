@@ -1,9 +1,11 @@
 const methodBoxTextConfig = {
   ckmeans:
-    "Die unregelmässigen Abstände in der Skala kommen durch ein statistisches Verfahren zustande, welches die Werte so in Gruppen einteilt, dass die Unterschiede zwischen den Regionen möglichst gut sichtbar werden (Jenks Natural Breaks)",
-  quantile: "Text zu Quantilen tbd",
-  equal: "Text zu gleich grossen Intervallen tbd",
-  custom: "Text zu manuellen Grenzen tbd",
+    "Die unterschiedlich grossen Gruppen kommen durch ein statistisches Verfahren zustande, welches die Werte so in Gruppen einteilt, dass die Unterschiede zwischen den Regionen möglichst gut sichtbar werden (Jenks Natural Breaks).",
+  quantile:
+    "Die Gruppen wurden so gewählt, dass in jeder Gruppe möglichst gleich viele Werte vorhanden sind.",
+  equal:
+    "Die Gruppen wurden so gewählt, dass sie jeweils einen gleich grossen Bereich auf der Skala abdecken.",
+  custom: "Die Gruppen wurden manuell definiert.",
 };
 
 module.exports = methodBoxTextConfig;
