@@ -35,10 +35,10 @@ function getMetaData(values, numberValues) {
     hasZeroValues: numberValues.find((value) => value === 0) !== undefined,
     maxValue: Math.max(...numberValues),
     minValue: Math.min(...numberValues),
-    averageValue: Math.round(
-      numberValues.reduce((a, b) => a + b, 0) / numberValues.length,
-      2
-    ),
+    averageValue:
+      Math.round(
+        (numberValues.reduce((a, b) => a + b, 0) / numberValues.length) * 100
+      ) / 100,
     medianValue: getMedian(numberValues),
   };
 }

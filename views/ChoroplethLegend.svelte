@@ -44,7 +44,7 @@
         id: "median",
         label: "Median",
         value: legendData.medianValue,
-        position: (legendData.medianValue * 100) / range
+        position: ((legendData.medianValue - legendData.minValue) * 100) / range
       };
     } else if (legendData.labelLegend === "noLabel") {
       return { label: "noLabel" };
@@ -53,7 +53,7 @@
       id: "average",
       label: "Durchschnitt",
       value: legendData.averageValue,
-      position: (legendData.averageValue * 100) / range
+      position: ((legendData.averageValue - legendData.minValue) * 100) / range
     };
   }
 
@@ -165,8 +165,8 @@
             style={getDescriptionAlignment(labelLegend)}>
             {labelLegend.label}:
             {#if hasFloatingNumbers}
-              {getFormatedValue(legendData.minValue)}
-            {:else}{legendData.minValue}{/if}
+              {getFormatedValue(labelLegend.value)}
+            {:else}{labelLegend.value}{/if}
           </div>
         {/if}
         {#if hasSingleValueBucket(legendData) || legendData.hasNullValues}
