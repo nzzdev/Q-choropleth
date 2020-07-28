@@ -2,6 +2,7 @@
   import Hexagon from "./Hexagon.svelte";
   import { getFormatedValue } from "../helpers/data.js";
   export let data;
+  export let entityType;
   export let legendData;
   export let valuesOnMap;
   export let contentWidth;
@@ -13,8 +14,12 @@
 
   function getValue(cantonCode) {
     try {
-      const entity = entityMapping.get(cantonCode);
-      return dataMapping.get(entity);
+      if (entityType === "code") {
+        return dataMapping.get(cantonCode);
+      } else {
+        const entity = entityMapping.get(cantonCode);
+        return dataMapping.get(entity);
+      }
     } catch (e) {
       return null;
     }

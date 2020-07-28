@@ -43,9 +43,9 @@
       "title": "Geo-Code",
       "type": "string",
       "default": "name",
-      "enum": ["bfsNumber", "name"],
+      "enum": ["bfsNumber", "name", "code"],
       "Q:options": {
-        "enum_titles": ["BfS Nummer", "Name"]
+        "enum_titles": ["BfS Nummer", "Name", "Abkürzung"]
       }
     },
     "data": {

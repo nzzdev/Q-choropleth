@@ -115,6 +115,48 @@ function getColorOverwriteEnumAndTitlesCategorical(data) {
   };
 }
 
+function getCantons(baseMapEntityCollection, entityType) {
+  const cantons = baseMapEntityCollection.cantons;
+  if (entityType === "name") {
+    return cantons
+      .sort((cantonA, cantonB) => cantonA.name.localeCompare(cantonB.name))
+      .map((canton) => {
+        return [{ value: canton.name, readOnly: true }];
+      });
+  } else if (entityType === "bfsNumber") {
+    return cantons
+      .sort((cantonA, cantonB) => cantonA.id - cantonB.id)
+      .map((canton) => {
+        return [{ value: canton.id, readOnly: true }];
+      });
+  } else if (entityType === "code") {
+    return cantons
+      .sort((cantonA, cantonB) => cantonA.code.localeCompare(cantonB.code))
+      .map((canton) => {
+        return [{ value: canton.code, readOnly: true }];
+      });
+  }
+  return undefined;
+}
+
+async function getPredefinedContent(
+  baseMapEntityCollection,
+  baseMap,
+  entityType
+) {
+  if (baseMap === "hexagonCHCantons") {
+    const predefinedContent = getCantons(baseMapEntityCollection, entityType);
+    return {
+      "Q:options": {
+        predefinedContent: {
+          allowOverwrites: false,
+          data: [["Kanton", "Wert"]].concat(predefinedContent),
+        },
+      },
+    };
+  }
+}
+
 module.exports = {
   method: "POST",
   path: "/dynamic-schema/{optionName}",
@@ -160,35 +202,11 @@ module.exports = {
 
       if (baseMapEntityCollectionResponse.statusCode === 200) {
         const baseMapEntityCollection = baseMapEntityCollectionResponse.result;
-
-        if (item.baseMap === "hexagonCHCantons") {
-          const cantons = baseMapEntityCollection.cantons;
-          let predefinedContent;
-          if (item.entityType === "name") {
-            predefinedContent = cantons
-              .sort((cantonA, cantonB) =>
-                cantonA.name.localeCompare(cantonB.name)
-              )
-              .map((canton) => {
-                return [{ value: canton.name, readOnly: true }];
-              });
-          } else if (item.entityType === "bfsNumber") {
-            predefinedContent = cantons
-              .sort((cantonA, cantonB) => cantonA.id - cantonB.id)
-              .map((canton) => {
-                return [{ value: canton.id, readOnly: true }];
-              });
-          }
-
-          return {
-            "Q:options": {
-              predefinedContent: {
-                allowOverwrites: false,
-                data: [["Kanton", "Wert"]].concat(predefinedContent),
-              },
-            },
-          };
-        }
+        return getPredefinedContent(
+          baseMapEntityCollection,
+          item.baseMap,
+          item.entityType
+        );
       }
     }
 

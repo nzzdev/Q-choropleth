@@ -33,6 +33,7 @@
       {#if item.baseMap === 'hexagonCHCantons'}
         <HexagonCHCantonsMap
           data={item.data}
+          entityType={item.entityType}
           {valuesOnMap}
           {legendData}
           {entityMapping}
