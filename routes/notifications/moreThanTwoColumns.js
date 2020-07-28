@@ -3,7 +3,7 @@ const dataHelpers = require("../../helpers/data.js");
 
 module.exports = {
   method: "POST",
-  path: "/notification/hasValues",
+  path: "/notification/moreThanTwoColumns",
   options: {
     validate: {
       options: {
@@ -17,19 +17,12 @@ module.exports = {
   handler: function (request, h) {
     try {
       const item = request.payload.item;
-      // removing the header row first
-      item.data = dataHelpers.getDataWithoutHeaderRow(item.data);
 
-      const values = item.data
-        .filter((row) => row[1] !== null && row[1] !== undefined)
-        .map((row) => {
-          return row[1];
-        });
-      if (values.length > 0) {
+      if (item.data[0] && item.data[0].length > 2) {
         return {
           message: {
-            title: "notifications.hasValues.title",
-            body: "notifications.hasValues.body",
+            title: "notifications.moreThanTwoColumns.title",
+            body: "notifications.moreThanTwoColumns.body",
           },
         };
       }

@@ -1,8 +1,8 @@
 {
   "notifications": {
     "hasValues": {
-      "title": "Basiskarte und Geo-Code",
-      "body": "Du hast bereits Werte in der Datentabelle erfasst. Änderungen an der Basiskarte oder am Geo-Code sind nur möglich, wenn die Werte gelöscht sind."
+      "title": "Werte erfasst",
+      "body": "Falls du die Basiskarte oder den Geo-Code ändern möchtest, musst du alle Werte aus der 2. Spalte entfernen"
     },
     "predefinedContent": {
       "title": "Vordefinierte Werte",
@@ -19,6 +19,10 @@
     "unsupportedValuesForType": {
       "title": "Ungültige Werte",
       "body": "Für eine numerische Choroplethenkarte müssen alle Werte numerisch oder leer sein"
+    },
+    "moreThanTwoColumns": {
+      "title": "Zu viele Spalten",
+      "body": "Für die Choroplethenkarte werden nur die ersten beiden Spalten verwendet. Alle anderen Spalten werden ignoriert"
     }
   }
 }

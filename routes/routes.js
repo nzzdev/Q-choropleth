@@ -11,6 +11,7 @@ module.exports = [
   require("./notifications/customBuckets.js"),
   require("./notifications/numberBucketsTooLarge.js"),
   require("./notifications/unsupportedValuesForType.js"),
+  require("./notifications/moreThanTwoColumns.js"),
   require("./dynamic-schema.js"),
   require("./entityCollection.js"),
 ].concat(require("./schema.js"));

@@ -32,8 +32,8 @@
               "fields": ["data"]
             },
             "priority": {
-              "type": "medium",
-              "value": 2
+              "type": "low",
+              "value": 1
             }
           }
         ]
@@ -85,16 +85,14 @@
             }
           },
           {
-            "type": "TooManyColumns",
+            "type": "ToolEndpoint",
             "config": {
-              "fields": ["data"],
-              "options": {
-                "limit": 2
-              }
+              "endpoint": "notification/moreThanTwoColumns",
+              "fields": ["data"]
             },
             "priority": {
-              "type": "medium",
-              "value": 2
+              "type": "low",
+              "value": 1
             }
           }
         ]
