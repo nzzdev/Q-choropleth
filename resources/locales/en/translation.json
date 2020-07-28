@@ -14,7 +14,7 @@
     },
     "unsupportedValuesForType": {
       "title": "Unsupported values",
-      "body": "All values have to be numerical in order to create a numerical choropleth map."
+      "body": "All values have to be numerical (or empty) in order to create a numerical choropleth map."
     },
     "Titel": "Title",
     "Der Titel bringt die Kernaussage der Grafik auf den Punkt&#46;": "The title brings the core message of the graphic to the point.",

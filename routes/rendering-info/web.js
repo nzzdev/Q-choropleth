@@ -111,11 +111,13 @@ module.exports = {
         context.valuesOnMap = !item.options.numericalOptions.noValuesOnMap;
         context.legendData.labelLegend =
           item.options.numericalOptions.labelLegend;
+        context.legendData.hasFloatingNumbers = dataHelpers.hasFloatingNumbersInLegend(
+          context.legendData.buckets
+        );
         const methodBoxText =
           methodBoxTextConfig[item.options.numericalOptions.bucketType];
         context.methodBoxText = methodBoxText || "";
-        context.hasFloatingNumbers = dataHelpers.hasFloatingNumbers(
-          context.legendData,
+        context.hasFloatingNumbers = dataHelpers.hasFloatingNumbersInData(
           item.data
         );
       } catch (e) {

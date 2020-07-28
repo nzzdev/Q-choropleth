@@ -28,7 +28,7 @@
   {#if contentWidth}
     <div class="q-choropleth-container">
       {#if !(legendData.type === 'categorical' && valuesOnMap)}
-        <ChoroplethLegend {legendData} {contentWidth} {hasFloatingNumbers} />
+        <ChoroplethLegend {legendData} {contentWidth} />
       {/if}
       {#if item.baseMap === 'hexagonCHCantons'}
         <HexagonCHCantonsMap
@@ -40,11 +40,7 @@
           {hasFloatingNumbers} />
       {/if}
       {#if legendData.type === 'numerical'}
-        <MethodBox
-          {legendData}
-          {methodBoxText}
-          {methodBoxArticle}
-          {hasFloatingNumbers} />
+        <MethodBox {legendData} {methodBoxText} {methodBoxArticle} />
       {/if}
     </div>
   {/if}

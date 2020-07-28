@@ -18,7 +18,7 @@
     },
     "unsupportedValuesForType": {
       "title": "Ungültige Werte",
-      "body": "Für eine numerische Choroplethenkarte müssen alle Werte ebenfalls numerisch sein"
+      "body": "Für eine numerische Choroplethenkarte müssen alle Werte numerisch oder leer sein"
     }
   }
 }

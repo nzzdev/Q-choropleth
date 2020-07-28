@@ -5,7 +5,6 @@
   export let legendData;
   export let methodBoxText;
   export let methodBoxArticle;
-  export let hasFloatingNumbers;
 </script>
 
 <div class="q-choropleth-methods-link s-font-note-s">
@@ -31,22 +30,16 @@
             <td />
             <td />
             <td>
-              {#if hasFloatingNumbers}
-                {getFormatedValue(bucket.from)}
-              {:else}{bucket.from}{/if}
+              {getFormatedValue(legendData.hasFloatingNumbers, bucket.from)}
             </td>
             <td>(nur ein Datenpunkt)</td>
           {:else}
             <td>
-              {#if hasFloatingNumbers}
-                {getFormatedValue(bucket.from)}
-              {:else}{bucket.from}{/if}
+              {getFormatedValue(legendData.hasFloatingNumbers, bucket.from)}
             </td>
             <td>-</td>
             <td>
-              {#if hasFloatingNumbers}
-                {getFormatedValue(bucket.to)}
-              {:else}{bucket.to}{/if}
+              {getFormatedValue(legendData.hasFloatingNumbers, bucket.to)}
             </td>
             <td />
           {/if}

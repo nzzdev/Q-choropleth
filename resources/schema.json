@@ -74,6 +74,17 @@
             }
           },
           {
+            "type": "ToolEndpoint",
+            "config": {
+              "endpoint": "notification/unsupportedValuesForType",
+              "fields": ["data", "options.choroplethType"]
+            },
+            "priority": {
+              "type": "medium",
+              "value": 2
+            }
+          },
+          {
             "type": "TooManyColumns",
             "config": {
               "fields": ["data"],
@@ -149,20 +160,7 @@
           "default": "numerical",
           "Q:options": {
             "selectType": "radio",
-            "enum_titles": ["numerisch", "kategorisch"],
-            "notificationChecks": [
-              {
-                "type": "ToolEndpoint",
-                "config": {
-                  "endpoint": "notification/unsupportedValuesForType",
-                  "fields": ["data", "options.choroplethType"]
-                },
-                "priority": {
-                  "type": "medium",
-                  "value": 2
-                }
-              }
-            ]
+            "enum_titles": ["numerisch", "kategorisch"]
           }
         },
         "numericalOptions": {

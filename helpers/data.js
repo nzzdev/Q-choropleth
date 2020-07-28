@@ -74,17 +74,12 @@ function getNumberBuckets(numericalOptions) {
   }
 }
 
-function hasFloatingNumbers(legendData, data) {
-  let hasFloatingNumbers = legendData.buckets.some(
-    (bucket) => isFloat(bucket.from) || isFloat(bucket.to)
-  );
+function hasFloatingNumbersInLegend(buckets) {
+  return buckets.some((bucket) => isFloat(bucket.from) || isFloat(bucket.to));
+}
 
-  if (hasFloatingNumbers) {
-    return true;
-  } else {
-    // proceed with data array
-    return data.some((row) => isFloat(parseFloat(row[1])));
-  }
+function hasFloatingNumbersInData(data) {
+  return data.some((row) => isFloat(parseFloat(row[1])));
 }
 
 function isFloat(value) {
@@ -126,7 +121,7 @@ function getDivisorString(divisor) {
     case Math.pow(10, 6):
       divisorString = "Millionen";
       break;
-    case Math.pow(10, 3):
+    case Math.pow(10, 4):
       divisorString = "Tausend";
       break;
     default:
@@ -136,18 +131,15 @@ function getDivisorString(divisor) {
   return divisorString;
 }
 
-function getDivisorForValue(value) {
+function getDivisorForMinMax(minValue, maxValue) {
   let divisor = 1;
-  if (!value || value === 0) {
-    return divisor;
-  }
 
-  if (value >= Math.pow(10, 9)) {
+  if (maxValue >= Math.pow(10, 9) && minValue >= Math.pow(10, 8)) {
     divisor = Math.pow(10, 9);
-  } else if (value >= Math.pow(10, 6)) {
+  } else if (maxValue >= Math.pow(10, 6) && minValue >= Math.pow(10, 5)) {
     divisor = Math.pow(10, 6);
-  } else if (value >= Math.pow(10, 3)) {
-    divisor = Math.pow(10, 3);
+  } else if (maxValue >= Math.pow(10, 4) && minValue >= Math.pow(10, 3)) {
+    divisor = Math.pow(10, 4);
   }
   return divisor;
 }
@@ -156,10 +148,7 @@ function getDivisor(data) {
   try {
     const minValue = getMinValue(data);
     const maxValue = getMaxValue(data);
-    return Math.max(
-      getDivisorForValue(maxValue),
-      getDivisorForValue(Math.abs(minValue))
-    );
+    return getDivisorForMinMax(Math.abs(minValue), maxValue);
   } catch (err) {
     // if something goes wrong, the divisor is just 1
     return 1;
@@ -168,7 +157,7 @@ function getDivisor(data) {
 
 function getDividedData(data, divisor) {
   return data.map((row) => {
-    row[1] = parseFloat(row[1] / divisor).toString();
+    row[1] = parseFloat(row[1] / divisor).toFixed(1);
     return row;
   });
 }
@@ -181,7 +170,8 @@ module.exports = {
   getNonNullNumericalValues,
   getMetaData,
   getNumberBuckets,
-  hasFloatingNumbers,
+  hasFloatingNumbersInLegend,
+  hasFloatingNumbersInData,
   getDivisor,
   getDivisorString,
   getDividedData,

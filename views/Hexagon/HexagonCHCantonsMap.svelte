@@ -73,10 +73,7 @@
 
   function getDisplayValue(cantonCode) {
     let value = getValue(cantonCode);
-    if (hasFloatingNumbers) {
-      return getFormatedValue(value);
-    }
-    return value;
+    return getFormatedValue(hasFloatingNumbers, value);
   }
 </script>
 
