@@ -3,7 +3,7 @@ const dataHelpers = require("../../helpers/data.js");
 
 module.exports = {
   method: "POST",
-  path: "/notification/numberBucketsTooLarge",
+  path: "/notification/numberBucketsTooLarge", // TODO: maybe rename so that there is no confusion with tooManyBuckets notification
   options: {
     validate: {
       options: {

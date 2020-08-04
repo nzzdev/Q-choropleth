@@ -12,6 +12,8 @@ module.exports = [
   require("./notifications/numberBucketsTooLarge.js"),
   require("./notifications/unsupportedValuesForType.js"),
   require("./notifications/moreThanTwoColumns.js"),
+  require("./notifications/numberBucketsOutOfColorScale.js"),
+  require("./notifications/numberCategoriesOutOfColorScale.js"),
   require("./dynamic-schema.js"),
   require("./entityCollection.js"),
 ].concat(require("./schema.js"));

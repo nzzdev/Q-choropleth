@@ -92,17 +92,19 @@ module.exports = {
       }
     }
 
-    const divisor = dataHelpers.getDivisor(item.data);
-    if (divisor > 1) {
-      item.data = dataHelpers.getDividedData(item.data, divisor);
-      if (item.subtitle && item.subtitle !== "") {
-        item.subtitleSuffix = ` (in ${dataHelpers.getDivisorString(divisor)})`;
-      } else {
-        item.subtitleSuffix = `in ${dataHelpers.getDivisorString(divisor)}`;
-      }
-    }
-
     if (item.options.choroplethType === "numerical") {
+      const divisor = dataHelpers.getDivisor(item.data);
+      if (divisor > 1) {
+        item.data = dataHelpers.getDividedData(item.data, divisor);
+        if (item.subtitle && item.subtitle !== "") {
+          item.subtitleSuffix = ` (in ${dataHelpers.getDivisorString(
+            divisor
+          )})`;
+        } else {
+          item.subtitleSuffix = `in ${dataHelpers.getDivisorString(divisor)}`;
+        }
+      }
+
       try {
         context.legendData = legendHelpers.getNumericalLegend(
           item.data,
