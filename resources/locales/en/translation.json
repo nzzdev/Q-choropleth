@@ -8,9 +8,17 @@
       "title": "Custom borders",
       "body": "Some values in data table are not covered by custom borders."
     },
-    "numberBucketsTooLarge": {
+    "numberBucketsExceedsDataSet": {
       "title": "Number buckets",
       "body": "Number of buckets exceeds the number of different values in data table."
+    },
+    "numberCategoriesOutOfColorScale": {
+      "title": "Color scale",
+      "body": "The number of categories exceeds the number of available colors in color scale"
+    },
+    "numberBucketsOutOfColorScale": {
+      "title": "Color scale",
+      "body": "The number of bucket exceeds the number of available colors in chosen color scale"
     },
     "unsupportedValuesForType": {
       "title": "Unsupported values",

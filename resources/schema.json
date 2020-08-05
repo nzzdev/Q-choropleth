@@ -269,7 +269,7 @@
                   {
                     "type": "ToolEndpoint",
                     "config": {
-                      "endpoint": "notification/numberBucketsTooLarge",
+                      "endpoint": "notification/numberBucketsExceedsDataSet",
                       "fields": ["data", "options"]
                     },
                     "priority": {

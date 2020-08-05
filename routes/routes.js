@@ -9,7 +9,7 @@ module.exports = [
   require("./notifications/hasValues.js"),
   require("./notifications/predefinedContent.js"),
   require("./notifications/customBuckets.js"),
-  require("./notifications/numberBucketsTooLarge.js"),
+  require("./notifications/numberBucketsExceedsDataSet.js"),
   require("./notifications/unsupportedValuesForType.js"),
   require("./notifications/moreThanTwoColumns.js"),
   require("./notifications/numberBucketsOutOfColorScale.js"),
