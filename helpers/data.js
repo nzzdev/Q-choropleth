@@ -1,5 +1,6 @@
 const clone = require("clone");
 const array2d = require("array2d");
+const { to_number } = require("svelte/internal");
 
 function getDataWithoutHeaderRow(data) {
   return data.slice(1);
@@ -21,25 +22,49 @@ function getCustomBucketBorders(customBuckets) {
   });
 }
 
-function getMedian(values) {
+function getMedian(values, maxDigits) {
   let middleIndex = Math.floor(values.length / 2);
   let sortedNumbers = [...values].sort((a, b) => a - b);
+  if (values.length % 2 !== 0) {
+    return sortedNumbers[middleIndex];
+  } else {
+    const median =
+      (sortedNumbers[middleIndex - 1] + sortedNumbers[middleIndex]) / 2;
+    if (maxDigits === undefined || maxDigits < 2) {
+      return Math.round(median * 100) / 100;
+    } else {
+      const roundingFactor = Math.pow(10, maxDigits);
+      Math.round(median * roundingFactor) / roundingFactor;
+    }
+  }
   return values.length % 2 !== 0
     ? sortedNumbers[middleIndex]
     : (sortedNumbers[middleIndex - 1] + sortedNumbers[middleIndex]) / 2;
 }
 
-function getMetaData(values, numberValues) {
+function getAverage(values, maxDigits) {
+  if (maxDigits === undefined || maxDigits < 2) {
+    return (
+      Math.round((values.reduce((a, b) => a + b, 0) / values.length) * 100) /
+      100
+    );
+  }
+  const roundingFactor = Math.pow(10, maxDigits);
+  return (
+    Math.round(
+      (values.reduce((a, b) => a + b, 0) / values.length) * roundingFactor
+    ) / roundingFactor
+  );
+}
+
+function getMetaData(values, numberValues, maxDigits) {
   return {
     hasNullValues: values.find((value) => value === null) !== undefined,
     hasZeroValues: numberValues.find((value) => value === 0) !== undefined,
     maxValue: Math.max(...numberValues),
     minValue: Math.min(...numberValues),
-    averageValue:
-      Math.round(
-        (numberValues.reduce((a, b) => a + b, 0) / numberValues.length) * 100
-      ) / 100,
-    medianValue: getMedian(numberValues),
+    averageValue: getAverage(numberValues, maxDigits),
+    medianValue: getMedian(numberValues, maxDigits),
   };
 }
 
@@ -74,16 +99,27 @@ function getNumberBuckets(numericalOptions) {
   }
 }
 
-function hasFloatingNumbersInLegend(buckets) {
-  return buckets.some((bucket) => isFloat(bucket.from) || isFloat(bucket.to));
+function getDigitsAfterComma(value) {
+  try {
+    if (value !== undefined && value !== null) {
+      const valueParts = value.toString().split(".");
+      if (valueParts.length > 1) {
+        return valueParts[1].length;
+      }
+    }
+  } catch (e) {
+    return 0;
+  }
+  return 0;
 }
 
-function hasFloatingNumbersInData(data) {
-  return data.some((row) => isFloat(parseFloat(row[1])));
-}
-
-function isFloat(value) {
-  return value.toString().indexOf(".") !== -1;
+function getMaxDigitsAfterCommaInData(data) {
+  let maxDigits = 0;
+  data.forEach((row) => {
+    const digitsAfterComma = getDigitsAfterComma(row[1]);
+    maxDigits = Math.max(maxDigits, digitsAfterComma);
+  });
+  return maxDigits;
 }
 
 function getFlatData(data) {
@@ -102,14 +138,18 @@ function getMaxValue(data) {
   const flatData = getFlatData(data).filter((value) => {
     return value !== null && value !== undefined;
   });
-  return Math.max.apply(null, flatData);
+  return flatData.reduce((a, b) => {
+    return Math.max(a, b);
+  });
 }
 
 function getMinValue(data) {
   const flatData = getFlatData(data).filter((value) => {
     return value !== null && value !== undefined;
   });
-  return Math.min.apply(null, flatData);
+  return flatData.reduce((a, b) => {
+    return Math.min(a, b);
+  });
 }
 
 function getDivisorString(divisor) {
@@ -121,7 +161,7 @@ function getDivisorString(divisor) {
     case Math.pow(10, 6):
       divisorString = "Millionen";
       break;
-    case Math.pow(10, 4):
+    case Math.pow(10, 3):
       divisorString = "Tausend";
       break;
     default:
@@ -139,7 +179,7 @@ function getDivisorForMinMax(minValue, maxValue) {
   } else if (maxValue >= Math.pow(10, 6) && minValue >= Math.pow(10, 5)) {
     divisor = Math.pow(10, 6);
   } else if (maxValue >= Math.pow(10, 4) && minValue >= Math.pow(10, 3)) {
-    divisor = Math.pow(10, 4);
+    divisor = Math.pow(10, 3);
   }
   return divisor;
 }
@@ -170,8 +210,7 @@ module.exports = {
   getNonNullNumericalValues,
   getMetaData,
   getNumberBuckets,
-  hasFloatingNumbersInLegend,
-  hasFloatingNumbersInData,
+  getMaxDigitsAfterCommaInData,
   getDivisor,
   getDivisorString,
   getDividedData,

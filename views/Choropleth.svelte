@@ -12,7 +12,7 @@
   export let methodBoxText;
   export let methodBoxArticle;
   export let displayOptions;
-  export let hasFloatingNumbers;
+  export let formattingOptions;
 </script>
 
 <div id="{id}_container" class="s-q-item q-choropleth">
@@ -28,7 +28,7 @@
   {#if contentWidth}
     <div class="q-choropleth-container">
       {#if !(legendData.type === 'categorical' && valuesOnMap)}
-        <ChoroplethLegend {legendData} {contentWidth} />
+        <ChoroplethLegend {legendData} {formattingOptions} {contentWidth} />
       {/if}
       {#if item.baseMap === 'hexagonCHCantons'}
         <HexagonCHCantonsMap
@@ -38,10 +38,14 @@
           {legendData}
           {entityMapping}
           {contentWidth}
-          {hasFloatingNumbers} />
+          {formattingOptions} />
       {/if}
       {#if legendData.type === 'numerical'}
-        <MethodBox {legendData} {methodBoxText} {methodBoxArticle} />
+        <MethodBox
+          {legendData}
+          {formattingOptions}
+          {methodBoxText}
+          {methodBoxArticle} />
       {/if}
     </div>
   {/if}

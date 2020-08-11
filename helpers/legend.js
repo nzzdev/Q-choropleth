@@ -10,7 +10,8 @@ function getBucketsForLegend(
   options,
   minValue,
   maxValue,
-  customColorMap
+  customColorMap,
+  maxDigitsAfterComma
 ) {
   const bucketType = options.bucketType;
   const numberBuckets = options.numberBuckets;
@@ -41,7 +42,8 @@ function getBucketsForLegend(
       minValue,
       maxValue,
       scale,
-      colorOptions
+      colorOptions,
+      maxDigitsAfterComma
     );
   } else if (bucketType === "custom") {
     return getCustomBuckets(options, scale, colorOptions);
@@ -104,7 +106,8 @@ function getEqualBuckets(
   minValue,
   maxValue,
   scale,
-  colorOptions
+  colorOptions,
+  maxDigitsAfterComma
 ) {
   const portion = 1 / numberBuckets;
   const range = maxValue - minValue;
@@ -114,8 +117,9 @@ function getEqualBuckets(
     let to = minValue + range * portion * (i + 1);
 
     // round numbers
-    from = Math.round(from * 10) / 10;
-    to = Math.round(to * 10) / 10;
+    const roundingFactor = Math.pow(10, maxDigitsAfterComma);
+    from = Math.round(from * roundingFactor) / roundingFactor;
+    to = Math.round(to * roundingFactor) / roundingFactor;
 
     equalBuckets.push({
       from,
@@ -170,11 +174,15 @@ function hasSingleValueBucket(legendData) {
   return firstBucket.from === firstBucket.to;
 }
 
-function getNumericalLegend(data, options) {
+function getNumericalLegend(data, options, maxDigitsAfterComma) {
   const customColorMap = getCustomColorMap(options.colorOverwrites);
   const values = dataHelpers.getNumericalValues(data);
   const nonNullValues = dataHelpers.getNonNullNumericalValues(values);
-  const metaData = dataHelpers.getMetaData(values, nonNullValues);
+  const metaData = dataHelpers.getMetaData(
+    values,
+    nonNullValues,
+    maxDigitsAfterComma
+  );
 
   const legendData = {
     type: "numerical",
@@ -186,7 +194,8 @@ function getNumericalLegend(data, options) {
     options,
     legendData.minValue,
     legendData.maxValue,
-    customColorMap
+    customColorMap,
+    maxDigitsAfterComma
   );
 
   legendData.hasSingleValueBucket = hasSingleValueBucket(legendData);

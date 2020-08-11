@@ -13,17 +13,34 @@ const formatLocale = d3.format.formatLocale({
 });
 
 const formatGrouping = formatLocale.format(",");
-const formatDecimalGrouping = formatLocale.format(",.1f");
+const formatDefaultDecimalGrouping = formatLocale.format(",.1f");
 const formatNoGrouping = formatLocale.format("");
 
-function getFormatedValue(hasFloatingNumbers, value) {
+function getFormatedValue(formattingOptions, value) {
   if (value === null) {
     return value;
   }
-  if (hasFloatingNumbers) {
-    return formatDecimalGrouping(value);
+
+  // if we have a divisor, we round values to float number with one position after comma
+  if (formattingOptions.hasDivisor) {
+    return formatDefaultDecimalGrouping(value);
   }
-  return formatGrouping(value);
+
+  // if we have no divisor but float values in data set we extend all float values
+  // to max number of positions after comma
+  if (formattingOptions.maxDigitsAfterComma) {
+    return formatLocale.format(`,.${formattingOptions.maxDigitsAfterComma}f`)(
+      value
+    );
+  }
+
+  // all other numbers will be formatted following NZZ style guide, i.e. adding
+  // thousands gap for numbers >= 10 000
+  if (value >= Math.pow(10, 4)) {
+    return formatGrouping(value);
+  } else {
+    return formatNoGrouping(value);
+  }
 }
 
 module.exports = {

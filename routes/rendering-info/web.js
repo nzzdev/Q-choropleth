@@ -28,6 +28,7 @@ const schemaString = JSON.parse(
 );
 const Ajv = require("ajv");
 const methodBoxTextConfig = require("../../helpers/methodBox");
+const data = require("../../views/helpers/data.js");
 const ajv = new Ajv();
 
 const validate = ajv.compile(schemaString);
@@ -92,9 +93,11 @@ module.exports = {
       }
     }
 
+    let hasDivisor = false;
     if (item.options.choroplethType === "numerical") {
       const divisor = dataHelpers.getDivisor(item.data);
       if (divisor > 1) {
+        hasDivisor = true;
         item.data = dataHelpers.getDividedData(item.data, divisor);
         if (item.subtitle && item.subtitle !== "") {
           item.subtitleSuffix = ` (in ${dataHelpers.getDivisorString(
@@ -105,23 +108,26 @@ module.exports = {
         }
       }
 
+      context.formattingOptions = {
+        hasDivisor,
+        maxDigitsAfterComma: dataHelpers.getMaxDigitsAfterCommaInData(
+          item.data
+        ),
+      };
+
       try {
         context.legendData = legendHelpers.getNumericalLegend(
           item.data,
-          item.options.numericalOptions
+          item.options.numericalOptions,
+          context.formattingOptions.maxDigitsAfterComma
         );
+
         context.valuesOnMap = !item.options.numericalOptions.noValuesOnMap;
         context.legendData.labelLegend =
           item.options.numericalOptions.labelLegend;
-        context.legendData.hasFloatingNumbers = dataHelpers.hasFloatingNumbersInLegend(
-          context.legendData.buckets
-        );
         const methodBoxText =
           methodBoxTextConfig[item.options.numericalOptions.bucketType];
         context.methodBoxText = methodBoxText || "";
-        context.hasFloatingNumbers = dataHelpers.hasFloatingNumbersInData(
-          item.data
-        );
       } catch (e) {
         throw new Boom.Boom(e);
       }
