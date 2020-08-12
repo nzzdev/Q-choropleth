@@ -23,7 +23,7 @@ function getCustomBucketBorders(customBuckets) {
 
 function getRoundedValue(value, maxDigitsAfterComma) {
   let roundingFactor = 100; // default: round to two digits after comma
-  // if data contains more precise float numbers we round to max number of digits after comma
+  // if data contains more precise float numbers we extend each value to max number of digits after comma
   if (maxDigitsAfterComma !== undefined && maxDigitsAfterComma > 2) {
     roundingFactor = Math.pow(10, maxDigitsAfterComma);
   }
