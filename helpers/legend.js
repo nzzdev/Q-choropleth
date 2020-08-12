@@ -186,6 +186,7 @@ function getNumericalLegend(data, options, maxDigitsAfterComma) {
 
   const legendData = {
     type: "numerical",
+    labelLegend: options.labelLegend, // label average or median value or no label
     ...metaData,
   };
 

@@ -148,7 +148,7 @@ function getMinValue(data) {
   });
 }
 
-function getDivisorString(divisor) {
+function getSubtitleSuffix(divisor, subtitle) {
   let divisorString = "";
   switch (divisor) {
     case Math.pow(10, 9):
@@ -164,7 +164,11 @@ function getDivisorString(divisor) {
       divisorString = "";
       break;
   }
-  return divisorString;
+
+  if (subtitle && subtitle !== "") {
+    return `(in ${divisorString})`;
+  }
+  return `in ${divisorString}`;
 }
 
 function getDivisorForMinMax(minValue, maxValue) {
@@ -208,6 +212,6 @@ module.exports = {
   getNumberBuckets,
   getMaxDigitsAfterCommaInData,
   getDivisor,
-  getDivisorString,
+  getSubtitleSuffix,
   getDividedData,
 };

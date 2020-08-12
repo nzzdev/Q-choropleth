@@ -8,4 +8,14 @@ const methodBoxTextConfig = {
   custom: "Die Gruppen wurden manuell definiert.",
 };
 
-module.exports = methodBoxTextConfig;
+function getMethodBoxInfo(bucketType) {
+  const methodBoxText = methodBoxTextConfig[bucketType];
+  return {
+    text: methodBoxText || "",
+    article: process.env.METHOD_BOX_ARTICLE
+      ? JSON.parse(process.env.METHOD_BOX_ARTICLE)
+      : null,
+  };
+}
+
+module.exports = { getMethodBoxInfo };

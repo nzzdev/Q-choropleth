@@ -9,8 +9,7 @@
   export let valuesOnMap;
   export let entityMapping;
   export let contentWidth;
-  export let methodBoxText;
-  export let methodBoxArticle;
+  export let methodBox;
   export let displayOptions;
   export let formattingOptions;
 </script>
@@ -44,8 +43,8 @@
         <MethodBox
           {legendData}
           {formattingOptions}
-          {methodBoxText}
-          {methodBoxArticle} />
+          methodBoxText={methodBox.text}
+          methodBoxArticle={methodBox.article} />
       {/if}
     </div>
   {/if}
