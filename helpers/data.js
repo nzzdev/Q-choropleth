@@ -1,6 +1,5 @@
 const clone = require("clone");
 const array2d = require("array2d");
-const { to_number } = require("svelte/internal");
 
 function getDataWithoutHeaderRow(data) {
   return data.slice(1);
@@ -22,49 +21,46 @@ function getCustomBucketBorders(customBuckets) {
   });
 }
 
-function getMedian(values, maxDigits) {
+function getRoundedValue(value, maxDigitsAfterComma) {
+  let roundingFactor = 100; // default: round to two digits after comma
+  // if data contains more precise float numbers we round to max number of digits after comma
+  if (maxDigitsAfterComma !== undefined && maxDigitsAfterComma > 2) {
+    roundingFactor = Math.pow(10, maxDigitsAfterComma);
+  }
+  return Math.round(value * roundingFactor) / roundingFactor;
+}
+
+function getMedian(values) {
   let middleIndex = Math.floor(values.length / 2);
   let sortedNumbers = [...values].sort((a, b) => a - b);
   if (values.length % 2 !== 0) {
     return sortedNumbers[middleIndex];
-  } else {
-    const median =
-      (sortedNumbers[middleIndex - 1] + sortedNumbers[middleIndex]) / 2;
-    if (maxDigits === undefined || maxDigits < 2) {
-      return Math.round(median * 100) / 100;
-    } else {
-      const roundingFactor = Math.pow(10, maxDigits);
-      Math.round(median * roundingFactor) / roundingFactor;
-    }
   }
-  return values.length % 2 !== 0
-    ? sortedNumbers[middleIndex]
-    : (sortedNumbers[middleIndex - 1] + sortedNumbers[middleIndex]) / 2;
+  return (sortedNumbers[middleIndex - 1] + sortedNumbers[middleIndex]) / 2;
 }
 
-function getAverage(values, maxDigits) {
-  if (maxDigits === undefined || maxDigits < 2) {
-    return (
-      Math.round((values.reduce((a, b) => a + b, 0) / values.length) * 100) /
-      100
-    );
-  }
-  const roundingFactor = Math.pow(10, maxDigits);
-  return (
-    Math.round(
-      (values.reduce((a, b) => a + b, 0) / values.length) * roundingFactor
-    ) / roundingFactor
-  );
+function getRoundedMedian(values, maxDigitsAfterComma) {
+  const medianValue = getMedian(values);
+  return getRoundedValue(medianValue, maxDigitsAfterComma);
 }
 
-function getMetaData(values, numberValues, maxDigits) {
+function getAverage(values) {
+  return values.reduce((a, b) => a + b, 0) / values.length;
+}
+
+function getRoundedAverage(values, maxDigitsAfterComma) {
+  const averageValue = getAverage(values);
+  return getRoundedValue(averageValue, maxDigitsAfterComma);
+}
+
+function getMetaData(values, numberValues, maxDigitsAfterComma) {
   return {
     hasNullValues: values.find((value) => value === null) !== undefined,
     hasZeroValues: numberValues.find((value) => value === 0) !== undefined,
     maxValue: Math.max(...numberValues),
     minValue: Math.min(...numberValues),
-    averageValue: getAverage(numberValues, maxDigits),
-    medianValue: getMedian(numberValues, maxDigits),
+    averageValue: getRoundedAverage(numberValues, maxDigitsAfterComma),
+    medianValue: getRoundedMedian(numberValues, maxDigitsAfterComma),
   };
 }
 
@@ -107,19 +103,19 @@ function getDigitsAfterComma(value) {
         return valueParts[1].length;
       }
     }
-  } catch (e) {
     return 0;
+  } catch (e) {
+    return 0; // if something goes wrong we just return 0 digits after comma
   }
-  return 0;
 }
 
 function getMaxDigitsAfterCommaInData(data) {
-  let maxDigits = 0;
+  let maxDigitsAfterComma = 0;
   data.forEach((row) => {
     const digitsAfterComma = getDigitsAfterComma(row[1]);
-    maxDigits = Math.max(maxDigits, digitsAfterComma);
+    maxDigitsAfterComma = Math.max(maxDigitsAfterComma, digitsAfterComma);
   });
-  return maxDigits;
+  return maxDigitsAfterComma;
 }
 
 function getFlatData(data) {
