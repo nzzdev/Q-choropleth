@@ -10,4 +10,23 @@ function getGeometryMapping(entityCollection, baseMap, entityType) {
   return undefined;
 }
 
-module.exports = { getGeometryMapping };
+async function getEntityMapping(request, item) {
+  const baseMapEntityCollectionResponse = await request.server.inject({
+    method: "GET",
+    url: `/entityCollection/${item.baseMap}`,
+  });
+
+  if (baseMapEntityCollectionResponse.statusCode === 200) {
+    const baseMapEntityCollection = baseMapEntityCollectionResponse.result;
+    if (baseMapEntityCollection.type === "Geometry") {
+      return getGeometryMapping(
+        baseMapEntityCollection,
+        item.baseMap,
+        item.entityType
+      );
+    }
+  }
+  return undefined;
+}
+
+module.exports = { getEntityMapping };

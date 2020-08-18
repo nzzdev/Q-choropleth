@@ -21,25 +21,46 @@ function getCustomBucketBorders(customBuckets) {
   });
 }
 
+function getRoundedValue(value, maxDigitsAfterComma) {
+  let roundingFactor = 100; // default: round to two digits after comma
+  // if data contains more precise float numbers we extend each value to max number of digits after comma
+  if (maxDigitsAfterComma !== undefined && maxDigitsAfterComma > 2) {
+    roundingFactor = Math.pow(10, maxDigitsAfterComma);
+  }
+  return Math.round(value * roundingFactor) / roundingFactor;
+}
+
 function getMedian(values) {
   let middleIndex = Math.floor(values.length / 2);
   let sortedNumbers = [...values].sort((a, b) => a - b);
-  return values.length % 2 !== 0
-    ? sortedNumbers[middleIndex]
-    : (sortedNumbers[middleIndex - 1] + sortedNumbers[middleIndex]) / 2;
+  if (values.length % 2 !== 0) {
+    return sortedNumbers[middleIndex];
+  }
+  return (sortedNumbers[middleIndex - 1] + sortedNumbers[middleIndex]) / 2;
 }
 
-function getMetaData(values, numberValues) {
+function getRoundedMedian(values, maxDigitsAfterComma) {
+  const medianValue = getMedian(values);
+  return getRoundedValue(medianValue, maxDigitsAfterComma);
+}
+
+function getAverage(values) {
+  return values.reduce((a, b) => a + b, 0) / values.length;
+}
+
+function getRoundedAverage(values, maxDigitsAfterComma) {
+  const averageValue = getAverage(values);
+  return getRoundedValue(averageValue, maxDigitsAfterComma);
+}
+
+function getMetaData(values, numberValues, maxDigitsAfterComma) {
   return {
     hasNullValues: values.find((value) => value === null) !== undefined,
     hasZeroValues: numberValues.find((value) => value === 0) !== undefined,
     maxValue: Math.max(...numberValues),
     minValue: Math.min(...numberValues),
-    averageValue:
-      Math.round(
-        (numberValues.reduce((a, b) => a + b, 0) / numberValues.length) * 100
-      ) / 100,
-    medianValue: getMedian(numberValues),
+    averageValue: getRoundedAverage(numberValues, maxDigitsAfterComma),
+    medianValue: getRoundedMedian(numberValues, maxDigitsAfterComma),
   };
 }
 
@@ -74,16 +95,27 @@ function getNumberBuckets(numericalOptions) {
   }
 }
 
-function hasFloatingNumbersInLegend(buckets) {
-  return buckets.some((bucket) => isFloat(bucket.from) || isFloat(bucket.to));
+function getDigitsAfterComma(value) {
+  try {
+    if (value !== undefined && value !== null) {
+      const valueParts = value.toString().split(".");
+      if (valueParts.length > 1) {
+        return valueParts[1].length;
+      }
+    }
+    return 0;
+  } catch (e) {
+    return 0; // if something goes wrong we just return 0 digits after comma
+  }
 }
 
-function hasFloatingNumbersInData(data) {
-  return data.some((row) => isFloat(parseFloat(row[1])));
-}
-
-function isFloat(value) {
-  return value.toString().indexOf(".") !== -1;
+function getMaxDigitsAfterCommaInData(data) {
+  let maxDigitsAfterComma = 0;
+  data.forEach((row) => {
+    const digitsAfterComma = getDigitsAfterComma(row[1]);
+    maxDigitsAfterComma = Math.max(maxDigitsAfterComma, digitsAfterComma);
+  });
+  return maxDigitsAfterComma;
 }
 
 function getFlatData(data) {
@@ -102,17 +134,21 @@ function getMaxValue(data) {
   const flatData = getFlatData(data).filter((value) => {
     return value !== null && value !== undefined;
   });
-  return Math.max.apply(null, flatData);
+  return flatData.reduce((a, b) => {
+    return Math.max(a, b);
+  });
 }
 
 function getMinValue(data) {
   const flatData = getFlatData(data).filter((value) => {
     return value !== null && value !== undefined;
   });
-  return Math.min.apply(null, flatData);
+  return flatData.reduce((a, b) => {
+    return Math.min(a, b);
+  });
 }
 
-function getDivisorString(divisor) {
+function getSubtitleSuffix(divisor, subtitle) {
   let divisorString = "";
   switch (divisor) {
     case Math.pow(10, 9):
@@ -121,14 +157,18 @@ function getDivisorString(divisor) {
     case Math.pow(10, 6):
       divisorString = "Millionen";
       break;
-    case Math.pow(10, 4):
+    case Math.pow(10, 3):
       divisorString = "Tausend";
       break;
     default:
       divisorString = "";
       break;
   }
-  return divisorString;
+
+  if (subtitle && subtitle !== "") {
+    return `(in ${divisorString})`;
+  }
+  return `in ${divisorString}`;
 }
 
 function getDivisorForMinMax(minValue, maxValue) {
@@ -139,7 +179,7 @@ function getDivisorForMinMax(minValue, maxValue) {
   } else if (maxValue >= Math.pow(10, 6) && minValue >= Math.pow(10, 5)) {
     divisor = Math.pow(10, 6);
   } else if (maxValue >= Math.pow(10, 4) && minValue >= Math.pow(10, 3)) {
-    divisor = Math.pow(10, 4);
+    divisor = Math.pow(10, 3);
   }
   return divisor;
 }
@@ -170,9 +210,8 @@ module.exports = {
   getNonNullNumericalValues,
   getMetaData,
   getNumberBuckets,
-  hasFloatingNumbersInLegend,
-  hasFloatingNumbersInData,
+  getMaxDigitsAfterCommaInData,
   getDivisor,
-  getDivisorString,
+  getSubtitleSuffix,
   getDividedData,
 };

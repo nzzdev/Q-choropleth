@@ -3,6 +3,7 @@
   import CloseIcon from "./svg/MethodBoxCloseIcon.svelte";
   import { getFormatedValue } from "./helpers/data.js";
   export let legendData;
+  export let formattingOptions;
   export let methodBoxText;
   export let methodBoxArticle;
 </script>
@@ -29,18 +30,12 @@
           {#if index === 0 && legendData.hasSingleValueBucket}
             <td />
             <td />
-            <td>
-              {getFormatedValue(legendData.hasFloatingNumbers, bucket.from)}
-            </td>
+            <td>{getFormatedValue(formattingOptions, bucket.from)}</td>
             <td>(nur ein Datenpunkt)</td>
           {:else}
-            <td>
-              {getFormatedValue(legendData.hasFloatingNumbers, bucket.from)}
-            </td>
+            <td>{getFormatedValue(formattingOptions, bucket.from)}</td>
             <td>-</td>
-            <td>
-              {getFormatedValue(legendData.hasFloatingNumbers, bucket.to)}
-            </td>
+            <td>{getFormatedValue(formattingOptions, bucket.to)}</td>
             <td />
           {/if}
         </tr>

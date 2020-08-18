@@ -7,7 +7,7 @@
   export let valuesOnMap;
   export let contentWidth;
   export let entityMapping;
-  export let hasFloatingNumbers;
+  export let formattingOptions;
 
   const dataMapping = new Map(data);
   const baseSpacing = 18;
@@ -78,7 +78,10 @@
 
   function getDisplayValue(cantonCode) {
     let value = getValue(cantonCode);
-    return getFormatedValue(hasFloatingNumbers, value);
+    if (legendData.type === "numerical") {
+      return getFormatedValue(formattingOptions, value);
+    }
+    return value;
   }
 </script>
 

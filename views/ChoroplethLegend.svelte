@@ -1,6 +1,7 @@
 <script>
   import { getFormatedValue } from "./helpers/data.js";
   export let legendData;
+  export let formattingOptions;
   export let contentWidth;
   let labelLegend = getLabelLegend(legendData);
 
@@ -111,11 +112,11 @@
         <div class="q-choropleth-legend-value-container">
           <span
             class="q-choropleth-legend-value-container--minVal s-font-note-s">
-            {getFormatedValue(legendData.hasFloatingNumbers, legendData.minValue)}
+            {getFormatedValue(formattingOptions, legendData.minValue)}
           </span>
           <span
             class="q-choropleth-legend-value-container--maxVal s-font-note-s">
-            {getFormatedValue(legendData.hasFloatingNumbers, legendData.maxValue)}
+            {getFormatedValue(formattingOptions, legendData.maxValue)}
           </span>
         </div>
         <div class="q-choropleth-legend-border-container">
@@ -158,7 +159,7 @@
           <div
             class="s-font-note-s"
             style={getDescriptionAlignment(labelLegend)}>
-            {labelLegend.label}: {getFormatedValue(labelLegend.hasFloatingNumbers, labelLegend.value)}
+            {labelLegend.label}: {getFormatedValue(formattingOptions, labelLegend.value)}
           </div>
         {/if}
         {#if hasSingleValueBucket(legendData) || legendData.hasNullValues}
@@ -176,7 +177,7 @@
                     class="q-choropleth-legend-bucket {getColorClass(legendData.buckets[0])}"
                     style="fill: {getCustomColor(legendData.buckets[0])}" />
                 </svg>
-                {getFormatedValue(legendData.hasFloatingNumbers, legendData.buckets[0].from)}
+                {getFormatedValue(formattingOptions, legendData.buckets[0].from)}
               </div>
             {/if}
             {#if legendData.hasNullValues}

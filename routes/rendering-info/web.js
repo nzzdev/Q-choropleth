@@ -1,19 +1,20 @@
 const Boom = require("@hapi/boom");
 const fs = require("fs");
 const path = require("path");
+
+const baseMapHelpers = require("../../helpers/baseMap.js");
 const legendHelpers = require("../../helpers/legend.js");
 const dataHelpers = require("../../helpers/data.js");
+const methodBoxHelpers = require("../../helpers/methodBox");
+
 const getExactPixelWidth = require("../../helpers/toolRuntimeConfig.js")
   .getExactPixelWidth;
-const methodBoxConfig = require("../../helpers/methodBox");
 
 const stylesDir = path.join(__dirname, "/../../styles/");
 const styleHashMap = require(path.join(stylesDir, "hashMap.json"));
 const scriptsDir = "../../scripts/";
 const scriptHashMap = require(`${scriptsDir}/hashMap.json`);
 const viewsDir = `${__dirname}/../../views/`;
-
-const baseMapHelpers = require("../../helpers/baseMap.js");
 
 // setup svelte
 require("svelte/register");
@@ -27,7 +28,6 @@ const schemaString = JSON.parse(
   })
 );
 const Ajv = require("ajv");
-const methodBoxTextConfig = require("../../helpers/methodBox");
 const ajv = new Ajv();
 
 const validate = ajv.compile(schemaString);
@@ -64,115 +64,100 @@ module.exports = {
     },
   },
   handler: async function (request, h) {
-    const item = request.payload.item;
-    const toolRuntimeConfig = request.payload.toolRuntimeConfig;
+    try {
+      const item = request.payload.item;
+      const toolRuntimeConfig = request.payload.toolRuntimeConfig;
 
-    // since we do not need header row for further processing we remove it here first
-    item.data = dataHelpers.getDataWithoutHeaderRow(item.data);
+      // since we do not need header row for further processing we remove it here first
+      item.data = dataHelpers.getDataWithoutHeaderRow(item.data);
 
-    const context = {
-      item,
-      id: `q_choropleth_${toolRuntimeConfig.requestId}`,
-      displayOptions: request.payload.toolRuntimeConfig.displayOptions || {},
-    };
+      // basic context information
+      const context = {
+        id: `q_choropleth_${toolRuntimeConfig.requestId}`,
+        displayOptions: request.payload.toolRuntimeConfig.displayOptions || {},
+      };
 
-    const baseMapEntityCollectionResponse = await request.server.inject({
-      method: "GET",
-      url: `/entityCollection/${item.baseMap}`,
-    });
+      context.entityMapping = await baseMapHelpers.getEntityMapping(
+        request,
+        item
+      );
 
-    if (baseMapEntityCollectionResponse.statusCode === 200) {
-      const baseMapEntityCollection = baseMapEntityCollectionResponse.result;
-      if (baseMapEntityCollection.type === "Geometry") {
-        context.entityMapping = baseMapHelpers.getGeometryMapping(
-          baseMapEntityCollection,
-          item.baseMap,
-          item.entityType
-        );
-      }
-    }
+      if (item.options.choroplethType === "numerical") {
+        const divisor = dataHelpers.getDivisor(item.data);
+        if (divisor > 1) {
+          item.data = dataHelpers.getDividedData(item.data, divisor);
+          item.subtitleSuffix = dataHelpers.getSubtitleSuffix(
+            divisor,
+            item.subtitle
+          );
+        }
 
-    const divisor = dataHelpers.getDivisor(item.data);
-    if (divisor > 1) {
-      item.data = dataHelpers.getDividedData(item.data, divisor);
-      if (item.subtitle && item.subtitle !== "") {
-        item.subtitleSuffix = ` (in ${dataHelpers.getDivisorString(divisor)})`;
-      } else {
-        item.subtitleSuffix = `in ${dataHelpers.getDivisorString(divisor)}`;
-      }
-    }
+        context.formattingOptions = {
+          maxDigitsAfterComma: dataHelpers.getMaxDigitsAfterCommaInData(
+            item.data
+          ),
+        };
 
-    if (item.options.choroplethType === "numerical") {
-      try {
         context.legendData = legendHelpers.getNumericalLegend(
           item.data,
-          item.options.numericalOptions
+          item.options.numericalOptions,
+          context.formattingOptions.maxDigitsAfterComma
         );
+
         context.valuesOnMap = !item.options.numericalOptions.noValuesOnMap;
-        context.legendData.labelLegend =
-          item.options.numericalOptions.labelLegend;
-        context.legendData.hasFloatingNumbers = dataHelpers.hasFloatingNumbersInLegend(
-          context.legendData.buckets
+        context.methodBox = methodBoxHelpers.getMethodBoxInfo(
+          item.options.numericalOptions.bucketType
         );
-        const methodBoxText =
-          methodBoxTextConfig[item.options.numericalOptions.bucketType];
-        context.methodBoxText = methodBoxText || "";
-        context.hasFloatingNumbers = dataHelpers.hasFloatingNumbersInData(
-          item.data
+      } else {
+        context.legendData = legendHelpers.getCategoricalLegend(
+          item.data,
+          item.options.categoricalOptions
         );
-      } catch (e) {
-        throw new Boom.Boom(e);
+        context.valuesOnMap = item.options.categoricalOptions.valuesOnMap;
       }
-    } else {
-      context.legendData = legendHelpers.getCategoricalLegend(
-        item.data,
-        item.options.categoricalOptions
+
+      context.item = item;
+
+      const exactPixelWidth = getExactPixelWidth(
+        request.payload.toolRuntimeConfig
       );
-      context.valuesOnMap = item.options.categoricalOptions.valuesOnMap;
-    }
 
-    const exactPixelWidth = getExactPixelWidth(
-      request.payload.toolRuntimeConfig
-    );
+      // if we have the exact pixel width we add it to context
+      // if not the client side script will handle client side measuring
+      if (typeof exactPixelWidth === "number") {
+        context.contentWidth = exactPixelWidth;
+      }
 
-    // if we have the exact pixel width we add it to context
-    // if not the client side script will handle client side measuring
-    if (typeof exactPixelWidth === "number") {
-      context.contentWidth = exactPixelWidth;
-    }
-
-    context.methodBoxArticle = process.env.METHOD_BOX_ARTICLE
-      ? JSON.parse(process.env.METHOD_BOX_ARTICLE)
-      : null;
-
-    const renderingInfo = {
-      polyfills: ["Promise", "Element.prototype.classList", "CustomEvent"],
-      stylesheets: [
-        {
-          name: styleHashMap["default"],
-        },
-      ],
-      scripts: [
-        {
-          name: scriptHashMap["default"],
-        },
-        {
-          content: `
+      const renderingInfo = {
+        polyfills: ["Promise", "Element.prototype.classList", "CustomEvent"],
+        stylesheets: [
+          {
+            name: styleHashMap["default"],
+          },
+        ],
+        scripts: [
+          {
+            name: scriptHashMap["default"],
+          },
+          {
+            content: `
           new window._q_choropleth.Choropleth(document.querySelector('#${
             context.id
           }_container'), ${JSON.stringify({
-            qId: context.item.id,
-            requestId: context.id,
-            choroplethType: context.item.options.choroplethType,
-            width: context.contentWidth,
-            item: item,
-            toolRuntimeConfig: toolRuntimeConfig,
-          })})`,
-        },
-      ],
-      markup: staticTemplate.render(context).html,
-    };
-
-    return renderingInfo;
+              qId: context.item.id,
+              requestId: context.id,
+              choroplethType: context.item.options.choroplethType,
+              width: context.contentWidth,
+              item: item,
+              toolRuntimeConfig: toolRuntimeConfig,
+            })})`,
+          },
+        ],
+        markup: staticTemplate.render(context).html,
+      };
+      return renderingInfo;
+    } catch (e) {
+      throw new Boom.Boom(e);
+    }
   },
 };

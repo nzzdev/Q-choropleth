@@ -205,6 +205,19 @@
                   "Quantile",
                   "gleich grosse Intervalle",
                   "manuelle Grenzen"
+                ],
+                "notificationChecks": [
+                  {
+                    "type": "ToolEndpoint",
+                    "config": {
+                      "endpoint": "notification/numberBucketsOutOfColorScale",
+                      "fields": ["options"]
+                    },
+                    "priority": {
+                      "type": "medium",
+                      "value": 2
+                    }
+                  }
                 ]
               }
             },
@@ -256,7 +269,7 @@
                   {
                     "type": "ToolEndpoint",
                     "config": {
-                      "endpoint": "notification/numberBucketsTooLarge",
+                      "endpoint": "notification/numberBucketsExceedsDataSet",
                       "fields": ["data", "options"]
                     },
                     "priority": {
@@ -389,6 +402,19 @@
                 "config": {
                   "endpoint": "option-availability/isCategorical",
                   "fields": ["options.choroplethType"]
+                }
+              }
+            ],
+            "notificationChecks": [
+              {
+                "type": "ToolEndpoint",
+                "config": {
+                  "endpoint": "notification/numberCategoriesOutOfColorScale",
+                  "fields": ["data", "options.choroplethType"]
+                },
+                "priority": {
+                  "type": "medium",
+                  "value": 2
                 }
               }
             ]

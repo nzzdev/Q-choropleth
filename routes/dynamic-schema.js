@@ -168,6 +168,10 @@ module.exports = {
   },
   handler: async function (request, h) {
     const item = request.payload.item;
+
+    // TODO: add entityType as dynamic schema instead of fixed enum
+    // in prep for other base maps with other entityTypes
+
     if (request.params.optionName === "scale") {
       return getScaleEnumWithTitles(item.options.numericalOptions);
     }

@@ -3,7 +3,7 @@ const dataHelpers = require("../../helpers/data.js");
 
 module.exports = {
   method: "POST",
-  path: "/notification/numberBucketsTooLarge",
+  path: "/notification/numberBucketsExceedsDataSet",
   options: {
     validate: {
       options: {
@@ -30,8 +30,8 @@ module.exports = {
         if (numberBuckets > numberUniqueValues.length) {
           return {
             message: {
-              title: "notifications.numberBucketsTooLarge.title",
-              body: "notifications.numberBucketsTooLarge.body",
+              title: "notifications.numberBucketsExceedsDataSet.title",
+              body: "notifications.numberBucketsExceedsDataSet.body",
             },
           };
         }
