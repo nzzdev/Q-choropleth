@@ -1,4 +1,5 @@
 <script>
+  export let fontSize;
   export let cantonCode;
   export let value;
   export let color;
@@ -82,6 +83,7 @@
             x="50%"
             y="35%"
             text-anchor="middle"
+            font-size="{fontSize}em"
             dy="5px"
             fill="currentColor">
             {cantonCode}
@@ -91,6 +93,7 @@
             x="50%"
             y="65%"
             text-anchor="middle"
+            font-size="{fontSize}em"
             dy="5px"
             fill="currentColor">
             {value}
@@ -101,6 +104,7 @@
             x="50%"
             y="50%"
             text-anchor="middle"
+            font-size="{fontSize}em"
             dy="5px"
             fill="currentColor">
             {cantonCode}
