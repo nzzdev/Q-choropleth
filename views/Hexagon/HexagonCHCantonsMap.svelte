@@ -83,12 +83,17 @@
     }
     return value;
   }
+
+  function getFontSize(contentWidth) {
+    return contentWidth < 470 ? 1.2 : 1;
+  }
 </script>
 
 <div class="swiss-hexagon-map">
   <svg style="width: {contentWidth}px; height: {contentWidth * 0.6}px;">
     <svg class="swiss-hexagon-map-row" y="0%">
       <Hexagon
+        fontSize={getFontSize(contentWidth)}
         width={contentWidth / 8}
         xIndex="2"
         cantonCode="BS"
@@ -96,6 +101,7 @@
         color={getColor('BS', legendData)}
         {valuesOnMap} />
       <Hexagon
+        fontSize={getFontSize(contentWidth)}
         width={contentWidth / 8}
         xIndex="3"
         cantonCode="BL"
@@ -103,6 +109,7 @@
         color={getColor('BL', legendData)}
         {valuesOnMap} />
       <Hexagon
+        fontSize={getFontSize(contentWidth)}
         width={contentWidth / 8}
         xIndex="4"
         cantonCode="SH"
@@ -110,6 +117,7 @@
         color={getColor('SH', legendData)}
         {valuesOnMap} />
       <Hexagon
+        fontSize={getFontSize(contentWidth)}
         width={contentWidth / 8}
         xIndex="5"
         cantonCode="TG"
@@ -119,6 +127,7 @@
     </svg>
     <svg class="swiss-hexagon-map-row" y="{baseSpacing * 1}%">
       <Hexagon
+        fontSize={getFontSize(contentWidth)}
         width={contentWidth / 8}
         xIndex="1.5"
         cantonCode="JU"
@@ -126,6 +135,7 @@
         color={getColor('JU', legendData)}
         {valuesOnMap} />
       <Hexagon
+        fontSize={getFontSize(contentWidth)}
         width={contentWidth / 8}
         xIndex="2.5"
         cantonCode="SO"
@@ -133,6 +143,7 @@
         color={getColor('SO', legendData)}
         {valuesOnMap} />
       <Hexagon
+        fontSize={getFontSize(contentWidth)}
         width={contentWidth / 8}
         xIndex="3.5"
         cantonCode="AG"
@@ -140,6 +151,7 @@
         color={getColor('AG', legendData)}
         {valuesOnMap} />
       <Hexagon
+        fontSize={getFontSize(contentWidth)}
         width={contentWidth / 8}
         xIndex="4.5"
         cantonCode="ZH"
@@ -147,6 +159,7 @@
         color={getColor('ZH', legendData)}
         {valuesOnMap} />
       <Hexagon
+        fontSize={getFontSize(contentWidth)}
         width={contentWidth / 8}
         xIndex="5.5"
         cantonCode="AR"
@@ -154,6 +167,7 @@
         color={getColor('AR', legendData)}
         {valuesOnMap} />
       <Hexagon
+        fontSize={getFontSize(contentWidth)}
         width={contentWidth / 8}
         xIndex="6.5"
         cantonCode="AI"
@@ -163,6 +177,7 @@
     </svg>
     <svg class="swiss-hexagon-map-row" y="{baseSpacing * 2}%">
       <Hexagon
+        fontSize={getFontSize(contentWidth)}
         width={contentWidth / 8}
         xIndex="1"
         cantonCode="NE"
@@ -170,6 +185,7 @@
         color={getColor('NE', legendData)}
         {valuesOnMap} />
       <Hexagon
+        fontSize={getFontSize(contentWidth)}
         width={contentWidth / 8}
         xIndex="2"
         cantonCode="BE"
@@ -177,6 +193,7 @@
         color={getColor('BE', legendData)}
         {valuesOnMap} />
       <Hexagon
+        fontSize={getFontSize(contentWidth)}
         width={contentWidth / 8}
         xIndex="3"
         cantonCode="LU"
@@ -184,6 +201,7 @@
         color={getColor('LU', legendData)}
         {valuesOnMap} />
       <Hexagon
+        fontSize={getFontSize(contentWidth)}
         width={contentWidth / 8}
         xIndex="4"
         cantonCode="ZG"
@@ -191,6 +209,7 @@
         color={getColor('ZG', legendData)}
         {valuesOnMap} />
       <Hexagon
+        fontSize={getFontSize(contentWidth)}
         width={contentWidth / 8}
         xIndex="5"
         cantonCode="SZ"
@@ -198,6 +217,7 @@
         color={getColor('SZ', legendData)}
         {valuesOnMap} />
       <Hexagon
+        fontSize={getFontSize(contentWidth)}
         width={contentWidth / 8}
         xIndex="6"
         cantonCode="SG"
@@ -207,6 +227,7 @@
     </svg>
     <svg class="swiss-hexagon-map-row" y="{baseSpacing * 3}%">
       <Hexagon
+        fontSize={getFontSize(contentWidth)}
         width={contentWidth / 8}
         xIndex="0.5"
         cantonCode="VD"
@@ -214,6 +235,7 @@
         color={getColor('VD', legendData)}
         {valuesOnMap} />
       <Hexagon
+        fontSize={getFontSize(contentWidth)}
         width={contentWidth / 8}
         xIndex="1.5"
         cantonCode="FR"
@@ -221,6 +243,7 @@
         color={getColor('FR', legendData)}
         {valuesOnMap} />
       <Hexagon
+        fontSize={getFontSize(contentWidth)}
         width={contentWidth / 8}
         xIndex="2.5"
         cantonCode="OW"
@@ -228,6 +251,7 @@
         color={getColor('OW', legendData)}
         {valuesOnMap} />
       <Hexagon
+        fontSize={getFontSize(contentWidth)}
         width={contentWidth / 8}
         xIndex="3.5"
         cantonCode="NW"
@@ -235,6 +259,7 @@
         color={getColor('NW', legendData)}
         {valuesOnMap} />
       <Hexagon
+        fontSize={getFontSize(contentWidth)}
         width={contentWidth / 8}
         xIndex="4.5"
         cantonCode="UR"
@@ -242,6 +267,7 @@
         color={getColor('UR', legendData)}
         {valuesOnMap} />
       <Hexagon
+        fontSize={getFontSize(contentWidth)}
         width={contentWidth / 8}
         xIndex="5.5"
         cantonCode="GL"
@@ -249,6 +275,7 @@
         color={getColor('GL', legendData)}
         {valuesOnMap} />
       <Hexagon
+        fontSize={getFontSize(contentWidth)}
         width={contentWidth / 8}
         xIndex="6.5"
         cantonCode="GR"
@@ -258,6 +285,7 @@
     </svg>
     <svg class="swiss-hexagon-map-row" y="{baseSpacing * 4}%">
       <Hexagon
+        fontSize={getFontSize(contentWidth)}
         width={contentWidth / 8}
         xIndex="0"
         cantonCode="GE"
@@ -265,6 +293,7 @@
         color={getColor('GE', legendData)}
         {valuesOnMap} />
       <Hexagon
+        fontSize={getFontSize(contentWidth)}
         width={contentWidth / 8}
         xIndex="2"
         cantonCode="VS"
@@ -272,6 +301,7 @@
         color={getColor('VS', legendData)}
         {valuesOnMap} />
       <Hexagon
+        fontSize={getFontSize(contentWidth)}
         width={contentWidth / 8}
         xIndex="5"
         cantonCode="TI"
