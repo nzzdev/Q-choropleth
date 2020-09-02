@@ -197,7 +197,9 @@ function getDivisor(data) {
 
 function getDividedData(data, divisor) {
   return data.map((row) => {
-    row[1] = parseFloat(row[1] / divisor).toFixed(1);
+    if (row[1] !== null && row[1] !== undefined) {
+      row[1] = parseFloat(row[1] / divisor).toFixed(1);
+    }
     return row;
   });
 }
