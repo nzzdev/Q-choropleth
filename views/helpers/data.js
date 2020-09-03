@@ -16,17 +16,19 @@ const formatGrouping = formatLocale.format(",");
 const formatDefaultDecimalGrouping = formatLocale.format(",.1f");
 const formatNoGrouping = formatLocale.format("");
 
-function getFormatedValue(formattingOptions, value) {
+function getFormattedValueForBuckets(formattingOptions, value) {
+  if (formattingOptions.roundingBucketBorders) {
+    return getFormattedValue(formattingOptions, value);
+  }
+  return getFormattedValue({}, value);
+}
+
+function getFormattedValue(formattingOptions, value) {
   if (value === null) {
     return value;
   }
 
-  // if we have a divisor, we round values to float number with one position after comma
-  if (formattingOptions.hasDivisor) {
-    return formatDefaultDecimalGrouping(value);
-  }
-
-  // if we have no divisor but float values in data set we extend all float values
+  // if we have float values in data set we extend all float values
   // to max number of positions after comma
   if (formattingOptions.maxDigitsAfterComma) {
     return formatLocale.format(`,.${formattingOptions.maxDigitsAfterComma}f`)(
@@ -44,5 +46,6 @@ function getFormatedValue(formattingOptions, value) {
 }
 
 module.exports = {
-  getFormatedValue,
+  getFormattedValueForBuckets,
+  getFormattedValue,
 };
