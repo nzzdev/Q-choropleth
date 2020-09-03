@@ -4,6 +4,7 @@
   "baseMap": "hexagonCHCantons",
   "entityType": "name",
   "data": [
+    ["Kanton", "Wert"],
     ["Aargau", "8.2"],
     ["Appenzell Ausserrhoden", "6.0"],
     ["Appenzell Innerrhoden", "5.8"],
@@ -32,16 +33,27 @@
     ["Zürich", null]
   ],
   "sources": [],
-  "notes": "",
   "options": {
     "choroplethType": "numerical",
     "numericalOptions": {
-      "valuesOnMap": true,
-      "bucketType": "ckmeans",
-      "numberBuckets": 6,
+      "valuesOnMap": false,
       "labelLegend": "noLabel",
+      "bucketType": "ckmeans",
+      "numberBuckets": 5,
       "scale": "sequential",
-      "colorScheme": "one"
+      "colorScheme": "one",
+      "colorOverwrites": [],
+      "noValuesOnMap": true
+    },
+    "categoricalOptions": {
+      "valuesOnMap": false,
+      "colorOverwrites": [
+        {
+          "textColor": "light",
+          "color": "#b134c5",
+          "position": null
+        }
+      ]
     }
   }
 }
