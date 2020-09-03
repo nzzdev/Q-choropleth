@@ -177,7 +177,7 @@
                     class="q-choropleth-legend-bucket {getColorClass(legendData.buckets[0])}"
                     style="fill: {getCustomColor(legendData.buckets[0])}" />
                 </svg>
-                {getFormatedValue(formattingOptions, legendData.buckets[0].from)}
+                = {getFormatedValue(formattingOptions, legendData.buckets[0].from)}
               </div>
             {/if}
             {#if legendData.hasNullValues}
