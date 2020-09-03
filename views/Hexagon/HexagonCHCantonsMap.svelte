@@ -85,7 +85,13 @@
   }
 
   function getFontSize(contentWidth) {
-    return contentWidth < 470 ? 1.2 : 1;
+    if (contentWidth < 400) {
+      return 1.2;
+    } else if (contentWidth > 400 && contentWidth < 470) {
+      return 1.1;
+    } else {
+      return 1;
+    }
   }
 </script>
 
