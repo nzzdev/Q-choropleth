@@ -1,5 +1,16 @@
 {
   "type": "Geometry",
+  "config": {
+    "rows": 5,
+    "columns": 7,
+    "grid": [
+      [null, null, "BS", "BL", "SH", "TG", null],
+      [null, "JU", "SO", "AG", "ZH", "AR", "AI"],
+      [null, "NE", "BE", "LU", "ZG", "SZ", "SG"],
+      ["VD", "FR", "OW", "NW", "UR", "GL", "GR"],
+      ["GE", null, "VS", null, null, "TI", null]
+    ]
+  },
   "cantons": [
     { "id": "1", "code": "ZH", "name": "Zürich" },
     { "id": "2", "code": "BE", "name": "Bern" },
