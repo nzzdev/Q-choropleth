@@ -1,7 +1,7 @@
 <script>
   import OpenIcon from "./svg/MethodBoxOpenIcon.svelte";
   import CloseIcon from "./svg/MethodBoxCloseIcon.svelte";
-  import { getFormatedValue } from "./helpers/data.js";
+  import { getFormattedValueForBuckets } from "./helpers/data.js";
   export let legendData;
   export let formattingOptions;
   export let methodBoxText;
@@ -30,12 +30,16 @@
           {#if index === 0 && legendData.hasSingleValueBucket}
             <td />
             <td />
-            <td>{getFormatedValue(formattingOptions, bucket.from)}</td>
+            <td>
+              {getFormattedValueForBuckets(formattingOptions, bucket.from)}
+            </td>
             <td>(nur ein Datenpunkt)</td>
           {:else}
-            <td>{getFormatedValue(formattingOptions, bucket.from)}</td>
+            <td>
+              {getFormattedValueForBuckets(formattingOptions, bucket.from)}
+            </td>
             <td>-</td>
-            <td>{getFormatedValue(formattingOptions, bucket.to)}</td>
+            <td>{getFormattedValueForBuckets(formattingOptions, bucket.to)}</td>
             <td />
           {/if}
         </tr>

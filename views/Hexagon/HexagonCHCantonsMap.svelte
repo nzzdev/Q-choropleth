@@ -1,6 +1,6 @@
 <script>
   import Hexagon from "./Hexagon.svelte";
-  import { getFormatedValue } from "../helpers/data.js";
+  import { getFormattedValue } from "../helpers/data.js";
   export let data;
   export let entityType;
   export let legendData;
@@ -79,7 +79,7 @@
   function getDisplayValue(cantonCode) {
     let value = getValue(cantonCode);
     if (legendData.type === "numerical") {
-      return getFormatedValue(formattingOptions, value);
+      return getFormattedValue(formattingOptions, value);
     }
     return value;
   }
