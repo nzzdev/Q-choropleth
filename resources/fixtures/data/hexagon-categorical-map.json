@@ -46,7 +46,7 @@
       "colorOverwrites": []
     },
     "categoricalOptions": {
-      "valuesOnMap": true,
+      "valuesOnMap": false,
       "colorOverwrites": []
     }
   }
