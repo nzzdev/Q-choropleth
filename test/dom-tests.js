@@ -55,7 +55,11 @@ function elementCount(markup, selector) {
   });
 }
 
-lab.experiment("categories", () => {
+function formatValue(value) {
+  return value.replace(/\n| /g, "");
+}
+
+lab.experiment("options", () => {
   it("shows a numeric map", async () => {
     const response = await server.inject({
       url: "/rendering-info/web?_id=someid",
@@ -105,6 +109,119 @@ lab.experiment("categories", () => {
     return elementCount(response.result.markup, ".s-legend-icon-label").then(
       (value) => {
         expect(value).to.be.equal(1);
+      }
+    );
+  });
+});
+
+lab.experiment("converting numbers", () => {
+  it("divior in subtitle", async () => {
+    const response = await server.inject({
+      url: "/rendering-info/web?_id=someid",
+      method: "POST",
+      payload: {
+        item: require("../resources/fixtures/data/hexagon-convert.json"),
+        toolRuntimeConfig: {
+          size: {
+            width: [
+              {
+                comparison: "=",
+                value: 272,
+              },
+            ],
+          },
+        },
+      },
+    });
+
+    return element(response.result.markup, ".s-q-item__subtitle").then(
+      (element) => {
+        expect(element.innerHTML.includes("in Tausend")).to.be.true();
+      }
+    );
+  });
+
+  it("converts legend-values", async () => {
+    const response = await server.inject({
+      url: "/rendering-info/web?_id=someid",
+      method: "POST",
+      payload: {
+        item: require("../resources/fixtures/data/hexagon-convert.json"),
+        toolRuntimeConfig: {
+          size: {
+            width: [
+              {
+                comparison: "=",
+                value: 272,
+              },
+            ],
+          },
+        },
+      },
+    });
+
+    const dom = new JSDOM(response.result.markup);
+    const minVal = dom.window.document.querySelector(
+      ".q-choropleth-legend-value-container--minVal"
+    );
+    const maxVal = dom.window.document.querySelector(
+      ".q-choropleth-legend-value-container--maxVal"
+    );
+
+    expect([
+      formatValue(minVal.innerHTML),
+      formatValue(maxVal.innerHTML),
+    ]).to.be.equals(["10,0", "12,0"]);
+  });
+
+  it("converts legend-marker", async () => {
+    const response = await server.inject({
+      url: "/rendering-info/web?_id=someid",
+      method: "POST",
+      payload: {
+        item: require("../resources/fixtures/data/hexagon-convert.json"),
+        toolRuntimeConfig: {
+          size: {
+            width: [
+              {
+                comparison: "=",
+                value: 272,
+              },
+            ],
+          },
+        },
+      },
+    });
+
+    return element(response.result.markup, ".q-choropleth-legend-marker").then(
+      (element) => {
+        expect(element.innerHTML.includes("10,2")).to.be.true();
+      }
+    );
+  });
+
+  it("converts hexagon-values", async () => {
+    const response = await server.inject({
+      url: "/rendering-info/web?_id=someid",
+      method: "POST",
+      payload: {
+        item: require("../resources/fixtures/data/hexagon-convert.json"),
+        toolRuntimeConfig: {
+          size: {
+            width: [
+              {
+                comparison: "=",
+                value: 272,
+              },
+            ],
+          },
+        },
+      },
+    });
+
+    return elements(response.result.markup, ".swiss-hexagon-value").then(
+      (elements) => {
+        expect(formatValue(elements[0].innerHTML)).to.be.equal("10,0");
       }
     );
   });
