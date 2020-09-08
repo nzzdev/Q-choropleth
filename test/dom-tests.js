@@ -219,7 +219,7 @@ lab.experiment("converting numbers", () => {
       },
     });
 
-    return elements(response.result.markup, ".swiss-hexagon-value").then(
+    return elements(response.result.markup, ".q-choropleth-hexagon-value").then(
       (elements) => {
         expect(formatValue(elements[0].innerHTML)).to.be.equal("10,0");
       }
