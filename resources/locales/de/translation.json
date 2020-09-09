@@ -2,7 +2,7 @@
   "notifications": {
     "hasValues": {
       "title": "Werte erfasst",
-      "body": "Falls du die Basiskarte oder den Geo-Code ändern möchtest, musst du alle Werte aus der 2. Spalte entfernen"
+      "body": "Für Änderungen an Basiskarte und Geo-Code musst du zuerst alle Werte aus der 2. Spalte entfernen"
     },
     "predefinedContent": {
       "title": "Vordefinierte Werte",

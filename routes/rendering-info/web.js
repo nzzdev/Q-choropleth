@@ -93,6 +93,10 @@ module.exports = {
           maxDigitsAfterComma: dataHelpers.getMaxDigitsAfterCommaInData(
             item.data
           ),
+          roundingBucketBorders:
+            item.options.numericalOptions.bucketType !== "custom"
+              ? true
+              : false,
         };
 
         context.legendData = legendHelpers.getNumericalLegend(

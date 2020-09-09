@@ -1,5 +1,8 @@
 <script>
-  import { getFormatedValue } from "./helpers/data.js";
+  import {
+    getFormattedValue,
+    getFormattedValueForBuckets
+  } from "./helpers/data.js";
   export let legendData;
   export let formattingOptions;
   export let contentWidth;
@@ -112,11 +115,11 @@
         <div class="q-choropleth-legend-value-container">
           <span
             class="q-choropleth-legend-value-container--minVal s-font-note-s">
-            {getFormatedValue(formattingOptions, legendData.minValue)}
+            {getFormattedValueForBuckets(formattingOptions, legendData.minValue)}
           </span>
           <span
             class="q-choropleth-legend-value-container--maxVal s-font-note-s">
-            {getFormatedValue(formattingOptions, legendData.maxValue)}
+            {getFormattedValueForBuckets(formattingOptions, legendData.maxValue)}
           </span>
         </div>
         <div class="q-choropleth-legend-border-container">
@@ -159,7 +162,7 @@
           <div
             class="s-font-note-s"
             style={getDescriptionAlignment(labelLegend)}>
-            {labelLegend.label}: {getFormatedValue(formattingOptions, labelLegend.value)}
+            {labelLegend.label}: {getFormattedValue(formattingOptions, labelLegend.value)}
           </div>
         {/if}
         {#if hasSingleValueBucket(legendData) || legendData.hasNullValues}
@@ -177,7 +180,7 @@
                     class="q-choropleth-legend-bucket {getColorClass(legendData.buckets[0])}"
                     style="fill: {getCustomColor(legendData.buckets[0])}" />
                 </svg>
-                = {getFormatedValue(formattingOptions, legendData.buckets[0].from)}
+                = {getFormattedValueForBuckets(formattingOptions, legendData.buckets[0].from)}
               </div>
             {/if}
             {#if legendData.hasNullValues}
