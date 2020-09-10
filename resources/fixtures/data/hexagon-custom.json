@@ -36,7 +36,7 @@
   "options": {
     "choroplethType": "numerical",
     "numericalOptions": {
-      "valuesOnMap": false,
+      "valuesOnMap": true,
       "labelLegend": "noLabel",
       "bucketType": "custom",
       "numberBuckets": 5,

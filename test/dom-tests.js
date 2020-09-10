@@ -112,6 +112,392 @@ lab.experiment("options", () => {
       }
     );
   });
+
+  it("hides descriptions on map", async () => {
+    const response = await server.inject({
+      url: "/rendering-info/web?_id=someid",
+      method: "POST",
+      payload: {
+        item: require("../resources/fixtures/data/hexagon-categorical-map.json"),
+        toolRuntimeConfig: {
+          size: {
+            width: [
+              {
+                comparison: "=",
+                value: 272,
+              },
+            ],
+          },
+        },
+      },
+    });
+
+    return elementCount(
+      response.result.markup,
+      ".q-choropleth-hexagon-value"
+    ).then((value) => {
+      expect(value).to.be.equal(0);
+    });
+  });
+
+  it("hides values on map", async () => {
+    const response = await server.inject({
+      url: "/rendering-info/web?_id=someid",
+      method: "POST",
+      payload: {
+        item: require("../resources/fixtures/data/hexagon-kmeans.json"),
+        toolRuntimeConfig: {
+          size: {
+            width: [
+              {
+                comparison: "=",
+                value: 272,
+              },
+            ],
+          },
+        },
+      },
+    });
+
+    return elementCount(
+      response.result.markup,
+      ".q-choropleth-hexagon-value"
+    ).then((value) => {
+      expect(value).to.be.equal(0);
+    });
+  });
+
+  it("shows average-marker in legend", async () => {
+    const response = await server.inject({
+      url: "/rendering-info/web?_id=someid",
+      method: "POST",
+      payload: {
+        item: require("../resources/fixtures/data/hexagon-convert.json"),
+        toolRuntimeConfig: {
+          size: {
+            width: [
+              {
+                comparison: "=",
+                value: 272,
+              },
+            ],
+          },
+        },
+      },
+    });
+
+    return element(response.result.markup, ".q-choropleth-legend-marker").then(
+      (element) => {
+        expect(element.innerHTML.includes("10,2")).to.be.true();
+      }
+    );
+  });
+
+  it("shows median-marker in legend", async () => {
+    const response = await server.inject({
+      url: "/rendering-info/web?_id=someid",
+      method: "POST",
+      payload: {
+        item: require("../resources/fixtures/data/hexagon-median.json"),
+        toolRuntimeConfig: {
+          size: {
+            width: [
+              {
+                comparison: "=",
+                value: 272,
+              },
+            ],
+          },
+        },
+      },
+    });
+
+    return element(response.result.markup, ".q-choropleth-legend-marker").then(
+      (element) => {
+        expect(formatValue(element.innerHTML)).to.be.equal("Median:10,0");
+      }
+    );
+  });
+
+  it("hides marker in legend", async () => {
+    const response = await server.inject({
+      url: "/rendering-info/web?_id=someid",
+      method: "POST",
+      payload: {
+        item: require("../resources/fixtures/data/hexagon-kmeans.json"),
+        toolRuntimeConfig: {
+          size: {
+            width: [
+              {
+                comparison: "=",
+                value: 272,
+              },
+            ],
+          },
+        },
+      },
+    });
+
+    return elementCount(
+      response.result.markup,
+      ".q-choropleth-legend-marker"
+    ).then((value) => {
+      expect(value).to.be.equal(0);
+    });
+  });
+
+  it("shows 'no data' in legend", async () => {
+    const response = await server.inject({
+      url: "/rendering-info/web?_id=someid",
+      method: "POST",
+      payload: {
+        item: require("../resources/fixtures/data/hexagon-kmeans.json"),
+        toolRuntimeConfig: {
+          size: {
+            width: [
+              {
+                comparison: "=",
+                value: 272,
+              },
+            ],
+          },
+        },
+      },
+    });
+
+    return elementCount(
+      response.result.markup,
+      ".q-choropleth-legend-info--no-data"
+    ).then((value) => {
+      expect(value).to.be.equal(1);
+    });
+  });
+});
+
+lab.experiment("legend", () => {
+  it("shows custom buckets", async () => {
+    const response = await server.inject({
+      url: "/rendering-info/web?_id=someid",
+      method: "POST",
+      payload: {
+        item: require("../resources/fixtures/data/hexagon-custom.json"),
+        toolRuntimeConfig: {
+          size: {
+            width: [
+              {
+                comparison: "=",
+                value: 272,
+              },
+            ],
+          },
+        },
+      },
+    });
+
+    return elementCount(
+      response.result.markup,
+      ".q-choropleth-legend-bucket"
+    ).then((value) => {
+      expect(value).to.be.equal(3);
+    });
+  });
+
+  it("shows custom description", async () => {
+    const response = await server.inject({
+      url: "/rendering-info/web?_id=someid",
+      method: "POST",
+      payload: {
+        item: require("../resources/fixtures/data/hexagon-custom.json"),
+        toolRuntimeConfig: {
+          size: {
+            width: [
+              {
+                comparison: "=",
+                value: 272,
+              },
+            ],
+          },
+        },
+      },
+    });
+
+    return element(
+      response.result.markup,
+      ".q-choropleth-methods-description"
+    ).then((element) => {
+      expect(element.innerHTML).to.be.equal(
+        "Die Gruppen wurden manuell definiert."
+      );
+    });
+  });
+
+  // it("shows jenks buckets", async () => {
+  //   const response = await server.inject({
+  //     url: "/rendering-info/web?_id=someid",
+  //     method: "POST",
+  //     payload: {
+  //       item: require("../resources/fixtures/data/hexagon-kmeans.json"),
+  //       toolRuntimeConfig: {
+  //         size: {
+  //           width: [
+  //             {
+  //               comparison: "=",
+  //               value: 272,
+  //             },
+  //           ],
+  //         },
+  //       },
+  //     },
+  //   });
+
+  //   return elementCount(
+  //     response.result.markup,
+  //     ".q-choropleth-legend-bucket"
+  //   ).then((value) => {
+  //     expect(value).to.be.equal(3);
+  //   });
+  // });
+
+  it("shows jenks description", async () => {
+    const response = await server.inject({
+      url: "/rendering-info/web?_id=someid",
+      method: "POST",
+      payload: {
+        item: require("../resources/fixtures/data/hexagon-kmeans.json"),
+        toolRuntimeConfig: {
+          size: {
+            width: [
+              {
+                comparison: "=",
+                value: 272,
+              },
+            ],
+          },
+        },
+      },
+    });
+
+    return element(
+      response.result.markup,
+      ".q-choropleth-methods-description"
+    ).then((element) => {
+      expect(element.innerHTML).to.be.equal(
+        "Die unterschiedlich grossen Gruppen kommen durch ein statistisches Verfahren zustande, welches die Werte so in Gruppen einteilt, dass die Unterschiede zwischen den Regionen möglichst gut sichtbar werden (Jenks Natural Breaks)."
+      );
+    });
+  });
+
+  // it("shows quantile buckets", async () => {
+  //   const response = await server.inject({
+  //     url: "/rendering-info/web?_id=someid",
+  //     method: "POST",
+  //     payload: {
+  //       item: require("../resources/fixtures/data/hexagon-quantile.json"),
+  //       toolRuntimeConfig: {
+  //         size: {
+  //           width: [
+  //             {
+  //               comparison: "=",
+  //               value: 272,
+  //             },
+  //           ],
+  //         },
+  //       },
+  //     },
+  //   });
+
+  //   return elementCount(
+  //     response.result.markup,
+  //     ".q-choropleth-legend-bucket"
+  //   ).then((value) => {
+  //     expect(value).to.be.equal(3);
+  //   });
+  // });
+
+  it("shows quantile description", async () => {
+    const response = await server.inject({
+      url: "/rendering-info/web?_id=someid",
+      method: "POST",
+      payload: {
+        item: require("../resources/fixtures/data/hexagon-quantile.json"),
+        toolRuntimeConfig: {
+          size: {
+            width: [
+              {
+                comparison: "=",
+                value: 272,
+              },
+            ],
+          },
+        },
+      },
+    });
+
+    return element(
+      response.result.markup,
+      ".q-choropleth-methods-description"
+    ).then((element) => {
+      expect(element.innerHTML).to.be.equal(
+        "Die Gruppen wurden so gewählt, dass in jeder Gruppe möglichst gleich viele Werte vorhanden sind."
+      );
+    });
+  });
+
+  // it("shows equal buckets", async () => {
+  //   const response = await server.inject({
+  //     url: "/rendering-info/web?_id=someid",
+  //     method: "POST",
+  //     payload: {
+  //       item: require("../resources/fixtures/data/hexagon-equal.json"),
+  //       toolRuntimeConfig: {
+  //         size: {
+  //           width: [
+  //             {
+  //               comparison: "=",
+  //               value: 272,
+  //             },
+  //           ],
+  //         },
+  //       },
+  //     },
+  //   });
+
+  //   return elementCount(
+  //     response.result.markup,
+  //     ".q-choropleth-legend-bucket"
+  //   ).then((value) => {
+  //     expect(value).to.be.equal(3);
+  //   });
+  // });
+
+  it("shows equal description", async () => {
+    const response = await server.inject({
+      url: "/rendering-info/web?_id=someid",
+      method: "POST",
+      payload: {
+        item: require("../resources/fixtures/data/hexagon-equal.json"),
+        toolRuntimeConfig: {
+          size: {
+            width: [
+              {
+                comparison: "=",
+                value: 272,
+              },
+            ],
+          },
+        },
+      },
+    });
+
+    return element(
+      response.result.markup,
+      ".q-choropleth-methods-description"
+    ).then((element) => {
+      expect(element.innerHTML).to.be.equal(
+        "Die Gruppen wurden so gewählt, dass sie jeweils einen gleich grossen Bereich auf der Skala abdecken."
+      );
+    });
+  });
 });
 
 lab.experiment("converting numbers", () => {
@@ -224,5 +610,63 @@ lab.experiment("converting numbers", () => {
         expect(formatValue(elements[0].innerHTML)).to.be.equal("10,0");
       }
     );
+  });
+});
+
+lab.experiment("single bucket", () => {
+  it("shows single bucket in legend", async () => {
+    const response = await server.inject({
+      url: "/rendering-info/web?_id=someid",
+      method: "POST",
+      payload: {
+        item: require("../resources/fixtures/data/hexagon-kmeans.json"),
+        toolRuntimeConfig: {
+          size: {
+            width: [
+              {
+                comparison: "=",
+                value: 272,
+              },
+            ],
+          },
+        },
+      },
+    });
+
+    return elementCount(
+      response.result.markup,
+      ".q-choropleth-legend-info--single-bucket"
+    ).then((value) => {
+      expect(value).to.be.equal(1);
+    });
+  });
+
+  it("shows single bucket in footer", async () => {
+    const response = await server.inject({
+      url: "/rendering-info/web?_id=someid",
+      method: "POST",
+      payload: {
+        item: require("../resources/fixtures/data/hexagon-kmeans.json"),
+        toolRuntimeConfig: {
+          size: {
+            width: [
+              {
+                comparison: "=",
+                value: 272,
+              },
+            ],
+          },
+        },
+      },
+    });
+
+    return elements(
+      response.result.markup,
+      ".q-choropleth-methods-legend-table tr"
+    ).then((elements) => {
+      expect(elements[0].querySelectorAll("td")[4].innerHTML).to.be.equal(
+        "(nur ein Datenpunkt)"
+      );
+    });
   });
 });
