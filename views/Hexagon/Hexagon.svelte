@@ -13,6 +13,7 @@
   export let growFactor;
 
   const transform = `translate(${x} ${y})`;
+  const textTransform = `translate(${x + 3} ${y + 7})`;
   const points = getPolygonPoints(x, y, width, growFactor);
 
   function getPolygonPoints(x, y, width, growFactor) {
