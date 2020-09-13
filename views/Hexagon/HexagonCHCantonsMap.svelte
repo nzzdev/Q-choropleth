@@ -1,5 +1,6 @@
 <script>
   import Hexagon from "./Hexagon.svelte";
+  import ResponsiveSvg from "./ResponsiveSvg.svelte";
   import { getFormattedValue } from "../helpers/data.js";
   import { heightFromWidth } from "../helpers/hexagon.js";
   import { getExtents } from "../helpers/extent.js";
@@ -7,7 +8,9 @@
   export let entityType;
   export let legendData;
   export let valuesOnMap;
-  export let contentWidth;
+  /* TODO: clean up, contentWidth most probably not needed anymore 
+  test in all browsers */
+  // export let contentWidth;
   export let entityInfo;
   export let formattingOptions;
 
@@ -144,21 +147,22 @@
   }
 </script>
 
+<!-- TODO: is this first div needed? -->
 <div class="swiss-hexagon-map">
-  <!-- ^ just temp div -->
-  <!-- TODO: make Responsive SVG like in US elections with aspect ratio -->
-  <svg viewbox={svgSize.viewBox}>
-    {#each hexagons as { text, color, width, height, type, x, y }}
-      <Hexagon
-        {valuesOnMap}
-        {text}
-        {color}
-        {width}
-        {height}
-        {type}
-        {x}
-        {y}
-        growFactor={type === 'fill' ? 0.98 : 0.97} />
-    {/each}
-  </svg>
+  <ResponsiveSvg aspectRatio={svgSize.aspectRatio}>
+    <svg viewbox={svgSize.viewBox}>
+      {#each hexagons as { text, color, width, height, type, x, y }}
+        <Hexagon
+          {valuesOnMap}
+          {text}
+          {color}
+          {width}
+          {height}
+          {type}
+          {x}
+          {y}
+          growFactor={type === 'fill' ? 0.98 : 0.97} />
+      {/each}
+    </svg>
+  </ResponsiveSvg>
 </div>
