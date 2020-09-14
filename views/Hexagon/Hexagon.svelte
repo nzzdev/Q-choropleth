@@ -3,6 +3,7 @@
 
   export let valuesOnMap;
   export let text;
+  export let fontSize;
   export let color;
   export let width;
   export let height;
@@ -43,7 +44,7 @@
         text-anchor="middle"
         class={color.textColor}
         fill="currentColor"
-        font-size="20%">
+        font-size={fontSize}>
         {text[0]}
       </text>
       <text
@@ -53,7 +54,7 @@
         text-anchor="middle"
         class={color.textColor}
         fill="currentColor"
-        font-size="20%">
+        font-size={fontSize}>
         {text[1]}
       </text>
     {:else}
@@ -64,7 +65,7 @@
         text-anchor="middle"
         class={color.textColor}
         fill="currentColor"
-        font-size="25%">
+        font-size={fontSize}>
         {text[0]}
       </text>
     {/if}
@@ -87,7 +88,7 @@
         text-anchor="middle"
         class="s-color-gray-4"
         fill="currentColor"
-        font-size="20%">
+        font-size={fontSize}>
         {text[0]}
       </text>
       <text
@@ -97,7 +98,7 @@
         text-anchor="middle"
         class={color.textColor}
         fill="currentColor"
-        font-size="20%">
+        font-size={fontSize}>
         --
       </text>
     {:else}
@@ -108,7 +109,7 @@
         text-anchor="middle"
         class="s-color-gray-4"
         fill="currentColor"
-        font-size="25%">
+        font-size={fontSize}>
         {text[0]}
       </text>
     {/if}

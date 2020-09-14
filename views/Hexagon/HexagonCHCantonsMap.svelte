@@ -10,7 +10,7 @@
   export let valuesOnMap;
   /* TODO: clean up, contentWidth most probably not needed anymore 
   test in all browsers */
-  // export let contentWidth;
+  export let contentWidth;
   export let entityInfo;
   export let formattingOptions;
 
@@ -18,7 +18,7 @@
   const cellWidth = 10;
   const cellHeight = heightFromWidth(cellWidth);
   const rowHeight = (cellHeight * 3) / 4;
-  const hexagons = getHexagons();
+  const hexagons = getHexagons(contentWidth);
   const svgSize = getSvgSize(hexagons);
   const baseSpacing = 18;
 
@@ -97,15 +97,15 @@
 
   function getFontSize(contentWidth) {
     if (contentWidth < 400) {
-      return 1.2;
+      return "20%";
     } else if (contentWidth > 400 && contentWidth < 470) {
-      return 1.1;
+      return "18%";
     } else {
-      return 1;
+      return "17%";
     }
   }
 
-  function getHexagons() {
+  function getHexagons(contentWidth) {
     const grid = entityInfo.config.grid;
     const hexagons = [];
     grid.forEach((row, rowIndex) => {
@@ -120,6 +120,7 @@
 
           hexagons.push({
             text: [cantonCode, displayValue],
+            fontSize: getFontSize(contentWidth),
             color: getColor(cantonCode, legendData),
             width: cellWidth,
             height: cellHeight,
@@ -151,10 +152,11 @@
 <div class="swiss-hexagon-map">
   <ResponsiveSvg aspectRatio={svgSize.aspectRatio}>
     <svg viewbox={svgSize.viewBox}>
-      {#each hexagons as { text, color, width, height, type, x, y }}
+      {#each hexagons as { text, fontSize, color, width, height, type, x, y }}
         <Hexagon
           {valuesOnMap}
           {text}
+          {fontSize}
           {color}
           {width}
           {height}
