@@ -33,39 +33,41 @@
     {points}
     class={color.colorClass}
     fill={color.customColor && color.customColor.length > 0 ? color.customColor : 'currentColor'} />
-  {#if valuesOnMap}
-    <text
-      x={x + width / 2}
-      y={y + height / 3}
-      dominant-baseline="middle"
-      text-anchor="middle"
-      class={color.textColor}
-      fill="currentColor"
-      font-size="15%">
-      {text[0]}
-    </text>
-    <text
-      x={x + width / 2}
-      y={y + (2 * height) / 3}
-      dominant-baseline="middle"
-      text-anchor="middle"
-      class={color.textColor}
-      fill="currentColor"
-      font-size="15%">
-      {text[1]}
-    </text>
-  {:else}
-    <text
-      x={x + width / 2}
-      y={y + height / 2}
-      dominant-baseline="middle"
-      text-anchor="middle"
-      class={color.textColor}
-      fill="currentColor"
-      font-size="20%">
-      {text[0]}
-    </text>
-  {/if}
+  <g class="s-font-note-s">
+    {#if valuesOnMap}
+      <text
+        x={x + width / 2}
+        y={y + height / 3}
+        dominant-baseline="middle"
+        text-anchor="middle"
+        class={color.textColor}
+        fill="currentColor"
+        font-size="20%">
+        {text[0]}
+      </text>
+      <text
+        x={x + width / 2}
+        y={y + (2 * height) / 3}
+        dominant-baseline="middle"
+        text-anchor="middle"
+        class={color.textColor}
+        fill="currentColor"
+        font-size="20%">
+        {text[1]}
+      </text>
+    {:else}
+      <text
+        x={x + width / 2}
+        y={y + height / 2}
+        dominant-baseline="middle"
+        text-anchor="middle"
+        class={color.textColor}
+        fill="currentColor"
+        font-size="25%">
+        {text[0]}
+      </text>
+    {/if}
+  </g>
 {:else}
   <polygon
     {transform}
@@ -74,37 +76,39 @@
     fill="#fff"
     stroke="currentColor"
     stroke-width="0.1" />
-  {#if valuesOnMap}
-    <text
-      x={x + width / 2}
-      y={y + height / 3}
-      dominant-baseline="middle"
-      text-anchor="middle"
-      class="s-color-gray-4"
-      fill="currentColor"
-      font-size="15%">
-      {text[0]}
-    </text>
-    <text
-      x={x + width / 2}
-      y={y + (2 * height) / 3}
-      dominant-baseline="middle"
-      text-anchor="middle"
-      class={color.textColor}
-      fill="currentColor"
-      font-size="15%">
-      --
-    </text>
-  {:else}
-    <text
-      x={x + width / 2}
-      y={y + height / 2}
-      dominant-baseline="middle"
-      text-anchor="middle"
-      class="s-color-gray-4"
-      fill="currentColor"
-      font-size="20%">
-      {text[0]}
-    </text>
-  {/if}
+  <g class="s-font-note-s">
+    {#if valuesOnMap}
+      <text
+        x={x + width / 2}
+        y={y + height / 3}
+        dominant-baseline="middle"
+        text-anchor="middle"
+        class="s-color-gray-4"
+        fill="currentColor"
+        font-size="20%">
+        {text[0]}
+      </text>
+      <text
+        x={x + width / 2}
+        y={y + (2 * height) / 3}
+        dominant-baseline="middle"
+        text-anchor="middle"
+        class={color.textColor}
+        fill="currentColor"
+        font-size="20%">
+        --
+      </text>
+    {:else}
+      <text
+        x={x + width / 2}
+        y={y + height / 2}
+        dominant-baseline="middle"
+        text-anchor="middle"
+        class="s-color-gray-4"
+        fill="currentColor"
+        font-size="25%">
+        {text[0]}
+      </text>
+    {/if}
+  </g>
 {/if}
