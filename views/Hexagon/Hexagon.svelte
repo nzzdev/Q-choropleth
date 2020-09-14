@@ -38,6 +38,7 @@
       <text
         x={x + width / 2}
         y={y + height / 3}
+        dy="0.5"
         dominant-baseline="middle"
         text-anchor="middle"
         class={color.textColor}
@@ -81,6 +82,7 @@
       <text
         x={x + width / 2}
         y={y + height / 3}
+        dy="0.5"
         dominant-baseline="middle"
         text-anchor="middle"
         class="s-color-gray-4"
