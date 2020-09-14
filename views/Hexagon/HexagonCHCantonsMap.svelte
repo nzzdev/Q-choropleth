@@ -21,7 +21,6 @@
 
   // See https://www.redblobgames.com/grids/hexagons/#size-and-spacing
   const rowHeight = (cellHeight * 3) / 4;
-
   const hexagons = getHexagons(contentWidth);
   const svgSize = getSvgSize(hexagons);
 
