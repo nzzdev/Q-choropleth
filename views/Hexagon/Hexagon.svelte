@@ -22,10 +22,6 @@
     const corners = pointyHexCorners(center, size * growFactor);
     return corners.map(({ x, y }) => `${x},${y}`).join(" ");
   }
-
-  function getXCoordinate(width, xIndex) {
-    return width * xIndex;
-  }
 </script>
 
 {#if type === 'fill'}

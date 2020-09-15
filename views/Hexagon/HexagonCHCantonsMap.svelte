@@ -13,12 +13,17 @@
   export let formattingOptions;
 
   const dataMapping = new Map(data);
+
+  // Sizes of hexagons in SVG units. The values are arbitrary,
+  // because the SVG is scaled anyway by its viewBox.
   const cellWidth = 10;
   const cellHeight = heightFromWidth(cellWidth);
+
+  // See https://www.redblobgames.com/grids/hexagons/#size-and-spacing
   const rowHeight = (cellHeight * 3) / 4;
+
   const hexagons = getHexagons(contentWidth);
   const svgSize = getSvgSize(hexagons);
-  const baseSpacing = 18;
 
   function getValue(cantonCode) {
     try {
@@ -111,6 +116,7 @@
         if (cell !== null) {
           let x = columnIndex * cellWidth;
           if (rowIndex % 2 === 1) {
+            // every odd row will be shifted half the hexagon size to right
             x += cellWidth / 2;
           }
           const cantonCode = cell;
@@ -160,6 +166,11 @@
         {x}
         {y}
         growFactor={type === 'fill' ? 0.98 : 0.97} />
+      <!-- grow factor = 1 would mean, that hexagons are sticked together
+        since we want small white spaces between hexagons grow factor is 0.98 by default
+        if a hexagon has no value, it will be white with a gray border around it
+        since these hexagons should be as big as the other hexagons even with border
+        the grow factor is reduced to 0.97 -->
     {/each}
   </svg>
 </ResponsiveSvg>
