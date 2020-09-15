@@ -77,7 +77,10 @@ module.exports = {
         displayOptions: request.payload.toolRuntimeConfig.displayOptions || {},
       };
 
-      context.entityInfo = await baseMapHelpers.getEntityMapping(request, item);
+      context.entityCollectionInfo = await baseMapHelpers.getEntityCollectionInfo(
+        request,
+        item
+      );
 
       if (item.options.choroplethType === "numerical") {
         const divisor = dataHelpers.getDivisor(item.data);

@@ -11,7 +11,7 @@ module.exports = {
   method: "GET",
   path: "/entityCollection/{baseMap}",
   options: {
-    description: "todo: describe",
+    description: "returns entity collection information for base map",
     tags: ["api"],
     validate: {
       params: {

@@ -8,10 +8,8 @@
   export let entityType;
   export let legendData;
   export let valuesOnMap;
-  /* TODO: clean up, contentWidth most probably not needed anymore 
-  test in all browsers */
   export let contentWidth;
-  export let entityInfo;
+  export let entityCollectionInfo;
   export let formattingOptions;
 
   const dataMapping = new Map(data);
@@ -27,7 +25,7 @@
       if (entityType === "code") {
         return dataMapping.get(cantonCode);
       } else {
-        const entityMapping = entityInfo.entityMapping;
+        const entityMapping = entityCollectionInfo.entityMapping;
         const entity = entityMapping.get(cantonCode);
         return dataMapping.get(entity);
       }
@@ -106,7 +104,7 @@
   }
 
   function getHexagons(contentWidth) {
-    const grid = entityInfo.config.grid;
+    const grid = entityCollectionInfo.config.grid;
     const hexagons = [];
     grid.forEach((row, rowIndex) => {
       row.forEach((cell, columnIndex) => {

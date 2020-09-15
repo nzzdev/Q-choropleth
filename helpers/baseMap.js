@@ -10,9 +10,7 @@ function getGeometryMapping(entityCollection, baseMap, entityType) {
   return undefined;
 }
 
-// TODO: renaming!
-
-async function getEntityMapping(request, item) {
+async function getEntityCollectionInfo(request, item) {
   const baseMapEntityCollectionResponse = await request.server.inject({
     method: "GET",
     url: `/entityCollection/${item.baseMap}`,
@@ -34,4 +32,4 @@ async function getEntityMapping(request, item) {
   return undefined;
 }
 
-module.exports = { getEntityMapping };
+module.exports = { getEntityCollectionInfo };
