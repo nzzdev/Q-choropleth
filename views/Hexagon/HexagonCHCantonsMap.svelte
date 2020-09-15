@@ -146,23 +146,20 @@
   }
 </script>
 
-<!-- TODO: is this first div needed? -->
-<div class="swiss-hexagon-map">
-  <ResponsiveSvg aspectRatio={svgSize.aspectRatio}>
-    <svg viewbox={svgSize.viewBox}>
-      {#each hexagons as { text, fontSize, color, width, height, type, x, y }}
-        <Hexagon
-          {valuesOnMap}
-          {text}
-          {fontSize}
-          {color}
-          {width}
-          {height}
-          {type}
-          {x}
-          {y}
-          growFactor={type === 'fill' ? 0.98 : 0.97} />
-      {/each}
-    </svg>
-  </ResponsiveSvg>
-</div>
+<ResponsiveSvg aspectRatio={svgSize.aspectRatio}>
+  <svg viewbox={svgSize.viewBox}>
+    {#each hexagons as { text, fontSize, color, width, height, type, x, y }}
+      <Hexagon
+        {valuesOnMap}
+        {text}
+        {fontSize}
+        {color}
+        {width}
+        {height}
+        {type}
+        {x}
+        {y}
+        growFactor={type === 'fill' ? 0.98 : 0.97} />
+    {/each}
+  </svg>
+</ResponsiveSvg>

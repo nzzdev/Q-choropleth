@@ -45,12 +45,13 @@
   height: 32px;
 }
 
-.q-choropleth-svg-container {
+.q-choropleth-hexagon-container {
   position: relative;
-  margin-bottom: 8px;
+  margin-top: 8px;
+  margin-bottom: 16px;
 }
 
-.q-choropleth-svg-container svg {
+.q-choropleth-hexagon-container svg {
   display: block;
   position: absolute;
   top: 0;
@@ -159,8 +160,4 @@
 .q-choropleth-legend--numerical {
   display: flex;
   justify-content: center;
-}
-
-.swiss-hexagon-map {
-  margin-top: 8px;
 }
