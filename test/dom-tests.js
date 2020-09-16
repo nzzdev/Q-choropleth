@@ -358,7 +358,7 @@ lab.experiment("legend", () => {
     legendDescription.forEach((row) => {
       let min = row.querySelectorAll("td")[1].innerHTML.replace(",", ".");
       let max = row.querySelectorAll("td")[3].innerHTML.replace(",", ".");
-      legendData.push([min, max]);
+      legendData.push([formatValue(min), formatValue(max)]);
     });
 
     expect(legendData).to.be.equal([
@@ -426,7 +426,7 @@ lab.experiment("legend", () => {
     legendDescription.forEach((row) => {
       let min = row.querySelectorAll("td")[1].innerHTML.replace(",", ".");
       let max = row.querySelectorAll("td")[3].innerHTML.replace(",", ".");
-      legendData.push([min, max]);
+      legendData.push([formatValue(min), formatValue(max)]);
     });
 
     expect(legendData).to.be.equal([
