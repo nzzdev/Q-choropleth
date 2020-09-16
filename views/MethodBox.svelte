@@ -9,11 +9,9 @@
 </script>
 
 <div class="q-choropleth-methods-link s-font-note-s">
-  <span class="q-choropleth-methods-link-text">
-    <OpenIcon />
-    <CloseIcon />
-    Daten und Methodik
-  </span>
+  <OpenIcon />
+  <CloseIcon />
+  <div class="q-choropleth-methods-link-text">Daten und Methodik</div>
 </div>
 <div class="q-choropleth-methods-container hidden s-font-note-s">
   <div class="q-choropleth-methods-legend">

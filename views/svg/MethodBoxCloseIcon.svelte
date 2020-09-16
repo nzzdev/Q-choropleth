@@ -1,4 +1,4 @@
-<div class="q-choropleth-methods-close hidden">
+<div class="q-choropleth-methods-link-icon-close hidden">
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15 15">
     <g>
       <path

@@ -63,26 +63,29 @@
   &-link {
     margin-top: 8px;
 
-    &-text {
-      cursor: pointer;
-      text-decoration: underline;
+    display: flex;
+    cursor: pointer;
+    text-decoration: underline;
 
-      &:hover {
-        opacity: 0.6;
-      }
-
-      & svg {
-        height: 10px;
-      }
+    &:hover {
+      opacity: 0.6;
     }
-  }
 
-  &-plus.hidden {
-    display: none;
-  }
+    & svg {
+      height: 10px;
+    }
 
-  &-close.hidden {
-    display: none;
+    &-icon-plus.hidden {
+      display: none;
+    }
+
+    &-icon-close.hidden {
+      display: none;
+    }
+
+    &-text {
+      margin-left: 4px;
+    }
   }
 
   &-description {
