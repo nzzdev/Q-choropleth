@@ -1,60 +1,54 @@
 {
   "title": "FIXTURE: Hexagon Schweiz (Kantone) - Quantile",
   "subtitle": "Subtitle",
+  "acronym": "phk.",
   "baseMap": "hexagonCHCantons",
   "entityType": "name",
   "data": [
     ["Kanton", "Wert"],
-    ["1", "8.2"],
-    ["2", "6"],
-    ["3", "5.8"],
-    ["4", null],
-    ["5", "2.8"],
-    ["6", null],
-    ["7", null],
-    ["8", null],
-    ["9", "3.6"],
-    ["10", "3.2"],
-    ["11", "3.5"],
-    ["12", "4.8"],
-    ["13", "2.7"],
-    ["14", null],
-    ["15", null],
-    ["16", null],
-    ["17", "4.9"],
-    ["18", "7.9"],
-    ["19", "5.2"],
-    ["20", "6.2"],
-    ["21", "0.8"],
-    ["22", "3.9"],
-    ["23", null],
-    ["24", "3.4"],
-    ["25", "2.3"],
-    ["26", null]
+    ["Aargau", "100"],
+    ["Appenzell Ausserrhoden", null],
+    ["Appenzell Innerrhoden", "130"],
+    ["Basel-Landschaft", "400"],
+    ["Basel-Stadt", "400"],
+    ["Bern", "500"],
+    ["Freiburg", "600"],
+    ["Genf", "700"],
+    ["Glarus", "800"],
+    ["Graubünden", "900"],
+    ["Jura", "100"],
+    ["Luzern", "120"],
+    ["Neuenburg", "120"],
+    ["Nidwalden", "120"],
+    ["Obwalden", "120"],
+    ["Schaffhausen", "130"],
+    ["Schwyz", "500"],
+    ["Solothurn", "400"],
+    ["St. Gallen", "300"],
+    ["Tessin", "200"],
+    ["Thurgau", "100"],
+    ["Uri", "100"],
+    ["Waadt", "100"],
+    ["Wallis", "100"],
+    ["Zug", "900"],
+    ["Zürich", "900"]
   ],
-  "sources": [],
   "options": {
-    "choroplethType": "numerical",
-    "numericalOptions": {
-      "valuesOnMap": false,
-      "labelLegend": "noLabel",
-      "bucketType": "quantile",
-      "numberBuckets": 5,
-      "scale": "sequential",
-      "colorScheme": "one",
-      "colorOverwrites": [],
-      "customBuckets": "0.5, 1, 5, 8.2",
-      "noValuesOnMap": true
+    "valuesOnMap": true,
+    "bucketOptions": {
+      "bucketType": "ckmeans",
+      "numberBuckets": 6,
+      "labelLegend": "noLabel"
     },
-    "categoricalOptions": {
-      "valuesOnMap": false,
-      "colorOverwrites": [
-        {
-          "textColor": "light",
-          "color": "#b134c5",
-          "position": null
-        }
-      ]
-    }
+    "numericalOptions": {
+      "labelLegend": "average",
+      "bucketType": "quantile",
+      "scale": "sequential",
+      "colorScheme": "two",
+      "valuesOnMap": true,
+      "numberBuckets": 4
+    },
+    "categoricalOptions": {},
+    "choroplethType": "numerical"
   }
 }

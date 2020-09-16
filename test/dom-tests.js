@@ -399,32 +399,43 @@ lab.experiment("legend", () => {
     });
   });
 
-  // it("shows quantile buckets", async () => {
-  //   const response = await server.inject({
-  //     url: "/rendering-info/web?_id=someid",
-  //     method: "POST",
-  //     payload: {
-  //       item: require("../resources/fixtures/data/hexagon-quantile.json"),
-  //       toolRuntimeConfig: {
-  //         size: {
-  //           width: [
-  //             {
-  //               comparison: "=",
-  //               value: 272,
-  //             },
-  //           ],
-  //         },
-  //       },
-  //     },
-  //   });
+  it("shows quantile buckets", async () => {
+    const response = await server.inject({
+      url: "/rendering-info/web?_id=someid",
+      method: "POST",
+      payload: {
+        item: require("../resources/fixtures/data/hexagon-quantile.json"),
+        toolRuntimeConfig: {
+          size: {
+            width: [
+              {
+                comparison: "=",
+                value: 272,
+              },
+            ],
+          },
+        },
+      },
+    });
 
-  //   return elementCount(
-  //     response.result.markup,
-  //     ".q-choropleth-legend-bucket"
-  //   ).then((value) => {
-  //     expect(value).to.be.equal(3);
-  //   });
-  // });
+    let legendData = [];
+    const dom = new JSDOM(response.result.markup);
+    const legendDescription = dom.window.document.querySelectorAll(
+      ".q-choropleth-methods-legend-table tr"
+    );
+    legendDescription.forEach((row) => {
+      let min = row.querySelectorAll("td")[1].innerHTML.replace(",", ".");
+      let max = row.querySelectorAll("td")[3].innerHTML.replace(",", ".");
+      legendData.push([min, max]);
+    });
+
+    expect(legendData).to.be.equal([
+      ["100", "120"],
+      ["120", "400"],
+      ["400", "500"],
+      ["500", "900"],
+    ]);
+  });
 
   it("shows quantile description", async () => {
     const response = await server.inject({
