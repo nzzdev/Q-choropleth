@@ -77,7 +77,7 @@ module.exports = {
         displayOptions: request.payload.toolRuntimeConfig.displayOptions || {},
       };
 
-      context.entityMapping = await baseMapHelpers.getEntityMapping(
+      context.entityCollectionInfo = await baseMapHelpers.getEntityCollectionInfo(
         request,
         item
       );

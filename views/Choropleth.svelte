@@ -7,7 +7,7 @@
   export let id;
   export let legendData;
   export let valuesOnMap;
-  export let entityMapping;
+  export let entityCollectionInfo;
   export let contentWidth;
   export let methodBox;
   export let displayOptions;
@@ -35,7 +35,7 @@
           entityType={item.entityType}
           {valuesOnMap}
           {legendData}
-          {entityMapping}
+          {entityCollectionInfo}
           {contentWidth}
           {formattingOptions} />
       {/if}
