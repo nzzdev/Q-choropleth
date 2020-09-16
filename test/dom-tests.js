@@ -274,7 +274,7 @@ lab.experiment("options", () => {
   });
 });
 
-lab.experiment("legend", () => {
+lab.experiment("buckets", () => {
   it("shows custom buckets", async () => {
     const response = await server.inject({
       url: "/rendering-info/web?_id=someid",
@@ -466,32 +466,44 @@ lab.experiment("legend", () => {
     });
   });
 
-  // it("shows equal buckets", async () => {
-  //   const response = await server.inject({
-  //     url: "/rendering-info/web?_id=someid",
-  //     method: "POST",
-  //     payload: {
-  //       item: require("../resources/fixtures/data/hexagon-equal.json"),
-  //       toolRuntimeConfig: {
-  //         size: {
-  //           width: [
-  //             {
-  //               comparison: "=",
-  //               value: 272,
-  //             },
-  //           ],
-  //         },
-  //       },
-  //     },
-  //   });
+  it("shows equal buckets", async () => {
+    const response = await server.inject({
+      url: "/rendering-info/web?_id=someid",
+      method: "POST",
+      payload: {
+        item: require("../resources/fixtures/data/hexagon-equal.json"),
+        toolRuntimeConfig: {
+          size: {
+            width: [
+              {
+                comparison: "=",
+                value: 272,
+              },
+            ],
+          },
+        },
+      },
+    });
 
-  //   return elementCount(
-  //     response.result.markup,
-  //     ".q-choropleth-legend-bucket"
-  //   ).then((value) => {
-  //     expect(value).to.be.equal(3);
-  //   });
-  // });
+    let legendData = [];
+    const dom = new JSDOM(response.result.markup);
+    const legendDescription = dom.window.document.querySelectorAll(
+      ".q-choropleth-methods-legend-table tr"
+    );
+    legendDescription.forEach((row) => {
+      let min = row.querySelectorAll("td")[1].innerHTML.replace(",", ".");
+      let max = row.querySelectorAll("td")[3].innerHTML.replace(",", ".");
+      legendData.push([formatValue(min), formatValue(max)]);
+    });
+
+    expect(legendData).to.be.equal([
+      ["100", "260"],
+      ["260", "420"],
+      ["420", "580"],
+      ["580", "740"],
+      ["740", "900"],
+    ]);
+  });
 
   it("shows equal description", async () => {
     const response = await server.inject({
