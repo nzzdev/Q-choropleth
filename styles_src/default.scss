@@ -73,12 +73,16 @@
 
       & svg {
         height: 10px;
-
-        &.hidden {
-          display: none;
-        }
       }
     }
+  }
+
+  &-plus.hidden {
+    display: none;
+  }
+
+  &-close.hidden {
+    display: none;
   }
 
   &-description {
