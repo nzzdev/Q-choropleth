@@ -1,5 +1,6 @@
 export default class Choropleth {
   constructor(element, data = {}) {
+    console.log("begin constructor");
     if (element) {
       this.element = element;
       this.data = data;
@@ -7,10 +8,15 @@ export default class Choropleth {
       this.isMethodBoxVisible = false;
 
       if (!this.width) {
+        console.log("no width given");
         this.width = this.element.getBoundingClientRect().width;
+        console.log("got width: " + this.width);
         this.addResizeEventListenerToContainer();
+        console.log("resize event listener added");
         this.callRenderingInfo();
+        console.log("rendering info called");
       } else if (this.data.choroplethType === "numerical") {
+        console.log("width given or calculated, setting up method box");
         this.setupMethodBox();
       }
     }
@@ -50,12 +56,14 @@ export default class Choropleth {
       body: JSON.stringify({ item: this.data.item, toolRuntimeConfig }),
     })
       .then((response) => {
+        console.log("response: " + response);
         if (!response) {
           return {};
         }
         return response.json();
       })
       .then((renderingInfo) => {
+        console.log("proceed with rendering Info");
         if (renderingInfo.markup) {
           this.element.innerHTML = renderingInfo.markup;
           if (this.data.choroplethType === "numerical") {
@@ -73,6 +81,7 @@ export default class Choropleth {
   }
 
   prepareMethodBoxElements() {
+    console.log("prepare method box elements");
     this.methodBoxToggleElement = this.element.querySelector(
       `.q-choropleth-methods-link-text`
     );
@@ -91,6 +100,7 @@ export default class Choropleth {
   }
 
   setVisibilityOfElements() {
+    console.log("set visibility");
     if (this.isMethodBoxVisible) {
       this.methodBoxContainerElement.classList.remove("hidden");
       this.methodBoxOpenIcon.classList.add("hidden");
@@ -103,6 +113,7 @@ export default class Choropleth {
   }
 
   addEventListenerToMethodBoxToggle() {
+    console.log("add event listener toggle");
     if (this.methodBoxToggleElement) {
       this.methodBoxToggleElement.addEventListener("click", (event) => {
         this.handleClickOnMethodBoxToogle(event);
@@ -111,6 +122,7 @@ export default class Choropleth {
   }
 
   handleClickOnMethodBoxToogle(event) {
+    console.log("handle toggle click");
     const eventDetail = {
       eventInfo: {
         componentName: "q-choropleth",
@@ -132,6 +144,7 @@ export default class Choropleth {
   }
 
   addEventListenerToMethodBoxArticleLink() {
+    console.log("add event listener to article link");
     if (this.methodBoxArticleLink) {
       this.methodBoxArticleLink.addEventListener("click", (event) => {
         this.handleClickOnMethodBoxArticleLink(event);
@@ -140,6 +153,7 @@ export default class Choropleth {
   }
 
   handleClickOnMethodBoxArticleLink(event) {
+    console.log("handle click on article link");
     const eventDetail = {
       eventInfo: {
         componentName: "q-choropleth",
