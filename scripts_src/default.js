@@ -102,13 +102,18 @@ export default class Choropleth {
   setVisibilityOfElements() {
     console.log("set visibility");
     if (this.isMethodBoxVisible) {
+      console.log("method box visible");
       this.methodBoxContainerElement.classList.remove("hidden");
       this.methodBoxOpenIcon.classList.add("hidden");
       this.methodBoxCloseIcon.classList.remove("hidden");
     } else {
+      console.log("method box not visible");
       this.methodBoxContainerElement.classList.add("hidden");
+      console.log("container element hidden");
       this.methodBoxCloseIcon.classList.add("hidden");
+      console.log("close icon hidden");
       this.methodBoxOpenIcon.classList.remove("hidden");
+      console.log("open icon visible");
     }
   }
 
