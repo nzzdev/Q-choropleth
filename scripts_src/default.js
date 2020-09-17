@@ -74,16 +74,16 @@ export default class Choropleth {
 
   prepareMethodBoxElements() {
     this.methodBoxToggleElement = this.element.querySelector(
-      `.q-choropleth-methods-link-text`
+      `.q-choropleth-methods-link`
     );
     this.methodBoxContainerElement = this.element.querySelector(
       ".q-choropleth-methods-container"
     );
     this.methodBoxOpenIcon = this.element.querySelector(
-      ".q-choropleth-methods-plus"
+      ".q-choropleth-methods-link-icon-plus"
     );
     this.methodBoxCloseIcon = this.element.querySelector(
-      ".q-choropleth-methods-close"
+      ".q-choropleth-methods-link-icon-close"
     );
     this.methodBoxArticleLink = this.element.querySelector(
       ".q-choropleth-methods-article-container"
