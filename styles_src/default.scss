@@ -76,6 +76,12 @@
       width: 10px;
     }
 
+    &-icon-close,
+    &-icon-plus {
+      display: flex;
+      align-self: center;
+    }
+
     &-icon-plus.hidden {
       display: none;
     }
@@ -158,6 +164,12 @@
 .q-choropleth-legend-info-icon {
   margin-top: 2px;
   margin-right: 8px;
+
+  &-container {
+    display: flex;
+    align-self: center;
+    height: 1.1em;
+  }
 }
 
 .q-choropleth-legend-info--no-data {

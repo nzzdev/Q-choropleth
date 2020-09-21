@@ -165,33 +165,37 @@
           <div class="q-choropleth-legend-info-container">
             {#if hasSingleValueBucket(legendData)}
               <div class="q-choropleth-legend-info--single-bucket s-font-note">
-                <svg
-                  width="11"
-                  height="11"
-                  class="q-choropleth-legend-info-icon">
-                  <rect
+                <div class="q-choropleth-legend-info-icon-container">
+                  <svg
                     width="11"
                     height="11"
-                    class="q-choropleth-legend-bucket {getColorClass(legendData.buckets[0])}"
-                    style="fill: {getCustomColor(legendData.buckets[0])}" />
-                </svg>
+                    class="q-choropleth-legend-info-icon">
+                    <rect
+                      width="11"
+                      height="11"
+                      class="q-choropleth-legend-bucket {getColorClass(legendData.buckets[0])}"
+                      style="fill: {getCustomColor(legendData.buckets[0])}" />
+                  </svg>
+                </div>
                 = {getFormattedValueForBuckets(formattingOptions, legendData.buckets[0].from)}
               </div>
             {/if}
             {#if legendData.hasNullValues}
               <div class="q-choropleth-legend-info--no-data s-font-note">
-                <svg
-                  width="11"
-                  height="11"
-                  class="q-choropleth-legend-info-icon">
-                  <rect
+                <div class="q-choropleth-legend-info-icon-container">
+                  <svg
                     width="11"
                     height="11"
-                    class="s-color-gray-4"
-                    fill="white"
-                    stroke="currentColor"
-                    stroke-width="2" />
-                </svg>
+                    class="q-choropleth-legend-info-icon">
+                    <rect
+                      width="11"
+                      height="11"
+                      class="s-color-gray-4"
+                      fill="white"
+                      stroke="currentColor"
+                      stroke-width="2" />
+                  </svg>
+                </div>
                 Keine Daten
               </div>
             {/if}
