@@ -98,14 +98,20 @@
     return value;
   }
 
-  function getFontSize(contentWidth) {
+  function getFontSize(contentWidth, valuesOnMap) {
+    if (!valuesOnMap && contentWidth < 470) {
+      return "23%";
+    }
     if (contentWidth < 400) {
       return "20%";
-    } else if (contentWidth > 400 && contentWidth < 470) {
+    }
+    if (contentWidth < 470) {
       return "18%";
-    } else {
+    }
+    if (contentWidth < 650) {
       return "17%";
     }
+    return "15%";
   }
 
   function getHexagons(contentWidth) {
@@ -124,7 +130,7 @@
 
           hexagons.push({
             text: [cantonCode, displayValue],
-            fontSize: getFontSize(contentWidth),
+            fontSize: getFontSize(contentWidth, valuesOnMap),
             color: getColor(cantonCode, legendData),
             width: cellWidth,
             height: cellHeight,

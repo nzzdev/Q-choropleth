@@ -113,12 +113,10 @@
     <div class="q-choropleth-legend--numerical">
       <div class="q-choropleth-legend-container">
         <div class="q-choropleth-legend-value-container">
-          <span
-            class="q-choropleth-legend-value-container--minVal s-font-note-s">
+          <span class="q-choropleth-legend-value-container--minVal s-font-note">
             {getFormattedValueForBuckets(formattingOptions, legendData.minValue)}
           </span>
-          <span
-            class="q-choropleth-legend-value-container--maxVal s-font-note-s">
+          <span class="q-choropleth-legend-value-container--maxVal s-font-note">
             {getFormattedValueForBuckets(formattingOptions, legendData.maxValue)}
           </span>
         </div>
@@ -159,17 +157,14 @@
           <div class="q-choropleth-legend-borders s-color-gray-6" />
         </div>
         {#if labelLegend.label !== 'noLabel'}
-          <div
-            class="s-font-note-s"
-            style={getDescriptionAlignment(labelLegend)}>
+          <div class="s-font-note" style={getDescriptionAlignment(labelLegend)}>
             {labelLegend.label}: {getFormattedValue(formattingOptions, labelLegend.value)}
           </div>
         {/if}
         {#if hasSingleValueBucket(legendData) || legendData.hasNullValues}
           <div class="q-choropleth-legend-info-container">
             {#if hasSingleValueBucket(legendData)}
-              <div
-                class="q-choropleth-legend-info--single-bucket s-font-note-s">
+              <div class="q-choropleth-legend-info--single-bucket s-font-note">
                 <svg
                   width="11"
                   height="11"
@@ -184,7 +179,7 @@
               </div>
             {/if}
             {#if legendData.hasNullValues}
-              <div class="q-choropleth-legend-info--no-data s-font-note-s">
+              <div class="q-choropleth-legend-info--no-data s-font-note">
                 <svg
                   width="11"
                   height="11"
@@ -192,9 +187,10 @@
                   <rect
                     width="11"
                     height="11"
-                    class="s-color-gray-2"
+                    class="s-color-gray-4"
                     fill="white"
-                    stroke="currentColor" />
+                    stroke="currentColor"
+                    stroke-width="2" />
                 </svg>
                 Keine Daten
               </div>

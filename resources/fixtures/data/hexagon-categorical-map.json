@@ -36,7 +36,7 @@
   "options": {
     "choroplethType": "categorical",
     "categoricalOptions": {
-      "valuesOnMap": true
+      "valuesOnMap": false
     }
   }
 }

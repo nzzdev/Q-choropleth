@@ -39,7 +39,7 @@
       "valuesOnMap": true,
       "bucketType": "ckmeans",
       "numberBuckets": 5,
-      "labelLegend": "noLabel",
+      "labelLegend": "average",
       "scale": "sequential",
       "colorScheme": "one"
     }
