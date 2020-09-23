@@ -12,9 +12,10 @@ const formatLocale = d3.format.formatLocale({
   grouping: [3],
 });
 
-const formatGrouping = formatLocale.format(",");
-const formatDefaultDecimalGrouping = formatLocale.format(",.1f");
-const formatNoGrouping = formatLocale.format("");
+const formatLocaleSmall = d3.format.formatLocale({
+  decimal: ",",
+  minus: enDash,
+});
 
 function getFormattedValueForBuckets(formattingOptions, value) {
   if (formattingOptions.roundingBucketBorders) {
@@ -28,20 +29,20 @@ function getFormattedValue(formattingOptions, value) {
     return value;
   }
 
+  let formatSpecifier = ",";
+
   // if we have float values in data set we extend all float values
-  // to max number of positions after comma
+  // to max number of positions after comma, e.g. format specifier
+  // could be ",.2f" for 2 positions after comma
   if (formattingOptions.maxDigitsAfterComma) {
-    return formatLocale.format(`,.${formattingOptions.maxDigitsAfterComma}f`)(
-      value
-    );
+    formatSpecifier = `,.${formattingOptions.maxDigitsAfterComma}f`;
   }
 
-  // all other numbers will be formatted following NZZ style guide, i.e. adding
-  // thousands gap for numbers >= 10 000
+  // if we have number >= 10 000 we add a space after each 3 digits
   if (value >= Math.pow(10, 4)) {
-    return formatGrouping(value);
+    return formatLocale.format(formatSpecifier)(value);
   } else {
-    return formatNoGrouping(value);
+    return formatLocaleSmall.format(formatSpecifier)(value);
   }
 }
 
