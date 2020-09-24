@@ -93,6 +93,27 @@ The tool structure follows the general structure of each Q tool. Further informa
 
 #### Basemaps
 
+The basemaps are saved as `json`-format in the following structure:
+
+- `type`: the type of the map. Currently the only type implemented is "Geometry"
+- `config`: contains the following properties `rows`, `columns` and `grid`. `grid` is an array of arrays, where the structure of the map is set.
+
+Ex.:
+
+```
+"grid": [
+    [null, null, "BS", "BL", "SH", "TG", null],
+    [null, "JU", "SO", "AG", "ZH", "AR", "AI"],
+    [null, "NE", "BE", "LU", "ZG", "SZ", "SG"],
+    ["VD", "FR", "OW", "NW", "UR", "GL", "GR"],
+    ["GE", null, "VS", null, null, "TI", null]
+]
+```
+
+- `cantons`: an array of objects, containing the `id`, `code` and `name`
+
+The `json`-files will then be implemented in the `entityCollection`-route. The infos will then be available by calling the function `getEntityCollectionInfo`, which will be usable when implementing the `baseMap`-helper.
+
 #### Hexagon
 
 #### Sizing
