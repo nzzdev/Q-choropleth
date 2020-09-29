@@ -4,6 +4,7 @@ const fixtureDataDirectory = "../../resources/fixtures/data";
 // has to be in sync with files created in build task - see ../../tasks/build.js
 const fixtureData = [
   require(`${fixtureDataDirectory}/hexagon-kmeans.json`),
+  require(`${fixtureDataDirectory}/hexagon-kmeans-average-center.json`),
   require(`${fixtureDataDirectory}/hexagon-kmeans-single-value-bucket.json`),
   require(`${fixtureDataDirectory}/hexagon-quantile.json`),
   require(`${fixtureDataDirectory}/hexagon-equal.json`),

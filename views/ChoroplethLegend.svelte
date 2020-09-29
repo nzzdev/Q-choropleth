@@ -10,20 +10,7 @@
 
   const legendBarHeight = 16;
   const singleValueBucketWidth = 8;
-  const alignmentConfig = {
-    small: {
-      median: 57,
-      average: 43
-    },
-    medium: {
-      median: 81,
-      average: 76
-    },
-    large: {
-      median: 89,
-      average: 86
-    }
-  };
+  const legendWidth = 55;
 
   function hasSingleValueBucket(legendData) {
     const firstBucket = legendData.buckets[0];
@@ -60,18 +47,24 @@
     };
   }
 
+  function getValueLength(value) {
+    return value.toFixed(0).length;
+  }
+
   function getDescriptionAlignment(labelLegend) {
-    let currentConfig;
+    const legendPixelWidth = (contentWidth * legendWidth) / 100;
+    const rangeLabelToRightBorder =
+      (legendPixelWidth * (100 - labelLegend.position)) / 100;
 
-    if (contentWidth <= 272) {
-      currentConfig = alignmentConfig.small;
-    } else if (contentWidth > 272 && contentWidth < 640) {
-      currentConfig = alignmentConfig.medium;
-    } else if (contentWidth >= 640) {
-      currentConfig = alignmentConfig.large;
-    }
+    const maxDigitsAfterComma = formattingOptions.maxDigitsAfterComma
+      ? formattingOptions.maxDigitsAfterComma
+      : 0;
+    const numberPositions =
+      getValueLength(labelLegend.value) + maxDigitsAfterComma;
 
-    if (labelLegend.position > currentConfig[labelLegend.id]) {
+    const labelWidth = 100 + numberPositions * 8;
+
+    if (rangeLabelToRightBorder < labelWidth) {
       return "text-align: right;";
     }
 
