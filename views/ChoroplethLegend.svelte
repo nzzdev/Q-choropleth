@@ -10,7 +10,11 @@
 
   const legendBarHeight = 16;
   const singleValueBucketWidth = 8;
-  const legendWidth = 55;
+  const widthConfig = {
+    legend: 55,
+    average: 100,
+    median: 60
+  };
 
   function hasSingleValueBucket(legendData) {
     const firstBucket = legendData.buckets[0];
@@ -48,23 +52,23 @@
   }
 
   function getValueLength(value) {
-    return value.toFixed(0).length;
-  }
-
-  function getDescriptionAlignment(labelLegend) {
-    const legendPixelWidth = (contentWidth * legendWidth) / 100;
-    const rangeLabelToRightBorder =
-      (legendPixelWidth * (100 - labelLegend.position)) / 100;
-
     const maxDigitsAfterComma = formattingOptions.maxDigitsAfterComma
       ? formattingOptions.maxDigitsAfterComma
       : 0;
-    const numberPositions =
-      getValueLength(labelLegend.value) + maxDigitsAfterComma;
+    return value.toFixed(0).length + maxDigitsAfterComma;
+  }
 
-    const labelWidth = 100 + numberPositions * 8;
+  function getAvailableSpaceForLabel(labelLegend) {
+    const legendPixelWidth = (contentWidth * widthConfig.legend) / 100;
+    return (legendPixelWidth * (100 - labelLegend.position)) / 100;
+  }
 
-    if (rangeLabelToRightBorder < labelWidth) {
+  function getDescriptionAlignment(labelLegend) {
+    const availableSpaceForLabel = getAvailableSpaceForLabel(labelLegend);
+    const valueLength = getValueLength(labelLegend.value);
+    const approxLabelWidth = widthConfig[labelLegend.id] + valueLength * 8;
+
+    if (availableSpaceForLabel < approxLabelWidth) {
       return "text-align: right;";
     }
 
@@ -104,7 +108,9 @@
   {:else if legendData.type === 'numerical'}
     <!-- display bucket legend -->
     <div class="q-choropleth-legend--numerical">
-      <div class="q-choropleth-legend-container">
+      <div
+        class="q-choropleth-legend-container"
+        style="width: {widthConfig.legend}%">
         <div class="q-choropleth-legend-value-container">
           <span class="q-choropleth-legend-value-container--minVal s-font-note">
             {getFormattedValueForBuckets(formattingOptions, legendData.minValue)}

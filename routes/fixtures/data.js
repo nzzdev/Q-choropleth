@@ -5,6 +5,7 @@ const fixtureDataDirectory = "../../resources/fixtures/data";
 const fixtureData = [
   require(`${fixtureDataDirectory}/hexagon-kmeans.json`),
   require(`${fixtureDataDirectory}/hexagon-kmeans-average-center.json`),
+  require(`${fixtureDataDirectory}/hexagon-kmeans-median-center.json`),
   require(`${fixtureDataDirectory}/hexagon-kmeans-single-value-bucket.json`),
   require(`${fixtureDataDirectory}/hexagon-quantile.json`),
   require(`${fixtureDataDirectory}/hexagon-equal.json`),

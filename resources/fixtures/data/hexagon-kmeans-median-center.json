@@ -1,0 +1,48 @@
+{
+  "title": "FIXTURE: Hexagon Schweiz (Kantone) - Jenks Natural Breaks Average center",
+  "subtitle": "Subtitle",
+  "baseMap": "hexagonCHCantons",
+  "entityType": "name",
+  "data": [
+    ["Kanton", "Wert"],
+    ["Aargau", "1.5555"],
+    ["Appenzell Ausserrhoden", "1.5555"],
+    ["Appenzell Innerrhoden", "1.5555"],
+    ["Basel-Landschaft", "1.5555"],
+    ["Basel-Stadt", "1.5555"],
+    ["Bern", "1.5555"],
+    ["Freiburg", "1.5555"],
+    ["Genf", "1.5555"],
+    ["Glarus", "2.5555"],
+    ["Graubünden", "2.5555"],
+    ["Jura", "2.5555"],
+    ["Luzern", "2.5555"],
+    ["Neuenburg", "2.5555"],
+    ["Nidwalden", "2.5555"],
+    ["Obwalden", "2.5555"],
+    ["Schaffhausen", "2.5555"],
+    ["Schwyz", "3.5555"],
+    ["Solothurn", "3.5555"],
+    ["St. Gallen", "3.5555"],
+    ["Tessin", "3.5555"],
+    ["Thurgau", "3.5555"],
+    ["Uri", "3.5555"],
+    ["Waadt", "3.5555"],
+    ["Wallis", null],
+    ["Zug", null],
+    ["Zürich", null]
+  ],
+  "sources": [],
+  "notes": "",
+  "options": {
+    "choroplethType": "numerical",
+    "numericalOptions": {
+      "valuesOnMap": true,
+      "bucketType": "ckmeans",
+      "numberBuckets": 5,
+      "labelLegend": "median",
+      "scale": "sequential",
+      "colorScheme": "one"
+    }
+  }
+}

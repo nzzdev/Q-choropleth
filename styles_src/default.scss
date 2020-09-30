@@ -1,7 +1,6 @@
 .q-choropleth-legend-container {
   display: flex;
   flex-direction: column;
-  width: 55%; // width is used in ChoroplethLegend.svelte, if this value is changed, it has to be changed there too.
 }
 
 .q-choropleth-legend {
