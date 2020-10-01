@@ -116,7 +116,23 @@ The `json`-files will then be implemented in the `entityCollection`-route. The i
 
 #### Hexagon
 
+The hexagon-objects will be created in the function `getHexagons()`, where the grid passed by the `entityCollectionInfo` will be iterated and filled up with the following information:
+
+- `text`: the `cantonCode` and the `displayValue`
+- `fontSize`: font-size based on the `contentWidth`,
+- `color`: color based on the `cantonCode` and the `legendData`,
+- `width`: pre-defined,
+- `height`: pre-defined,
+- `type`: either `fill` or `stroke`,
+- `x`,
+- `y`: `rowIndex` \* `rowHeight`
+
+The array of hexagons will then be iterated in the `HexagonCHCantonsMap` component, where all the information will be passed to the `Hexagon` component.
+The function `getPolygonPoints()` will then process those information used to display the polygon.
+
 #### Sizing
+
+All calculations we use for sizing is based from the [redblobgames hexagons guide](https://www.redblobgames.com/grids/hexagons/). The functions used are in the `hexagon.js` helper-file.
 
 #### Legend
 
