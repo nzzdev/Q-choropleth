@@ -44,9 +44,9 @@ function getColorSchemeEnumWithTitles(scale) {
         enum_titles: [
           "Schema 1 (Standard)",
           "Schema 2 (Standard-Alternative)",
-          "Schema 3 (Negative Bedeutung)",
-          "Schema Weiblich",
-          "Schema Männlich",
+          "Schema 3 (negative Bedeutung)",
+          "Schema weiblich",
+          "Schema männlich",
         ],
       },
     };
@@ -56,9 +56,9 @@ function getColorSchemeEnumWithTitles(scale) {
     "Q:options": {
       enum_titles: [
         "Schema 1 (Standard negativ/positiv)",
-        "Schema 2 (ohne Assoziation negativ/positiv)",
+        "Schema 2 (neutral)",
         "Schema 3 (Alternative negativ/positiv)",
-        "Schema Weiblich/Männlich",
+        "Schema weiblich/männlich",
       ],
     },
   };
