@@ -10,19 +10,10 @@
 
   const legendBarHeight = 16;
   const singleValueBucketWidth = 8;
-  const alignmentConfig = {
-    small: {
-      median: 57,
-      average: 43
-    },
-    medium: {
-      median: 81,
-      average: 76
-    },
-    large: {
-      median: 89,
-      average: 86
-    }
+  const widthConfig = {
+    legend: 55,
+    average: 100,
+    median: 60
   };
 
   function hasSingleValueBucket(legendData) {
@@ -60,18 +51,24 @@
     };
   }
 
+  function getValueLength(value) {
+    const maxDigitsAfterComma = formattingOptions.maxDigitsAfterComma
+      ? formattingOptions.maxDigitsAfterComma
+      : 0;
+    return value.toFixed(0).length + maxDigitsAfterComma;
+  }
+
+  function getAvailableSpaceForLabel(labelLegend) {
+    const legendPixelWidth = (contentWidth * widthConfig.legend) / 100;
+    return (legendPixelWidth * (100 - labelLegend.position)) / 100;
+  }
+
   function getDescriptionAlignment(labelLegend) {
-    let currentConfig;
+    const availableSpaceForLabel = getAvailableSpaceForLabel(labelLegend);
+    const valueLength = getValueLength(labelLegend.value);
+    const approxLabelWidth = widthConfig[labelLegend.id] + valueLength * 8;
 
-    if (contentWidth <= 272) {
-      currentConfig = alignmentConfig.small;
-    } else if (contentWidth > 272 && contentWidth < 640) {
-      currentConfig = alignmentConfig.medium;
-    } else if (contentWidth >= 640) {
-      currentConfig = alignmentConfig.large;
-    }
-
-    if (labelLegend.position > currentConfig[labelLegend.id]) {
+    if (availableSpaceForLabel < approxLabelWidth) {
       return "text-align: right;";
     }
 
@@ -111,7 +108,9 @@
   {:else if legendData.type === 'numerical'}
     <!-- display bucket legend -->
     <div class="q-choropleth-legend--numerical">
-      <div class="q-choropleth-legend-container">
+      <div
+        class="q-choropleth-legend-container"
+        style="width: {widthConfig.legend}%">
         <div class="q-choropleth-legend-value-container">
           <span class="q-choropleth-legend-value-container--minVal s-font-note">
             {getFormattedValueForBuckets(formattingOptions, legendData.minValue)}
