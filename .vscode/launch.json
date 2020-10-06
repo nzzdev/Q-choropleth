@@ -10,6 +10,12 @@
       "name": "Launch Program",
       "program": "${workspaceFolder}/dev.js",
       "runtimeVersion": "12.6.0"
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "run dom test",
+      "program": "${workspaceFolder}/test/dom-tests.js"
     }
   ]
 }
