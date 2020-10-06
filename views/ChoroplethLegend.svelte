@@ -105,6 +105,20 @@
         </div>
       {/each}
     </div>
+    <div class="q-choropleth-legend-info--no-data s-font-note">
+      <div class="q-choropleth-legend-info-icon-container">
+        <svg width="11" height="11" class="q-choropleth-legend-info-icon">
+          <rect
+            width="11"
+            height="11"
+            class="s-color-gray-4"
+            fill="white"
+            stroke="currentColor"
+            stroke-width="2" />
+        </svg>
+      </div>
+      Keine Daten
+    </div>
   {:else if legendData.type === 'numerical'}
     <!-- display bucket legend -->
     <div class="q-choropleth-legend--numerical">
