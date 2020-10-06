@@ -47,7 +47,7 @@
         y={y + (2 * height) / 3}
         dominant-baseline="middle"
         text-anchor="middle"
-        class={color.textColor}
+        class="{color.textColor} q-choropleth-hexagon-value"
         fill="currentColor"
         font-size={fontSize}>
         {text[1]}

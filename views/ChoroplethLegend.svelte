@@ -170,7 +170,9 @@
           <div class="q-choropleth-legend-borders s-color-gray-6" />
         </div>
         {#if labelLegend.label !== 'noLabel'}
-          <div class="s-font-note" style={getDescriptionAlignment(labelLegend)}>
+          <div
+            class="q-choropleth-legend-marker s-font-note"
+            style={getDescriptionAlignment(labelLegend)}>
             {labelLegend.label}: {getFormattedValue(formattingOptions, labelLegend.value)}
           </div>
         {/if}

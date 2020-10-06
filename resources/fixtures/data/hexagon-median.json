@@ -1,0 +1,51 @@
+{
+  "title": "FIXTURE: Hexagon Schweiz (Kantone) - show median",
+  "baseMap": "hexagonCHCantons",
+  "entityType": "name",
+  "data": [
+    ["Kanton", "Wert"],
+    ["Aargau", null],
+    ["Appenzell Ausserrhoden", null],
+    ["Appenzell Innerrhoden", "10010"],
+    ["Basel-Landschaft", "10010"],
+    ["Basel-Stadt", "10020"],
+    ["Bern", "10510"],
+    ["Freiburg", "10000"],
+    ["Genf", "10010"],
+    ["Glarus", "10010"],
+    ["Graubünden", "10010"],
+    ["Jura", "10020"],
+    ["Luzern", "10510"],
+    ["Neuenburg", "10000"],
+    ["Nidwalden", "10010"],
+    ["Obwalden", "10010"],
+    ["Schaffhausen", "10010"],
+    ["Schwyz", "10020"],
+    ["Solothurn", "10510"],
+    ["St. Gallen", "10000"],
+    ["Tessin", "10010"],
+    ["Thurgau", "10010"],
+    ["Uri", "10010"],
+    ["Waadt", "10020"],
+    ["Wallis", "10510"],
+    ["Zug", "10000"],
+    ["Zürich", "12010"]
+  ],
+  "sources": [],
+  "options": {
+    "choroplethType": "numerical",
+    "numericalOptions": {
+      "noValuesOnMap": false,
+      "labelLegend": "median",
+      "bucketType": "ckmeans",
+      "numberBuckets": 5,
+      "scale": "sequential",
+      "colorScheme": "one",
+      "colorOverwrites": []
+    },
+    "categoricalOptions": {
+      "valuesOnMap": false,
+      "colorOverwrites": []
+    }
+  }
+}
