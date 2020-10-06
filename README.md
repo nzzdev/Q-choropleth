@@ -136,15 +136,60 @@ All calculations we use for sizing is based from the [redblobgames hexagons guid
 
 #### Legend
 
+The way the legend will be displayed is depending on the `choroplethType`. When using `numerical`-option, the range of the values will be calculated by buckets, which can be changed on the options. The lowest and highest value will be displayed on the left and right end of the legend.
+
+Depending on the selected bucketing method, the legend will be displayed differently. The array passed to render the legend looks as following:
+
+```
+buckets = [
+    {
+        from, // lowest bucket border value
+        to, // highest bucket border value
+        color, // color depending on the selected color schema
+    },
+]
+```
+
+If there's the case that one of the bucket has just a single value in it, the single bucket will be displayed below with a seperate icon.
+If there is an entry without a value, there will be an extra icon too, for displaying 'no data'.
+
+The `categorical` legend will simply map the values to their colors.
+
 [to the top](#table-of-contents)
 
-### Options
+### Display options
 
 #### choroplethType
 
+There are two types of maps: the `numerical` and the `categorical` one. Depending on the selection, different options will be available.
+
 #### numericalOptions
 
+##### noValuesOnMap
+
+This option will either show or hide de value displayed inside the hexagon.
+
+##### labelLegend
+
+This option allows to show the `average`, oder `median` value to be displayed in the legend. It can be hidden too.
+
+##### bucketType
+
+There are four different buckets-types and each comes with it's own properties:
+
+- Jenks Natural Breaks: Amount of buckets
+
+- Quantile: Amount of buckets
+
+- Same size buckets: Amount of buckets
+
+- Manually defined buckets: Amount of buckets and the max value borders
+
 #### categoricalOptions
+
+##### noValuesOnMap
+
+This option will either show or hide de value displayed inside the hexagon.
 
 [to the top](#table-of-contents)
 
