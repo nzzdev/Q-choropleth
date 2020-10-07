@@ -228,6 +228,7 @@ function getCategoricalLegend(data, options) {
 
   const customColorMap = getCustomColorMap(options.colorOverwrites);
   const categoryLabels = dataHelpers.getUniqueCategories(data);
+
   let categories = [];
   categoryLabels.forEach((label, index) => {
     categories.push({
@@ -236,6 +237,7 @@ function getCategoricalLegend(data, options) {
     });
   });
   legendData.categories = categories;
+  legendData.hasNullValues = data.filter((row) => row[1] === null).length > 0;
   return legendData;
 }
 
