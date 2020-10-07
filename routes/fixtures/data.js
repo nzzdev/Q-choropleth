@@ -11,6 +11,8 @@ const fixtureData = [
   require(`${fixtureDataDirectory}/hexagon-equal.json`),
   require(`${fixtureDataDirectory}/hexagon-custom.json`),
   require(`${fixtureDataDirectory}/hexagon-categorical-map.json`),
+  require(`${fixtureDataDirectory}/hexagon-categorical-map-with-null.json`),
+  require(`${fixtureDataDirectory}/hexagon-categorical-map-with-empty.json`),
   require(`${fixtureDataDirectory}/hexagon-convert.json`),
   require(`${fixtureDataDirectory}/hexagon-median.json`),
 ];
