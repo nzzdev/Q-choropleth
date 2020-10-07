@@ -237,7 +237,8 @@ function getCategoricalLegend(data, options) {
     });
   });
   legendData.categories = categories;
-  legendData.hasNullValues = data.filter((row) => row[1] === null).length > 0;
+  legendData.hasNullValues =
+    data.filter((row) => row[1] === null || row[1] === "").length > 0;
   return legendData;
 }
 
