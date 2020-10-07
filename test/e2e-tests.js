@@ -2,6 +2,8 @@ const fs = require("fs");
 const Lab = require("@hapi/lab");
 const Code = require("@hapi/code");
 const Hapi = require("@hapi/hapi");
+const Joi = require("@hapi/joi");
+
 const lab = (exports.lab = Lab.script());
 
 const glob = require("glob");
@@ -20,10 +22,11 @@ before(async () => {
     server = Hapi.server({
       port: process.env.PORT || 3000,
       routes: {
-        cors: true
-      }
+        cors: true,
+      },
     });
     await server.register(require("@hapi/inert"));
+    server.validator(Joi);
     server.route(routes);
   } catch (err) {
     expect(err).to.not.exist();
@@ -57,7 +60,7 @@ lab.experiment("locales endpoint", () => {
   it("returns 200 for en translations", async () => {
     const request = {
       method: "GET",
-      url: "/locales/en/translation.json"
+      url: "/locales/en/translation.json",
     };
     const response = await server.inject(request);
     expect(response.statusCode).to.be.equal(200);
@@ -65,7 +68,7 @@ lab.experiment("locales endpoint", () => {
   it("returns 200 for fr translations", async () => {
     const request = {
       method: "GET",
-      url: "/locales/fr/translation.json"
+      url: "/locales/fr/translation.json",
     };
     const response = await server.inject(request);
     expect(response.statusCode).to.be.equal(200);
@@ -73,7 +76,7 @@ lab.experiment("locales endpoint", () => {
   it("returns 200 for de translations", async () => {
     const request = {
       method: "GET",
-      url: "/locales/de/translation.json"
+      url: "/locales/de/translation.json",
     };
     const response = await server.inject(request);
     expect(response.statusCode).to.be.equal(200);
@@ -113,8 +116,8 @@ lab.experiment("all fixtures render", async () => {
         url: "/rendering-info/web",
         payload: {
           item: fixture,
-          toolRuntimeConfig: {}
-        }
+          toolRuntimeConfig: {},
+        },
       };
       const response = await server.inject(request);
       expect(response.statusCode).to.be.equal(200);
@@ -130,10 +133,10 @@ lab.experiment("rendering-info", () => {
       payload: {
         item: {
           some: "object",
-          that: "doesn't validate against the schema"
+          that: "doesn't validate against the schema",
         },
-        toolRuntimeConfig: {}
-      }
+        toolRuntimeConfig: {},
+      },
     };
     const response = await server.inject(request);
     expect(response.statusCode).to.be.equal(400);
@@ -151,8 +154,8 @@ lab.experiment("assets", () => {
       method: "POST",
       payload: {
         item: JSON.parse(fixture),
-        toolRuntimeConfig: {}
-      }
+        toolRuntimeConfig: {},
+      },
     });
     const stylesheetRes = await server.inject(
       `/stylesheet/${res.result.stylesheets[0].name}`

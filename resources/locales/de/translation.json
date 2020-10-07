@@ -1,1 +1,36 @@
-{}
+{
+  "notifications": {
+    "hasValues": {
+      "title": "Werte erfasst",
+      "body": "Für Änderungen an Basiskarte und Geo-Code musst du zuerst alle Werte aus der 2. Spalte entfernen"
+    },
+    "predefinedContent": {
+      "title": "Vordefinierte Werte",
+      "body": "Die erste Spalte ist auf Basis der Basiskarte und des Geo-Codes vorausgefüllt. Diese Werte können nicht geändert werden. Du kannst in der zweiten Spalte die passenden Werte eintragen."
+    },
+    "customBuckets": {
+      "title": "Manuelle Grenzen",
+      "body": "Die manuellen Grenzen umfassen nicht alle der in der Datentabelle eingegebenen Werte."
+    },
+    "numberBucketsExceedsDataSet": {
+      "title": "Anzahl Buckets",
+      "body": "Die Anzahl Buckets ist grösser als die Anzahl unterschiedlicher Werte in der Datentabelle"
+    },
+    "numberCategoriesOutOfColorScale": {
+      "title": "Farbskala",
+      "body": "Die Anzahl unterschiedlicher Kategorien ist höher als wir mit unserer Hauptfarbskala abdecken können"
+    },
+    "numberBucketsOutOfColorScale": {
+      "title": "Farbskala",
+      "body": "Die Anzahl Buckets ist höher als wir mit unseren Farbskalen abdecken können"
+    },
+    "unsupportedValuesForType": {
+      "title": "Ungültige Werte",
+      "body": "Für eine numerische Choroplethenkarte müssen alle Werte numerisch oder leer sein"
+    },
+    "moreThanTwoColumns": {
+      "title": "Zu viele Spalten",
+      "body": "Für die Choroplethenkarte werden nur die ersten beiden Spalten verwendet. Alle anderen Spalten werden ignoriert"
+    }
+  }
+}

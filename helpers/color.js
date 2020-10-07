@@ -65,12 +65,10 @@ function getBucketTextColor(customColor, colorClassData) {
 }
 
 function getCategoryTextColor(colorScheme, customColor) {
-  if (
-    customColor !== undefined &&
-    customColor.textColor !== undefined &&
-    customColor.textColor === "light"
-  ) {
-    return "s-color-gray-1";
+  if (customColor !== undefined && customColor.textColor !== undefined) {
+    return customColor.textColor === "light"
+      ? "s-color-gray-1"
+      : "s-color-gray-9";
   } else {
     if (["one", "five", "seven", "nine", "eleven"].includes(colorScheme)) {
       return "s-color-gray-1";

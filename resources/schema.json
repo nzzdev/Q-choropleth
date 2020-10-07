@@ -23,7 +23,29 @@
       "default": "hexagonCHCantons",
       "enum": ["hexagonCHCantons"],
       "Q:options": {
-        "enum_titles": ["Hexagon Schweiz (Kantone)"]
+        "enum_titles": ["Hexagon Schweiz (Kantone)"],
+        "notificationChecks": [
+          {
+            "type": "ToolEndpoint",
+            "config": {
+              "endpoint": "notification/hasValues",
+              "fields": ["data"]
+            },
+            "priority": {
+              "type": "low",
+              "value": 1
+            }
+          }
+        ]
+      }
+    },
+    "entityType": {
+      "title": "Geo-Code",
+      "type": "string",
+      "default": "name",
+      "enum": ["bfsNumber", "name", "code"],
+      "Q:options": {
+        "enum_titles": ["BfS Nummer", "Name", "Abkürzung"]
       }
     },
     "data": {
@@ -32,10 +54,18 @@
       "Q:type": "table",
       "Q:options": {
         "allowTranspose": false,
+        "dynamicSchema": {
+          "type": "ToolEndpoint",
+          "config": {
+            "endpoint": "dynamic-schema/predefinedContent",
+            "fields": ["baseMap", "entityType"]
+          }
+        },
         "notificationChecks": [
           {
-            "type": "EmptyData",
+            "type": "ToolEndpoint",
             "config": {
+              "endpoint": "notification/predefinedContent",
               "fields": ["data"]
             },
             "priority": {
@@ -44,26 +74,28 @@
             }
           },
           {
-            "type": "TooManyColumns",
+            "type": "ToolEndpoint",
             "config": {
-              "fields": ["data"],
-              "options": {
-                "limit": 2
-              }
+              "endpoint": "notification/unsupportedValuesForType",
+              "fields": ["data", "options.choroplethType"]
             },
             "priority": {
               "type": "medium",
               "value": 2
             }
+          },
+          {
+            "type": "ToolEndpoint",
+            "config": {
+              "endpoint": "notification/moreThanTwoColumns",
+              "fields": ["data"]
+            },
+            "priority": {
+              "type": "low",
+              "value": 1
+            }
           }
-        ],
-        "dynamicSchema": {
-          "type": "ToolEndpoint",
-          "config": {
-            "endpoint": "dynamic-schema/baseMap",
-            "fields": ["baseMap"]
-          }
-        }
+        ]
       },
       "items": {
         "type": "array",
@@ -144,7 +176,7 @@
             ]
           },
           "properties": {
-            "valuesOnMap": {
+            "noValuesOnMap": {
               "title": "Beschriftung der Werte auf der Karte entfernen",
               "type": "boolean",
               "default": false
@@ -173,6 +205,19 @@
                   "Quantile",
                   "gleich grosse Intervalle",
                   "manuelle Grenzen"
+                ],
+                "notificationChecks": [
+                  {
+                    "type": "ToolEndpoint",
+                    "config": {
+                      "endpoint": "notification/numberBucketsOutOfColorScale",
+                      "fields": ["options"]
+                    },
+                    "priority": {
+                      "type": "medium",
+                      "value": 2
+                    }
+                  }
                 ]
               }
             },
@@ -187,6 +232,19 @@
                     "config": {
                       "endpoint": "option-availability/customBuckets",
                       "fields": ["options.numericalOptions.bucketType"]
+                    }
+                  }
+                ],
+                "notificationChecks": [
+                  {
+                    "type": "ToolEndpoint",
+                    "config": {
+                      "endpoint": "notification/customBuckets",
+                      "fields": ["data", "options"]
+                    },
+                    "priority": {
+                      "type": "medium",
+                      "value": 2
                     }
                   }
                 ]
@@ -204,6 +262,19 @@
                     "config": {
                       "endpoint": "option-availability/numberBuckets",
                       "fields": ["options.numericalOptions.bucketType"]
+                    }
+                  }
+                ],
+                "notificationChecks": [
+                  {
+                    "type": "ToolEndpoint",
+                    "config": {
+                      "endpoint": "notification/numberBucketsExceedsDataSet",
+                      "fields": ["data", "options"]
+                    },
+                    "priority": {
+                      "type": "medium",
+                      "value": 2
                     }
                   }
                 ]
@@ -331,6 +402,19 @@
                 "config": {
                   "endpoint": "option-availability/isCategorical",
                   "fields": ["options.choroplethType"]
+                }
+              }
+            ],
+            "notificationChecks": [
+              {
+                "type": "ToolEndpoint",
+                "config": {
+                  "endpoint": "notification/numberCategoriesOutOfColorScale",
+                  "fields": ["data", "options.choroplethType"]
+                },
+                "priority": {
+                  "type": "medium",
+                  "value": 2
                 }
               }
             ]

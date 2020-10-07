@@ -1,5 +1,5 @@
 const Boom = require("@hapi/boom");
-const Joi = require("../helpers/custom-joi.js");
+const Joi = require("@hapi/joi");
 const dataHelpers = require("../helpers/data.js");
 
 function getScaleEnumWithTitles(numericalOptions) {
@@ -8,8 +8,10 @@ function getScaleEnumWithTitles(numericalOptions) {
 
   let bucketNumber = 0;
   if (numericalOptions.bucketType === "custom") {
-    const buckets = numericalOptions.customBuckets.split(",");
-    bucketNumber = buckets.length - 1;
+    if (numericalOptions.customBuckets) {
+      const buckets = numericalOptions.customBuckets.split(",");
+      bucketNumber = buckets.length - 1;
+    }
   } else {
     bucketNumber = numericalOptions.numberBuckets;
   }
@@ -40,11 +42,11 @@ function getColorSchemeEnumWithTitles(scale) {
       enum: ["one", "two", "three", "female", "male"],
       "Q:options": {
         enum_titles: [
-          "Skala 1",
-          "Skala 2",
-          "Skala 3",
-          "Skala Weiblich",
-          "Skala Männlich",
+          "Schema 1 (Standard)",
+          "Schema 2 (Standard-Alternative)",
+          "Schema 3 (negative Bedeutung)",
+          "Schema weiblich",
+          "Schema männlich",
         ],
       },
     };
@@ -52,7 +54,12 @@ function getColorSchemeEnumWithTitles(scale) {
   return {
     enum: ["one", "two", "three", "gender"],
     "Q:options": {
-      enum_titles: ["Skala 1", "Skala 2", "Skala 3", "Skala Weiblich/Männlich"],
+      enum_titles: [
+        "Schema 1 (Standard negativ/positiv)",
+        "Schema 2 (neutral)",
+        "Schema 3 (Alternative negativ/positiv)",
+        "Schema weiblich/männlich",
+      ],
     },
   };
 }
@@ -96,6 +103,7 @@ function getColorOverwriteEnumAndTitlesNumerical(numericalOptions) {
 }
 
 function getColorOverwriteEnumAndTitlesCategorical(data) {
+  data = dataHelpers.getDataWithoutHeaderRow(data);
   let enumValues = [null];
   const categories = dataHelpers.getUniqueCategories(data);
   const numberItems = categories.length;
@@ -112,6 +120,48 @@ function getColorOverwriteEnumAndTitlesCategorical(data) {
   };
 }
 
+function getCantons(baseMapEntityCollection, entityType) {
+  const cantons = baseMapEntityCollection.cantons;
+  if (entityType === "name") {
+    return cantons
+      .sort((cantonA, cantonB) => cantonA.name.localeCompare(cantonB.name))
+      .map((canton) => {
+        return [{ value: canton.name, readOnly: true }];
+      });
+  } else if (entityType === "bfsNumber") {
+    return cantons
+      .sort((cantonA, cantonB) => cantonA.id - cantonB.id)
+      .map((canton) => {
+        return [{ value: canton.id, readOnly: true }];
+      });
+  } else if (entityType === "code") {
+    return cantons
+      .sort((cantonA, cantonB) => cantonA.code.localeCompare(cantonB.code))
+      .map((canton) => {
+        return [{ value: canton.code, readOnly: true }];
+      });
+  }
+  return undefined;
+}
+
+async function getPredefinedContent(
+  baseMapEntityCollection,
+  baseMap,
+  entityType
+) {
+  if (baseMap === "hexagonCHCantons") {
+    const predefinedContent = getCantons(baseMapEntityCollection, entityType);
+    return {
+      "Q:options": {
+        predefinedContent: {
+          allowOverwrites: false,
+          data: [["Kanton", "Wert"]].concat(predefinedContent),
+        },
+      },
+    };
+  }
+}
+
 module.exports = {
   method: "POST",
   path: "/dynamic-schema/{optionName}",
@@ -121,8 +171,12 @@ module.exports = {
     },
     cors: true,
   },
-  handler: function (request, h) {
+  handler: async function (request, h) {
     const item = request.payload.item;
+
+    // TODO: add entityType as dynamic schema instead of fixed enum
+    // in prep for other base maps with other entityTypes
+
     if (request.params.optionName === "scale") {
       return getScaleEnumWithTitles(item.options.numericalOptions);
     }
@@ -149,12 +203,20 @@ module.exports = {
       }
     }
 
-    if (request.params.optionName === "baseMap") {
-      return {
-        "Q:options": {
-          defaultArrayValues: [["Aargau"], ["Zürich"]],
-        },
-      };
+    if (request.params.optionName === "predefinedContent") {
+      const baseMapEntityCollectionResponse = await request.server.inject({
+        method: "GET",
+        url: `/entityCollection/${item.baseMap}`,
+      });
+
+      if (baseMapEntityCollectionResponse.statusCode === 200) {
+        const baseMapEntityCollection = baseMapEntityCollectionResponse.result;
+        return getPredefinedContent(
+          baseMapEntityCollection,
+          item.baseMap,
+          item.entityType
+        );
+      }
     }
 
     return Boom.badRequest();

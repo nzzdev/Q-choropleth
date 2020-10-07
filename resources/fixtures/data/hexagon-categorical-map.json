@@ -2,7 +2,9 @@
   "title": "FIXTURE: Hexagon Schweiz (Kantone) - Kategorien",
   "subtitle": "Subtitle",
   "baseMap": "hexagonCHCantons",
+  "entityType": "name",
   "data": [
+    ["Kanton", "Wert"],
     ["Aargau", "etwas"],
     ["Appenzell Ausserrhoden", "etwas"],
     ["Appenzell Innerrhoden", "etwas"],
@@ -34,8 +36,18 @@
   "notes": "",
   "options": {
     "choroplethType": "categorical",
+    "numericalOptions": {
+      "noValuesOnMap": false,
+      "labelLegend": "average",
+      "bucketType": "ckmeans",
+      "numberBuckets": 5,
+      "scale": "sequential",
+      "colorScheme": "one",
+      "colorOverwrites": []
+    },
     "categoricalOptions": {
-      "valuesOnMap": true
+      "valuesOnMap": false,
+      "colorOverwrites": []
     }
   }
 }

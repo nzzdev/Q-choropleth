@@ -1,12 +1,19 @@
 const Boom = require("@hapi/boom");
 const fs = require("fs");
 const path = require("path");
+
+const baseMapHelpers = require("../../helpers/baseMap.js");
 const legendHelpers = require("../../helpers/legend.js");
+const dataHelpers = require("../../helpers/data.js");
+const methodBoxHelpers = require("../../helpers/methodBox");
+
 const getExactPixelWidth = require("../../helpers/toolRuntimeConfig.js")
   .getExactPixelWidth;
 
 const stylesDir = path.join(__dirname, "/../../styles/");
 const styleHashMap = require(path.join(stylesDir, "hashMap.json"));
+const scriptsDir = "../../scripts/";
+const scriptHashMap = require(`${scriptsDir}/hashMap.json`);
 const viewsDir = `${__dirname}/../../views/`;
 
 // setup svelte
@@ -57,40 +64,104 @@ module.exports = {
     },
   },
   handler: async function (request, h) {
-    const item = request.payload.item;
+    try {
+      const item = request.payload.item;
+      const toolRuntimeConfig = request.payload.toolRuntimeConfig;
 
-    const context = {
-      item,
-    };
+      // since we do not need header row for further processing we remove it here first
+      item.data = dataHelpers.getDataWithoutHeaderRow(item.data);
 
-    if (item.options.choroplethType === "numerical") {
-      context.legendData = legendHelpers.getNumericalLegend(
-        item.data,
-        item.options.numericalOptions
+      // basic context information
+      const context = {
+        id: `q_choropleth_${toolRuntimeConfig.requestId}`,
+        displayOptions: request.payload.toolRuntimeConfig.displayOptions || {},
+      };
+
+      context.entityCollectionInfo = await baseMapHelpers.getEntityCollectionInfo(
+        request,
+        item
       );
-    } else {
-      context.legendData = legendHelpers.getCategoricalLegend(
-        item.data,
-        item.options.categoricalOptions
+
+      if (item.options.choroplethType === "numerical") {
+        const divisor = dataHelpers.getDivisor(item.data);
+        if (divisor > 1) {
+          item.data = dataHelpers.getDividedData(item.data, divisor);
+          item.subtitleSuffix = dataHelpers.getSubtitleSuffix(
+            divisor,
+            item.subtitle
+          );
+        }
+
+        context.formattingOptions = {
+          maxDigitsAfterComma: dataHelpers.getMaxDigitsAfterCommaInData(
+            item.data
+          ),
+          roundingBucketBorders:
+            item.options.numericalOptions.bucketType !== "custom"
+              ? true
+              : false,
+        };
+
+        context.legendData = legendHelpers.getNumericalLegend(
+          item.data,
+          item.options.numericalOptions,
+          context.formattingOptions.maxDigitsAfterComma
+        );
+
+        context.valuesOnMap = !item.options.numericalOptions.noValuesOnMap;
+        context.methodBox = methodBoxHelpers.getMethodBoxInfo(
+          item.options.numericalOptions.bucketType
+        );
+      } else {
+        context.legendData = legendHelpers.getCategoricalLegend(
+          item.data,
+          item.options.categoricalOptions
+        );
+        context.valuesOnMap = item.options.categoricalOptions.valuesOnMap;
+      }
+
+      context.item = item;
+
+      const exactPixelWidth = getExactPixelWidth(
+        request.payload.toolRuntimeConfig
       );
+
+      // if we have the exact pixel width we add it to context
+      // if not the client side script will handle client side measuring
+      if (typeof exactPixelWidth === "number") {
+        context.contentWidth = exactPixelWidth;
+      }
+
+      const renderingInfo = {
+        polyfills: ["Promise", "Element.prototype.classList", "CustomEvent"],
+        stylesheets: [
+          {
+            name: styleHashMap["default"],
+          },
+        ],
+        scripts: [
+          {
+            name: scriptHashMap["default"],
+          },
+          {
+            content: `
+          new window._q_choropleth.Choropleth(document.querySelector('#${
+            context.id
+          }_container'), ${JSON.stringify({
+              qId: context.item.id,
+              requestId: context.id,
+              choroplethType: context.item.options.choroplethType,
+              width: context.contentWidth,
+              item: item,
+              toolRuntimeConfig: toolRuntimeConfig,
+            })})`,
+          },
+        ],
+        markup: staticTemplate.render(context).html,
+      };
+      return renderingInfo;
+    } catch (e) {
+      throw new Boom.Boom(e);
     }
-
-    const exactPixelWidth = getExactPixelWidth(request.payload.toolRuntimeConfig);	
-    if (typeof exactPixelWidth === "number") {	
-      context.contentWidth = exactPixelWidth;
-    } // add script here to meassure 
-
-
-    const renderingInfo = {
-      polyfills: ["Promise"],
-      stylesheets: [
-        {
-          name: styleHashMap["default"],
-        },
-      ],
-      markup: staticTemplate.render(context).html,
-    };
-
-    return renderingInfo;
   },
 };

@@ -10,7 +10,8 @@ function getBucketsForLegend(
   options,
   minValue,
   maxValue,
-  customColorMap
+  customColorMap,
+  maxDigitsAfterComma
 ) {
   const bucketType = options.bucketType;
   const numberBuckets = options.numberBuckets;
@@ -20,9 +21,6 @@ function getBucketsForLegend(
     colorOverwrites: customColorMap,
   };
 
-  // TODO add checks (maybe also add notifications and don't render graphic otherwiese):
-  // a) numberBuckets <= filteredValues.length
-  // b) if custom buckets, are values within borders
   if (bucketType === "ckmeans") {
     return getCkMeansBuckets(
       filteredValues,
@@ -44,7 +42,8 @@ function getBucketsForLegend(
       minValue,
       maxValue,
       scale,
-      colorOptions
+      colorOptions,
+      maxDigitsAfterComma
     );
   } else if (bucketType === "custom") {
     return getCustomBuckets(options, scale, colorOptions);
@@ -107,14 +106,21 @@ function getEqualBuckets(
   minValue,
   maxValue,
   scale,
-  colorOptions
+  colorOptions,
+  maxDigitsAfterComma
 ) {
   const portion = 1 / numberBuckets;
   const range = maxValue - minValue;
   let equalBuckets = [];
   for (let i = 0; i < numberBuckets; i++) {
-    const from = i === 0 ? minValue : minValue + range * portion * i;
-    const to = minValue + range * portion * (i + 1);
+    let from = i === 0 ? minValue : minValue + range * portion * i;
+    let to = minValue + range * portion * (i + 1);
+
+    // round numbers
+    const roundingFactor = Math.pow(10, maxDigitsAfterComma);
+    from = Math.round(from * roundingFactor) / roundingFactor;
+    to = Math.round(to * roundingFactor) / roundingFactor;
+
     equalBuckets.push({
       from,
       to,
@@ -130,7 +136,7 @@ function getCustomBuckets(numericalOptions, scale, colorOptions) {
       numericalOptions.customBuckets
     );
 
-    const numberBuckets = customBorderValues.length;
+    const numberBuckets = customBorderValues.length - 1;
 
     const minBorder = customBorderValues.shift();
     let customBuckets = [];
@@ -163,30 +169,37 @@ function getCustomColorMap(colorOverwrites) {
   );
 }
 
-function getNumericalLegend(data, options) {
-  const legendData = {
-    type: "numerical",
-  };
+function hasSingleValueBucket(legendData) {
+  const firstBucket = legendData.buckets[0];
+  return firstBucket.from === firstBucket.to;
+}
 
+function getNumericalLegend(data, options, maxDigitsAfterComma) {
   const customColorMap = getCustomColorMap(options.colorOverwrites);
-  const values = dataHelpers.getValues(data);
-  const filteredValues = values.filter(
-    (value) => value !== null && value !== 0
+  const values = dataHelpers.getNumericalValues(data);
+  const nonNullValues = dataHelpers.getNonNullNumericalValues(values);
+  const metaData = dataHelpers.getMetaData(
+    values,
+    nonNullValues,
+    maxDigitsAfterComma
   );
 
-  legendData.hasNullValues =
-    values.find((value) => value === null) !== undefined;
-  legendData.hasZeroValues = values.find((value) => value === 0) !== undefined;
-  legendData.maxValue = Math.max(...filteredValues);
-  legendData.minValue = Math.min(...filteredValues);
+  const legendData = {
+    type: "numerical",
+    labelLegend: options.labelLegend, // label average or median value or no label
+    ...metaData,
+  };
 
   legendData.buckets = getBucketsForLegend(
-    filteredValues,
+    nonNullValues,
     options,
     legendData.minValue,
     legendData.maxValue,
-    customColorMap
+    customColorMap,
+    maxDigitsAfterComma
   );
+
+  legendData.hasSingleValueBucket = hasSingleValueBucket(legendData);
 
   // for all bucket types we calculate the resulting buckets out of given data set
   // custom bucketing need a special handling of min/max values because the first and the last
@@ -195,13 +208,13 @@ function getNumericalLegend(data, options) {
     // if first custom bucket value is less than min value in given data set
     // we set min value of legend to starting value of custom buckets
     const minBucketValue = legendData.buckets[0].from;
-    if (minValue > minBucketValue) {
+    if (legendData.minValue > minBucketValue) {
       legendData.minValue = minBucketValue;
     }
     // if last custom bucket value is higher that max value in given data set
     // we set max value of legend to last custom bucket value
     const maxBucketValue = legendData.buckets[legendData.buckets.length - 1].to;
-    if (maxValue < maxBucketValue) {
+    if (legendData.maxValue < maxBucketValue) {
       legendData.maxValue = maxBucketValue;
     }
   }

@@ -1,1 +1,69 @@
-{}
+{
+  "notifications": {
+    "hasValues": {
+      "title": "Values given",
+      "body": "If you want to change base map or geo code you have to remove all values in the 2nd column first."
+    },
+    "predefinedContent": {
+      "title": "Predefined content",
+      "body": "Values in first column are predefined based on chosen base map and geo code and cannot be changed. Corresponding values can be entered in the second column."
+    },
+    "customBuckets": {
+      "title": "Custom borders",
+      "body": "Some values in data table are not covered by custom borders."
+    },
+    "numberBucketsExceedsDataSet": {
+      "title": "Number buckets",
+      "body": "Number of buckets exceeds the number of different values in data table."
+    },
+    "numberCategoriesOutOfColorScale": {
+      "title": "Color scale",
+      "body": "The number of categories exceeds the number of available colors in color scale"
+    },
+    "numberBucketsOutOfColorScale": {
+      "title": "Color scale",
+      "body": "The number of buckets exceeds the number of available colors in chosen color scale"
+    },
+    "unsupportedValuesForType": {
+      "title": "Unsupported values",
+      "body": "All values have to be numerical (or empty) in order to create a numerical choropleth map."
+    },
+    "moreThanTwoColumns": {
+      "title": "Data contains too many columns",
+      "body": "Only the first two columns are taken into account, other columns will be ignored"
+    },
+    "Titel": "Title",
+    "Der Titel bringt die Kernaussage der Grafik auf den Punkt&#46;": "The title brings the core message of the graphic to the point.",
+    "Untertitel": "Subtitle",
+    "Der Untertitel benennt präzise, was in der Grafik zu sehen ist, inklusive Einheiten&#46;": "The subtitle names precisely what can be seen in the graphic, including units.",
+    "Daten": "Data",
+    "Quelle(n)": "Sources",
+    "Quelle": "Source",
+    "Link": "Link",
+    "Direktlink zur Quelle, http://...": "Direct link to the source, http://...",
+    "Url": "Url",
+    "Anmerkungen": "Annotation",
+    "Basiskarte": "Base map",
+    "Geo-Code": "Geo code",
+    "Choroplethentyp": "Choropleth type",
+    "Optionen numerische Karte": "Numerical options",
+    "Beschriftung der Werte auf der Karte entfernen": "Remove direct labelling",
+    "Mittelwert-Markierung": "Average",
+    "ausblenden": "Hide",
+    "zeigt Durchschnitt an": "Show arithmetic means",
+    "zeigt Median an": "Show median",
+    "Bucketing Methode": "Bucketing type",
+    "Quantile": "Quantiles",
+    "gleich grosse Intervalle": "Equal intervals",
+    "manuelle Grenzen": "Custom",
+    "Manuelle Bucketgrenzen": "Custom borders",
+    "Anzahl Buckets": "Number buckets",
+    "Skala": "Scale",
+    "Farbschema": "Color scheme",
+    "Bucketfarbe": "Bucket color",
+    "Farbe": "Color",
+    "Textfarbe": "Text color",
+    "Optionen kategorische Karte": "Categorical options",
+    "Werte direkt auf der Karte beschriften": "Direct labelling"
+  }
+}

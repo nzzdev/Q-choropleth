@@ -8,8 +8,14 @@
       "type": "node",
       "request": "launch",
       "name": "Launch Program",
-      "program": "${workspaceFolder}/index.js",
+      "program": "${workspaceFolder}/dev.js",
       "runtimeVersion": "12.6.0"
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "run dom test",
+      "program": "${workspaceFolder}/test/dom-tests.js"
     }
   ]
 }
