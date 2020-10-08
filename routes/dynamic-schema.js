@@ -73,7 +73,7 @@ function getMaxItemsNumerical(numericalOptions) {
 function getMaxItemsCategorical(data) {
   try {
     return {
-      maxItems: dataHelpers.getUniqueCategories(data).length,
+      maxItems: dataHelpers.getUniqueCategoriesCount(data),
     };
   } catch {
     return {
@@ -105,7 +105,7 @@ function getColorOverwriteEnumAndTitlesNumerical(numericalOptions) {
 function getColorOverwriteEnumAndTitlesCategorical(data) {
   data = dataHelpers.getDataWithoutHeaderRow(data);
   let enumValues = [null];
-  const categories = dataHelpers.getUniqueCategories(data);
+  const categories = dataHelpers.getUniqueCategoriesObject(data).categories;
   const numberItems = categories.length;
   for (let index = 0; index < numberItems; index++) {
     enumValues.push(index + 1);

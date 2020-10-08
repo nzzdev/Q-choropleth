@@ -227,18 +227,17 @@ function getCategoricalLegend(data, options) {
   };
 
   const customColorMap = getCustomColorMap(options.colorOverwrites);
-  const categoryLabels = dataHelpers.getUniqueCategories(data);
+  const categoryObject = dataHelpers.getUniqueCategoriesObject(data);
 
   let categories = [];
-  categoryLabels.forEach((label, index) => {
+  categoryObject.categories.forEach((label, index) => {
     categories.push({
       label,
       color: colorHelpers.getCategoryColor(index, customColorMap),
     });
   });
+  legendData.hasNullValues = categoryObject.hasNullValues;
   legendData.categories = categories;
-  legendData.hasNullValues =
-    data.filter((row) => row[1] === null || row[1] === "").length > 0;
   return legendData;
 }
 
