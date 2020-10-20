@@ -2,7 +2,11 @@ const clone = require("clone");
 const array2d = require("array2d");
 
 function getDataWithoutHeaderRow(data) {
-  return data.slice(1);
+  // todo: understand why sometimes length is 27 and sometimes 26
+  if (data.length === 27) {
+    return data.slice(1);
+  }
+  return data;
 }
 
 function getUniqueCategories(data) {
