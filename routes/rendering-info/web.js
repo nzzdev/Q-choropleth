@@ -114,6 +114,7 @@ module.exports = {
         );
 
         context.valuesOnMap = !item.options.numericalOptions.noValuesOnMap;
+        context.noInteraction = toolRuntimeConfig.noInteraction;
         context.methodBox = methodBoxHelpers.getMethodBoxInfo(
           item.options.numericalOptions.bucketType
         );
@@ -144,7 +145,14 @@ module.exports = {
             name: styleHashMap["default"],
           },
         ],
-        scripts: [
+        markup: staticTemplate.render(context).html,
+      };
+
+      renderingInfo.scripts = [];
+
+      // if there's no interaction, no scripts shall be loaded
+      if (!toolRuntimeConfig.noInteraction) {
+        renderingInfo.scripts.push([
           {
             name: scriptHashMap["default"],
           },
@@ -161,9 +169,9 @@ module.exports = {
               toolRuntimeConfig: toolRuntimeConfig,
             })})`,
           },
-        ],
-        markup: staticTemplate.render(context).html,
-      };
+        ])
+      }
+
       return renderingInfo;
     } catch (e) {
       throw new Boom.Boom(e);
