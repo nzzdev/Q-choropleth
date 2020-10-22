@@ -12,6 +12,7 @@
   export let methodBox;
   export let displayOptions;
   export let formattingOptions;
+  export let noInteraction;
 </script>
 
 <div id="{id}_container" class="s-q-item q-choropleth">
@@ -43,6 +44,7 @@
         <MethodBox
           {legendData}
           {formattingOptions}
+          {noInteraction}
           methodBoxText={methodBox.text}
           methodBoxArticle={methodBox.article} />
       {/if}

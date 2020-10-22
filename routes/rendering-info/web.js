@@ -151,8 +151,8 @@ module.exports = {
       renderingInfo.scripts = [];
 
       // if there's no interaction, no scripts shall be loaded
-      if (!toolRuntimeConfig.noInteraction) {
-        renderingInfo.scripts.push([
+    
+        renderingInfo.scripts.push(
           {
             name: scriptHashMap["default"],
           },
@@ -169,8 +169,8 @@ module.exports = {
               toolRuntimeConfig: toolRuntimeConfig,
             })})`,
           },
-        ])
-      }
+        )
+      
 
       return renderingInfo;
     } catch (e) {
