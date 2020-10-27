@@ -66,6 +66,11 @@ module.exports = {
   handler: async function (request, h) {
     try {
       const item = request.payload.item;
+
+      // we need a copy of the unchanged item to hand it over to client side script
+      // in case no width is given we call rendering info route again with this item
+      // and client side measured width of container
+      const originalItem = { ...item };
       const toolRuntimeConfig = request.payload.toolRuntimeConfig;
 
       // since we do not need header row for further processing we remove it here first
@@ -152,7 +157,7 @@ module.exports = {
               requestId: context.id,
               choroplethType: context.item.options.choroplethType,
               width: context.contentWidth,
-              item: item,
+              item: originalItem,
               toolRuntimeConfig: toolRuntimeConfig,
             })})`,
           },
