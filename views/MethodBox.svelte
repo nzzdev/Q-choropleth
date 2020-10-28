@@ -10,7 +10,7 @@
 </script>
 
 {#if noInteraction}
-  <div class="s-font-note">Daten und Methodik</div>
+  <div class="s-font-title-s">Daten und Methodik</div>
   <div>
     <div class="s-legend-icon-label">
       {#each legendData.buckets as bucket, index}
