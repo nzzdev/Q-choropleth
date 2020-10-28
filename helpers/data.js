@@ -6,11 +6,7 @@ function getDataWithoutHeaderRow(data) {
 }
 
 function getUniqueCategoriesCount(data) {
-  return data
-    .map((row) => {
-      return row[1];
-    })
-    .filter((value) => value !== null);
+  return getUniqueCategoriesObject(data).categories.length;
 }
 
 function getUniqueCategoriesObject(data) {
