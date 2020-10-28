@@ -11,6 +11,7 @@
   export let x;
   export let y;
   export let growFactor;
+  export let cssModifier;
 
   const transform = `translate(${x} ${y})`;
   const points = getPolygonPoints(x, y, width, growFactor);
@@ -20,6 +21,16 @@
     const center = { x: width / 2, y: size };
     const corners = pointyHexCorners(center, size * growFactor);
     return corners.map(({ x, y }) => `${x},${y}`).join(" ");
+  }
+
+  function getCantonTextY(y, height) {
+    let coordinate = y + height / 3;
+    return cssModifier !== "mobile" ? coordinate + 0.6 : coordinate;
+  }
+
+  function getValueTextY(y, height) {
+    let coordinate = y + (2 * height) / 3;
+    return cssModifier !== "mobile" ? coordinate - 0.6 : coordinate;
   }
 </script>
 
@@ -33,7 +44,7 @@
     {#if valuesOnMap}
       <text
         x={x + width / 2}
-        y={y + height / 3}
+        y={getCantonTextY(y, height)}
         dy="0.5"
         dominant-baseline="middle"
         text-anchor="middle"
@@ -44,7 +55,7 @@
       </text>
       <text
         x={x + width / 2}
-        y={y + (2 * height) / 3}
+        y={getValueTextY(y, height)}
         dominant-baseline="middle"
         text-anchor="middle"
         class="{color.textColor} q-choropleth-hexagon-value"
@@ -77,7 +88,7 @@
     {#if valuesOnMap}
       <text
         x={x + width / 2}
-        y={y + height / 3}
+        y={getCantonTextY(y, height)}
         dy="0.5"
         dominant-baseline="middle"
         text-anchor="middle"
@@ -88,7 +99,7 @@
       </text>
       <text
         x={x + width / 2}
-        y={y + (2 * height) / 3}
+        y={getValueTextY(y, height)}
         dominant-baseline="middle"
         text-anchor="middle"
         class={color.textColor}

@@ -12,6 +12,8 @@
   export let entityCollectionInfo;
   export let formattingOptions;
 
+  let cssModifier = getCssModifier(contentWidth);
+
   const dataMapping = new Map(data);
 
   // Sizes of hexagons in SVG units. The values are arbitrary,
@@ -98,20 +100,33 @@
     return value;
   }
 
-  function getFontSize(contentWidth, valuesOnMap) {
-    if (!valuesOnMap && contentWidth < 470) {
+  function getCssModifier(contentWidth) {
+    if (contentWidth < 400) {
+      return "mobile";
+    } else if (contentWidth < 470) {
+      return "desktop";
+    } else if (contentWidth < 650) {
+      return "desktop-large";
+    } else {
+      return "fullwidth";
+    }
+  }
+
+  function getFontSize(cssModifier, valuesOnMap) {
+    if (!valuesOnMap && cssModifier === "desktop") {
       return "23%";
     }
-    if (contentWidth < 400) {
+    if (cssModifier === "mobile") {
       return "20%";
     }
-    if (contentWidth < 470) {
+    if (cssModifier === "desktop") {
       return "18%";
     }
-    if (contentWidth < 650) {
-      return "17%";
+    if (cssModifier === "desktop-large") {
+      return "13%";
     }
-    return "15%";
+    // cssModifier = "fullwidth";
+    return "12%";
   }
 
   function getHexagons(contentWidth) {
@@ -130,7 +145,7 @@
 
           hexagons.push({
             text: [cantonCode, displayValue],
-            fontSize: getFontSize(contentWidth, valuesOnMap),
+            fontSize: getFontSize(cssModifier, valuesOnMap),
             color: getColor(cantonCode, legendData),
             width: cellWidth,
             height: cellHeight,
@@ -171,6 +186,7 @@
         {type}
         {x}
         {y}
+        {cssModifier}
         growFactor={type === 'fill' ? 0.98 : 0.97} />
       <!-- grow factor = 1 would mean, that hexagons are sticked together
         since we want small white spaces between hexagons grow factor is 0.98 by default
