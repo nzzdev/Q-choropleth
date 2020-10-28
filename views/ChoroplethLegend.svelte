@@ -6,6 +6,7 @@
   export let legendData;
   export let formattingOptions;
   export let contentWidth;
+  export let noInteraction;
   let labelLegend = getLabelLegend(legendData);
 
   const legendBarHeight = 16;
@@ -88,6 +89,10 @@
     }
     return "";
   }
+
+  function getIconClass(noInteraction) {
+    return noInteraction ? "noInteraction" : "interaction";
+  }
 </script>
 
 {#if legendData !== undefined}
@@ -106,9 +111,13 @@
       {/each}
     </div>
     {#if legendData.hasNullValues}
-      <div class="q-choropleth-legend-info--no-data s-legend-icon-label">
+      <div class="s-legend-icon-label">
         <div class="s-legend-item-label__item">
-          <svg width="11" height="11">
+          <svg
+            width="11"
+            height="11"
+            class="s-legend-item-label__item__icon q-choropleth-legend-info-icon
+            q-choropleth-legend-info-icon--{getIconClass(noInteraction)}">
             <rect
               width="11"
               height="11"
@@ -117,8 +126,8 @@
               stroke="currentColor"
               stroke-width="2" />
           </svg>
+          <div class="s-legend-item-label__item__label">Keine Daten</div>
         </div>
-        <div class="s-legend-item-label__item__label">Keine Daten</div>
       </div>
     {/if}
   {:else if legendData.type === 'numerical'}
@@ -189,7 +198,8 @@
                     width="11"
                     height="11"
                     class="s-legend-item-label__item__icon
-                    q-choropleth-legend-info-icon">
+                    q-choropleth-legend-info-icon
+                    q-choropleth-legend-info-icon--{getIconClass(noInteraction)}">
                     <rect
                       width="11"
                       height="11"
@@ -209,7 +219,8 @@
                     width="11"
                     height="11"
                     class="s-legend-item-label__item__icon
-                    q-choropleth-legend-info-icon">
+                    q-choropleth-legend-info-icon
+                    q-choropleth-legend-info-icon--{getIconClass(noInteraction)}">
                     <rect
                       width="11"
                       height="11"

@@ -163,6 +163,14 @@
 }
 
 .q-choropleth-legend-info-icon {
+  &--interaction {
+    margin-top: -2px;
+  }
+
+  &--noInteraction {
+    margin-top: 1px;
+  }
+
   margin-right: 8px;
 }
 
