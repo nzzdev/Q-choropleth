@@ -12,20 +12,18 @@
 {#if noInteraction}
   <div class="s-font-note">Daten und Methodik</div>
   <div>
-    <div
-      style="display: flex; flex-direction: row; flex-wrap: wrap; margin-top:
-      4px;">
+    <div class="s-legend-icon-label">
       {#each legendData.buckets as bucket, index}
         <div
-          style="display: flex; flex-direction: row; flex-wrap: nowrap;
-          margin-right: 20px; justify-content: center; align-items: center;">
+          class="s-legend-item-label__item
+          q-choropleth-methods-box-noInteractive">
           <div
             class="{bucket.color.colorClass !== undefined ? bucket.color.colorClass : ''}
-            q-choropleth-methods-circle q-choropleth-methods-circle--circle-fill"
+            q-choropleth-methods-circle-noInteractive
+            s-legend-item-label__item__icon
+            s-legend-item-label__item__icon--default"
             style="color: {bucket.color.customColor !== undefined ? bucket.color.customColor : ''};" />
-          <div
-            class="s-font-note"
-            style="justify-content: center; align-items: center;">
+          <div class="s-legend-item-label__item__label">
             {#if index === 0 && legendData.hasSingleValueBucket}
               {getFormattedValueForBuckets(formattingOptions, bucket.from)} (nur
               ein Datenpunkt)

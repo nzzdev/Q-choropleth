@@ -106,9 +106,9 @@
       {/each}
     </div>
     {#if legendData.hasNullValues}
-      <div class="q-choropleth-legend-info--no-data s-font-note">
-        <div class="q-choropleth-legend-info-icon-container">
-          <svg width="11" height="11" class="q-choropleth-legend-info-icon">
+      <div class="q-choropleth-legend-info--no-data s-legend-icon-label">
+        <div class="s-legend-item-label__item">
+          <svg width="11" height="11">
             <rect
               width="11"
               height="11"
@@ -118,7 +118,7 @@
               stroke-width="2" />
           </svg>
         </div>
-        Keine Daten
+        <div class="s-legend-item-label__item__label">Keine Daten</div>
       </div>
     {/if}
   {:else if legendData.type === 'numerical'}
@@ -179,31 +179,37 @@
           </div>
         {/if}
         {#if hasSingleValueBucket(legendData) || legendData.hasNullValues}
-          <div class="q-choropleth-legend-info-container">
+          <div class="q-choropleth-legend-info--no-data s-legend-icon-label">
             {#if hasSingleValueBucket(legendData)}
-              <div class="q-choropleth-legend-info--single-bucket s-font-note">
-                <div class="q-choropleth-legend-info-icon-container">
+              <div
+                class="s-legend-icon-label
+                q-choropleth-legend-info--single-bucket">
+                <div class="s-legend-item-label__item">
                   <svg
                     width="11"
                     height="11"
-                    class="q-choropleth-legend-info-icon">
+                    class="s-legend-item-label__item__icon
+                    q-choropleth-legend-info-icon">
                     <rect
                       width="11"
                       height="11"
                       class="q-choropleth-legend-bucket {getColorClass(legendData.buckets[0])}"
                       style="fill: {getCustomColor(legendData.buckets[0])}" />
                   </svg>
+                  <div class="s-legend-item-label__item__label">
+                    = {getFormattedValueForBuckets(formattingOptions, legendData.buckets[0].from)}
+                  </div>
                 </div>
-                = {getFormattedValueForBuckets(formattingOptions, legendData.buckets[0].from)}
               </div>
             {/if}
             {#if legendData.hasNullValues}
-              <div class="q-choropleth-legend-info--no-data s-font-note">
-                <div class="q-choropleth-legend-info-icon-container">
+              <div class="s-legend-icon-label">
+                <div class="s-legend-item-label__item">
                   <svg
                     width="11"
                     height="11"
-                    class="q-choropleth-legend-info-icon">
+                    class="s-legend-item-label__item__icon
+                    q-choropleth-legend-info-icon">
                     <rect
                       width="11"
                       height="11"
@@ -212,8 +218,10 @@
                       stroke="currentColor"
                       stroke-width="2" />
                   </svg>
+                  <div class="s-legend-item-label__item__label">
+                    Keine Daten
+                  </div>
                 </div>
-                Keine Daten
               </div>
             {/if}
           </div>
