@@ -22,8 +22,9 @@ module.exports = {
       if (item.options.choroplethType === "categorical") {
         // removing the header row first
         item.data = dataHelpers.getDataWithoutHeaderRow(item.data);
-        const numberCategories = dataHelpers.getUniqueCategories(item.data)
-          .length;
+        const numberCategories = dataHelpers.getUniqueCategoriesCount(
+          item.data
+        );
 
         if (numberCategories > numberMainColors) {
           return {

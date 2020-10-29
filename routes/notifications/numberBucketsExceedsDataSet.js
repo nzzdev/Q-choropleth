@@ -24,10 +24,12 @@ module.exports = {
         item.options.choroplethType === "numerical" &&
         item.options.numericalOptions.bucketType !== "custom"
       ) {
-        const numberUniqueValues = dataHelpers.getUniqueCategories(item.data);
+        const numberUniqueValues = dataHelpers.getUniqueCategoriesCount(
+          item.data
+        );
         const numberBuckets = item.options.numericalOptions.numberBuckets;
 
-        if (numberBuckets > numberUniqueValues.length) {
+        if (numberBuckets > numberUniqueValues) {
           return {
             message: {
               title: "notifications.numberBucketsExceedsDataSet.title",
