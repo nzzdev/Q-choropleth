@@ -102,30 +102,30 @@
 
   function getCssModifier(contentWidth) {
     if (contentWidth < 400) {
-      return "mobile";
+      return "narrow";
     } else if (contentWidth < 470) {
-      return "desktop";
+      return "wide";
     } else if (contentWidth < 650) {
-      return "desktop-large";
+      return "wide-plus";
     } else {
-      return "fullwidth";
+      return "extra-wide";
     }
   }
 
   function getFontSize(cssModifier, valuesOnMap) {
-    if (!valuesOnMap && cssModifier === "desktop") {
+    if (!valuesOnMap && cssModifier === "wide") {
       return "23%";
     }
-    if (cssModifier === "mobile") {
+    if (cssModifier === "narrow") {
       return "20%";
     }
-    if (cssModifier === "desktop") {
+    if (cssModifier === "wide") {
       return "18%";
     }
-    if (cssModifier === "desktop-large") {
+    if (cssModifier === "wide-plus") {
       return "13%";
     }
-    // cssModifier = "fullwidth";
+    // cssModifier = "extra-wide";
     return "12%";
   }
 
