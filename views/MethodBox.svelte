@@ -14,11 +14,10 @@
   <div>
     <div class="s-legend-icon-label">
       {#each legendData.buckets as bucket, index}
-        <div
-          class="s-legend-item-label__item q-choropleth-methods-box-isStatic">
+        <div class="s-legend-item-label__item q-choropleth-methods-box-static">
           <div
             class="{bucket.color.colorClass !== undefined ? bucket.color.colorClass : ''}
-            q-choropleth-methods-circle-isStatic s-legend-item-label__item__icon
+            q-choropleth-methods-circle-static s-legend-item-label__item__icon
             s-legend-item-label__item__icon--default"
             style="color: {bucket.color.customColor !== undefined ? bucket.color.customColor : ''};" />
           <div class="s-legend-item-label__item__label">

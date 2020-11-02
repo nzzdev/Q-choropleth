@@ -91,7 +91,7 @@
   }
 
   function getIconClass(isStatic) {
-    return isStatic ? "isStatic" : "interaction";
+    return isStatic ? "static" : "interactive";
   }
 </script>
 

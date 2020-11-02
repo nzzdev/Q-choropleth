@@ -111,13 +111,13 @@
       background-color: currentColor;
     }
 
-    &-isStatic {
+    &-static {
       margin-right: 8px;
     }
   }
 
   &-box {
-    &-isStatic {
+    &-static {
       margin-right: 20px;
     }
   }
@@ -163,11 +163,11 @@
 }
 
 .q-choropleth-legend-info-icon {
-  &--interaction {
+  &--interactive {
     margin-top: -2px;
   }
 
-  &--isStatic {
+  &--static {
     margin-top: 1px;
   }
 
