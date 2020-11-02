@@ -150,7 +150,7 @@ module.exports = {
 
       renderingInfo.scripts = [];
 
-      // if there's no interaction, no scripts shall be loaded
+      // if the graphic will be deployed static, as in screenshot or Q-to-print, no scripts shall be loaded
       if (!toolRuntimeConfig.isStatic) {
         renderingInfo.scripts.push(
           {
