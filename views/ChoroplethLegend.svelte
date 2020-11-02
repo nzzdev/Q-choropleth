@@ -6,7 +6,7 @@
   export let legendData;
   export let formattingOptions;
   export let contentWidth;
-  export let noInteraction;
+  export let isStatic;
   let labelLegend = getLabelLegend(legendData);
 
   const legendBarHeight = 16;
@@ -90,8 +90,8 @@
     return "";
   }
 
-  function getIconClass(noInteraction) {
-    return noInteraction ? "noInteraction" : "interaction";
+  function getIconClass(isStatic) {
+    return isStatic ? "isStatic" : "interaction";
   }
 </script>
 
@@ -117,7 +117,7 @@
             width="11"
             height="11"
             class="s-legend-item-label__item__icon q-choropleth-legend-info-icon
-            q-choropleth-legend-info-icon--{getIconClass(noInteraction)}">
+            q-choropleth-legend-info-icon--{getIconClass(isStatic)}">
             <rect
               width="11"
               height="11"
@@ -199,7 +199,7 @@
                     height="11"
                     class="s-legend-item-label__item__icon
                     q-choropleth-legend-info-icon
-                    q-choropleth-legend-info-icon--{getIconClass(noInteraction)}">
+                    q-choropleth-legend-info-icon--{getIconClass(isStatic)}">
                     <rect
                       width="11"
                       height="11"
@@ -220,7 +220,7 @@
                     height="11"
                     class="s-legend-item-label__item__icon
                     q-choropleth-legend-info-icon
-                    q-choropleth-legend-info-icon--{getIconClass(noInteraction)}">
+                    q-choropleth-legend-info-icon--{getIconClass(isStatic)}">
                     <rect
                       width="11"
                       height="11"

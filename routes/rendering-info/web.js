@@ -114,7 +114,7 @@ module.exports = {
         );
 
         context.valuesOnMap = !item.options.numericalOptions.noValuesOnMap;
-        context.noInteraction = toolRuntimeConfig.noInteraction;
+        context.isStatic = toolRuntimeConfig.noInteraction;
         context.methodBox = methodBoxHelpers.getMethodBoxInfo(
           item.options.numericalOptions.bucketType
         );
@@ -151,7 +151,7 @@ module.exports = {
       renderingInfo.scripts = [];
 
       // if there's no interaction, no scripts shall be loaded
-      if (!toolRuntimeConfig.noInteraction) {
+      if (!toolRuntimeConfig.isStatic) {
         renderingInfo.scripts.push(
           {
             name: scriptHashMap["default"],

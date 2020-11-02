@@ -111,13 +111,13 @@
       background-color: currentColor;
     }
 
-    &-noInteractive {
+    &-isStatic {
       margin-right: 8px;
     }
   }
 
   &-box {
-    &-noInteractive {
+    &-isStatic {
       margin-right: 20px;
     }
   }
@@ -167,7 +167,7 @@
     margin-top: -2px;
   }
 
-  &--noInteraction {
+  &--isStatic {
     margin-top: 1px;
   }
 

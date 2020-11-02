@@ -4,23 +4,21 @@
   import { getFormattedValueForBuckets } from "./helpers/data.js";
   export let legendData;
   export let formattingOptions;
-  export let noInteraction;
+  export let isStatic;
   export let methodBoxText;
   export let methodBoxArticle;
 </script>
 
-{#if noInteraction}
+{#if isStatic}
   <div class="s-font-title-s">Daten und Methodik</div>
   <div>
     <div class="s-legend-icon-label">
       {#each legendData.buckets as bucket, index}
         <div
-          class="s-legend-item-label__item
-          q-choropleth-methods-box-noInteractive">
+          class="s-legend-item-label__item q-choropleth-methods-box-isStatic">
           <div
             class="{bucket.color.colorClass !== undefined ? bucket.color.colorClass : ''}
-            q-choropleth-methods-circle-noInteractive
-            s-legend-item-label__item__icon
+            q-choropleth-methods-circle-isStatic s-legend-item-label__item__icon
             s-legend-item-label__item__icon--default"
             style="color: {bucket.color.customColor !== undefined ? bucket.color.customColor : ''};" />
           <div class="s-legend-item-label__item__label">
