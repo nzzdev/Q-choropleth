@@ -25,12 +25,12 @@
 
   function getCantonTextY(y, height) {
     let coordinate = y + height / 3;
-    return cssModifier !== "mobile" ? coordinate + 0.6 : coordinate;
+    return cssModifier !== "narrow" ? coordinate + 0.6 : coordinate;
   }
 
   function getValueTextY(y, height) {
     let coordinate = y + (2 * height) / 3;
-    return cssModifier !== "mobile" ? coordinate - 0.6 : coordinate;
+    return cssModifier !== "narrow" ? coordinate - 0.6 : coordinate;
   }
 </script>
 
