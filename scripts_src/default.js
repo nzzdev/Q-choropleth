@@ -57,7 +57,9 @@ export default class Choropleth {
       })
       .then((renderingInfo) => {
         if (renderingInfo.markup) {
+          var footer = this.element.querySelectorAll("div.s-q-item__footer")[0];
           this.element.innerHTML = renderingInfo.markup;
+          this.element.querySelectorAll("div.s-q-item")[0].append(footer);
           if (this.data.choroplethType === "numerical") {
             this.setupMethodBox();
           }
