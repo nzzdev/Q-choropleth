@@ -2,20 +2,41 @@ const clone = require("clone");
 const array2d = require("array2d");
 
 function getDataWithoutHeaderRow(data) {
-  // todo: understand why sometimes length is 27 and sometimes 26
-  if (data.length === 27) {
-    return data.slice(1);
-  }
-  return data;
+  return data.slice(1);
 }
 
-function getUniqueCategories(data) {
+function getUniqueCategoriesCount(data) {
+  return getUniqueCategoriesObject(data).categories.length;
+}
+
+function getUniqueCategoriesObject(data) {
+  let hasNullValues = false;
   const values = data
     .map((row) => {
       return row[1];
     })
-    .filter((value) => value !== null);
-  return [...new Set(values)];
+    .filter((value) => {
+      if (value !== null && value !== "") {
+        return true;
+      }
+      hasNullValues = true;
+      return false;
+    });
+
+  const sortedValues = getSortedValues(values);
+  return { hasNullValues, categories: [...new Set(sortedValues)] };
+}
+
+function getSortedValues(values) {
+  // Create a counter object on array
+  let counter = values.reduce((counter, key) => {
+    counter[key] = 1 + counter[key] || 1;
+    return counter;
+  }, {});
+
+  // Sort counter by values
+  let sortedCounter = Object.entries(counter).sort((a, b) => b[1] - a[1]);
+  return sortedCounter.map((x) => x[0]);
 }
 
 function getCustomBucketBorders(customBuckets) {
@@ -210,7 +231,8 @@ function getDividedData(data, divisor) {
 
 module.exports = {
   getDataWithoutHeaderRow,
-  getUniqueCategories,
+  getUniqueCategoriesObject,
+  getUniqueCategoriesCount,
   getCustomBucketBorders,
   getNumericalValues,
   getNonNullNumericalValues,

@@ -66,6 +66,11 @@ module.exports = {
   handler: async function (request, h) {
     try {
       const item = request.payload.item;
+
+      // we need a copy of the unchanged item to hand it over to client side script
+      // in case no width is given we call rendering info route again with this item
+      // and client side measured width of container
+      const originalItem = { ...item };
       const toolRuntimeConfig = request.payload.toolRuntimeConfig;
 
       // since we do not need header row for further processing we remove it here first
@@ -109,6 +114,7 @@ module.exports = {
         );
 
         context.valuesOnMap = !item.options.numericalOptions.noValuesOnMap;
+        context.isStatic = toolRuntimeConfig.noInteraction;
         context.methodBox = methodBoxHelpers.getMethodBoxInfo(
           item.options.numericalOptions.bucketType
         );
@@ -139,7 +145,14 @@ module.exports = {
             name: styleHashMap["default"],
           },
         ],
-        scripts: [
+        markup: staticTemplate.render(context).html,
+      };
+
+      renderingInfo.scripts = [];
+
+      // if the graphic will be deployed static, as in screenshot or Q-to-print, no scripts shall be loaded
+      if (!toolRuntimeConfig.isStatic) {
+        renderingInfo.scripts.push(
           {
             name: scriptHashMap["default"],
           },
@@ -152,13 +165,13 @@ module.exports = {
               requestId: context.id,
               choroplethType: context.item.options.choroplethType,
               width: context.contentWidth,
-              item: item,
+              item: originalItem,
               toolRuntimeConfig: toolRuntimeConfig,
             })})`,
           },
-        ],
-        markup: staticTemplate.render(context).html,
-      };
+        )
+      }
+
       return renderingInfo;
     } catch (e) {
       throw new Boom.Boom(e);

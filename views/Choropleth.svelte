@@ -12,6 +12,7 @@
   export let methodBox;
   export let displayOptions;
   export let formattingOptions;
+  export let isStatic;
 </script>
 
 <div id="{id}_container" class="s-q-item q-choropleth">
@@ -27,7 +28,11 @@
   {#if contentWidth}
     <div class="q-choropleth-container">
       {#if !(legendData.type === 'categorical' && valuesOnMap)}
-        <ChoroplethLegend {legendData} {formattingOptions} {contentWidth} />
+        <ChoroplethLegend
+          {legendData}
+          {formattingOptions}
+          {contentWidth}
+          {isStatic} />
       {/if}
       {#if item.baseMap === 'hexagonCHCantons'}
         <HexagonCHCantonsMap
@@ -43,6 +48,7 @@
         <MethodBox
           {legendData}
           {formattingOptions}
+          {isStatic}
           methodBoxText={methodBox.text}
           methodBoxArticle={methodBox.article} />
       {/if}
