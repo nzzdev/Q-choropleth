@@ -25,12 +25,26 @@
 
   function getCantonTextY(y, height) {
     let coordinate = y + height / 3;
-    return cssModifier !== "narrow" ? coordinate + 0.6 : coordinate;
+    if (cssModifier === "wide") {
+      return coordinate + 0.4;
+    } else if (cssModifier === "wide-plus" || cssModifier === "extra-wide") {
+      return coordinate + 0.6;
+    } else {
+      // narrow
+      return coordinate;
+    }
   }
 
   function getValueTextY(y, height) {
     let coordinate = y + (2 * height) / 3;
-    return cssModifier !== "narrow" ? coordinate - 0.6 : coordinate;
+    if (cssModifier === "wide") {
+      return coordinate - 0.4;
+    } else if (cssModifier === "wide-plus" || cssModifier === "extra-wide") {
+      return coordinate - 0.6;
+    } else {
+      // narrow
+      return coordinate;
+    }
   }
 </script>
 
