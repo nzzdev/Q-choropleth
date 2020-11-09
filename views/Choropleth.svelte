@@ -2,6 +2,7 @@
   import HexagonCHCantonsMap from "./Hexagon/HexagonCHCantonsMap.svelte";
   import ChoroplethLegend from "./ChoroplethLegend.svelte";
   import MethodBox from "./MethodBox.svelte";
+  import Footer from "./Footer.svelte";
 
   export let item;
   export let id;
@@ -54,4 +55,5 @@
       {/if}
     </div>
   {/if}
+  <Footer {item} />
 </div>

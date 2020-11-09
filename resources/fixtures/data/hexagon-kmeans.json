@@ -1,6 +1,5 @@
 {
-  "title": "FIXTURE: Hexagon Schweiz (Kantone) - Jenks Natural Breaks",
-  "subtitle": "Subtitle",
+  "acronym": "phk.",
   "baseMap": "hexagonCHCantons",
   "entityType": "name",
   "data": [
@@ -32,11 +31,18 @@
     ["Zug", "900"],
     ["Zürich", "900"]
   ],
-  "sources": [],
+  "sources": [
+    {
+      "link": {
+        "url": "https://google.ch",
+        "isValid": true
+      },
+      "text": "sources"
+    }
+  ],
   "options": {
     "choroplethType": "numerical",
     "numericalOptions": {
-      "valuesOnMap": false,
       "labelLegend": "noLabel",
       "bucketType": "ckmeans",
       "numberBuckets": 5,
@@ -47,13 +53,10 @@
     },
     "categoricalOptions": {
       "valuesOnMap": false,
-      "colorOverwrites": [
-        {
-          "textColor": "light",
-          "color": "#b134c5",
-          "position": null
-        }
-      ]
+      "colorOverwrites": []
     }
-  }
+  },
+  "tool": "choropleth",
+  "title": "FIXTURE: Hexagon Schweiz (Kantone) - Jenks Natural Breaks",
+  "notes": "notes"
 }
