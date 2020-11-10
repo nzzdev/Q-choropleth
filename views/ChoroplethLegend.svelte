@@ -188,51 +188,46 @@
           </div>
         {/if}
         {#if hasSingleValueBucket(legendData) || legendData.hasNullValues}
-          <div class="q-choropleth-legend-info--no-data s-legend-icon-label">
+          <div class="s-legend-icon-label">
             {#if hasSingleValueBucket(legendData)}
               <div
-                class="s-legend-icon-label
+                class="s-legend-item-label__item
                 q-choropleth-legend-info--single-bucket">
-                <div class="s-legend-item-label__item">
-                  <svg
+                <svg
+                  width="11"
+                  height="11"
+                  class="s-legend-item-label__item__icon
+                  q-choropleth-legend-info-icon 
+                  q-choropleth-legend-info-icon--{getIconClass(isStatic)}">
+                  <rect
                     width="11"
                     height="11"
-                    class="s-legend-item-label__item__icon
-                    q-choropleth-legend-info-icon
-                    q-choropleth-legend-info-icon--{getIconClass(isStatic)}">
-                    <rect
-                      width="11"
-                      height="11"
-                      class="q-choropleth-legend-bucket {getColorClass(legendData.buckets[0])}"
-                      style="fill: {getCustomColor(legendData.buckets[0])}" />
-                  </svg>
-                  <div class="s-legend-item-label__item__label">
-                    = {getFormattedValueForBuckets(formattingOptions, legendData.buckets[0].from)}
-                  </div>
+                    class="q-choropleth-legend-bucket {getColorClass(legendData.buckets[0])}"
+                    style="fill: {getCustomColor(legendData.buckets[0])}" />
+                </svg>
+                <div class="s-legend-item-label__item__label">
+                  = {getFormattedValueForBuckets(formattingOptions, legendData.buckets[0].from)}
                 </div>
               </div>
             {/if}
             {#if legendData.hasNullValues}
-              <div class="s-legend-icon-label">
-                <div class="s-legend-item-label__item">
-                  <svg
+              <div
+                class="s-legend-item-label__item
+                q-choropleth-legend-info--no-data ">
+                <svg
+                  width="11"
+                  height="11"
+                  class="s-legend-item-label__item__icon
+                  q-choropleth-legend-info-icon q-choropleth-legend-info-icon--{getIconClass(isStatic)}">
+                  <rect
                     width="11"
                     height="11"
-                    class="s-legend-item-label__item__icon
-                    q-choropleth-legend-info-icon
-                    q-choropleth-legend-info-icon--{getIconClass(isStatic)}">
-                    <rect
-                      width="11"
-                      height="11"
-                      class="s-color-gray-4"
-                      fill="white"
-                      stroke="currentColor"
-                      stroke-width="2" />
-                  </svg>
-                  <div class="s-legend-item-label__item__label">
-                    Keine Daten
-                  </div>
-                </div>
+                    class="s-color-gray-4"
+                    fill="white"
+                    stroke="currentColor"
+                    stroke-width="2" />
+                </svg>
+                <div class="s-legend-item-label__item__label">Keine Daten</div>
               </div>
             {/if}
           </div>
