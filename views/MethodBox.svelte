@@ -79,7 +79,6 @@
       <div class="q-choropleth-methods-article-container">
         <a
           href={methodBoxArticle.url}
-          class="q-choropleth-methods-article-link"
           target="_blank"
           rel="noopener noreferrer">
           {methodBoxArticle.title}
