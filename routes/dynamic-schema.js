@@ -144,11 +144,7 @@ function getCantons(baseMapEntityCollection, entityType) {
   return undefined;
 }
 
-async function getPredefinedContent(
-  baseMapEntityCollection,
-  baseMap,
-  entityType
-) {
+function getPredefinedContent(baseMapEntityCollection, baseMap, entityType) {
   if (baseMap === "hexagonCHCantons") {
     const predefinedContent = getCantons(baseMapEntityCollection, entityType);
     return {
@@ -173,19 +169,17 @@ module.exports = {
   },
   handler: async function (request, h) {
     const item = request.payload.item;
+    const optionName = request.params.optionName;
 
-    // TODO: add entityType as dynamic schema instead of fixed enum
-    // in prep for other base maps with other entityTypes
-
-    if (request.params.optionName === "scale") {
+    if (optionName === "scale") {
       return getScaleEnumWithTitles(item.options.numericalOptions);
     }
 
-    if (request.params.optionName === "colorScheme") {
+    if (optionName === "colorScheme") {
       return getColorSchemeEnumWithTitles(item.options.numericalOptions.scale);
     }
 
-    if (request.params.optionName === "colorOverwrites") {
+    if (optionName === "colorOverwrites") {
       if (item.options.choroplethType === "numerical") {
         return getMaxItemsNumerical(item.options.numericalOptions);
       } else {
@@ -193,7 +187,7 @@ module.exports = {
       }
     }
 
-    if (request.params.optionName === "colorOverwritesItem") {
+    if (optionName === "colorOverwritesItem") {
       if (item.options.choroplethType === "numerical") {
         return getColorOverwriteEnumAndTitlesNumerical(
           item.options.numericalOptions
@@ -203,7 +197,7 @@ module.exports = {
       }
     }
 
-    if (request.params.optionName === "predefinedContent") {
+    if (optionName === "predefinedContent") {
       const baseMapEntityCollectionResponse = await request.server.inject({
         method: "GET",
         url: `/entityCollection/${item.baseMap}`,
@@ -217,6 +211,19 @@ module.exports = {
           item.entityType
         );
       }
+    }
+
+    if (optionName === "entityType") {
+      if (item.baseMap === "hexagonCHCantons") {
+        return {
+          enum: ["bfsNumber", "name", "code"],
+          "Q:options": {
+            enum_titles: ["BfS Nummer", "Name", "Abkürzung"],
+          },
+        };
+      }
+
+      return {};
     }
 
     return Boom.badRequest();
