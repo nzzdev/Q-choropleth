@@ -43,9 +43,14 @@
       "title": "Geo-Code",
       "type": "string",
       "default": "name",
-      "enum": ["bfsNumber", "name", "code"],
       "Q:options": {
-        "enum_titles": ["BfS Nummer", "Name", "Abkürzung"]
+        "dynamicSchema": {
+          "type": "ToolEndpoint",
+          "config": {
+            "endpoint": "dynamic-schema/entityType",
+            "fields": ["baseMap"]
+          }
+        }
       }
     },
     "data": {
