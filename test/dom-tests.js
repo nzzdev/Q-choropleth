@@ -6,6 +6,13 @@ const lab = (exports.lab = Lab.script());
 const jsdom = require("jsdom");
 const { JSDOM } = jsdom;
 
+process.env.COUCHDB = `{
+  "host": "example.ch",
+  "database": "test",
+  "user": "test",
+  "pass": ""
+}`;
+
 const expect = Code.expect;
 const before = lab.before;
 const after = lab.after;
