@@ -1,5 +1,4 @@
 const Joi = require("@hapi/joi");
-const baseMapHelpers = require("../helpers/baseMap.js");
 
 module.exports = {
   method: "GET",
@@ -19,7 +18,7 @@ module.exports = {
     if (baseMap.includes("hexagon")) {
       return require(`../geometricBaseMaps/${baseMap}.json`);
     } else if (baseMap.includes("geographic")) {
-      return await baseMapHelpers.getBasemap(baseMap);
+      return await request.server.methods.getBasemap(baseMap);
     }
     return {};
   },
