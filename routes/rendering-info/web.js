@@ -168,8 +168,8 @@ module.exports = {
               item: originalItem,
               toolRuntimeConfig: toolRuntimeConfig,
             })})`,
-          },
-        )
+          }
+        );
       }
 
       return renderingInfo;

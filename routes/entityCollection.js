@@ -1,11 +1,5 @@
 const Joi = require("@hapi/joi");
-
-const geometricBaseMaps = ["hexagonCHCantons"];
-
-// idea for the future with geographical base maps:
-// store base maps in database as TopoJSON
-// fetch suitable TopoJSON here and transform it
-// to collection of features with right projection
+const baseMapHelpers = require("../helpers/baseMap.js");
 
 module.exports = {
   method: "GET",
@@ -19,11 +13,13 @@ module.exports = {
       },
     },
   },
-  handler: (request, h) => {
+  handler: async (request, h) => {
     const baseMap = request.params.baseMap;
 
-    if (geometricBaseMaps.includes(baseMap)) {
+    if (baseMap.includes("hexagon")) {
       return require(`../geometricBaseMaps/${baseMap}.json`);
+    } else if (baseMap.includes("geographic")) {
+      return await baseMapHelpers.getBasemap(baseMap);
     }
     return {};
   },

@@ -21,9 +21,12 @@
       "title": "Basiskarte",
       "type": "string",
       "default": "hexagonCHCantons",
-      "enum": ["hexagonCHCantons"],
+      "enum": ["hexagonCHCantons", "geographicDELandkreise"],
       "Q:options": {
-        "enum_titles": ["Hexagon Schweiz (Kantone)"],
+        "enum_titles": [
+          "Hexagon Schweiz (Kantone)",
+          "Geographisch Deutschland (Landkreise)"
+        ],
         "notificationChecks": [
           {
             "type": "ToolEndpoint",

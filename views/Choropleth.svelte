@@ -1,5 +1,6 @@
 <script>
   import HexagonCHCantonsMap from "./Hexagon/HexagonCHCantonsMap.svelte";
+  import Geographic from "./Geographic/Geographic.svelte";
   import ChoroplethLegend from "./ChoroplethLegend.svelte";
   import MethodBox from "./MethodBox.svelte";
   import Footer from "./Footer.svelte";
@@ -37,6 +38,16 @@
       {/if}
       {#if item.baseMap === 'hexagonCHCantons'}
         <HexagonCHCantonsMap
+          data={item.data}
+          entityType={item.entityType}
+          {valuesOnMap}
+          {legendData}
+          {entityCollectionInfo}
+          {contentWidth}
+          {formattingOptions} />
+      {/if}
+      {#if item.baseMap.includes('geographic')}
+        <Geographic
           data={item.data}
           entityType={item.entityType}
           {valuesOnMap}

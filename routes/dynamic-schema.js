@@ -144,6 +144,29 @@ function getCantons(baseMapEntityCollection, entityType) {
   return undefined;
 }
 
+function getFeatureNames(baseMapEntityCollection, entityType) {
+  const features = baseMapEntityCollection.features.objects.features.geometries;
+  if (entityType === "name") {
+    return features
+      .sort((featureA, featureB) =>
+        featureA.properties.name.localeCompare(featureB.properties.name)
+      )
+      .map((feature) => {
+        return [{ value: feature.properties.name, readOnly: true }];
+      });
+  } else if (entityType === "id") {
+    return features
+      .sort(
+        (featureA, featureB) => featureA.properties.id - featureB.properties.id
+      )
+      .map((feature) => {
+        return [{ value: feature.properties.id, readOnly: true }];
+      });
+  }
+
+  return undefined;
+}
+
 function getPredefinedContent(baseMapEntityCollection, baseMap, entityType) {
   if (baseMap === "hexagonCHCantons") {
     const predefinedContent = getCantons(baseMapEntityCollection, entityType);
@@ -152,6 +175,19 @@ function getPredefinedContent(baseMapEntityCollection, baseMap, entityType) {
         predefinedContent: {
           allowOverwrites: false,
           data: [["Kanton", "Wert"]].concat(predefinedContent),
+        },
+      },
+    };
+  } else if (baseMap.includes("geographic")) {
+    const predefinedContent = getFeatureNames(
+      baseMapEntityCollection,
+      entityType
+    );
+    return {
+      "Q:options": {
+        predefinedContent: {
+          allowOverwrites: false,
+          data: [["ID", "Wert"]].concat(predefinedContent),
         },
       },
     };
@@ -219,6 +255,13 @@ module.exports = {
           enum: ["bfsNumber", "name", "code"],
           "Q:options": {
             enum_titles: ["BfS Nummer", "Name", "Abkürzung"],
+          },
+        };
+      } else if (item.baseMap === "geographicDELandkreise") {
+        return {
+          enum: ["id", "name"],
+          "Q:options": {
+            enum_titles: ["AGS Nummer", "Name"],
           },
         };
       }
