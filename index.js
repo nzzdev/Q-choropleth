@@ -33,6 +33,10 @@ async function init() {
     server.validator(Joi);
     server.route(routes);
 
+    server.method("getGeodataEntry", baseMapHelpers.getGeodataEntry, {
+      cache: serverMethodCacheOptions,
+    });
+
     server.method("getBasemap", baseMapHelpers.getBasemap, {
       cache: serverMethodCacheOptions,
     });

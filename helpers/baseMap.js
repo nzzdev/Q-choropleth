@@ -2,26 +2,39 @@ const Boom = require("@hapi/boom");
 const fetch = require("node-fetch");
 const db = require("./db.js");
 
-async function getBasemap(id, version) {
+async function getGeodataEntry(id) {
   try {
     const result = await db.get(id);
     const geodataEntry = result.docs.pop();
     if (geodataEntry) {
-      let geodataUrl;
-      if (version >= 0 && geodataEntry.versions[version]) {
-        geodataUrl = geodataEntry.versions[version].format.geojson;
-      } else {
-        const entry = geodataEntry.versions.pop();
-        geodataUrl = entry.format.geojson;
-      }
-      const response = await fetch(geodataUrl);
-      if (response.ok) {
-        return await response.json();
-      } else {
-        return Boom.notFound();
-      }
+      return geodataEntry;
     } else {
       return Boom.notFound();
+    }
+  } catch (error) {
+    return Boom.notFound();
+  }
+}
+
+async function getBasemap(id, validFrom) {
+  try {
+    const geodataEntry = await getGeodataEntry(id);
+    const version = geodataEntry.versions.find(
+      (versionItem) =>
+        new Date(versionItem.validFrom).getTime() ===
+        new Date(validFrom).getTime()
+    );
+    if (version) {
+      if (id.includes("geographic")) {
+        const response = await fetch(version.format.geojson);
+        if (response.ok) {
+          return await response.json();
+        } else {
+          return Boom.notFound();
+        }
+      } else if (id.includes("hexagon")) {
+        return version.data;
+      }
     }
   } catch (error) {
     return Boom.notFound();
@@ -41,13 +54,12 @@ function getEntityMapping(entityCollection, baseMap, entityType) {
 }
 
 async function getEntityCollectionInfo(request, item) {
-  const baseMapEntityCollectionResponse = await request.server.inject({
-    method: "GET",
-    url: `/entityCollection/${item.baseMap}`,
-  });
+  const baseMapEntityCollection = await request.server.methods.getBasemap(
+    item.baseMap,
+    item.version
+  );
 
-  if (baseMapEntityCollectionResponse.statusCode === 200) {
-    const baseMapEntityCollection = baseMapEntityCollectionResponse.result;
+  if (baseMapEntityCollection) {
     if (baseMapEntityCollection.type === "Geometry") {
       return {
         config: baseMapEntityCollection.config,
@@ -58,15 +70,10 @@ async function getEntityCollectionInfo(request, item) {
         ),
       };
     } else if (baseMapEntityCollection.type === "Geographic") {
-      baseMapEntityCollection.entityMapping = getEntityMapping(
-        baseMapEntityCollection,
-        item.baseMap,
-        item.entityType
-      );
       return baseMapEntityCollection;
     }
   }
   return undefined;
 }
 
-module.exports = { getEntityCollectionInfo, getBasemap };
+module.exports = { getEntityCollectionInfo, getGeodataEntry, getBasemap };

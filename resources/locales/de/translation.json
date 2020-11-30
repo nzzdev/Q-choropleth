@@ -2,11 +2,11 @@
   "notifications": {
     "hasValues": {
       "title": "Werte erfasst",
-      "body": "Für Änderungen an Basiskarte und Geo-Code musst du zuerst alle Werte aus der 2. Spalte entfernen"
+      "body": "Für Änderungen an Basiskarte, Version der Basiskarte und Geo-Code musst du zuerst alle Werte aus der 2. Spalte entfernen"
     },
     "predefinedContent": {
       "title": "Vordefinierte Werte",
-      "body": "Die erste Spalte ist auf Basis der Basiskarte und des Geo-Codes vorausgefüllt. Diese Werte können nicht geändert werden. Du kannst in der zweiten Spalte die passenden Werte eintragen."
+      "body": "Die erste Spalte ist auf Basis der Basiskarte, Version der Basiskarte und des Geo-Codes vorausgefüllt. Diese Werte können nicht geändert werden. Du kannst in der zweiten Spalte die passenden Werte eintragen."
     },
     "customBuckets": {
       "title": "Manuelle Grenzen",

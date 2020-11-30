@@ -1,6 +1,8 @@
 const Boom = require("@hapi/boom");
 const Joi = require("@hapi/joi");
 const dataHelpers = require("../helpers/data.js");
+const baseMapHelpers = require("../helpers/baseMap.js");
+const { getGeodataEntry } = require("../helpers/baseMap.js");
 
 function getScaleEnumWithTitles(numericalOptions) {
   let enumValues = ["sequential"];
@@ -194,6 +196,21 @@ function getPredefinedContent(baseMapEntityCollection, baseMap, entityType) {
   }
 }
 
+async function getVersion(baseMap) {
+  const geoDataEntry = await getGeodataEntry(baseMap);
+  const versions = geoDataEntry.versions.map((version) => version.validFrom);
+  const versionTitles = versions.map((version) =>
+    new Date(version).getFullYear()
+  );
+
+  return {
+    enum: versions,
+    "Q:options": {
+      enum_titles: versionTitles,
+    },
+  };
+}
+
 module.exports = {
   method: "POST",
   path: "/dynamic-schema/{optionName}",
@@ -233,14 +250,18 @@ module.exports = {
       }
     }
 
-    if (optionName === "predefinedContent") {
-      const baseMapEntityCollectionResponse = await request.server.inject({
-        method: "GET",
-        url: `/entityCollection/${item.baseMap}`,
-      });
+    if (
+      optionName === "predefinedContent" &&
+      item.baseMap &&
+      item.version &&
+      item.entityType
+    ) {
+      const baseMapEntityCollection = await request.server.methods.getBasemap(
+        item.baseMap,
+        item.version
+      );
 
-      if (baseMapEntityCollectionResponse.statusCode === 200) {
-        const baseMapEntityCollection = baseMapEntityCollectionResponse.result;
+      if (baseMapEntityCollection) {
         return getPredefinedContent(
           baseMapEntityCollection,
           item.baseMap,
@@ -267,6 +288,10 @@ module.exports = {
       }
 
       return {};
+    }
+
+    if (optionName === "version") {
+      return await getVersion(item.baseMap);
     }
 
     return Boom.badRequest();

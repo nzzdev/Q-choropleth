@@ -42,6 +42,12 @@ module.exports = {
         available: item.options.numericalOptions.scale === "sequential",
       };
     }
+
+    if (request.params.optionName === "data") {
+      return {
+        available: item.baseMap && item.version && item.entityType,
+      };
+    }
     return Boom.badRequest();
   },
 };

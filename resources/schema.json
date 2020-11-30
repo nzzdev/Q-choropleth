@@ -42,6 +42,19 @@
         ]
       }
     },
+    "version": {
+      "title": "Version",
+      "type": "string",
+      "Q:options": {
+        "dynamicSchema": {
+          "type": "ToolEndpoint",
+          "config": {
+            "endpoint": "dynamic-schema/version",
+            "fields": ["baseMap"]
+          }
+        }
+      }
+    },
     "entityType": {
       "title": "Geo-Code",
       "type": "string",
@@ -66,9 +79,18 @@
           "type": "ToolEndpoint",
           "config": {
             "endpoint": "dynamic-schema/predefinedContent",
-            "fields": ["baseMap", "entityType"]
+            "fields": ["baseMap", "version", "entityType"]
           }
         },
+        "availabilityChecks": [
+          {
+            "type": "ToolEndpoint",
+            "config": {
+              "endpoint": "option-availability/data",
+              "fields": ["baseMap", "version", "entityType"]
+            }
+          }
+        ],
         "notificationChecks": [
           {
             "type": "ToolEndpoint",
