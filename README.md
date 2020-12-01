@@ -3,7 +3,7 @@
 <!-- <travis-badge> <greenkeeper-badge> -->
 <!-- TODO: complete this -->
 
-**maintainer**: [Sharon Funke](https://github.com/fuenkchen)
+**maintainer**: [philipkueng](https://github.com/philipkueng)
 
 Short description of tool and link to either [demo](https://editor.q.tools/) or [playground](https://q-playground.st.nzz.ch).
 
