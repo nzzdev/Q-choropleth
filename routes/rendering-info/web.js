@@ -2,7 +2,6 @@ const Boom = require("@hapi/boom");
 const fs = require("fs");
 const path = require("path");
 
-const baseMapHelpers = require("../../helpers/baseMap.js");
 const legendHelpers = require("../../helpers/legend.js");
 const dataHelpers = require("../../helpers/data.js");
 const methodBoxHelpers = require("../../helpers/methodBox");
@@ -82,9 +81,9 @@ module.exports = {
         displayOptions: request.payload.toolRuntimeConfig.displayOptions || {},
       };
 
-      context.entityCollectionInfo = await baseMapHelpers.getEntityCollectionInfo(
-        request,
-        item
+      context.baseMap = await request.server.methods.getBasemap(
+        item.baseMap,
+        item.version
       );
 
       if (item.options.choroplethType === "numerical") {

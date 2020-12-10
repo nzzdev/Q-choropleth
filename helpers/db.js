@@ -13,16 +13,5 @@ if (process.env.COUCHDB) {
     },
   };
 }
-const db = nano(nanoConfig);
 
-async function get(id) {
-  return await db.find({
-    selector: {
-      id: { $eq: id },
-    },
-  });
-}
-
-module.exports = {
-  get: get,
-};
+module.exports = nano(nanoConfig);

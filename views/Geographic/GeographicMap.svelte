@@ -3,33 +3,24 @@
   import { getColor } from "../helpers/color.js";
   import { getFeatureCollection, fitProjection } from "../helpers/geo.js";
 
-  export let data;
+  export let dataMapping;
   export let entityType;
   export let legendData;
   export let valuesOnMap;
   export let contentWidth;
-  export let entityCollectionInfo;
+  export let baseMap;
   export let formattingOptions;
 
-  const dataMapping = new Map(data);
-  const featureCollection = getFeatureCollection(
-    entityCollectionInfo.features,
-    "features"
-  );
+  const featureCollection = getFeatureCollection(baseMap.entities, "features");
 
   const projection = fitProjection(contentWidth, featureCollection);
-
-  function getValue(properties) {
-    const dataMapping = new Map(data);
-    return dataMapping.get(properties[entityType]);
-  }
 </script>
 
 <div>
   <svg style="height: {projection.height}px; width: 100%;">
     {#each featureCollection.features as feature}
       <Feature
-        color={getColor(getValue(feature.properties), legendData)}
+        color={getColor(dataMapping.get(feature.properties[entityType]), legendData)}
         path={projection.path(feature)} />
     {/each}
   </svg>

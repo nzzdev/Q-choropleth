@@ -1,6 +1,6 @@
 <script>
-  import HexagonCHCantonsMap from "./Hexagon/HexagonCHCantonsMap.svelte";
-  import Geographic from "./Geographic/Geographic.svelte";
+  import HexagonMap from "./Hexagon/HexagonMap.svelte";
+  import GeographicMap from "./Geographic/GeographicMap.svelte";
   import ChoroplethLegend from "./ChoroplethLegend.svelte";
   import MethodBox from "./MethodBox.svelte";
   import Footer from "./Footer.svelte";
@@ -9,12 +9,14 @@
   export let id;
   export let legendData;
   export let valuesOnMap;
-  export let entityCollectionInfo;
+  export let baseMap;
   export let contentWidth;
   export let methodBox;
   export let displayOptions;
   export let formattingOptions;
   export let isStatic;
+
+  const dataMapping = new Map(item.data);
 </script>
 
 <div id="{id}_container" class="s-q-item q-choropleth">
@@ -37,22 +39,22 @@
           {isStatic} />
       {/if}
       {#if item.baseMap === 'hexagonCHCantons'}
-        <HexagonCHCantonsMap
-          data={item.data}
+        <HexagonMap
+          {dataMapping}
           entityType={item.entityType}
           {valuesOnMap}
           {legendData}
-          {entityCollectionInfo}
+          {baseMap}
           {contentWidth}
           {formattingOptions} />
       {/if}
       {#if item.baseMap.includes('geographic')}
-        <Geographic
-          data={item.data}
+        <GeographicMap
+          {dataMapping}
           entityType={item.entityType}
           {valuesOnMap}
           {legendData}
-          {entityCollectionInfo}
+          {baseMap}
           {contentWidth}
           {formattingOptions} />
       {/if}

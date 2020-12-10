@@ -1,79 +1,48 @@
-const Boom = require("@hapi/boom");
 const fetch = require("node-fetch");
 const db = require("./db.js");
 
-async function getGeodataEntry(id) {
+async function getDocument(id) {
   try {
-    const result = await db.get(id);
-    const geodataEntry = result.docs.pop();
-    if (geodataEntry) {
-      return geodataEntry;
+    const document = await db.get(id);
+    if (document) {
+      document.versions = document.versions.sort(
+        (a, b) =>
+          new Date(b.validFrom).getTime() - new Date(a.validFrom).getTime()
+      );
+      return document;
     } else {
-      return Boom.notFound();
+      return undefined;
     }
   } catch (error) {
-    return Boom.notFound();
+    console.log(error);
+    return undefined;
   }
 }
 
 async function getBasemap(id, validFrom) {
   try {
-    const geodataEntry = await getGeodataEntry(id);
-    const version = geodataEntry.versions.find(
+    const document = await getDocument(id);
+    const version = document.versions.find(
       (versionItem) =>
         new Date(versionItem.validFrom).getTime() ===
         new Date(validFrom).getTime()
     );
     if (version) {
-      if (id.includes("geographic")) {
-        const response = await fetch(version.format.geojson);
+      if (version.data && typeof version.data === "object") {
+        return version.data;
+      } else if (version.data && typeof version.data === "string") {
+        const response = await fetch(version.data);
         if (response.ok) {
           return await response.json();
         } else {
-          return Boom.notFound();
+          return undefined;
         }
-      } else if (id.includes("hexagon")) {
-        return version.data;
       }
     }
   } catch (error) {
-    return Boom.notFound();
+    console.log(error);
+    return undefined;
   }
 }
 
-function getEntityMapping(entityCollection, baseMap, entityType) {
-  if (baseMap === "hexagonCHCantons") {
-    const cantons = entityCollection.cantons;
-    if (entityType === "name") {
-      return new Map(cantons.map(({ code, name }) => [code, name]));
-    } else if (entityType === "bfsNumber") {
-      return new Map(cantons.map(({ code, id }) => [code, id]));
-    }
-  }
-  return undefined;
-}
-
-async function getEntityCollectionInfo(request, item) {
-  const baseMapEntityCollection = await request.server.methods.getBasemap(
-    item.baseMap,
-    item.version
-  );
-
-  if (baseMapEntityCollection) {
-    if (baseMapEntityCollection.type === "Geometry") {
-      return {
-        config: baseMapEntityCollection.config,
-        entityMapping: getEntityMapping(
-          baseMapEntityCollection,
-          item.baseMap,
-          item.entityType
-        ),
-      };
-    } else if (baseMapEntityCollection.type === "Geographic") {
-      return baseMapEntityCollection;
-    }
-  }
-  return undefined;
-}
-
-module.exports = { getEntityCollectionInfo, getGeodataEntry, getBasemap };
+module.exports = { getDocument, getBasemap };

@@ -5,12 +5,12 @@
   import { heightFromWidth } from "../helpers/hexagon.js";
   import { getExtents } from "../helpers/extent.js";
   import { getColor } from "../helpers/color.js";
-  export let data;
+  export let dataMapping;
   export let entityType;
   export let legendData;
   export let valuesOnMap;
   export let contentWidth;
-  export let entityCollectionInfo;
+  export let baseMap;
   export let formattingOptions;
 
   let cssModifier = getCssModifier(contentWidth);
@@ -25,21 +25,6 @@
 
   const hexagons = getHexagons(contentWidth);
   const svgSize = getSvgSize(hexagons);
-
-  function getValue(cantonCode) {
-    try {
-      const dataMapping = new Map(data);
-      if (entityType === "code") {
-        return dataMapping.get(cantonCode);
-      } else {
-        const entityMapping = entityCollectionInfo.entityMapping;
-        const entity = entityMapping.get(cantonCode);
-        return dataMapping.get(entity);
-      }
-    } catch (e) {
-      return null;
-    }
-  }
 
   function getDisplayValue(value) {
     if (legendData.type === "numerical") {
@@ -78,9 +63,8 @@
   }
 
   function getHexagons(contentWidth) {
-    const grid = entityCollectionInfo.config.grid;
     const hexagons = [];
-    grid.forEach((row, rowIndex) => {
+    baseMap.entities.forEach((row, rowIndex) => {
       row.forEach((cell, columnIndex) => {
         if (cell !== null) {
           let x = columnIndex * cellWidth;
@@ -88,12 +72,12 @@
             // every odd row will be shifted half the hexagon size to right
             x += cellWidth / 2;
           }
-          const cantonCode = cell;
-          const value = getValue(cantonCode);
+          const value = dataMapping.get(cell[entityType]);
           const displayValue = getDisplayValue(value);
+          const displayEntity = cell[baseMap.config.displayEntityType];
 
           hexagons.push({
-            text: [cantonCode, displayValue],
+            text: [displayEntity, displayValue],
             fontSize: getFontSize(cssModifier, valuesOnMap),
             color: getColor(value, legendData),
             width: cellWidth,

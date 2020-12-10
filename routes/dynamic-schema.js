@@ -1,8 +1,7 @@
 const Boom = require("@hapi/boom");
 const Joi = require("@hapi/joi");
 const dataHelpers = require("../helpers/data.js");
-const baseMapHelpers = require("../helpers/baseMap.js");
-const { getGeodataEntry } = require("../helpers/baseMap.js");
+const array2d = require("array2d");
 
 function getScaleEnumWithTitles(numericalOptions) {
   let enumValues = ["sequential"];
@@ -122,83 +121,50 @@ function getColorOverwriteEnumAndTitlesCategorical(data) {
   };
 }
 
-function getCantons(baseMapEntityCollection, entityType) {
-  const cantons = baseMapEntityCollection.cantons;
-  if (entityType === "name") {
-    return cantons
-      .sort((cantonA, cantonB) => cantonA.name.localeCompare(cantonB.name))
-      .map((canton) => {
-        return [{ value: canton.name, readOnly: true }];
-      });
-  } else if (entityType === "bfsNumber") {
-    return cantons
-      .sort((cantonA, cantonB) => cantonA.id - cantonB.id)
-      .map((canton) => {
-        return [{ value: canton.id, readOnly: true }];
-      });
-  } else if (entityType === "code") {
-    return cantons
-      .sort((cantonA, cantonB) => cantonA.code.localeCompare(cantonB.code))
-      .map((canton) => {
-        return [{ value: canton.code, readOnly: true }];
-      });
-  }
-  return undefined;
-}
+function getPredefinedContent(baseMap, item) {
+  let predefinedContent = [];
 
-function getFeatureNames(baseMapEntityCollection, entityType) {
-  const features = baseMapEntityCollection.features.objects.features.geometries;
-  if (entityType === "name") {
-    return features
-      .sort((featureA, featureB) =>
-        featureA.properties.name.localeCompare(featureB.properties.name)
-      )
-      .map((feature) => {
-        return [{ value: feature.properties.name, readOnly: true }];
-      });
-  } else if (entityType === "id") {
-    return features
-      .sort(
-        (featureA, featureB) => featureA.properties.id - featureB.properties.id
-      )
-      .map((feature) => {
-        return [{ value: feature.properties.id, readOnly: true }];
-      });
-  }
-
-  return undefined;
-}
-
-function getPredefinedContent(baseMapEntityCollection, baseMap, entityType) {
-  if (baseMap === "hexagonCHCantons") {
-    const predefinedContent = getCantons(baseMapEntityCollection, entityType);
-    return {
-      "Q:options": {
-        predefinedContent: {
-          allowOverwrites: false,
-          data: [["Kanton", "Wert"]].concat(predefinedContent),
-        },
-      },
-    };
-  } else if (baseMap.includes("geographic")) {
-    const predefinedContent = getFeatureNames(
-      baseMapEntityCollection,
-      entityType
+  if (item.baseMap.includes("hexagon")) {
+    array2d.eachCell(baseMap.entities, (cell) => {
+      if (cell !== null) {
+        const value = cell[item.entityType];
+        predefinedContent.push([{ value: value, readOnly: true }]);
+      }
+    });
+  } else if (item.baseMap.includes("geographic")) {
+    predefinedContent = baseMap.entities.objects.features.geometries.map(
+      (feature) => {
+        return [{ value: feature.properties[item.entityType], readOnly: true }];
+      }
     );
-    return {
-      "Q:options": {
-        predefinedContent: {
-          allowOverwrites: false,
-          data: [["ID", "Wert"]].concat(predefinedContent),
-        },
-      },
-    };
   }
+
+  predefinedContent.sort((a, b) => {
+    let valueA = a[0].value;
+    let valueB = b[0].value;
+
+    if (!isNaN(parseInt(valueA)) && !isNaN(parseInt(valueB))) {
+      valueA = parseInt(valueA);
+      valueB = parseInt(valueB);
+      return valueA - valueB;
+    } else if (typeof valueA === "string" && typeof valueB === "string") {
+      return valueA.localeCompare(valueB);
+    }
+  });
+
+  return {
+    "Q:options": {
+      predefinedContent: {
+        allowOverwrites: false,
+        data: [["ID", "Wert"]].concat(predefinedContent),
+      },
+    },
+  };
 }
 
-async function getVersion(baseMap) {
-  const geoDataEntry = await getGeodataEntry(baseMap);
-  const versions = geoDataEntry.versions.map((version) => version.validFrom);
+async function getVersions(baseMap, request) {
+  const document = await request.server.methods.getDocument(baseMap);
+  const versions = document.versions.map((version) => version.validFrom);
   const versionTitles = versions.map((version) =>
     new Date(version).getFullYear()
   );
@@ -256,17 +222,13 @@ module.exports = {
       item.version &&
       item.entityType
     ) {
-      const baseMapEntityCollection = await request.server.methods.getBasemap(
+      const baseMap = await request.server.methods.getBasemap(
         item.baseMap,
         item.version
       );
 
-      if (baseMapEntityCollection) {
-        return getPredefinedContent(
-          baseMapEntityCollection,
-          item.baseMap,
-          item.entityType
-        );
+      if (baseMap) {
+        return getPredefinedContent(baseMap, item);
       }
     }
 
@@ -291,7 +253,7 @@ module.exports = {
     }
 
     if (optionName === "version") {
-      return await getVersion(item.baseMap);
+      return await getVersions(item.baseMap, request);
     }
 
     return Boom.badRequest();
