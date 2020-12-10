@@ -64,7 +64,7 @@
           "type": "ToolEndpoint",
           "config": {
             "endpoint": "dynamic-schema/entityType",
-            "fields": ["baseMap"]
+            "fields": ["baseMap", "version"]
           }
         }
       }

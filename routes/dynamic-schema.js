@@ -162,8 +162,7 @@ function getPredefinedContent(baseMap, item) {
   };
 }
 
-async function getVersions(baseMap, request) {
-  const document = await request.server.methods.getDocument(baseMap);
+async function getVersions(document) {
   const versions = document.versions.map((version) => version.validFrom);
   const versionTitles = versions.map((version) =>
     new Date(version).getFullYear()
@@ -232,28 +231,24 @@ module.exports = {
       }
     }
 
-    if (optionName === "entityType") {
-      if (item.baseMap === "hexagonCHCantons") {
-        return {
-          enum: ["bfsNumber", "name", "code"],
-          "Q:options": {
-            enum_titles: ["BfS Nummer", "Name", "Abkürzung"],
-          },
-        };
-      } else if (item.baseMap === "geographicDELandkreise") {
-        return {
-          enum: ["id", "name"],
-          "Q:options": {
-            enum_titles: ["AGS Nummer", "Name"],
-          },
-        };
-      }
+    if (optionName === "entityType" && item.baseMap && item.version) {
+      const baseMap = await request.server.methods.getBasemap(
+        item.baseMap,
+        item.version
+      );
 
-      return {};
+      return {
+        enum: Object.keys(baseMap.config.entityTypes),
+        "Q:options": {
+          enum_titles: Object.values(baseMap.config.entityTypes),
+        },
+      };
     }
 
     if (optionName === "version") {
-      return await getVersions(item.baseMap, request);
+      const document = await request.server.methods.getDocument(item.baseMap);
+
+      return await getVersions(document);
     }
 
     return Boom.badRequest();
