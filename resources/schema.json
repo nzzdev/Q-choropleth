@@ -21,12 +21,14 @@
       "title": "Basiskarte",
       "type": "string",
       "default": "hexagonCHCantons",
-      "enum": ["hexagonCHCantons", "geographicDELandkreise"],
       "Q:options": {
-        "enum_titles": [
-          "Hexagon Schweiz (Kantone)",
-          "Geographisch Deutschland (Landkreise)"
-        ],
+        "dynamicSchema": {
+          "type": "ToolEndpoint",
+          "config": {
+            "endpoint": "dynamic-schema/baseMap",
+            "fields": ["title"]
+          }
+        },
         "notificationChecks": [
           {
             "type": "ToolEndpoint",
@@ -45,6 +47,7 @@
     "version": {
       "title": "Version",
       "type": "string",
+      "default": "2020-01-01T00:00:00.000Z",
       "Q:options": {
         "dynamicSchema": {
           "type": "ToolEndpoint",

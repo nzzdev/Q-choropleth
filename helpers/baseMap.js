@@ -1,6 +1,18 @@
 const fetch = require("node-fetch");
 const db = require("./db.js");
 
+async function getAllDocuments() {
+  try {
+    const documents = await db.list({ include_docs: true });
+    if (documents) {
+      return documents.rows;
+    } else {
+      return undefined;
+    }
+  } catch (error) {
+    return undefined;
+  }
+}
 async function getDocument(id) {
   try {
     const document = await db.get(id);
@@ -14,7 +26,6 @@ async function getDocument(id) {
       return undefined;
     }
   } catch (error) {
-    console.log(error);
     return undefined;
   }
 }
@@ -40,9 +51,8 @@ async function getBasemap(id, validFrom) {
       }
     }
   } catch (error) {
-    console.log(error);
     return undefined;
   }
 }
 
-module.exports = { getDocument, getBasemap };
+module.exports = { getAllDocuments, getDocument, getBasemap };

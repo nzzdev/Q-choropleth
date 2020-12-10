@@ -251,6 +251,16 @@ module.exports = {
       return await getVersions(document);
     }
 
+    if (optionName === "baseMap") {
+      const documents = await request.server.methods.getAllDocuments();
+      return {
+        enum: documents.map((document) => document.doc._id),
+        "Q:options": {
+          enum_titles: documents.map((document) => document.doc.title),
+        },
+      };
+    }
+
     return Boom.badRequest();
   },
 };

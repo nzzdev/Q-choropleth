@@ -33,6 +33,10 @@ async function init() {
     server.validator(Joi);
     server.route(routes);
 
+    server.method("getAllDocuments", baseMapHelpers.getAllDocuments, {
+      cache: serverMethodCacheOptions,
+    });
+
     server.method("getDocument", baseMapHelpers.getDocument, {
       cache: serverMethodCacheOptions,
     });
