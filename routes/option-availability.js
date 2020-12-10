@@ -45,13 +45,7 @@ module.exports = {
       };
     }
 
-    if (optionName === "noValuesOnMap") {
-      return {
-        available: item.baseMap.includes("hexagon"),
-      };
-    }
-
-    if (optionName === "valuesOnMap") {
+    if (optionName === "noValuesOnMap" || optionName === "valuesOnMap") {
       return {
         available: item.baseMap.includes("hexagon"),
       };
