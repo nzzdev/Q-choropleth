@@ -55,7 +55,16 @@
             "endpoint": "dynamic-schema/version",
             "fields": ["baseMap"]
           }
-        }
+        },
+        "availabilityChecks": [
+          {
+            "type": "ToolEndpoint",
+            "config": {
+              "endpoint": "option-availability/version",
+              "fields": ["baseMap"]
+            }
+          }
+        ]
       }
     },
     "entityType": {

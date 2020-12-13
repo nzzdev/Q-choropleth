@@ -14,7 +14,7 @@ module.exports = {
     },
     cors: true,
   },
-  handler: function (request, h) {
+  handler: async function (request, h) {
     const item = request.payload.item;
     const optionName = request.params.optionName;
 
@@ -48,6 +48,14 @@ module.exports = {
     if (optionName === "noValuesOnMap" || optionName === "valuesOnMap") {
       return {
         available: item.baseMap.includes("hexagon"),
+      };
+    }
+
+    if (optionName === "version") {
+      const document = await request.server.methods.getDocument(item.baseMap);
+
+      return {
+        available: document.versions.length > 1,
       };
     }
 
