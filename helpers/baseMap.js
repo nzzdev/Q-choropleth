@@ -33,21 +33,25 @@ async function getDocument(id) {
 async function getBasemap(id, validFrom) {
   try {
     const document = await getDocument(id);
-    const version = document.versions.find(
+    let version = document.versions.find(
       (versionItem) =>
         new Date(versionItem.validFrom).getTime() ===
         new Date(validFrom).getTime()
     );
-    if (version) {
-      if (version.data && typeof version.data === "object") {
-        return version.data;
-      } else if (version.data && typeof version.data === "string") {
-        const response = await fetch(version.data);
-        if (response.ok) {
-          return await response.json();
-        } else {
-          return undefined;
-        }
+
+    // return the newest available version if version couldn't be found
+    if (version === undefined) {
+      version = document.versions.pop();
+    }
+
+    if (version.data && typeof version.data === "object") {
+      return version.data;
+    } else if (version.data && typeof version.data === "string") {
+      const response = await fetch(version.data);
+      if (response.ok) {
+        return await response.json();
+      } else {
+        return undefined;
       }
     }
   } catch (error) {

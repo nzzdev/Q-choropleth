@@ -217,9 +217,9 @@ module.exports = {
 
     if (
       optionName === "predefinedContent" &&
-      item.baseMap &&
-      item.version &&
-      item.entityType
+      item.baseMap !== undefined &&
+      item.version !== undefined &&
+      item.entityType !== undefined
     ) {
       const baseMap = await request.server.methods.getBasemap(
         item.baseMap,
@@ -231,7 +231,11 @@ module.exports = {
       }
     }
 
-    if (optionName === "entityType" && item.baseMap && item.version) {
+    if (
+      optionName === "entityType" &&
+      item.baseMap !== undefined &&
+      item.version !== undefined
+    ) {
       const baseMap = await request.server.methods.getBasemap(
         item.baseMap,
         item.version
