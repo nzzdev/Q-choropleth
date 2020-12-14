@@ -13,7 +13,8 @@
   export let baseMap;
   export let formattingOptions;
 
-  const geoParameters = getGeoParameters(baseMap, contentWidth);
+  const maxHeight = 650;
+  const geoParameters = getGeoParameters(baseMap, contentWidth, maxHeight);
   const bounds = geoParameters.bounds;
   const height = round(bounds[1][1]);
   const viewBox = [bounds[0][0], bounds[0][1], bounds[1][0], bounds[1][1]]
