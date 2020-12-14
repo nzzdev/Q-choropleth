@@ -1,5 +1,6 @@
 <script>
   import Feature from "./Feature.svelte";
+  import OutlineFeature from "./OutlineFeature.svelte";
   import ResponsiveSvg from "../svg/ResponsiveSvg.svelte";
   import { getColor } from "../helpers/color.js";
   import { getGeoParameters } from "../helpers/geo.js";
@@ -24,10 +25,19 @@
 
 <ResponsiveSvg aspectRatio={contentWidth / height}>
   <svg viewbox={viewBox}>
-    {#each geoParameters.featureCollection.features as feature}
-      <Feature
-        color={getColor(dataMapping.get(feature.properties[entityType]), legendData)}
-        path={geoParameters.path(feature)} />
-    {/each}
+    <g class="q-choropleth-features">
+      {#each geoParameters.features.features as feature}
+        <Feature
+          color={getColor(dataMapping.get(feature.properties[entityType]), legendData)}
+          path={geoParameters.path(feature)} />
+      {/each}
+    </g>
+    {#if geoParameters.outlines.features !== undefined}
+      <g class="q-choropleth-outlines">
+        {#each geoParameters.outlines.features as outline}
+          <OutlineFeature path={geoParameters.path(outline)} />
+        {/each}
+      </g>
+    {/if}
   </svg>
 </ResponsiveSvg>

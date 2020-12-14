@@ -38,7 +38,7 @@
           {contentWidth}
           {isStatic} />
       {/if}
-      {#if item.baseMap === 'hexagonCHCantons'}
+      {#if item.baseMap.includes('hexagon')}
         <HexagonMap
           {dataMapping}
           entityType={item.entityType}

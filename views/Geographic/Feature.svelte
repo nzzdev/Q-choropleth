@@ -7,6 +7,7 @@
   <path
     class="q-choropleth-feature"
     fill={color.customColor && color.customColor.length > 0 ? color.customColor : 'currentColor'}
-    style="stroke: #fff; stroke-width: 0.5px;"
+    stroke="#fff"
+    stroke-width="0.5px"
     d={path} />
 </g>
