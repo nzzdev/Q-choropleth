@@ -1,11 +1,12 @@
 const geo = require("d3-geo");
 const topojson = require("topojson");
 
-function fitProjection(width, featureCollection) {
+function getGeoParameters(baseMap, width) {
+  const featureCollection = getFeatureCollection(baseMap.entities, "features");
   const projection = geo.geoMercator().fitWidth(width, featureCollection);
   const path = geo.geoPath(projection);
-  const height = Math.ceil(path.bounds(featureCollection)[1][1]);
-  return { path, height };
+  const bounds = path.bounds(featureCollection);
+  return { path, bounds, featureCollection };
 }
 
 function getFeatureCollection(topojsonObject, objectName) {
@@ -23,6 +24,5 @@ function makeFeatureCollection(features) {
 }
 
 module.exports = {
-  fitProjection,
-  getFeatureCollection,
+  getGeoParameters,
 };

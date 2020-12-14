@@ -1,7 +1,7 @@
 <script>
   import Hexagon from "./Hexagon.svelte";
-  import ResponsiveSvg from "./ResponsiveSvg.svelte";
-  import { getFormattedValue } from "../helpers/data.js";
+  import ResponsiveSvg from "../svg/ResponsiveSvg.svelte";
+  import { getFormattedValue, round } from "../helpers/data.js";
   import { heightFromWidth } from "../helpers/hexagon.js";
   import { getExtents } from "../helpers/extent.js";
   import { getColor } from "../helpers/color.js";
@@ -100,7 +100,10 @@
     const padding = width / 200;
     width += 2 * padding;
     height += 2 * padding;
-    const viewBox = [xMin - padding, yMin - padding, width, height].join(" ");
+    const viewBox = [xMin - padding, yMin - padding, width, height]
+      .map(value => round(value))
+      .join(" ");
+
     const aspectRatio = width / height;
     return { aspectRatio, viewBox };
   }

@@ -1,7 +1,9 @@
 <script>
   import Feature from "./Feature.svelte";
+  import ResponsiveSvg from "../svg/ResponsiveSvg.svelte";
   import { getColor } from "../helpers/color.js";
-  import { getFeatureCollection, fitProjection } from "../helpers/geo.js";
+  import { getGeoParameters } from "../helpers/geo.js";
+  import { round } from "../helpers/data.js";
 
   export let dataMapping;
   export let entityType;
@@ -11,17 +13,20 @@
   export let baseMap;
   export let formattingOptions;
 
-  const featureCollection = getFeatureCollection(baseMap.entities, "features");
-
-  const projection = fitProjection(contentWidth, featureCollection);
+  const geoParameters = getGeoParameters(baseMap, contentWidth);
+  const bounds = geoParameters.bounds;
+  const height = round(bounds[1][1]);
+  const viewBox = [bounds[0][0], bounds[0][1], bounds[1][0], bounds[1][1]]
+    .map(value => round(value))
+    .join(" ");
 </script>
 
-<div>
-  <svg style="height: {projection.height}px; width: 100%;">
-    {#each featureCollection.features as feature}
+<ResponsiveSvg aspectRatio={contentWidth / height}>
+  <svg viewbox={viewBox}>
+    {#each geoParameters.featureCollection.features as feature}
       <Feature
         color={getColor(dataMapping.get(feature.properties[entityType]), legendData)}
-        path={projection.path(feature)} />
+        path={geoParameters.path(feature)} />
     {/each}
   </svg>
-</div>
+</ResponsiveSvg>

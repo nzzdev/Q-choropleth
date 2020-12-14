@@ -46,7 +46,12 @@ function getFormattedValue(formattingOptions, value) {
   }
 }
 
+function round(number) {
+  return Math.round(number * 100) / 100;
+}
+
 module.exports = {
   getFormattedValueForBuckets,
   getFormattedValue,
+  round,
 };
