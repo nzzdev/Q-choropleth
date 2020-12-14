@@ -13,6 +13,7 @@ async function getAllDocuments() {
     return undefined;
   }
 }
+
 async function getDocument(id) {
   try {
     const document = await db.get(id);
@@ -32,7 +33,7 @@ async function getDocument(id) {
 
 async function getBasemap(id, validFrom) {
   try {
-    const document = await getDocument(id);
+    const document = await this.server.methods.getDocument(id);
     let version = document.versions.find(
       (versionItem) =>
         new Date(versionItem.validFrom).getTime() ===

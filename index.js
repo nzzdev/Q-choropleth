@@ -42,6 +42,9 @@ async function init() {
     });
 
     server.method("getBasemap", baseMapHelpers.getBasemap, {
+      bind: {
+        server: server,
+      },
       cache: serverMethodCacheOptions,
     });
 
