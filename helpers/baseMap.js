@@ -40,7 +40,7 @@ async function getBasemap(id, validFrom) {
         new Date(validFrom).getTime()
     );
 
-    // return the newest available version if version couldn't be found
+    // return the newest available version if version is not defined
     if (version === undefined) {
       version = document.versions.pop();
     }

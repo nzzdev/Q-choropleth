@@ -3,7 +3,7 @@
   import OutlineFeature from "./OutlineFeature.svelte";
   import ResponsiveSvg from "../svg/ResponsiveSvg.svelte";
   import { getColor } from "../helpers/color.js";
-  import { getGeoParameters } from "../helpers/geo.js";
+  import { getGeoParameters, roundCoordinatesInPath } from "../helpers/geo.js";
   import { round } from "../helpers/data.js";
 
   export let dataMapping;
@@ -29,13 +29,14 @@
       {#each geoParameters.features.features as feature}
         <Feature
           color={getColor(dataMapping.get(feature.properties[entityType]), legendData)}
-          path={geoParameters.path(feature)} />
+          path={roundCoordinatesInPath(geoParameters.path(feature), 1)} />
       {/each}
     </g>
     {#if geoParameters.outlines.features !== undefined}
       <g class="q-choropleth-outlines">
         {#each geoParameters.outlines.features as outline}
-          <OutlineFeature path={geoParameters.path(outline)} />
+          <OutlineFeature
+            path={roundCoordinatesInPath(geoParameters.path(outline), 1)} />
         {/each}
       </g>
     {/if}

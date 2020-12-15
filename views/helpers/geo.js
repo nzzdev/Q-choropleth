@@ -31,6 +31,11 @@ function makeFeatureCollection(features) {
   };
 }
 
+function roundCoordinatesInPath(path, precision = 1) {
+  return path.replace(/\d+\.\d+/g, (s) => parseFloat(s).toFixed(precision));
+}
+
 module.exports = {
   getGeoParameters,
+  roundCoordinatesInPath,
 };
