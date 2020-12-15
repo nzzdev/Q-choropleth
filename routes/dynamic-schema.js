@@ -2,6 +2,8 @@ const Boom = require("@hapi/boom");
 const Joi = require("@hapi/joi");
 const dataHelpers = require("../helpers/data.js");
 const array2d = require("array2d");
+const d3 = require("d3-time-format");
+const formatDate = d3.timeFormat("%d.%m.%Y");
 
 function getScaleEnumWithTitles(numericalOptions) {
   let enumValues = ["sequential"];
@@ -165,7 +167,7 @@ function getPredefinedContent(baseMap, item) {
 async function getVersions(document) {
   const versions = document.versions.map((version) => version.validFrom);
   const versionTitles = versions.map((version) =>
-    new Date(version).getFullYear()
+    formatDate(new Date(version))
   );
 
   return {
