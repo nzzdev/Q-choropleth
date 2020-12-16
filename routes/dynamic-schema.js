@@ -129,14 +129,25 @@ function getPredefinedContent(baseMap, item) {
   if (item.baseMap.includes("hexagon")) {
     array2d.eachCell(baseMap.entities, (cell) => {
       if (cell !== null) {
-        const value = cell[item.entityType];
+        let value;
+        if (item.entityType !== undefined) {
+          value = cell[item.entityType];
+        } else {
+          value = cell[baseMap.config.defaultEntityType];
+        }
         predefinedContent.push([{ value: value, readOnly: true }]);
       }
     });
   } else if (item.baseMap.includes("geographic")) {
     predefinedContent = baseMap.entities.objects.features.geometries.map(
       (feature) => {
-        return [{ value: feature.properties[item.entityType], readOnly: true }];
+        let value;
+        if (item.entityType !== "") {
+          value = feature.properties[item.entityType];
+        } else {
+          value = feature.properties[baseMap.config.defaultEntityType];
+        }
+        return [{ value: value, readOnly: true }];
       }
     );
   }
@@ -220,8 +231,7 @@ module.exports = {
     if (
       optionName === "predefinedContent" &&
       item.baseMap !== undefined &&
-      item.version !== undefined &&
-      item.entityType !== undefined
+      item.version !== undefined
     ) {
       const baseMap = await request.server.methods.getBasemap(
         item.baseMap,
@@ -244,6 +254,7 @@ module.exports = {
       );
 
       return {
+        default: baseMap.config.defaultEntityType,
         enum: Object.keys(baseMap.config.entityTypes),
         "Q:options": {
           enum_titles: Object.values(baseMap.config.entityTypes),

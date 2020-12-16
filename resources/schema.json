@@ -70,7 +70,6 @@
     "entityType": {
       "title": "Geo-Code",
       "type": "string",
-      "default": "name",
       "Q:options": {
         "dynamicSchema": {
           "type": "ToolEndpoint",

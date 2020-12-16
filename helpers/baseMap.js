@@ -42,7 +42,7 @@ async function getBasemap(id, validFrom) {
 
     // return the newest available version if version is not defined
     if (version === undefined) {
-      version = document.versions.pop();
+      version = document.versions.shift();
     }
 
     if (version.data && typeof version.data === "object") {
