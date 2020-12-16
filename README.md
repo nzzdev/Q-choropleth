@@ -1,7 +1,4 @@
-# Q-choropleth
-
-<!-- <travis-badge> <greenkeeper-badge> -->
-<!-- TODO: complete this -->
+# Q-choropleth [![Build Status](https://travis-ci.com/nzzdev/Q-choropleth.svg?token=bwR7zbPTTpEoDxbY2dJR&branch=dev)](https://travis-ci.com/nzzdev/Q-choropleth)
 
 **maintainer**: [philipkueng](https://github.com/philipkueng)
 
@@ -31,8 +28,9 @@ npm run build
 
 ## Configuration
 
-There's one env variable `METHOD_BOX_ARTICLE` that needs to be defined. `METHOD_BOX_ARTICLE` is an object that contains two properties: `title` and `url`.
-Those properties will be used in the `MethodBox`-component. The defined article will lead to the article where we show how we caluclate the bucketing method.
+- `METHOD_BOX_ARTICLE` is an object that contains two properties: `title` and `url`.
+  Those properties will be used in the `MethodBox`-component. The defined article will lead to the article where we show how we caluclate the bucketing method.
+- `COUCHDB` is an object that contains four properties: `host`, `database`, `user` and `pass`. This object is used to connect to the couchdb containing the basemaps.
 
 ## Development
 
@@ -93,30 +91,47 @@ The tool structure follows the general structure of each Q tool. Further informa
 
 #### Basemaps
 
-The basemaps are saved as `json`-format in the following structure:
+The basemaps are stored in a couchdb database. Basemaps are versioned, because administrative regions can change over time. The user can select the desired version when creating the map. The structure looks like this:
 
-- `type`: the type of the map. Currently the only type implemented is "Geometry"
-- `config`: contains the following properties `rows`, `columns` and `grid`. `grid` is an array of arrays, where the structure of the map is set.
-
-Ex.:
-
+```json
+{
+  "_id": "hexagonCHCantons",
+  "title": "Hexagon Schweiz (Kantone)",
+  "versions": [
+    {
+      "validFrom": "1997-01-01T00:00:00.000Z",
+      "data": "linkToBasemap"
+    },
+    {
+      "validFrom": "1985-01-01T00:00:00.000Z",
+      "data": "linkToBasemap"
+    }
+  ]
+}
 ```
-"grid": [
-    [null, null, "BS", "BL", "SH", "TG", null],
-    [null, "JU", "SO", "AG", "ZH", "AR", "AI"],
-    [null, "NE", "BE", "LU", "ZG", "SZ", "SG"],
-    ["VD", "FR", "OW", "NW", "UR", "GL", "GR"],
-    ["GE", null, "VS", null, null, "TI", null]
-]
+
+The data of the basemap is stored in `json`-format in the following structure:
+
+```json
+{
+  "config": {
+    "displayEntityType": "code",
+    "defaultEntityType": "name",
+    "entityTypes": {
+      "name": "Name",
+      "bfsNumber": "BfS Nummer",
+      "code": "Abkürzung"
+    }
+  },
+  "entities": {}
+}
 ```
 
-- `cantons`: an array of objects, containing the `id`, `code` and `name`
+Every basemap has a `config` and `entities` property. The `config` object must contain the properties `defaultEntityType` and `entityTypes`. The structure of the `entities` objects depends on the type of basemap.
 
-The `json`-files will then be implemented in the `entityCollection`-route. The infos will then be available by calling the function `getEntityCollectionInfo`, which will be usable when implementing the `baseMap`-helper.
+#### Hexagon Map
 
-#### Hexagon
-
-The hexagon-objects will be created in the function `getHexagons()`, where the grid passed by the `entityCollectionInfo` will be iterated and filled up with the following information:
+The hexagon-objects will be created in the function `getHexagons()`, where the `entities` will be iterated and filled up with the following information:
 
 - `text`: the `cantonCode` and the `displayValue`
 - `fontSize`: font-size based on the `contentWidth`,
@@ -127,8 +142,14 @@ The hexagon-objects will be created in the function `getHexagons()`, where the g
 - `x`,
 - `y`: `rowIndex` \* `rowHeight`
 
-The array of hexagons will then be iterated in the `HexagonCHCantonsMap` component, where all the information will be passed to the `Hexagon` component.
+The array of hexagons will then be iterated in the `HexagonMap` component, where all the information will be passed to the `Hexagon` component.
 The function `getPolygonPoints()` will then process those information used to display the polygon.
+
+#### Geographic Map
+
+The `entities` property of geographic maps contains a topojson object. This object represents all administrative regions. Optionally an outline object can be added to give more context.
+
+The `d3-geo` library is used to create the svg path of each geographic features. The `GeographicMap` component is responsible to create the svg object and iterate through each geographic feature. The `Feature` and `FeatureOutline` render a single svg path.
 
 #### Sizing
 
