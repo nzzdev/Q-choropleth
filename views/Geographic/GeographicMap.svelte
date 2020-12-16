@@ -14,7 +14,7 @@
   export let baseMap;
   export let formattingOptions;
 
-  const maxHeight = 650;
+  const maxHeight = 550;
   const geoParameters = getGeoParameters(baseMap, contentWidth, maxHeight);
   const bounds = geoParameters.bounds;
   const height = round(bounds[1][1]);

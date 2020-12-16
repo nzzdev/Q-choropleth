@@ -6,5 +6,5 @@
   class="q-choropleth-outline-feature"
   fill="none"
   stroke="#fff"
-  stroke-width="1.5px"
+  stroke-width="1.3px"
   d={path} />
