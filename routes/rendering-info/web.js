@@ -80,7 +80,6 @@ module.exports = {
         id: `q_choropleth_${toolRuntimeConfig.requestId}`,
         displayOptions: request.payload.toolRuntimeConfig.displayOptions || {},
       };
-
       context.baseMap = await request.server.methods.getBasemap(
         item.baseMap,
         item.version

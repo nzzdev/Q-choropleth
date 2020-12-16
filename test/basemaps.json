@@ -1,0 +1,26 @@
+[
+  {
+    "_id": "geographicDELandkreise",
+    "title": "Geographisch Deutschland (Landkreise)",
+    "versions": [
+      {
+        "validFrom": "2020-01-01T00:00:00.000Z",
+        "source": {
+          "url": "https://mis.bkg.bund.de/trefferanzeige?docuuid=2c6efdd3-f488-4cec-b2d4-528ffb775223",
+          "label": "© GeoBasis-DE / BKG 2020"
+        },
+        "data": "https://nzz-q-assets-stage.s3.eu-west-1.amazonaws.com/2020/12/16/geographicDELandkreise-9a69afd0e6ab2426924b1126f1478121.json"
+      }
+    ]
+  },
+  {
+    "_id": "hexagonCHCantons",
+    "title": "Hexagon Schweiz (Kantone)",
+    "versions": [
+      {
+        "validFrom": "1997-01-01T00:00:00.000Z",
+        "data": "https://nzz-q-assets-stage.s3.eu-west-1.amazonaws.com/2020/12/16/hexagonCHCantons-0154b35617b8d050ad4fc6eaadd41928.json"
+      }
+    ]
+  }
+]
