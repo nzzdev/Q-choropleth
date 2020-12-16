@@ -3,6 +3,11 @@ const fixtureDataDirectory = "../../resources/fixtures/data";
 // provide every fixture data file present in ../../resources/fixtures/data
 // has to be in sync with files created in build task - see ../../tasks/build.js
 const fixtureData = [
+  require(`${fixtureDataDirectory}/geographic-categorical-map-with-null.json`),
+  require(`${fixtureDataDirectory}/geographic-categorical-map.json`),
+  require(`${fixtureDataDirectory}/geographic-numeric-map-custom-bucket-colors.json`),
+  require(`${fixtureDataDirectory}/geographic-numeric-map-with-null.json`),
+  require(`${fixtureDataDirectory}/geographic-numeric-map.json`),
   require(`${fixtureDataDirectory}/hexagon-kmeans.json`),
   require(`${fixtureDataDirectory}/hexagon-kmeans-average-center.json`),
   require(`${fixtureDataDirectory}/hexagon-kmeans-median-center.json`),
