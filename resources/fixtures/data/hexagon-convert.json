@@ -1,6 +1,7 @@
 {
   "title": "FIXTURE: Hexagon Schweiz (Kantone) - Convert big numbers",
   "baseMap": "hexagonCHCantons",
+  "version": "1997-01-01T00:00:00.000Z",
   "entityType": "name",
   "data": [
     ["Kanton", "Wert"],
