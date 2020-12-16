@@ -45,9 +45,7 @@ async function getBasemap(id, validFrom) {
       version = document.versions.shift();
     }
 
-    if (version.data && typeof version.data === "object") {
-      return version.data;
-    } else if (version.data && typeof version.data === "string") {
+    if (version.data) {
       const response = await fetch(version.data);
       if (response.ok) {
         return await response.json();
