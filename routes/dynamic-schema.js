@@ -1,6 +1,9 @@
 const Boom = require("@hapi/boom");
 const Joi = require("@hapi/joi");
 const dataHelpers = require("../helpers/data.js");
+const array2d = require("array2d");
+const d3 = require("d3-time-format");
+const formatDate = d3.timeFormat("%d.%m.%Y");
 
 function getScaleEnumWithTitles(numericalOptions) {
   let enumValues = ["sequential"];
@@ -120,46 +123,70 @@ function getColorOverwriteEnumAndTitlesCategorical(data) {
   };
 }
 
-function getCantons(baseMapEntityCollection, entityType) {
-  const cantons = baseMapEntityCollection.cantons;
-  if (entityType === "name") {
-    return cantons
-      .sort((cantonA, cantonB) => cantonA.name.localeCompare(cantonB.name))
-      .map((canton) => {
-        return [{ value: canton.name, readOnly: true }];
-      });
-  } else if (entityType === "bfsNumber") {
-    return cantons
-      .sort((cantonA, cantonB) => cantonA.id - cantonB.id)
-      .map((canton) => {
-        return [{ value: canton.id, readOnly: true }];
-      });
-  } else if (entityType === "code") {
-    return cantons
-      .sort((cantonA, cantonB) => cantonA.code.localeCompare(cantonB.code))
-      .map((canton) => {
-        return [{ value: canton.code, readOnly: true }];
-      });
+function getPredefinedContent(baseMap, item) {
+  let predefinedContent = [];
+
+  if (item.baseMap.includes("hexagon")) {
+    array2d.eachCell(baseMap.entities, (cell) => {
+      if (cell !== null) {
+        let value;
+        if (item.entityType !== undefined) {
+          value = cell[item.entityType];
+        } else {
+          value = cell[baseMap.config.defaultEntityType];
+        }
+        predefinedContent.push([{ value: value, readOnly: true }]);
+      }
+    });
+  } else if (item.baseMap.includes("geographic")) {
+    predefinedContent = baseMap.entities.objects.features.geometries.map(
+      (feature) => {
+        let value;
+        if (item.entityType !== "") {
+          value = feature.properties[item.entityType];
+        } else {
+          value = feature.properties[baseMap.config.defaultEntityType];
+        }
+        return [{ value: value, readOnly: true }];
+      }
+    );
   }
-  return undefined;
+
+  predefinedContent.sort((a, b) => {
+    let valueA = a[0].value;
+    let valueB = b[0].value;
+
+    if (!isNaN(parseInt(valueA)) && !isNaN(parseInt(valueB))) {
+      valueA = parseInt(valueA);
+      valueB = parseInt(valueB);
+      return valueA - valueB;
+    } else if (typeof valueA === "string" && typeof valueB === "string") {
+      return valueA.localeCompare(valueB);
+    }
+  });
+
+  return {
+    "Q:options": {
+      predefinedContent: {
+        allowOverwrites: false,
+        data: [["ID", "Wert"]].concat(predefinedContent),
+      },
+    },
+  };
 }
 
-async function getPredefinedContent(
-  baseMapEntityCollection,
-  baseMap,
-  entityType
-) {
-  if (baseMap === "hexagonCHCantons") {
-    const predefinedContent = getCantons(baseMapEntityCollection, entityType);
-    return {
-      "Q:options": {
-        predefinedContent: {
-          allowOverwrites: false,
-          data: [["Kanton", "Wert"]].concat(predefinedContent),
-        },
-      },
-    };
-  }
+async function getVersions(document) {
+  const versions = document.versions.map((version) => version.validFrom);
+  const versionTitles = versions.map((version) =>
+    formatDate(new Date(version))
+  );
+
+  return {
+    enum: versions,
+    "Q:options": {
+      enum_titles: versionTitles,
+    },
+  };
 }
 
 module.exports = {
@@ -173,19 +200,17 @@ module.exports = {
   },
   handler: async function (request, h) {
     const item = request.payload.item;
+    const optionName = request.params.optionName;
 
-    // TODO: add entityType as dynamic schema instead of fixed enum
-    // in prep for other base maps with other entityTypes
-
-    if (request.params.optionName === "scale") {
+    if (optionName === "scale") {
       return getScaleEnumWithTitles(item.options.numericalOptions);
     }
 
-    if (request.params.optionName === "colorScheme") {
+    if (optionName === "colorScheme") {
       return getColorSchemeEnumWithTitles(item.options.numericalOptions.scale);
     }
 
-    if (request.params.optionName === "colorOverwrites") {
+    if (optionName === "colorOverwrites") {
       if (item.options.choroplethType === "numerical") {
         return getMaxItemsNumerical(item.options.numericalOptions);
       } else {
@@ -193,7 +218,7 @@ module.exports = {
       }
     }
 
-    if (request.params.optionName === "colorOverwritesItem") {
+    if (optionName === "colorOverwritesItem") {
       if (item.options.choroplethType === "numerical") {
         return getColorOverwriteEnumAndTitlesNumerical(
           item.options.numericalOptions
@@ -203,20 +228,54 @@ module.exports = {
       }
     }
 
-    if (request.params.optionName === "predefinedContent") {
-      const baseMapEntityCollectionResponse = await request.server.inject({
-        method: "GET",
-        url: `/entityCollection/${item.baseMap}`,
-      });
+    if (
+      optionName === "predefinedContent" &&
+      item.baseMap !== undefined &&
+      item.version !== undefined
+    ) {
+      const baseMap = await request.server.methods.getBasemap(
+        item.baseMap,
+        item.version
+      );
 
-      if (baseMapEntityCollectionResponse.statusCode === 200) {
-        const baseMapEntityCollection = baseMapEntityCollectionResponse.result;
-        return getPredefinedContent(
-          baseMapEntityCollection,
-          item.baseMap,
-          item.entityType
-        );
+      if (baseMap) {
+        return getPredefinedContent(baseMap, item);
       }
+    }
+
+    if (
+      optionName === "entityType" &&
+      item.baseMap !== undefined &&
+      item.version !== undefined
+    ) {
+      const baseMap = await request.server.methods.getBasemap(
+        item.baseMap,
+        item.version
+      );
+
+      return {
+        default: baseMap.config.defaultEntityType,
+        enum: Object.keys(baseMap.config.entityTypes),
+        "Q:options": {
+          enum_titles: Object.values(baseMap.config.entityTypes),
+        },
+      };
+    }
+
+    if (optionName === "version") {
+      const document = await request.server.methods.getDocument(item.baseMap);
+
+      return await getVersions(document);
+    }
+
+    if (optionName === "baseMap") {
+      const documents = await request.server.methods.getAllDocuments();
+      return {
+        enum: documents.map((document) => document.doc._id),
+        "Q:options": {
+          enum_titles: documents.map((document) => document.doc.title),
+        },
+      };
     }
 
     return Boom.badRequest();

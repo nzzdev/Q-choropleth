@@ -15,6 +15,7 @@
   },
   "dependencies": {
     "@hapi/boom": "^9.1.0",
+    "@hapi/catbox-memory": "^5.0.0",
     "@hapi/hapi": "^19.2.0",
     "@hapi/inert": "^6.0.3",
     "@hapi/joi": "^17.1.1",
@@ -23,9 +24,14 @@
     "ckmeans": "^2.0.1",
     "clone": "^2.1.2",
     "d3-format": "^1.4.5",
+    "d3-geo": "^2.0.1",
     "d3-scale": "^3.2.3",
+    "d3-time-format": "^3.0.0",
+    "nano": "^8.2.3",
+    "node-fetch": "^2.6.1",
     "simple-statistics": "^7.3.0",
-    "svelte": "^3.29.0"
+    "svelte": "^3.29.0",
+    "topojson": "^3.0.2"
   },
   "devDependencies": {
     "@hapi/code": "^8.0.2",

@@ -2,6 +2,7 @@
   "title": "FIXTURE: Hexagon Schweiz (Kantone) - Gleichgrosse Buckets",
   "subtitle": "Subtitle",
   "baseMap": "hexagonCHCantons",
+  "version": "1997-01-01T00:00:00.000Z",
   "entityType": "name",
   "data": [
     ["Kanton", "Wert"],

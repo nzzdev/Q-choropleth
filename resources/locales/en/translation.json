@@ -2,11 +2,11 @@
   "notifications": {
     "hasValues": {
       "title": "Values given",
-      "body": "If you want to change base map or geo code you have to remove all values in the 2nd column first."
+      "body": "If you want to change base map, version of base map or geo code you have to remove all values in the 2nd column first."
     },
     "predefinedContent": {
       "title": "Predefined content",
-      "body": "Values in first column are predefined based on chosen base map and geo code and cannot be changed. Corresponding values can be entered in the second column."
+      "body": "Values in first column are predefined based on chosen base map, version of base map and geo code and cannot be changed. Corresponding values can be entered in the second column."
     },
     "customBuckets": {
       "title": "Custom borders",

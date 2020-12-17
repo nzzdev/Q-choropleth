@@ -1,20 +1,19 @@
 <script>
   import Hexagon from "./Hexagon.svelte";
-  import ResponsiveSvg from "./ResponsiveSvg.svelte";
-  import { getFormattedValue } from "../helpers/data.js";
+  import ResponsiveSvg from "../svg/ResponsiveSvg.svelte";
+  import { getFormattedValue, round } from "../helpers/data.js";
   import { heightFromWidth } from "../helpers/hexagon.js";
   import { getExtents } from "../helpers/extent.js";
-  export let data;
+  import { getColor } from "../helpers/color.js";
+  export let dataMapping;
   export let entityType;
   export let legendData;
   export let valuesOnMap;
   export let contentWidth;
-  export let entityCollectionInfo;
+  export let baseMap;
   export let formattingOptions;
 
   let cssModifier = getCssModifier(contentWidth);
-
-  const dataMapping = new Map(data);
 
   // Sizes of hexagons in SVG units. The values are arbitrary,
   // because the SVG is scaled anyway by its viewBox.
@@ -27,73 +26,7 @@
   const hexagons = getHexagons(contentWidth);
   const svgSize = getSvgSize(hexagons);
 
-  function getValue(cantonCode) {
-    try {
-      if (entityType === "code") {
-        return dataMapping.get(cantonCode);
-      } else {
-        const entityMapping = entityCollectionInfo.entityMapping;
-        const entity = entityMapping.get(cantonCode);
-        return dataMapping.get(entity);
-      }
-    } catch (e) {
-      return null;
-    }
-  }
-
-  function getColor(cantonCode, legendData) {
-    const value = getValue(cantonCode);
-    if (value === null || value === undefined) {
-      return {
-        colorClass: "s-color-gray-4",
-        customColor: "",
-        textColor: "s-color-gray-6"
-      };
-    }
-    if (legendData.type === "numerical") {
-      const buckets = legendData.buckets;
-      const bucket = buckets.find((bucket, index) => {
-        if (index === 0) {
-          return value <= bucket.to;
-        } else if (index === buckets.length - 1) {
-          return bucket.from < value;
-        } else {
-          return bucket.from < value && value <= bucket.to;
-        }
-      });
-      if (bucket) {
-        return {
-          colorClass: bucket.color.colorClass,
-          customColor: bucket.color.customColor,
-          textColor: bucket.color.textColor
-        };
-      } else {
-        return {
-          colorClass: "s-color-gray-4",
-          customColor: "",
-          textColor: "s-color-gray-6"
-        };
-      }
-    } else {
-      const categories = legendData.categories;
-      const category = categories.find(category => category.label === value);
-      if (category) {
-        return {
-          colorClass: category.color.colorClass,
-          customColor: category.color.customColor,
-          textColor: category.color.textColor
-        };
-      } else {
-        return {
-          colorClass: "s-color-gray-4",
-          customColor: ""
-        };
-      }
-    }
-  }
-
-  function getDisplayValue(cantonCode) {
-    let value = getValue(cantonCode);
+  function getDisplayValue(value) {
     if (legendData.type === "numerical") {
       return getFormattedValue(formattingOptions, value);
     }
@@ -130,9 +63,8 @@
   }
 
   function getHexagons(contentWidth) {
-    const grid = entityCollectionInfo.config.grid;
     const hexagons = [];
-    grid.forEach((row, rowIndex) => {
+    baseMap.entities.forEach((row, rowIndex) => {
       row.forEach((cell, columnIndex) => {
         if (cell !== null) {
           let x = columnIndex * cellWidth;
@@ -140,13 +72,14 @@
             // every odd row will be shifted half the hexagon size to right
             x += cellWidth / 2;
           }
-          const cantonCode = cell;
-          const displayValue = getDisplayValue(cantonCode);
+          const value = dataMapping.get(cell[entityType]);
+          const displayValue = getDisplayValue(value);
+          const displayEntity = cell[baseMap.config.displayEntityType];
 
           hexagons.push({
-            text: [cantonCode, displayValue],
+            text: [displayEntity, displayValue],
             fontSize: getFontSize(cssModifier, valuesOnMap),
-            color: getColor(cantonCode, legendData),
+            color: getColor(value, legendData),
             width: cellWidth,
             height: cellHeight,
             type: displayValue ? "fill" : "stroke",
@@ -167,7 +100,10 @@
     const padding = width / 200;
     width += 2 * padding;
     height += 2 * padding;
-    const viewBox = [xMin - padding, yMin - padding, width, height].join(" ");
+    const viewBox = [xMin - padding, yMin - padding, width, height]
+      .map(value => round(value))
+      .join(" ");
+
     const aspectRatio = width / height;
     return { aspectRatio, viewBox };
   }

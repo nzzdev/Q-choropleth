@@ -1,35 +1,61 @@
-function getGeometryMapping(entityCollection, baseMap, entityType) {
-  if (baseMap === "hexagonCHCantons") {
-    const cantons = entityCollection.cantons;
-    if (entityType === "name") {
-      return new Map(cantons.map(({ code, name }) => [code, name]));
-    } else if (entityType === "bfsNumber") {
-      return new Map(cantons.map(({ code, id }) => [code, id]));
+const fetch = require("node-fetch");
+const db = require("./db.js");
+
+async function getAllDocuments() {
+  try {
+    const documents = await db.list({ include_docs: true });
+    if (documents) {
+      return documents.rows;
+    } else {
+      return undefined;
     }
+  } catch (error) {
+    return undefined;
   }
-  return undefined;
 }
 
-async function getEntityCollectionInfo(request, item) {
-  const baseMapEntityCollectionResponse = await request.server.inject({
-    method: "GET",
-    url: `/entityCollection/${item.baseMap}`,
-  });
-
-  if (baseMapEntityCollectionResponse.statusCode === 200) {
-    const baseMapEntityCollection = baseMapEntityCollectionResponse.result;
-    if (baseMapEntityCollection.type === "Geometry") {
-      return {
-        config: baseMapEntityCollection.config,
-        entityMapping: getGeometryMapping(
-          baseMapEntityCollection,
-          item.baseMap,
-          item.entityType
-        ),
-      };
+async function getDocument(id) {
+  try {
+    const document = await db.get(id);
+    if (document) {
+      document.versions = document.versions.sort(
+        (a, b) =>
+          new Date(b.validFrom).getTime() - new Date(a.validFrom).getTime()
+      );
+      return document;
+    } else {
+      return undefined;
     }
+  } catch (error) {
+    return undefined;
   }
-  return undefined;
 }
 
-module.exports = { getEntityCollectionInfo };
+async function getBasemap(id, validFrom) {
+  try {
+    const document = await this.server.methods.getDocument(id);
+    let version = document.versions.find(
+      (versionItem) =>
+        new Date(versionItem.validFrom).getTime() ===
+        new Date(validFrom).getTime()
+    );
+
+    // return the newest available version if version is not defined
+    if (version === undefined) {
+      version = document.versions.shift();
+    }
+
+    if (version.data) {
+      const response = await fetch(version.data);
+      if (response.ok) {
+        return await response.json();
+      } else {
+        return undefined;
+      }
+    }
+  } catch (error) {
+    return undefined;
+  }
+}
+
+module.exports = { getAllDocuments, getDocument, getBasemap };
