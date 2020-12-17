@@ -21,9 +21,14 @@
       "title": "Basiskarte",
       "type": "string",
       "default": "hexagonCHCantons",
-      "enum": ["hexagonCHCantons"],
       "Q:options": {
-        "enum_titles": ["Hexagon Schweiz (Kantone)"],
+        "dynamicSchema": {
+          "type": "ToolEndpoint",
+          "config": {
+            "endpoint": "dynamic-schema/baseMap",
+            "fields": ["title"]
+          }
+        },
         "notificationChecks": [
           {
             "type": "ToolEndpoint",
@@ -39,13 +44,40 @@
         ]
       }
     },
+    "version": {
+      "title": "Version",
+      "type": "string",
+      "default": "",
+      "Q:options": {
+        "dynamicSchema": {
+          "type": "ToolEndpoint",
+          "config": {
+            "endpoint": "dynamic-schema/version",
+            "fields": ["baseMap"]
+          }
+        },
+        "availabilityChecks": [
+          {
+            "type": "ToolEndpoint",
+            "config": {
+              "endpoint": "option-availability/version",
+              "fields": ["baseMap"]
+            }
+          }
+        ]
+      }
+    },
     "entityType": {
       "title": "Geo-Code",
       "type": "string",
-      "default": "name",
-      "enum": ["bfsNumber", "name", "code"],
       "Q:options": {
-        "enum_titles": ["BfS Nummer", "Name", "Abkürzung"]
+        "dynamicSchema": {
+          "type": "ToolEndpoint",
+          "config": {
+            "endpoint": "dynamic-schema/entityType",
+            "fields": ["baseMap", "version"]
+          }
+        }
       }
     },
     "data": {
@@ -58,7 +90,7 @@
           "type": "ToolEndpoint",
           "config": {
             "endpoint": "dynamic-schema/predefinedContent",
-            "fields": ["baseMap", "entityType"]
+            "fields": ["baseMap", "version", "entityType"]
           }
         },
         "notificationChecks": [
@@ -179,7 +211,18 @@
             "noValuesOnMap": {
               "title": "Beschriftung der Werte auf der Karte entfernen",
               "type": "boolean",
-              "default": false
+              "default": false,
+              "Q:options": {
+                "availabilityChecks": [
+                  {
+                    "type": "ToolEndpoint",
+                    "config": {
+                      "endpoint": "option-availability/noValuesOnMap",
+                      "fields": ["baseMap"]
+                    }
+                  }
+                ]
+              }
             },
             "labelLegend": {
               "title": "Mittelwert-Markierung",
@@ -423,7 +466,18 @@
             "valuesOnMap": {
               "title": "Werte direkt auf der Karte beschriften",
               "type": "boolean",
-              "default": false
+              "default": false,
+              "Q:options": {
+                "availabilityChecks": [
+                  {
+                    "type": "ToolEndpoint",
+                    "config": {
+                      "endpoint": "option-availability/valuesOnMap",
+                      "fields": ["baseMap"]
+                    }
+                  }
+                ]
+              }
             },
             "colorOverwrites": {
               "type": "array",

@@ -9,7 +9,7 @@
       "request": "launch",
       "name": "Launch Program",
       "program": "${workspaceFolder}/dev.js",
-      "runtimeVersion": "12.6.0"
+      "runtimeVersion": "14.15.2"
     },
     {
       "type": "node",

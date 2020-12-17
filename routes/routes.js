@@ -15,5 +15,4 @@ module.exports = [
   require("./notifications/numberBucketsOutOfColorScale.js"),
   require("./notifications/numberCategoriesOutOfColorScale.js"),
   require("./dynamic-schema.js"),
-  require("./entityCollection.js"),
 ].concat(require("./schema.js"));

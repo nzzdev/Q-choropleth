@@ -1,5 +1,6 @@
 <script>
   import { sizeFromWidth, pointyHexCorners } from "../helpers/hexagon.js";
+  import { roundCoordinatesInPath } from "../helpers/geo.js";
 
   export let valuesOnMap;
   export let text;
@@ -14,7 +15,10 @@
   export let cssModifier;
 
   const transform = `translate(${x} ${y})`;
-  const points = getPolygonPoints(x, y, width, growFactor);
+  const points = roundCoordinatesInPath(
+    getPolygonPoints(x, y, width, growFactor),
+    1
+  );
 
   function getPolygonPoints(x, y, width, growFactor) {
     const size = sizeFromWidth(width);

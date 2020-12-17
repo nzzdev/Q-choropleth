@@ -5,6 +5,13 @@ const Joi = require("@hapi/joi");
 const lab = (exports.lab = Lab.script());
 const jsdom = require("jsdom");
 const { JSDOM } = jsdom;
+const baseMapHelpers = require("../helpers/baseMap.js");
+
+const serverMethodCacheOptions = {
+  expiresIn: 7 * 24 * 60 * 60 * 1000,
+  cache: "memoryCache",
+  generateTimeout: 2 * 1000,
+};
 
 const expect = Code.expect;
 const before = lab.before;
@@ -22,6 +29,33 @@ before(async () => {
         cors: true,
       },
     });
+
+    server.cache.provision({
+      provider: {
+        constructor: require("@hapi/catbox-memory"),
+        options: {
+          partition: "memoryCache",
+          maxByteSize: process.env.MEMORY_CACHE_SIZE || 1000000000, // ~ 1GB
+        },
+      },
+      name: "memoryCache",
+    });
+
+    server.method("getAllDocuments", baseMapHelpers.getAllDocuments, {
+      cache: serverMethodCacheOptions,
+    });
+
+    server.method("getDocument", baseMapHelpers.getDocument, {
+      cache: serverMethodCacheOptions,
+    });
+
+    server.method("getBasemap", baseMapHelpers.getBasemap, {
+      bind: {
+        server: server,
+      },
+      cache: serverMethodCacheOptions,
+    });
+
     server.validator(Joi);
     server.route(routes);
   } catch (err) {

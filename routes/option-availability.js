@@ -14,34 +14,51 @@ module.exports = {
     },
     cors: true,
   },
-  handler: function (request, h) {
+  handler: async function (request, h) {
     const item = request.payload.item;
-    if (request.params.optionName === "isNumerical") {
+    const optionName = request.params.optionName;
+
+    if (optionName === "isNumerical") {
       return {
         available: item.options.choroplethType === "numerical",
       };
     }
-    if (request.params.optionName === "isCategorical") {
+    if (optionName === "isCategorical") {
       return {
         available: item.options.choroplethType === "categorical",
       };
     }
-    if (request.params.optionName === "customBuckets") {
+    if (optionName === "customBuckets") {
       return {
         available: hasCustomBuckets(item.options.numericalOptions.bucketType),
       };
     }
-    if (request.params.optionName === "numberBuckets") {
+    if (optionName === "numberBuckets") {
       return {
         available: !hasCustomBuckets(item.options.numericalOptions.bucketType),
       };
     }
 
-    if (request.params.optionName === "customColors") {
+    if (optionName === "customColors") {
       return {
         available: item.options.numericalOptions.scale === "sequential",
       };
     }
+
+    if (optionName === "noValuesOnMap" || optionName === "valuesOnMap") {
+      return {
+        available: item.baseMap.includes("hexagon"),
+      };
+    }
+
+    if (optionName === "version") {
+      const document = await request.server.methods.getDocument(item.baseMap);
+
+      return {
+        available: document.versions.length > 1,
+      };
+    }
+
     return Boom.badRequest();
   },
 };
