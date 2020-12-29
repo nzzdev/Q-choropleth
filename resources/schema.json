@@ -545,6 +545,53 @@
                   }
                 }
               }
+            },
+            "customCategoriesOrder": {
+              "type": "array",
+              "title": "Reihenfolge Kategorie",
+              "Q:options": {
+                "availabilityChecks": [
+                  {
+                    "type": "UserHasRole",
+                    "config": {
+                      "role": "expert-choropleth"
+                    }
+                  }
+                ],
+                "dynamicSchema": {
+                  "type": "ToolEndpoint",
+                  "config": {
+                    "endpoint": "dynamic-schema/customCategoriesOrder",
+                    "fields": ["data"]
+                  }
+                },
+                "layout": "compact",
+                "sortable": true
+              },
+              "items": {
+                "type": "object",
+                "title": "Kategorie",
+                "properties": {
+                  "categorie": {
+                    "title": "Kategorie",
+                    "oneOf": [
+                      {
+                        "type": "string"
+                      }
+                    ],
+                    "Q:options": {
+                      "dynamicSchema": {
+                        "selectType": "select",
+                        "type": "ToolEndpoint",
+                        "config": {
+                          "endpoint": "dynamic-schema/customCategoriesOrderItem",
+                          "fields": ["data"]
+                        }
+                      }
+                    }
+                  }
+                }
+              }
             }
           }
         }

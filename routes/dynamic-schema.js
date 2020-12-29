@@ -75,6 +75,9 @@ function getMaxItemsNumerical(numericalOptions) {
 
 function getMaxItemsCategorical(data) {
   try {
+    // removing the header row first
+    data = dataHelpers.getDataWithoutHeaderRow(data);
+
     return {
       maxItems: dataHelpers.getUniqueCategoriesCount(data),
     };
@@ -121,6 +124,23 @@ function getColorOverwriteEnumAndTitlesCategorical(data) {
       ),
     },
   };
+}
+
+function getCustomCategoriesOrderEnumAndTitlesCategorical(data) {
+  try {
+    // removing the header row first
+    data = dataHelpers.getDataWithoutHeaderRow(data);
+    const categories = dataHelpers.getUniqueCategoriesObject(data).categories;
+
+    return {
+      enum: categories,
+      "Q:options": {
+        enum_titles: categories
+      },
+    };
+  } catch {
+    return {};
+  }
 }
 
 function getPredefinedContent(baseMap, item) {
@@ -226,6 +246,14 @@ module.exports = {
       } else {
         return getColorOverwriteEnumAndTitlesCategorical(item.data);
       }
+    }
+
+    if (optionName === "customCategoriesOrder") {
+      return getMaxItemsCategorical(item.data);
+    }
+
+    if (optionName === "customCategoriesOrderItem") {
+      return getCustomCategoriesOrderEnumAndTitlesCategorical(item.data);
     }
 
     if (

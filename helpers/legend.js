@@ -236,8 +236,19 @@ function getCategoricalLegend(data, options) {
       color: colorHelpers.getCategoryColor(index, customColorMap),
     });
   });
+
+  // If the user has set a custom order, sort the categories array accordingly
+  if (options.customCategoriesOrder) {
+    categories.sort(
+      function(a, b) {
+        return options.customCategoriesOrder.map(c => c.categorie).indexOf(a.label) - 
+               options.customCategoriesOrder.map(c => c.categorie).indexOf(b.label);
+      });
+  }
+
   legendData.hasNullValues = categoryObject.hasNullValues;
   legendData.categories = categories;
+  
   return legendData;
 }
 
