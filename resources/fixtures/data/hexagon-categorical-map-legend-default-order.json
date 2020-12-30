@@ -1,0 +1,56 @@
+{
+    "title": "FIXTURE: Hexagon Schweiz (Kantone) - Kategorien - Legende unsortiert",
+    "subtitle": "Subtitle",
+    "baseMap": "hexagonCHCantons",
+    "version": "1997-01-01T00:00:00.000Z",
+    "entityType": "name",
+    "data": [
+      ["Kanton", "Wert"],
+      ["Aargau", "niedriger Wert"],
+      ["Appenzell Ausserrhoden", "sehr hoher Wert"],
+      ["Appenzell Innerrhoden", null],
+      ["Basel-Landschaft", "hoher Wert"],
+      ["Basel-Stadt", "niedriger Wert"],
+      ["Bern", "niedriger Wert"],
+      ["Freiburg", "mittlerer Wert"],
+      ["Genf", "hoher Wert"],
+      ["Glarus", "sehr hoher Wert"],
+      ["Graubünden", "sehr hoher Wert"],
+      ["Jura", "sehr hoher Wert"],
+      ["Luzern", "hoher Wert"],
+      ["Neuenburg", "hoher Wert"],
+      ["Nidwalden", "sehr hoher Wert"],
+      ["Obwalden", "sehr hoher Wert"],
+      ["Schaffhausen", "sehr hoher Wert"],
+      ["Schwyz", null],
+      ["Solothurn", "mittlerer Wert"],
+      ["St. Gallen", "mittlerer Wert"],
+      ["Tessin", "niedriger Wert"],
+      ["Thurgau", "sehr hoher Wert"],
+      ["Uri", "sehr hoher Wert"],
+      ["Waadt", "sehr hoher Wert"],
+      ["Wallis", "sehr hoher Wert"],
+      ["Zug", "sehr hoher Wert"],
+      ["Zürich", "mittlerer Wert"]
+    ],
+    "sources": [],
+    "notes": "",
+    "options": {
+      "choroplethType": "categorical",
+      "numericalOptions": {
+        "noValuesOnMap": false,
+        "labelLegend": "average",
+        "bucketType": "ckmeans",
+        "numberBuckets": 5,
+        "scale": "sequential",
+        "colorScheme": "one",
+        "colorOverwrites": []
+      },
+      "categoricalOptions": {
+        "valuesOnMap": false,
+        "colorOverwrites": [],
+        "customCategoriesOrder": []
+      }
+    }
+  }
+  
