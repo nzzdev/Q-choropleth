@@ -572,7 +572,7 @@
                 "type": "object",
                 "title": "Kategorie",
                 "properties": {
-                  "categorie": {
+                  "category": {
                     "title": "Kategorie",
                     "oneOf": [
                       {

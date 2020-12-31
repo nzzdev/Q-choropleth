@@ -241,8 +241,8 @@ function getCategoricalLegend(data, options) {
   if (options.customCategoriesOrder) {
     categories.sort(
       function(a, b) {
-        return options.customCategoriesOrder.map(c => c.categorie).indexOf(a.label) - 
-               options.customCategoriesOrder.map(c => c.categorie).indexOf(b.label);
+        return options.customCategoriesOrder.map(c => c.category).indexOf(a.label) - 
+               options.customCategoriesOrder.map(c => c.category).indexOf(b.label);
       });
   }
 
