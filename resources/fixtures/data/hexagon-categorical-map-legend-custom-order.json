@@ -50,10 +50,10 @@
         "valuesOnMap": false,
         "colorOverwrites": [],
         "customCategoriesOrder": [
-          {"category": "sehr hoher Wert"},
-          {"category": "hoher Wert"},
+          {"category": "niedriger Wert"},
           {"category": "mittlerer Wert"},
-          {"category": "niedriger Wert"}
+          {"category": "hoher Wert"},
+          {"category": "sehr hoher Wert"}
         ]
       }
     }

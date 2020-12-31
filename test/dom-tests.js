@@ -334,10 +334,10 @@ lab.experiment("options", () => {
         elements[3].innerHTML,
         elements[4].innerHTML
       ]).to.be.equal([
-        "sehr hoher Wert",
-        "hoher Wert",
-        "mittlerer Wert",
         "niedriger Wert",
+        "mittlerer Wert",
+        "hoher Wert",
+        "sehr hoher Wert",
         "Keine Daten"
       ]);
     });
