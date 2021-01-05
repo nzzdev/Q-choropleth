@@ -108,10 +108,10 @@ function getColorOverwriteEnumAndTitlesNumerical(numericalOptions) {
   }
 }
 
-function getColorOverwriteEnumAndTitlesCategorical(data) {
+function getColorOverwriteEnumAndTitlesCategorical(data, customCategoriesOrder) {
   data = dataHelpers.getDataWithoutHeaderRow(data);
   let enumValues = [null];
-  const categories = dataHelpers.getUniqueCategoriesObject(data).categories;
+  const categories = dataHelpers.getUniqueCategoriesObject(data, customCategoriesOrder).categories;
   const numberItems = categories.length;
   for (let index = 0; index < numberItems; index++) {
     enumValues.push(index + 1);
@@ -244,7 +244,7 @@ module.exports = {
           item.options.numericalOptions
         );
       } else {
-        return getColorOverwriteEnumAndTitlesCategorical(item.data);
+        return getColorOverwriteEnumAndTitlesCategorical(item.data, item.options.categoricalOptions.customCategoriesOrder);
       }
     }
 

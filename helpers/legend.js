@@ -227,7 +227,7 @@ function getCategoricalLegend(data, options) {
   };
 
   const customColorMap = getCustomColorMap(options.colorOverwrites);
-  const categoryObject = dataHelpers.getUniqueCategoriesObject(data);
+  const categoryObject = dataHelpers.getUniqueCategoriesObject(data, options.customCategoriesOrder);
 
   let categories = [];
   categoryObject.categories.forEach((label, index) => {
@@ -236,15 +236,6 @@ function getCategoricalLegend(data, options) {
       color: colorHelpers.getCategoryColor(index, customColorMap),
     });
   });
-
-  // If the user has set a custom order, sort the categories array accordingly
-  if (options.customCategoriesOrder) {
-    categories.sort(
-      function(a, b) {
-        return options.customCategoriesOrder.map(c => c.category).indexOf(a.label) - 
-               options.customCategoriesOrder.map(c => c.category).indexOf(b.label);
-      });
-  }
 
   legendData.hasNullValues = categoryObject.hasNullValues;
   legendData.categories = categories;
