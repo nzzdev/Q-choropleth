@@ -212,6 +212,10 @@ There are four different buckets-types and each comes with it's own properties:
 
 This option will either show or hide de value displayed inside the hexagon.
 
+##### customCategoriesOrder
+
+This option allows to override the default order of the categories in the legend. By default, the categories are sorted by frequency.
+
 [to the top](#table-of-contents)
 
 ## License

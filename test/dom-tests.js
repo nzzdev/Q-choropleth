@@ -306,6 +306,78 @@ lab.experiment("options", () => {
       expect(value).to.be.equal(1);
     });
   });
+
+  it("orders categories in legend by custom order", async () => {
+    const response = await server.inject({
+      url: "/rendering-info/web?_id=someid",
+      method: "POST",
+      payload: {
+        item: require("../resources/fixtures/data/hexagon-categorical-map-legend-custom-order.json"),
+        toolRuntimeConfig: {
+          size: {
+            width: [
+              {
+                comparison: "=",
+                value: 272,
+              },
+            ],
+          },
+        },
+      },
+    });
+
+    return elements(response.result.markup, ".s-legend-item-label__item__label").then((elements) => {
+      expect([
+        elements[0].innerHTML,
+        elements[1].innerHTML,
+        elements[2].innerHTML,
+        elements[3].innerHTML,
+        elements[4].innerHTML
+      ]).to.be.equal([
+        "niedriger Wert",
+        "mittlerer Wert",
+        "hoher Wert",
+        "sehr hoher Wert",
+        "Keine Daten"
+      ]);
+    });
+  });
+
+  it("orders categories in legend by default order", async () => {
+    const response = await server.inject({
+      url: "/rendering-info/web?_id=someid",
+      method: "POST",
+      payload: {
+        item: require("../resources/fixtures/data/hexagon-categorical-map-legend-default-order.json"),
+        toolRuntimeConfig: {
+          size: {
+            width: [
+              {
+                comparison: "=",
+                value: 272,
+              },
+            ],
+          },
+        },
+      },
+    });
+
+    return elements(response.result.markup, ".s-legend-item-label__item__label").then((elements) => {
+      expect([
+        elements[0].innerHTML,
+        elements[1].innerHTML,
+        elements[2].innerHTML,
+        elements[3].innerHTML,
+        elements[4].innerHTML
+      ]).to.be.equal([
+        "sehr hoher Wert",
+        "niedriger Wert",
+        "hoher Wert",
+        "mittlerer Wert",
+        "Keine Daten"
+      ]);
+    });
+  });
 });
 
 lab.experiment("buckets", () => {

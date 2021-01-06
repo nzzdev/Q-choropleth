@@ -9,7 +9,7 @@ function getUniqueCategoriesCount(data) {
   return getUniqueCategoriesObject(data).categories.length;
 }
 
-function getUniqueCategoriesObject(data) {
+function getUniqueCategoriesObject(data, customCategoriesOrder) {
   let hasNullValues = false;
   const values = data
     .map((row) => {
@@ -22,8 +22,17 @@ function getUniqueCategoriesObject(data) {
       hasNullValues = true;
       return false;
     });
+  let sortedValues = getSortedValues(values);
+  
+  // If the user has set a custom order, sort the categories accordingly
+  if (customCategoriesOrder) {
+    sortedValues.sort(
+      function(a, b) {
+        return customCategoriesOrder.map(c => c.category).indexOf(a) - 
+               customCategoriesOrder.map(c => c.category).indexOf(b);
+      });
+  }
 
-  const sortedValues = getSortedValues(values);
   return { hasNullValues, categories: [...new Set(sortedValues)] };
 }
 
