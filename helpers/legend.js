@@ -227,7 +227,7 @@ function getCategoricalLegend(data, options) {
   };
 
   const customColorMap = getCustomColorMap(options.colorOverwrites);
-  const categoryObject = dataHelpers.getUniqueCategoriesObject(data);
+  const categoryObject = dataHelpers.getUniqueCategoriesObject(data, options.customCategoriesOrder);
 
   let categories = [];
   categoryObject.categories.forEach((label, index) => {
@@ -236,8 +236,10 @@ function getCategoricalLegend(data, options) {
       color: colorHelpers.getCategoryColor(index, customColorMap),
     });
   });
+
   legendData.hasNullValues = categoryObject.hasNullValues;
   legendData.categories = categories;
+  
   return legendData;
 }
 

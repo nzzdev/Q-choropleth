@@ -75,6 +75,9 @@ function getMaxItemsNumerical(numericalOptions) {
 
 function getMaxItemsCategorical(data) {
   try {
+    // removing the header row first
+    data = dataHelpers.getDataWithoutHeaderRow(data);
+
     return {
       maxItems: dataHelpers.getUniqueCategoriesCount(data),
     };
@@ -105,10 +108,10 @@ function getColorOverwriteEnumAndTitlesNumerical(numericalOptions) {
   }
 }
 
-function getColorOverwriteEnumAndTitlesCategorical(data) {
+function getColorOverwriteEnumAndTitlesCategorical(data, customCategoriesOrder) {
   data = dataHelpers.getDataWithoutHeaderRow(data);
   let enumValues = [null];
-  const categories = dataHelpers.getUniqueCategoriesObject(data).categories;
+  const categories = dataHelpers.getUniqueCategoriesObject(data, customCategoriesOrder).categories;
   const numberItems = categories.length;
   for (let index = 0; index < numberItems; index++) {
     enumValues.push(index + 1);
@@ -121,6 +124,23 @@ function getColorOverwriteEnumAndTitlesCategorical(data) {
       ),
     },
   };
+}
+
+function getCustomCategoriesOrderEnumAndTitlesCategorical(data) {
+  try {
+    // removing the header row first
+    data = dataHelpers.getDataWithoutHeaderRow(data);
+    const categories = dataHelpers.getUniqueCategoriesObject(data).categories;
+
+    return {
+      enum: categories,
+      "Q:options": {
+        enum_titles: categories
+      },
+    };
+  } catch {
+    return {};
+  }
 }
 
 function getPredefinedContent(baseMap, item) {
@@ -224,8 +244,16 @@ module.exports = {
           item.options.numericalOptions
         );
       } else {
-        return getColorOverwriteEnumAndTitlesCategorical(item.data);
+        return getColorOverwriteEnumAndTitlesCategorical(item.data, item.options.categoricalOptions.customCategoriesOrder);
       }
+    }
+
+    if (optionName === "customCategoriesOrder") {
+      return getMaxItemsCategorical(item.data);
+    }
+
+    if (optionName === "customCategoriesOrderItem") {
+      return getCustomCategoriesOrderEnumAndTitlesCategorical(item.data);
     }
 
     if (
