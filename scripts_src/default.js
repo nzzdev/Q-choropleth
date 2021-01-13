@@ -92,13 +92,25 @@ export default class Choropleth {
 
   setVisibilityOfElements() {
     if (this.isMethodBoxVisible) {
-      this.methodBoxContainerElement.classList.remove("hidden");
-      this.methodBoxOpenIcon.classList.add("hidden");
-      this.methodBoxCloseIcon.classList.remove("hidden");
+      if (this.methodBoxContainerElement) {
+        this.methodBoxContainerElement.classList.remove("hidden");
+      }
+      if (this.methodBoxOpenIcon) {
+        this.methodBoxOpenIcon.classList.add("hidden");
+      }
+      if (this.methodBoxCloseIcon) {
+        this.methodBoxCloseIcon.classList.remove("hidden");
+      }
     } else {
-      this.methodBoxContainerElement.classList.add("hidden");
-      this.methodBoxCloseIcon.classList.add("hidden");
-      this.methodBoxOpenIcon.classList.remove("hidden");
+      if (this.methodBoxContainerElement) {
+        this.methodBoxContainerElement.classList.add("hidden");
+      }
+      if (this.methodBoxCloseIcon) {
+        this.methodBoxCloseIcon.classList.add("hidden");
+      }
+      if (this.methodBoxOpenIcon) {
+        this.methodBoxOpenIcon.classList.remove("hidden");
+      }
     }
   }
 
