@@ -1,10 +1,12 @@
 <script>
   import Hexagon from "./Hexagon.svelte";
   import ResponsiveSvg from "../svg/ResponsiveSvg.svelte";
+  import AnnotationPointWithLine from "../Annotations/AnnotationPointWithLine.svelte";
   import { getFormattedValue, round } from "../helpers/data.js";
   import { heightFromWidth } from "../helpers/hexagon.js";
   import { getExtents } from "../helpers/extent.js";
   import { getColor } from "../helpers/color.js";
+  import { regionHasAnnotation, setCoordinatesForHexMap } from "../helpers/annotations";
   export let dataMapping;
   export let entityType;
   export let legendData;
@@ -12,6 +14,7 @@
   export let contentWidth;
   export let baseMap;
   export let formattingOptions;
+  export let annotations = [];
 
   let cssModifier = getCssModifier(contentWidth);
 
@@ -25,6 +28,12 @@
 
   const hexagons = getHexagons(contentWidth);
   const svgSize = getSvgSize(hexagons);
+
+  // Annotations
+  const annotationRadius = 2;
+  const annotationStartPosition = 4;
+
+  annotations = setCoordinatesForHexMap(annotations, hexagons, annotationStartPosition, cssModifier);
 
   function getDisplayValue(value) {
     if (legendData.type === "numerical") {
@@ -84,7 +93,8 @@
             height: cellHeight,
             type: displayValue ? "fill" : "stroke",
             x,
-            y: rowIndex * rowHeight
+            y: rowIndex * rowHeight,
+            hasAnnotation: regionHasAnnotation(annotations, displayEntity)
           });
         }
       });
@@ -97,7 +107,11 @@
     const [yMin, yMax] = getExtents(hexagons, ({ y }) => y);
     let width = xMax - xMin + cellWidth;
     let height = yMax - yMin + cellHeight;
-    const padding = width / 200;
+    let padding = (width / 200);
+    if (annotations.length > 0) {
+      // This makes sure that the svg is correctly sized, so that all annotations are visible
+      padding += annotationRadius + annotationStartPosition;
+    }
     width += 2 * padding;
     height += 2 * padding;
     const viewBox = [xMin - padding, yMin - padding, width, height]
@@ -111,7 +125,7 @@
 
 <ResponsiveSvg aspectRatio={svgSize.aspectRatio}>
   <svg viewbox={svgSize.viewBox}>
-    {#each hexagons as { text, fontSize, color, width, height, type, x, y }}
+    {#each hexagons as { text, fontSize, color, width, height, type, x, y, hasAnnotation }}
       <Hexagon
         {valuesOnMap}
         {text}
@@ -123,12 +137,20 @@
         {x}
         {y}
         {cssModifier}
-        growFactor={type === 'fill' ? 0.98 : 0.97} />
+        growFactor={type === 'fill' ? 0.98 : 0.97}
+        {hasAnnotation} />
       <!-- grow factor = 1 would mean, that hexagons are sticked together
         since we want small white spaces between hexagons grow factor is 0.98 by default
         if a hexagon has no value, it will be white with a gray border around it
         since these hexagons should be as big as the other hexagons even with border
         the grow factor is reduced to 0.97 -->
+    {/each}
+    {#each annotations as { id, coordinates }}
+      <AnnotationPointWithLine
+        {id}
+        {annotationRadius}
+        {coordinates}
+        fontSize = {getFontSize(cssModifier, valuesOnMap)} />
     {/each}
   </svg>
 </ResponsiveSvg>

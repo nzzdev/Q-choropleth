@@ -13,6 +13,7 @@
   export let y;
   export let growFactor;
   export let cssModifier;
+  export let hasAnnotation = false;
 
   const transform = `translate(${x} ${y})`;
   const points = roundCoordinatesInPath(
@@ -57,7 +58,9 @@
     {transform}
     {points}
     class={color.colorClass}
-    fill={color.customColor && color.customColor.length > 0 ? color.customColor : 'currentColor'} />
+    fill={color.customColor && color.customColor.length > 0 ? color.customColor : 'currentColor'}
+    stroke={hasAnnotation ? "black" : undefined}
+    stroke-width={hasAnnotation ? "0.3" : undefined} />
   <g class="s-font-note-s">
     {#if valuesOnMap}
       <text
@@ -100,8 +103,8 @@
     {points}
     class={color.colorClass}
     fill="#fff"
-    stroke="currentColor"
-    stroke-width="0.1" />
+    stroke={hasAnnotation ? "black" : "currentColor"}
+    stroke-width={hasAnnotation ? "0.3" : "0.1"} />
   <g class="s-font-note-s">
     {#if valuesOnMap}
       <text
