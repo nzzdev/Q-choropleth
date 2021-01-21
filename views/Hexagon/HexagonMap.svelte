@@ -155,14 +155,16 @@
         since these hexagons should be as big as the other hexagons even with border
         the grow factor is reduced to 0.97 -->
     {/each}
-    {#each annotations as { id, coordinates }}
-      <AnnotationPointWithLine
-        id = {id}
-        radius = {annotationRadius}
-        coordinates = {coordinates}
-        fontSize = {"20%"}
-        strokeWidth = {0.2}
-        strokeDashArray = {0.75} />
-    {/each}
+    <g class="q-choropleth-annotations">
+      {#each annotations as { id, coordinates }}
+        <AnnotationPointWithLine
+          id = {id}
+          radius = {annotationRadius}
+          coordinates = {coordinates}
+          fontSize = {"20%"}
+          strokeWidth = {0.2}
+          strokeDashArray = {0.75} />
+      {/each}
+    </g>
   </svg>
 </ResponsiveSvg>
