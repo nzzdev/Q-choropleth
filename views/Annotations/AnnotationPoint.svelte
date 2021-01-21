@@ -12,23 +12,19 @@
   export let fillColor = "white";
 
   // Text props
-  export let textX = x;
-  export let textY = y;
   export let textColor;
   export let fontSize;
 </script>
 
-<circle
-  r={radius}
-  stroke={strokeColor}
-  stroke-width={strokeWidth}
-  class={colorClass}
-  fill={fillColor}
-  transform="translate({x}, {y})" />
-<g class="s-font-note-s">
+<g class="s-font-note-s" transform="translate({x}, {y})">
+  <circle
+    r={radius}
+    stroke={strokeColor}
+    stroke-width={strokeWidth}
+    class={colorClass}
+    fill={fillColor} />
   <text
-    x={textX}
-    y={textY}
+    y={radius/4}
     dominant-baseline="middle"
     text-anchor="middle"
     class={textColor}

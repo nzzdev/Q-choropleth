@@ -59,7 +59,7 @@
     {points}
     class={color.colorClass}
     fill={color.customColor && color.customColor.length > 0 ? color.customColor : 'currentColor'}
-    stroke={hasAnnotation ? "black" : undefined}
+    stroke={hasAnnotation ? "#000000" : undefined}
     stroke-width={hasAnnotation ? "0.3" : undefined} />
   <g class="s-font-note-s">
     {#if valuesOnMap}
@@ -103,7 +103,7 @@
     {points}
     class={color.colorClass}
     fill="#fff"
-    stroke={hasAnnotation ? "black" : "currentColor"}
+    stroke={hasAnnotation ? "#000000" : "currentColor"}
     stroke-width={hasAnnotation ? "0.3" : "0.1"} />
   <g class="s-font-note-s">
     {#if valuesOnMap}

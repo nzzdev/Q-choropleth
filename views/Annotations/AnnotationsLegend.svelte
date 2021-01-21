@@ -32,7 +32,6 @@
           {strokeWidth}
           {colorClass}
           {fillColor}
-          textY = {y + 2}
           {textColor}
           {fontSize} />
       </svg>

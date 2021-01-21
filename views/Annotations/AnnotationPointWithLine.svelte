@@ -3,7 +3,7 @@
 
   // General props
   export let id = 0;
-  export let radius = 2;
+  export let radius = 0;
   export let coordinates = [];
 
   let x = coordinates.x;
@@ -11,18 +11,19 @@
 
   // AnnotationPoint props
   export let strokeColor = "black";
-  export let strokeWidth = 0.2;
+  export let strokeWidth;
   export let colorClass = "s-color-gray-4";
   export let fillColor = "white";
   export let textColor = "s-color-gray-4";
   export let fontSize;
 
   // Line props
+  export let strokeDashArray;
+
   let lineX1 = coordinates.lineX1;
   let lineY1 = coordinates.lineY1;
   let lineX2 = coordinates.lineX2;
   let lineY2 = coordinates.lineY2;
-  let strokeDashArray = 0.5;
 </script>
 
 <AnnotationPoint
@@ -34,7 +35,6 @@
   {strokeWidth}
   {colorClass}
   {fillColor}
-  textY = {y + 0.6}
   {textColor}
   {fontSize} />
 <line

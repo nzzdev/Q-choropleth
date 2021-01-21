@@ -6,7 +6,7 @@
   import { heightFromWidth } from "../helpers/hexagon.js";
   import { getExtents } from "../helpers/extent.js";
   import { getColor } from "../helpers/color.js";
-  import { regionHasAnnotation, setCoordinatesForHexMap } from "../helpers/annotations";
+  import { hasAnnotationOnLeftOrRight, hasAnnotationOnTopOrBottom, regionHasAnnotation, setCoordinatesForHexMap } from "../helpers/annotations";
   export let dataMapping;
   export let entityType;
   export let legendData;
@@ -27,13 +27,15 @@
   const rowHeight = (cellHeight * 3) / 4;
 
   const hexagons = getHexagons(contentWidth);
-  const svgSize = getSvgSize(hexagons);
 
-  // Annotations
-  const annotationRadius = 2;
+  // Constants for annotations
+  const annotationRadius = 2.25;
   const annotationStartPosition = 4;
+  const lineStartPosition = annotationStartPosition - annotationRadius;
 
-  annotations = setCoordinatesForHexMap(annotations, hexagons, annotationStartPosition, cssModifier);
+  const svgSize = getSvgSize(hexagons, annotations, annotationRadius, annotationStartPosition);
+
+  annotations = setCoordinatesForHexMap(annotations, hexagons, annotationStartPosition, lineStartPosition, cssModifier);
 
   function getDisplayValue(value) {
     if (legendData.type === "numerical") {
@@ -102,16 +104,24 @@
     return hexagons;
   }
 
-  function getSvgSize(hexagons) {
-    const [xMin, xMax] = getExtents(hexagons, ({ x }) => x);
-    const [yMin, yMax] = getExtents(hexagons, ({ y }) => y);
+  function getSvgSize(hexagons, annotations, annotationRadius, annotationStartPosition) {
+    let [xMin, xMax] = getExtents(hexagons, ({ x }) => x);
+    let [yMin, yMax] = getExtents(hexagons, ({ y }) => y);
     let width = xMax - xMin + cellWidth;
     let height = yMax - yMin + cellHeight;
-    let padding = (width / 200);
+
     if (annotations.length > 0) {
-      // This makes sure that the svg is correctly sized, so that all annotations are visible
-      padding += annotationRadius + annotationStartPosition;
+      if (hasAnnotationOnTopOrBottom(annotations)) {
+        yMin += -(annotationRadius + annotationStartPosition);
+        height += (annotationRadius * 2) + (annotationStartPosition * 2);
+      }
+      if (cssModifier !== "narrow" && hasAnnotationOnLeftOrRight(annotations)) {
+        xMin += -(annotationRadius + annotationStartPosition);
+        width += (annotationRadius * 2) + (annotationStartPosition * 2);
+      }
     }
+
+    let padding = (width / 200);
     width += 2 * padding;
     height += 2 * padding;
     const viewBox = [xMin - padding, yMin - padding, width, height]
@@ -147,10 +157,12 @@
     {/each}
     {#each annotations as { id, coordinates }}
       <AnnotationPointWithLine
-        {id}
-        {annotationRadius}
-        {coordinates}
-        fontSize = {getFontSize(cssModifier, valuesOnMap)} />
+        id = {id}
+        radius = {annotationRadius}
+        coordinates = {coordinates}
+        fontSize = {"20%"}
+        strokeWidth = {0.2}
+        strokeDashArray = {0.75} />
     {/each}
   </svg>
 </ResponsiveSvg>
