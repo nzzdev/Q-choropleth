@@ -69,16 +69,23 @@
 
     return { aspectRatio, viewBox };
   }
+
+  function getFeaturesWithoutAnnotation(features, annotations, entityType) {
+    return features.filter(f => !regionHasAnnotation(annotations, f.properties[entityType]));
+  }
+
+  function getFeaturesWithAnnotation(features, annotations, entityType) {
+    return features.filter(f => regionHasAnnotation(annotations, f.properties[entityType]));
+  }
 </script>
 
 <ResponsiveSvg aspectRatio={svgSize.aspectRatio}>
   <svg viewbox={svgSize.viewBox}>
     <g class="q-choropleth-features">
-      {#each geoParameters.features.features as feature}
+      {#each getFeaturesWithoutAnnotation(geoParameters.features.features, annotations, entityType) as feature}
         <Feature
           color={getColor(dataMapping.get(feature.properties[entityType]), legendData)}
-          path={roundCoordinatesInPath(geoParameters.path(feature), 1)}
-          hasAnnotation={regionHasAnnotation(annotations, feature.properties[entityType])} />
+          path={roundCoordinatesInPath(geoParameters.path(feature), 1)} />
       {/each}
     </g>
     {#if geoParameters.outlines.features !== undefined}
@@ -89,14 +96,28 @@
         {/each}
       </g>
     {/if}
-    {#each annotations as { id, coordinates }}
-      <AnnotationPointWithLine
-        id = {id}
-        radius = {annotationRadius}
-        coordinates = {coordinates}
-        fontSize = {"90%"}
-        strokeWidth = {1}
-        strokeDashArray = {2.5} />
-    {/each}
+    <g class="q-choropleth-annotations">
+      {#each annotations as { id, coordinates }}
+        <AnnotationPointWithLine
+          id = {id}
+          radius = {annotationRadius}
+          coordinates = {coordinates}
+          fontSize = {"90%"}
+          strokeWidth = {1}
+          strokeDashArray = {2.5} />
+      {/each}
+      <g class="q-choropleth-features">
+        <!--
+          We're finally adding the features with annotations here and not before, because then we can make sure
+          that those features are "on top" of everything else and the border around them is drawn correctly.
+        -->
+        {#each getFeaturesWithAnnotation(geoParameters.features.features, annotations, entityType) as feature}
+          <Feature
+            color={getColor(dataMapping.get(feature.properties[entityType]), legendData)}
+            path={roundCoordinatesInPath(geoParameters.path(feature), 1)}
+            hasAnnotation={true} />
+        {/each}
+      </g>
+    </g>
   </svg>
 </ResponsiveSvg>
