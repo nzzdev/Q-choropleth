@@ -3,14 +3,16 @@ const extent = require("../helpers/extent.js");
 /**
  * Returns true, if there is at least one annotation on the left or on the right.
  */
-function hasAnnotationOnLeftOrRight(annotations) {
+function hasAnnotationOnLeftOrRight(annotations, cssModifier) {
+  if (cssModifier === "narrow") return false; // on mobile...
   return annotations.some(a => a.position === "left" || a.position === "right");
 }
 
 /**
  * Returns true, if there is at least one annotation on the top or on the bottom.
  */
-function hasAnnotationOnTopOrBottom(annotations) {
+function hasAnnotationOnTopOrBottom(annotations, cssModifier) {
+  if (cssModifier === "narrow" && annotations.length > 0) return true; // on mobile...
   return annotations.some(a => a.position === "top" || a.position === "bottom");
 }
 
@@ -18,7 +20,7 @@ function hasAnnotationOnTopOrBottom(annotations) {
  * Returns true, if the region (Kanton, Landkreis, etc.) has at least one annotation.
  */
 function regionHasAnnotation(annotations, region) {
-  return annotations.some(a => a.regions[0] === region);
+  return annotations.some(a => a.region === region);
 }
 
 /**
@@ -29,7 +31,7 @@ function setCoordinatesForHexMap(annotations, hexagons, annotationStartPosition,
   const [yMin, yMax] = extent.getExtents(hexagons, ({ y }) => y);
 
   annotations.forEach(a => {
-    let hexagon = hexagons.find(h => h.text[0] === a.regions[0]);
+    let hexagon = hexagons.find(h => h.text[0] === a.region);
 
     if(hexagon) {
       let horizontalIncrement = hexagon.width/4;
@@ -65,7 +67,7 @@ function setCoordinatesForGeoMap(annotations, geoParameters, entityType, annotat
   let xMax = geoParameters.bounds[1][0];
 
   annotations.forEach(a => {
-    let feature = features.find(f => f.properties[entityType] === a.regions[0]);
+    let feature = features.find(f => f.properties[entityType] === a.region);
 
     if (feature) {
       let centroid = path.centroid(feature);

@@ -52,11 +52,11 @@
     let padding = 1;
 
     if (annotations.length > 0) {
-      if (hasAnnotationOnTopOrBottom(annotations)) {
+      if (hasAnnotationOnTopOrBottom(annotations, cssModifier)) {
         yMin += -(annotationRadius + annotationStartPosition + padding);
         height += (annotationRadius * 2) + (annotationStartPosition * 2) + (padding * 2);
       }
-      if (cssModifier !== "narrow" && hasAnnotationOnLeftOrRight(annotations)) {
+      if (hasAnnotationOnLeftOrRight(annotations, cssModifier)) {
         xMin += -(annotationRadius + annotationStartPosition + padding);
         width += (annotationRadius * 2) + (annotationStartPosition * 2) + (padding * 2);
       }

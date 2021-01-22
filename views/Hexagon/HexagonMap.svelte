@@ -111,11 +111,11 @@
     let height = yMax - yMin + cellHeight;
 
     if (annotations.length > 0) {
-      if (hasAnnotationOnTopOrBottom(annotations)) {
+      if (hasAnnotationOnTopOrBottom(annotations, cssModifier)) {
         yMin += -(annotationRadius + annotationStartPosition);
         height += (annotationRadius * 2) + (annotationStartPosition * 2);
       }
-      if (cssModifier !== "narrow" && hasAnnotationOnLeftOrRight(annotations)) {
+      if (hasAnnotationOnLeftOrRight(annotations, cssModifier)) {
         xMin += -(annotationRadius + annotationStartPosition);
         width += (annotationRadius * 2) + (annotationStartPosition * 2);
       }
