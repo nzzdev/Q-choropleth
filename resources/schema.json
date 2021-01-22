@@ -144,6 +144,49 @@
       },
       "minItems": 1
     },
+    "mapAnnotations": {
+      "title": "Annotationen",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "title": "Annotation",
+        "properties": {
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "region": {
+            "title": "Region",
+            "type": "string",
+            "Q:options": {
+              "dynamicSchema": {
+                "type": "ToolEndpoint",
+                "config": {
+                  "endpoint": "dynamic-schema/annotationRegions",
+                  "fields": ["baseMap", "version", "entityType"]
+                }
+              }
+            }
+          },
+          "position": {
+            "title": "Position",
+            "type": "string",
+            "enum": ["top", "left", "bottom", "right"],
+            "Q:options": {
+              "enum_titles": ["oben", "links", "unten", "rechts"]
+            }
+          }
+        },
+        "required": ["name"]
+      },
+      "Q:options": {
+        "compact": true,
+        "expandable": {
+          "itemLabelProperty": "name"
+        }
+      },
+      "maxItems": 5
+    },
     "sources": {
       "title": "Quelle(n)",
       "type": "array",

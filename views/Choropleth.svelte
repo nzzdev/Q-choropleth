@@ -3,6 +3,7 @@
   import GeographicMap from "./Geographic/GeographicMap.svelte";
   import ChoroplethLegend from "./ChoroplethLegend.svelte";
   import MethodBox from "./MethodBox.svelte";
+  import AnnotationsLegend from "./Annotations/AnnotationsLegend.svelte";
   import Footer from "./Footer.svelte";
 
   export let item;
@@ -17,6 +18,7 @@
   export let isStatic;
 
   const dataMapping = new Map(item.data);
+  const annotations = item.mapAnnotations.map((value, index) => ({ id: index + 1, ...value })); // add id to each annotation
 </script>
 
 <div id="{id}_container" class="s-q-item q-choropleth">
@@ -46,7 +48,8 @@
           {legendData}
           {baseMap}
           {contentWidth}
-          {formattingOptions} />
+          {formattingOptions}
+          {annotations} />
       {/if}
       {#if item.baseMap.includes('geographic')}
         <GeographicMap
@@ -56,7 +59,8 @@
           {legendData}
           {baseMap}
           {contentWidth}
-          {formattingOptions} />
+          {formattingOptions}
+          {annotations} />
       {/if}
       {#if legendData.type === 'numerical'}
         <MethodBox
@@ -66,6 +70,7 @@
           methodBoxText={methodBox.text}
           methodBoxArticle={methodBox.article} />
       {/if}
+      <AnnotationsLegend {annotations} />
     </div>
   {/if}
   <Footer {item} />
