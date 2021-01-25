@@ -24,8 +24,7 @@
     class={colorClass}
     fill={fillColor} />
   <text
-    y={radius/4}
-    dominant-baseline="middle"
+    dominant-baseline="central"
     text-anchor="middle"
     class={textColor}
     font-size={fontSize}

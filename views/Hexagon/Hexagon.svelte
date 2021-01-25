@@ -60,7 +60,7 @@
     class={color.colorClass}
     fill={color.customColor && color.customColor.length > 0 ? color.customColor : 'currentColor'}
     stroke={hasAnnotation ? "#000000" : undefined}
-    stroke-width={hasAnnotation ? "0.3" : undefined} />
+    stroke-width={hasAnnotation ? "0.2" : undefined} />
   <g class="s-font-note-s">
     {#if valuesOnMap}
       <text
@@ -104,7 +104,7 @@
     class={color.colorClass}
     fill="#fff"
     stroke={hasAnnotation ? "#000000" : "currentColor"}
-    stroke-width={hasAnnotation ? "0.3" : "0.1"} />
+    stroke-width={hasAnnotation ? "0.2" : "0.1"} />
   <g class="s-font-note-s">
     {#if valuesOnMap}
       <text
