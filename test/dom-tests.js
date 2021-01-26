@@ -888,7 +888,7 @@ lab.experiment("annotations", () => {
 
     return elementCount(
       response.result.markup,
-      ".q-choropleth-annotation-legend"
+      ".q-choropleth-legend-annotation"
     ).then((value) => {
       expect(value).to.be.equal(5);
     });
@@ -915,7 +915,7 @@ lab.experiment("annotations", () => {
 
     return elementCount(
       response.result.markup,
-      ".q-choropleth-annotation-legend"
+      ".q-choropleth-legend-annotation"
     ).then((value) => {
       expect(value).to.be.equal(5);
     });
