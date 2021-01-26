@@ -1,0 +1,61 @@
+{
+  "title": "FIXTURE: Hexagon Schweiz (Kantone) - Kategorien mit Annotationen",
+  "subtitle": "Subtitle",
+  "baseMap": "hexagonCHCantons",
+  "version": "1997-01-01T00:00:00.000Z",
+  "entityType": "name",
+  "data": [
+    ["Kanton", "Wert"],
+    ["Aargau", "etwas"],
+    ["Appenzell Ausserrhoden", "etwas"],
+    ["Appenzell Innerrhoden", "etwas"],
+    ["Basel-Landschaft", "etwas anderes"],
+    ["Basel-Stadt", "etwas"],
+    ["Bern", "etwas"],
+    ["Freiburg", "etwas ganz anderes"],
+    ["Genf", "etwas anderes"],
+    ["Glarus", null],
+    ["Graubünden", "etwas"],
+    ["Jura", "etwas"],
+    ["Luzern", "etwas anderes"],
+    ["Neuenburg", "etwas anderes"],
+    ["Nidwalden", "etwas"],
+    ["Obwalden", "etwas"],
+    ["Schaffhausen", "etwas"],
+    ["Schwyz", "etwas"],
+    ["Solothurn", "etwas ganz anderes"],
+    ["St. Gallen", "etwas ganz anderes"],
+    ["Tessin", "etwas"],
+    ["Thurgau", "etwas"],
+    ["Uri", "etwas"],
+    ["Waadt", "etwas"],
+    ["Wallis", "etwas"],
+    ["Zug", "etwas"],
+    ["Zürich", "etwas ganz anderes"]
+  ],
+  "mapAnnotations": [
+    {"name": "Zürich", "region": "ZH", "position": "top"},
+    {"name": "Bern", "region": "BE", "position": "left"},
+    {"name": "St. Gallen", "region": "SG", "position": "right"},
+    {"name": "Nidwalden", "region": "NW", "position": "bottom"},
+    {"name": "Wallis", "region": "VS", "position": "bottom"}
+  ],
+  "sources": [],
+  "notes": "",
+  "options": {
+    "choroplethType": "categorical",
+    "numericalOptions": {
+      "noValuesOnMap": false,
+      "labelLegend": "average",
+      "bucketType": "ckmeans",
+      "numberBuckets": 5,
+      "scale": "sequential",
+      "colorScheme": "one",
+      "colorOverwrites": []
+    },
+    "categoricalOptions": {
+      "valuesOnMap": false,
+      "colorOverwrites": []
+    }
+  }
+}
