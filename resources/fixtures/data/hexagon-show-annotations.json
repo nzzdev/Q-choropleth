@@ -34,11 +34,11 @@
     ["Zürich", "etwas ganz anderes"]
   ],
   "mapAnnotations": [
-    {"name": "Zürich", "region": "ZH", "position": "top"},
-    {"name": "Bern", "region": "BE", "position": "left"},
-    {"name": "St. Gallen", "region": "SG", "position": "right"},
-    {"name": "Nidwalden", "region": "NW", "position": "bottom"},
-    {"name": "Wallis", "region": "VS", "position": "bottom"}
+    {"annotation": "Zürich", "region": "ZH", "position": "top"},
+    {"annotation": "Bern", "region": "BE", "position": "left"},
+    {"annotation": "St. Gallen", "region": "SG", "position": "right"},
+    {"annotation": "Nidwalden", "region": "NW", "position": "bottom"},
+    {"annotation": "Wallis", "region": "VS", "position": "bottom"}
   ],
   "sources": [],
   "notes": "",

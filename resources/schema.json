@@ -151,10 +151,6 @@
         "type": "object",
         "title": "Annotation",
         "properties": {
-          "name": {
-            "title": "Name",
-            "type": "string"
-          },
           "region": {
             "title": "Region",
             "type": "string",
@@ -168,6 +164,10 @@
               }
             }
           },
+          "annotation": {
+            "title": "Annotation",
+            "type": "string"
+          },
           "position": {
             "title": "Position",
             "type": "string",
@@ -177,7 +177,7 @@
             }
           }
         },
-        "required": ["name"]
+        "required": ["annotation"]
       },
       "Q:options": {
         "compact": true,

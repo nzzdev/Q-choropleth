@@ -18,7 +18,7 @@
 </script>
 
 <div class="q-choropleth-legend-annotations s-font-note" style="display: flex; flex-direction: column;">
-  {#each annotations as { id, name }}
+  {#each annotations as { id, annotation }}
     <div class="q-choropleth-legend-annotation" style="display: flex; flex-direction: row; margin-top: 4px;">
       <div style="height: 18px; width: 18px; margin-right: 4px;">
         <svg width=18 height=18 viewBox="0 0 18 18">
@@ -35,7 +35,7 @@
             {fontSize} />
         </svg>
       </div>
-      <div>{name}</div>
+      <div>{annotation}</div>
     </div>
   {/each}
 </div>

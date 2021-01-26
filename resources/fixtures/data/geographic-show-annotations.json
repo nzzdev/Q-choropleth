@@ -409,11 +409,11 @@
     ["DEG0P", "Kein Lockdown"]
   ],
   "mapAnnotations": [
-    {"name": "Hamburg", "region": "DE600", "position": "top"},
-    {"name": "Düsseldorf", "region": "DEA11", "position": "left"},
-    {"name": "Berlin", "region": "DE300", "position": "right"},
-    {"name": "Ortenaukreis", "region": "DE134", "position": "bottom"},
-    {"name": "München", "region": "DE212", "position": "bottom"}
+    {"annotation": "Hamburg", "region": "DE600", "position": "top"},
+    {"annotation": "Düsseldorf", "region": "DEA11", "position": "left"},
+    {"annotation": "Berlin", "region": "DE300", "position": "right"},
+    {"annotation": "Ortenaukreis", "region": "DE134", "position": "bottom"},
+    {"annotation": "München", "region": "DE212", "position": "bottom"}
   ],
   "sources": [],
   "options": {
