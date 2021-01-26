@@ -19,9 +19,9 @@
   export let fontSize = "11px";
 </script>
 
-<div class="s-font-note" style="display: flex; flex-direction: column; margin: 8px 0 0 0;">
+<div class="q-choropleth-annotations-legend s-font-note" style="display: flex; flex-direction: column; margin: 8px 0 0 0;">
   {#each annotations as { id, name }}
-    <div style="margin: 0 0 4px 0;">
+    <div class="q-choropleth-annotation-legend" style="margin: 0 0 4px 0;">
       <svg width={svgWidth} height={svgHeight} style="vertical-align: sub;">
         <AnnotationPoint
           {id}
