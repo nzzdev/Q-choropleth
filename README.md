@@ -176,6 +176,10 @@ If there is an entry without a value, there will be an extra icon too, for displ
 
 The `categorical` legend will simply map the values to their colors.
 
+#### Annotations
+
+Up to a maximum of five annotations can be added to hexagon maps as well as geographic ones. An annotation can be positioned on top, left, bottom or right of the map. On narrow viewports (such as mobile screens) the annotations on the left will be automatically displayed on the top and annotations on the right on the bottom.
+
 [to the top](#table-of-contents)
 
 ### Display options
