@@ -1,34 +1,31 @@
 <script>
   // General props
   export let id = 0;
-  export let radius = 0;
+  export let radius = 8;
   export let x;
   export let y;
 
   // Circle props
-  export let strokeColor = "black";
-  export let strokeWidth;
-  export let colorClass;
-  export let fillColor = "white";
+  export let strokeWidth = 1;
+  export let circleColorClass;
 
   // Text props
-  export let textColor;
-  export let fontSize;
+  export let textColorClass;
 </script>
 
 <g class="s-font-note-s" transform="translate({x}, {y})">
   <circle
     r={radius}
-    stroke={strokeColor}
-    stroke-width={strokeWidth}
-    class={colorClass}
-    fill={fillColor} />
+    class={circleColorClass}
+    fill={circleColorClass ? "currentColor" : "#fff"}
+    stroke="#000"
+    stroke-width={strokeWidth} />
   <text
     dominant-baseline="central"
-    text-anchor="middle"
-    class={textColor}
-    font-size={fontSize}
-    font-weight=700>
+    class={textColorClass}
+    fill="currentColor"
+    font-weight=700
+    text-anchor="middle">
     {id}
   </text>
 </g>

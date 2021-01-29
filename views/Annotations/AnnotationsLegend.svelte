@@ -3,18 +3,10 @@
   
   // General props
   export let annotations = [];
-
-  let radius = 8;
-  let x = (radius + 1);
-  let y = (radius + 1);
+  export let annotationRadius = 8;
   
-  // AnnotationPoint props
-  export let strokeColor = "black";
-  export let strokeWidth = 1;
-  export let colorClass = "s-color-gray-4";
-  export let fillColor = "white";
-  export let textColor = "s-color-gray-4";
-  export let fontSize = "11px";
+  let x = (annotationRadius + 1);
+  let y = (annotationRadius + 1);
 </script>
 
 <div class="q-choropleth-legend-annotations s-font-note" style="display: flex; flex-direction: column;">
@@ -24,15 +16,9 @@
         <svg width=18 height=18 viewBox="0 0 18 18">
           <AnnotationPoint
             {id}
-            {radius}
+            radius = {annotationRadius}
             {x}
-            {y}
-            {strokeColor}
-            {strokeWidth}
-            {colorClass}
-            {fillColor}
-            {textColor}
-            {fontSize} />
+            {y} />
         </svg>
       </div>
       <div>{annotation}</div>

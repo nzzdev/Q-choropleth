@@ -4,23 +4,13 @@
 
   // General props
   export let id = 0;
-  export let radius = 0;
+  export let radius = 8;
   export let coordinates = [];
 
   let x = round(coordinates.x);
   let y = round(coordinates.y);
 
-  // AnnotationPoint props
-  export let strokeColor = "black";
-  export let strokeWidth;
-  export let colorClass = "s-color-gray-4";
-  export let fillColor = "white";
-  export let textColor = "s-color-gray-4";
-  export let fontSize;
-
   // Line props
-  export let strokeDashArray;
-
   let lineX1 = round(coordinates.lineX1);
   let lineY1 = round(coordinates.lineY1);
   let lineX2 = round(coordinates.lineX2);
@@ -32,20 +22,14 @@
     {id}
     {radius}
     {x}
-    {y}
-    {strokeColor}
-    {strokeWidth}
-    {colorClass}
-    {fillColor}
-    {textColor}
-    {fontSize} />
+    {y} />
   <line
     x1={lineX1}
     y1={lineY1}
     x2={lineX2}
     y2={lineY2}
-    stroke={strokeColor}
-    stroke-width={strokeWidth}
-    stroke-dasharray={strokeDashArray}>
+    stroke="#000"
+    stroke-width=1
+    stroke-dasharray=2.5>
   </line>
 </g>

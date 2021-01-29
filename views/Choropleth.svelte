@@ -18,7 +18,10 @@
   export let isStatic;
 
   const dataMapping = new Map(item.data);
+
+  const maxHeight = 550;
   const annotations = item.mapAnnotations.map((value, index) => ({ id: index + 1, ...value })); // add id to each annotation
+  const annotationRadius = 8;
 </script>
 
 <div id="{id}_container" class="s-q-item q-choropleth">
@@ -49,7 +52,9 @@
           {baseMap}
           {contentWidth}
           {formattingOptions}
-          {annotations} />
+          {maxHeight}
+          {annotations}
+          {annotationRadius} />
       {/if}
       {#if item.baseMap.includes('geographic')}
         <GeographicMap
@@ -60,7 +65,9 @@
           {baseMap}
           {contentWidth}
           {formattingOptions}
-          {annotations} />
+          {maxHeight}
+          {annotations}
+          {annotationRadius} />
       {/if}
       {#if legendData.type === 'numerical'}
         <MethodBox
@@ -70,7 +77,9 @@
           methodBoxText={methodBox.text}
           methodBoxArticle={methodBox.article} />
       {/if}
-      <AnnotationsLegend {annotations} />
+      <AnnotationsLegend
+        {annotations}
+        {annotationRadius} />
     </div>
   {/if}
   <Footer {item} />

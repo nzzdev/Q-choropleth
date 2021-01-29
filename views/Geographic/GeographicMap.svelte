@@ -15,17 +15,17 @@
   export let contentWidth;
   export let baseMap;
   export let formattingOptions;
+  export let maxHeight = 550;
   export let annotations = [];
+  export let annotationRadius = 8;
   
   let cssModifier = getCssModifier(contentWidth);
 
-  const maxHeight = 550;
   const geoParameters = getGeoParameters(baseMap, contentWidth, maxHeight);
   const bounds = geoParameters.bounds;
 
   // Constants for annotations
-  const annotationRadius = 9;
-  const annotationStartPosition = 16;
+  const annotationStartPosition = annotationRadius * 2;
   const lineStartPosition = annotationStartPosition - annotationRadius;
   
   const svgSize = getSvgSize(bounds, annotations, annotationRadius, annotationStartPosition); 
@@ -50,7 +50,7 @@
     let width = bounds[1][0];
     let height = round(bounds[1][1]);
     let padding = 1;
-
+  
     if (annotations.length > 0) {
       if (hasAnnotationOnTopOrBottom(annotations, cssModifier)) {
         yMin += -(annotationRadius + annotationStartPosition + padding);
@@ -101,10 +101,7 @@
         <AnnotationPointWithLine
           id = {id}
           radius = {annotationRadius}
-          coordinates = {coordinates}
-          fontSize = {"90%"}
-          strokeWidth = {1}
-          strokeDashArray = {2.5} />
+          coordinates = {coordinates} />
       {/each}
       <g class="q-choropleth-features">
         <!--

@@ -20,6 +20,7 @@
     getPolygonPoints(x, y, width, growFactor),
     1
   );
+  const fontNoteClass = (cssModifier === "narrow" ? "s-font-note-s" : "s-font-note");
 
   function getPolygonPoints(x, y, width, growFactor) {
     const size = sizeFromWidth(width);
@@ -60,14 +61,14 @@
     class={color.colorClass}
     fill={color.customColor && color.customColor.length > 0 ? color.customColor : 'currentColor'}
     stroke={hasAnnotation ? "#000000" : undefined}
-    stroke-width={hasAnnotation ? "0.2" : undefined} />
-  <g class="s-font-note-s">
+    stroke-width={hasAnnotation ? "1" : undefined} />
+  <g class={fontNoteClass}>
     {#if valuesOnMap}
       <text
         x={x + width / 2}
         y={getCantonTextY(y, height)}
         dy="0.5"
-        dominant-baseline="middle"
+        dominant-baseline="central"
         text-anchor="middle"
         class={color.textColor}
         fill="currentColor"
@@ -77,7 +78,7 @@
       <text
         x={x + width / 2}
         y={getValueTextY(y, height)}
-        dominant-baseline="middle"
+        dominant-baseline="central"
         text-anchor="middle"
         class="{color.textColor} q-choropleth-hexagon-value"
         fill="currentColor"
@@ -88,7 +89,7 @@
       <text
         x={x + width / 2}
         y={y + height / 2}
-        dominant-baseline="middle"
+        dominant-baseline="central"
         text-anchor="middle"
         class={color.textColor}
         fill="currentColor"
@@ -104,14 +105,14 @@
     class={color.colorClass}
     fill="#fff"
     stroke={hasAnnotation ? "#000000" : "currentColor"}
-    stroke-width={hasAnnotation ? "0.2" : "0.1"} />
-  <g class="s-font-note-s">
+    stroke-width={hasAnnotation ? "1" : "0.4"} />
+  <g class={fontNoteClass}>
     {#if valuesOnMap}
       <text
         x={x + width / 2}
         y={getCantonTextY(y, height)}
         dy="0.5"
-        dominant-baseline="middle"
+        dominant-baseline="central"
         text-anchor="middle"
         class="s-color-gray-4"
         fill="currentColor"
@@ -121,7 +122,7 @@
       <text
         x={x + width / 2}
         y={getValueTextY(y, height)}
-        dominant-baseline="middle"
+        dominant-baseline="central"
         text-anchor="middle"
         class={color.textColor}
         fill="currentColor"
@@ -132,7 +133,7 @@
       <text
         x={x + width / 2}
         y={y + height / 2}
-        dominant-baseline="middle"
+        dominant-baseline="central"
         text-anchor="middle"
         class="s-color-gray-4"
         fill="currentColor"
