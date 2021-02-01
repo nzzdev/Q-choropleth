@@ -20,8 +20,12 @@
     fill={circleColorClass ? "currentColor" : "#fff"}
     stroke="#000"
     stroke-width={strokeWidth} />
+  <!--
+    Why y=4 you ask? Because this makes sure, that the text is vertically
+    centered on most common browsers and (!) on QToPrint.
+  -->
   <text
-    dominant-baseline="central"
+    y=4
     class={textColorClass}
     fill="currentColor"
     font-weight=700
