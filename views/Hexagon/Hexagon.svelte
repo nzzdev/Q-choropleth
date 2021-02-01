@@ -60,8 +60,8 @@
     {points}
     class={color.colorClass}
     fill={color.customColor && color.customColor.length > 0 ? color.customColor : 'currentColor'}
-    stroke={hasAnnotation ? "#000000" : undefined}
-    stroke-width={hasAnnotation ? "1" : undefined} />
+    stroke={undefined}
+    stroke-width={undefined} />
   <g class={fontNoteClass}>
     {#if valuesOnMap}
       <text
@@ -104,8 +104,8 @@
     {points}
     class={color.colorClass}
     fill="#fff"
-    stroke={hasAnnotation ? "#000000" : "currentColor"}
-    stroke-width={hasAnnotation ? "1" : "0.4"} />
+    stroke="currentColor"
+    stroke-width="0.4" />
   <g class={fontNoteClass}>
     {#if valuesOnMap}
       <text
@@ -142,4 +142,13 @@
       </text>
     {/if}
   </g>
+{/if}
+{#if hasAnnotation}
+  <polygon
+    {transform}
+    {points}
+    class="s-color-gray-9"
+    fill="transparent"
+    stroke="currentColor"
+    stroke-width="1" />
 {/if}

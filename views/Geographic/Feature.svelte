@@ -8,7 +8,15 @@
   <path
     class="q-choropleth-feature"
     fill={color.customColor && color.customColor.length > 0 ? color.customColor : 'currentColor'}
-    stroke={hasAnnotation ? "#000000" : "#fff"}
-    stroke-width={hasAnnotation ? "0.9" : "0.3"}
+    stroke="#fff"
+    stroke-width="0.3"
     d={path} />
+  {#if hasAnnotation}
+    <path
+      class="s-color-gray-9"
+      fill="transparent"
+      stroke="currentColor"
+      stroke-width="1.3"
+      d={path} />
+  {/if}
 </g>
