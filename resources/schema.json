@@ -182,7 +182,7 @@
       "Q:options": {
         "compact": true,
         "expandable": {
-          "itemLabelProperty": "name"
+          "itemLabelProperty": "annotation"
         }
       },
       "maxItems": 5
