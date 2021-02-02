@@ -164,13 +164,7 @@
           {x}
           {y}
           {cssModifier}
-          growFactor={type === 'fill' ? 0.98 : 0.97}
           {hasAnnotation} />
-        <!-- grow factor = 1 would mean, that hexagons are sticked together
-          since we want small white spaces between hexagons grow factor is 0.98 by default
-          if a hexagon has no value, it will be white with a gray border around it
-          since these hexagons should be as big as the other hexagons even with border
-          the grow factor is reduced to 0.97 -->
       {/each}
     </g>
     <g class="q-choropleth-annotations">

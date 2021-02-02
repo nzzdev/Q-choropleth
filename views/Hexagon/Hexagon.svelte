@@ -11,16 +11,31 @@
   export let type;
   export let x;
   export let y;
-  export let growFactor;
   export let cssModifier;
   export let hasAnnotation = false;
 
+  const growFactor = getGrowFactor(hasAnnotation, cssModifier, type);
   const transform = `translate(${x} ${y})`;
   const points = roundCoordinatesInPath(
     getPolygonPoints(x, y, width, growFactor),
     1
   );
   const fontNoteClass = (cssModifier === "narrow" ? "s-font-note-s" : "s-font-note");
+
+  /**
+   * grow factor = 1 would mean, that hexagons are sticked together
+   * since we want small white spaces between hexagons grow factor is 0.98 by default
+   * if a hexagon has no value, it will be white with a gray border around it
+   * since these hexagons should be as big as the other hexagons even with border
+   * the grow factor is reduced to 0.97
+   */
+  function getGrowFactor(hasAnnotation, cssModifier, type) {
+    if (hasAnnotation) {
+      return (cssModifier === "narrow" ? 0.935 : 0.96);
+    } else {
+      return (type === 'fill' ? 0.98 : 0.97);
+    }
+  }
 
   function getPolygonPoints(x, y, width, growFactor) {
     const size = sizeFromWidth(width);
@@ -150,5 +165,5 @@
     class="s-color-gray-9"
     fill="transparent"
     stroke="currentColor"
-    stroke-width="1" />
+    stroke-width="1.4" />
 {/if}
