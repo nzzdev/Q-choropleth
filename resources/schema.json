@@ -183,7 +183,20 @@
         "compact": true,
         "expandable": {
           "itemLabelProperty": "annotation"
-        }
+        },
+        "notificationChecks": [
+          {
+            "type": "ToolEndpoint",
+            "config": {
+              "endpoint": "notification/mapAnnotationsPosition",
+              "fields": ["mapAnnotations"]
+            },
+            "priority": {
+              "type": "low",
+              "value": 1
+            }
+          }
+        ]
       },
       "maxItems": 5
     },

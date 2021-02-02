@@ -8,6 +8,7 @@ module.exports = [
   require("./option-availability.js"),
   require("./notifications/hasValues.js"),
   require("./notifications/predefinedContent.js"),
+  require("./notifications/mapAnnotationsPosition.js"),
   require("./notifications/customBuckets.js"),
   require("./notifications/numberBucketsExceedsDataSet.js"),
   require("./notifications/unsupportedValuesForType.js"),
