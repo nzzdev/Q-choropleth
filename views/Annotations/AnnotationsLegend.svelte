@@ -21,7 +21,7 @@
             {y} />
         </svg>
       </div>
-      <div>{annotation}</div>
+      <div style="display: flex; align-items: center;">{annotation}</div>
     </div>
   {/each}
 </div>
