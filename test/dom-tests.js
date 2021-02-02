@@ -1018,18 +1018,18 @@ lab.experiment("annotations", () => {
     });
 
     expect(annotationPointsAsObjects).to.be.equal([
-      { transform: 'translate(184.57, -16)' },
-      { transform: 'translate(87.43, -16)' },
-      { transform: 'translate(262.29, 195.47)' },
-      { transform: 'translate(165.14, 195.47)' },
-      { transform: 'translate(106.86, 195.47)' }
+      { transform: 'translate(172.27, -16)' },
+      { transform: 'translate(81.6, -16)' },
+      { transform: 'translate(244.8, 183.51)' },
+      { transform: 'translate(154.13, 183.51)' },
+      { transform: 'translate(99.73, 183.51)' }
     ]);
     expect(annotationLinesAsObjects).to.be.equal([
-      { x1: '184.57', y1: '-8', x2: '184.57', y2: '39.26' },
-      { x1: '87.43', y1: '-8', x2: '87.43', y2: '72.91' },
-      { x1: '262.29', y1: '187.47', x2: '262.29', y2: '106.56' },
-      { x1: '165.14', y1: '187.47', x2: '165.14', y2: '140.21' },
-      { x1: '106.86', y1: '187.47', x2: '106.86', y2: '173.86' }
+      { x1: '172.27', y1: '-8', x2: '172.27', y2: '36.64' },
+      { x1: '81.6', y1: '-8', x2: '81.6', y2: '68.05' },
+      { x1: '244.8', y1: '175.51', x2: '244.8', y2: '99.46' },
+      { x1: '154.13', y1: '175.51', x2: '154.13', y2: '130.87' },
+      { x1: '99.73', y1: '175.51', x2: '99.73', y2: '162.27' }
     ]);
   });
 
@@ -1130,18 +1130,18 @@ lab.experiment("annotations", () => {
     });
 
     expect(annotationPointsAsObjects).to.be.equal([
-      { transform: 'translate(320.29, -16)' },
-      { transform: 'translate(-16, 136.25)' },
-      { transform: 'translate(521.71, 136.25)' },
-      { transform: 'translate(286.57, 327.44)' },
-      { transform: 'translate(185.43, 327.44)' }
+      { transform: 'translate(267.27, -16)' },
+      { transform: 'translate(-16, 113.7)' },
+      { transform: 'translate(438, 113.7)' },
+      { transform: 'translate(239.13, 275.88)' },
+      { transform: 'translate(154.73, 275.88)' }
     ]);
     expect(annotationLinesAsObjects).to.be.equal([
-      { x1: '320.29', y1: '-8', x2: '320.29', y2: '68.13' },
-      { x1: '-8', y1: '136.25', x2: '134.86', y2: '136.25' },
-      { x1: '472', y1: '136.25', x2: '513.71', y2: '136.25' },
-      { x1: '286.57', y1: '319.44', x2: '286.57', y2: '243.31' },
-      { x1: '185.43', y1: '319.44', x2: '185.43', y2: '301.71' }
+      { x1: '267.27', y1: '-8', x2: '267.27', y2: '56.85' },
+      { x1: '-8', y1: '113.7', x2: '112.53', y2: '113.7' },
+      { x1: '393.87', y1: '113.7', x2: '430', y2: '113.7' },
+      { x1: '239.13', y1: '267.88', x2: '239.13', y2: '203.03' },
+      { x1: '154.73', y1: '267.88', x2: '154.73', y2: '251.76' }
     ]);
   });
 });

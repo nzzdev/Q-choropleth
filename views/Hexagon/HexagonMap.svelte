@@ -21,12 +21,24 @@
 
   let cssModifier = getCssModifier(contentWidth);
 
+  // Constants for annotations
+  const annotationStartPosition = annotationRadius * 2;
+  const lineStartPosition = annotationStartPosition - annotationRadius;
+  const annotationSpace = 2 * (annotationRadius + annotationStartPosition + 1); // times two, because annotations can be on both sides (top/bottom or left/right)
+
   // Calculate width and height of a hexagon using contentWidth and maxHeight
   let countHexagons = getCountHexagons(baseMap.entities);
   const countHexagonsHorizontal = countHexagons.horizontal;
   const countHexagonsVertical = countHexagons.vertical;
 
-  let cellWidth = contentWidth / countHexagonsHorizontal;
+  let cellWidth = 0;
+
+  if (hasAnnotationOnLeftOrRight(annotations, cssModifier)) {
+    cellWidth = (contentWidth - annotationSpace) / countHexagonsHorizontal;
+  } else {
+    cellWidth = (contentWidth) / countHexagonsHorizontal;
+  }
+
   let cellHeight = heightFromWidth(cellWidth);
 
   if (cellHeight > (maxHeight / countHexagonsVertical)) {
@@ -39,28 +51,25 @@
 
   const hexagons = getHexagons();
 
-  // Constants for annotations
-  const annotationStartPosition = annotationRadius * 2;
-  const lineStartPosition = annotationStartPosition - annotationRadius;
-
-  const svgSize = getSvgSize(hexagons, annotations, annotationRadius, annotationStartPosition);
+  const svgSize = getSvgSize(hexagons, annotations, annotationSpace);
 
   annotations = setCoordinatesForHexMap(annotations, hexagons, annotationStartPosition, lineStartPosition, cssModifier);
 
   function getCountHexagons(baseMapEntities) {
     if (!baseMapEntities || baseMapEntities.length < 1) return { horizontal: 0, vertical: 0 };
-    
+
     let lengthOfFirstArray = (baseMapEntities[0].length < 1 ? 1 : baseMapEntities[0].length);
     let horizontal = Array(baseMapEntities.length).fill(0);
     let vertical = Array(lengthOfFirstArray).fill(0);
     
-    baseMapEntities.forEach( (hexagons, indexHexagons) => {
-      hexagons.forEach( (hexagon, indexHexagon) => {
+    baseMapEntities.forEach( (hexagons, rowIndex) => {
+      hexagons.forEach( (hexagon, columnIndex) => {
         if(hexagon != null) {
-          horizontal[indexHexagons] += 1;
-          vertical[indexHexagon] += (indexHexagons % 2 === 1 ? 0.5 : 1);
+          horizontal[rowIndex] += 1;
+          vertical[columnIndex] += (rowIndex % 2 === 1 ? 0.5 : 1);
         }
       });
+      horizontal[rowIndex] += (rowIndex % 2 === 1 ? 0.5 : 0);
     });
 
     return { horizontal: Math.max(...horizontal), vertical: Math.max(...vertical) };
@@ -115,21 +124,20 @@
     return hexagons;
   }
 
-  function getSvgSize(hexagons, annotations, annotationRadius, annotationStartPosition) {
+  function getSvgSize(hexagons, annotations, annotationSpace) {
     let [xMin, xMax] = getExtents(hexagons, ({ x }) => x);
     let [yMin, yMax] = getExtents(hexagons, ({ y }) => y);
     let width = xMax - xMin + cellWidth;
     let height = yMax - yMin + cellHeight;
-    let padding = 1;
-  
+
     if (annotations.length > 0) {
       if (hasAnnotationOnTopOrBottom(annotations, cssModifier)) {
-        yMin += -(annotationRadius + annotationStartPosition + padding);
-        height += (annotationRadius * 2) + (annotationStartPosition * 2) + (padding * 2);
+        yMin   += -(annotationSpace/2);
+        height += annotationSpace
       }
       if (hasAnnotationOnLeftOrRight(annotations, cssModifier)) {
-        xMin += -(annotationRadius + annotationStartPosition + padding);
-        width += (annotationRadius * 2) + (annotationStartPosition * 2) + (padding * 2);
+        xMin  += -(annotationSpace/2);
+        width += annotationSpace;
       }
     }
 

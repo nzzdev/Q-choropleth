@@ -27,8 +27,9 @@
   // Constants for annotations
   const annotationStartPosition = annotationRadius * 2;
   const lineStartPosition = annotationStartPosition - annotationRadius;
+  const annotationSpace = 2 * (annotationRadius + annotationStartPosition + 1); // times two, because annotations can be on both sides (top/bottom or left/right)
   
-  const svgSize = getSvgSize(bounds, annotations, annotationRadius, annotationStartPosition); 
+  const svgSize = getSvgSize(bounds, annotations, annotationSpace);
 
   annotations = setCoordinatesForGeoMap(annotations, geoParameters, entityType, annotationStartPosition, lineStartPosition, cssModifier);
 
@@ -44,21 +45,20 @@
     }
   }
   
-  function getSvgSize(bounds, annotations, annotationRadius, annotationStartPosition) {
+  function getSvgSize(bounds, annotations, annotationSpace) {
     let xMin = bounds[0][0];
     let yMin = bounds[0][1];
     let width = bounds[1][0];
     let height = round(bounds[1][1]);
-    let padding = 1;
   
     if (annotations.length > 0) {
       if (hasAnnotationOnTopOrBottom(annotations, cssModifier)) {
-        yMin += -(annotationRadius + annotationStartPosition + padding);
-        height += (annotationRadius * 2) + (annotationStartPosition * 2) + (padding * 2);
+        yMin   += -(annotationSpace/2);
+        height += annotationSpace
       }
       if (hasAnnotationOnLeftOrRight(annotations, cssModifier)) {
-        xMin += -(annotationRadius + annotationStartPosition + padding);
-        width += (annotationRadius * 2) + (annotationStartPosition * 2) + (padding * 2);
+        xMin  += -(annotationSpace/2);
+        width += annotationSpace;
       }
     }
 
