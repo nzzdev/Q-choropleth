@@ -18,11 +18,6 @@
 </script>
 
 <g class="q-choropleth-annotation">
-  <AnnotationPoint
-    {id}
-    {radius}
-    {x}
-    {y} />
   <line
     x1={lineX1}
     y1={lineY1}
@@ -32,4 +27,9 @@
     stroke-width=1
     stroke-dasharray=2.5>
   </line>
+  <AnnotationPoint
+    {id}
+    {radius}
+    {x}
+    {y} />
 </g>

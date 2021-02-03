@@ -3,10 +3,12 @@
   import OutlineFeature from "./OutlineFeature.svelte";
   import ResponsiveSvg from "../svg/ResponsiveSvg.svelte";
   import AnnotationPointWithLine from "../Annotations/AnnotationPointWithLine.svelte";
-  import { getColor } from "../helpers/color.js";
-  import { getGeoParameters, roundCoordinatesInPath } from "../helpers/geo.js";
   import { round } from "../helpers/data.js";
-  import { hasAnnotationOnLeftOrRight, hasAnnotationOnTopOrBottom, regionHasAnnotation, setCoordinatesForGeoMap } from "../helpers/annotations";
+  import { getColor } from "../helpers/color.js";
+  import { getCssModifier } from "../helpers/cssModifier.js";
+  import { getAspectRatioViewBox } from "../helpers/svg.js";
+  import { getGeoParameters, roundCoordinatesInPath } from "../helpers/geo.js";
+  import { regionHasAnnotation, setCoordinatesForGeoMap } from "../helpers/annotations";
 
   export let dataMapping;
   export let entityType;
@@ -21,53 +23,23 @@
   
   let cssModifier = getCssModifier(contentWidth);
 
+  // Constants for annotations
+  const annotationStartPosition = annotationRadius * 2;
+  const annotationSpace = 2 * (annotationRadius + annotationStartPosition + 1); // times two, because annotations can be on both sides (top/bottom or left/right)
+  
   const geoParameters = getGeoParameters(baseMap, contentWidth, maxHeight);
   const bounds = geoParameters.bounds;
 
-  // Constants for annotations
-  const annotationStartPosition = annotationRadius * 2;
-  const lineStartPosition = annotationStartPosition - annotationRadius;
-  const annotationSpace = 2 * (annotationRadius + annotationStartPosition + 1); // times two, because annotations can be on both sides (top/bottom or left/right)
-  
-  const svgSize = getSvgSize(bounds, annotations, annotationSpace);
+  const svgSize = getSvgSize(bounds, contentWidth, annotations, annotationSpace);
 
-  annotations = setCoordinatesForGeoMap(annotations, geoParameters, entityType, annotationStartPosition, lineStartPosition, cssModifier);
+  annotations = setCoordinatesForGeoMap(annotations, geoParameters, entityType, annotationStartPosition, cssModifier);
 
-  function getCssModifier(contentWidth) {
-    if (contentWidth < 400) {
-      return "narrow";
-    } else if (contentWidth < 470) {
-      return "wide";
-    } else if (contentWidth < 650) {
-      return "wide-plus";
-    } else {
-      return "extra-wide";
-    }
-  }
-  
-  function getSvgSize(bounds, annotations, annotationSpace) {
+  function getSvgSize(bounds, contentWidth, annotations, annotationSpace) {
     let xMin = bounds[0][0];
     let yMin = bounds[0][1];
     let width = bounds[1][0];
     let height = round(bounds[1][1]);
-  
-    if (annotations.length > 0) {
-      if (hasAnnotationOnTopOrBottom(annotations, cssModifier)) {
-        yMin   += -(annotationSpace/2);
-        height += annotationSpace
-      }
-      if (hasAnnotationOnLeftOrRight(annotations, cssModifier)) {
-        xMin  += -(annotationSpace/2);
-        width += annotationSpace;
-      }
-    }
-
-    const viewBox = [xMin, yMin, width, height]
-      .map(value => round(value))
-      .join(" ");
-    const aspectRatio = contentWidth / height;
-
-    return { aspectRatio, viewBox };
+    return getAspectRatioViewBox(xMin, yMin, width, height, contentWidth, annotations, annotationSpace);
   }
 
   function getFeaturesWithoutAnnotation(features, annotations, entityType) {

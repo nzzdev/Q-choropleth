@@ -2,11 +2,13 @@
   import Hexagon from "./Hexagon.svelte";
   import ResponsiveSvg from "../svg/ResponsiveSvg.svelte";
   import AnnotationPointWithLine from "../Annotations/AnnotationPointWithLine.svelte";
-  import { getFormattedValue, round } from "../helpers/data.js";
-  import { heightFromWidth, widthFromHeight } from "../helpers/hexagon.js";
-  import { getExtents } from "../helpers/extent.js";
   import { getColor } from "../helpers/color.js";
-  import { hasAnnotationOnLeftOrRight, hasAnnotationOnTopOrBottom, regionHasAnnotation, setCoordinatesForHexMap } from "../helpers/annotations";
+  import { getExtents } from "../helpers/extent.js";
+  import { getCssModifier } from "../helpers/cssModifier.js";
+  import { getFormattedValue } from "../helpers/data.js";
+  import { getAspectRatioViewBox } from "../helpers/svg.js";
+  import { heightFromWidth, widthFromHeight } from "../helpers/hexagon.js";
+  import { hasAnnotationOnLeftOrRight, regionHasAnnotation, setCoordinatesForHexMap } from "../helpers/annotations";
   
   export let dataMapping;
   export let entityType;
@@ -23,37 +25,51 @@
 
   // Constants for annotations
   const annotationStartPosition = annotationRadius * 2;
-  const lineStartPosition = annotationStartPosition - annotationRadius;
   const annotationSpace = 2 * (annotationRadius + annotationStartPosition + 1); // times two, because annotations can be on both sides (top/bottom or left/right)
 
   // Calculate width and height of a hexagon using contentWidth and maxHeight
-  let countHexagons = getCountHexagons(baseMap.entities);
-  const countHexagonsHorizontal = countHexagons.horizontal;
-  const countHexagonsVertical = countHexagons.vertical;
-
-  let cellWidth = 0;
-
-  if (hasAnnotationOnLeftOrRight(annotations, cssModifier)) {
-    cellWidth = (contentWidth - annotationSpace) / countHexagonsHorizontal;
-  } else {
-    cellWidth = (contentWidth) / countHexagonsHorizontal;
-  }
-
-  let cellHeight = heightFromWidth(cellWidth);
-
-  if (cellHeight > (maxHeight / countHexagonsVertical)) {
-    cellWidth = widthFromHeight(maxHeight / countHexagonsVertical);
-    cellHeight = (maxHeight / countHexagonsVertical);
-  }
+  let cellWidthAndHeight = getCellWidthAndHeight(baseMap.entities, contentWidth, maxHeight, cssModifier, annotations, annotationSpace);
+  let cellWidth = cellWidthAndHeight.cellWidth;
+  let cellHeight = cellWidthAndHeight.cellHeight;
 
   // See https://www.redblobgames.com/grids/hexagons/#size-and-spacing
   const rowHeight = (cellHeight * 3) / 4;
-
   const hexagons = getHexagons();
 
-  const svgSize = getSvgSize(hexagons, annotations, annotationSpace);
+  const svgSize = getSvgSize(hexagons, contentWidth, annotations, annotationSpace);
 
-  annotations = setCoordinatesForHexMap(annotations, hexagons, annotationStartPosition, lineStartPosition, cssModifier);
+  annotations = setCoordinatesForHexMap(annotations, hexagons, annotationStartPosition, cssModifier);
+
+  function getSvgSize(hexagons, contentWidth, annotations, annotationSpace) {
+    let [xMin, xMax] = getExtents(hexagons, ({ x }) => x);
+    let [yMin, yMax] = getExtents(hexagons, ({ y }) => y);
+    let width = xMax - xMin + cellWidth;
+    let height = yMax - yMin + cellHeight;
+    return getAspectRatioViewBox(xMin, yMin, width, height, contentWidth, annotations, annotationSpace);
+  }
+  
+  function getCellWidthAndHeight(baseMapEntities, contentWidth, maxHeight, cssModifier, annotations, annotationSpace) {
+    let cellWidth = 0;
+    let cellHeight = 0;
+    let countHexagons = getCountHexagons(baseMapEntities);
+    let countHexagonsHorizontal = countHexagons.horizontal;
+    let countHexagonsVertical = countHexagons.vertical;
+
+    if (hasAnnotationOnLeftOrRight(annotations, cssModifier)) {
+      cellWidth = (contentWidth - annotationSpace) / countHexagonsHorizontal;
+    } else {
+      cellWidth = (contentWidth) / countHexagonsHorizontal;
+    }
+
+    cellHeight = heightFromWidth(cellWidth);
+
+    if (cellHeight > (maxHeight / countHexagonsVertical)) {
+      cellWidth = widthFromHeight(maxHeight / countHexagonsVertical);
+      cellHeight = (maxHeight / countHexagonsVertical);
+    }
+
+    return { cellWidth, cellHeight };
+  }
 
   function getCountHexagons(baseMapEntities) {
     if (!baseMapEntities || baseMapEntities.length < 1) return { horizontal: 0, vertical: 0 };
@@ -80,18 +96,6 @@
       return getFormattedValue(formattingOptions, value);
     }
     return value;
-  }
-
-  function getCssModifier(contentWidth) {
-    if (contentWidth < 400) {
-      return "narrow";
-    } else if (contentWidth < 470) {
-      return "wide";
-    } else if (contentWidth < 650) {
-      return "wide-plus";
-    } else {
-      return "extra-wide";
-    }
   }
 
   function getHexagons() {
@@ -122,31 +126,6 @@
       });
     });
     return hexagons;
-  }
-
-  function getSvgSize(hexagons, annotations, annotationSpace) {
-    let [xMin, xMax] = getExtents(hexagons, ({ x }) => x);
-    let [yMin, yMax] = getExtents(hexagons, ({ y }) => y);
-    let width = xMax - xMin + cellWidth;
-    let height = yMax - yMin + cellHeight;
-
-    if (annotations.length > 0) {
-      if (hasAnnotationOnTopOrBottom(annotations, cssModifier)) {
-        yMin   += -(annotationSpace/2);
-        height += annotationSpace
-      }
-      if (hasAnnotationOnLeftOrRight(annotations, cssModifier)) {
-        xMin  += -(annotationSpace/2);
-        width += annotationSpace;
-      }
-    }
-
-    const viewBox = [xMin, yMin, width, height]
-      .map(value => round(value))
-      .join(" ");
-    const aspectRatio = contentWidth / height;
-
-    return { aspectRatio, viewBox };
   }
 </script>
 
