@@ -1,5 +1,5 @@
 {
-  "title": "FIXTURE: Hexagon Schweiz (Kantone) - Kategorien mit empty-Wert",
+  "title": "FIXTURE: Hexagon Schweiz (Kantone) - Kategorien mit Annotationen",
   "subtitle": "Subtitle",
   "baseMap": "hexagonCHCantons",
   "version": "1997-01-01T00:00:00.000Z",
@@ -14,7 +14,7 @@
     ["Bern", "etwas"],
     ["Freiburg", "etwas ganz anderes"],
     ["Genf", "etwas anderes"],
-    ["Glarus", ""],
+    ["Glarus", null],
     ["Graubünden", "etwas"],
     ["Jura", "etwas"],
     ["Luzern", "etwas anderes"],
@@ -33,7 +33,13 @@
     ["Zug", "etwas"],
     ["Zürich", "etwas ganz anderes"]
   ],
-  "mapAnnotations": [],
+  "mapAnnotations": [
+    {"annotation": "Zürich", "region": "ZH", "position": "top"},
+    {"annotation": "Bern", "region": "BE", "position": "left"},
+    {"annotation": "St. Gallen", "region": "SG", "position": "right"},
+    {"annotation": "Nidwalden", "region": "NW", "position": "bottom"},
+    {"annotation": "Wallis", "region": "VS", "position": "bottom"}
+  ],
   "sources": [],
   "notes": "",
   "options": {

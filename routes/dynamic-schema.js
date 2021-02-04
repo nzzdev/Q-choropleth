@@ -195,6 +195,48 @@ function getPredefinedContent(baseMap, item) {
   };
 }
 
+function getAnnotationRegions(baseMap, item) {
+  try {
+    let dropDownItems = [];
+    
+    if (item.baseMap.includes("hexagon")) {
+      array2d.eachCell(baseMap.entities, (cell) => {
+        if (cell !== null) {
+          dropDownItems.push({
+            value: cell[baseMap.config.displayEntityType],
+            title: cell[baseMap.config.defaultEntityType]
+          });
+        }
+      });
+    } else if (item.baseMap.includes("geographic")) {
+      baseMap.entities.objects.features.geometries.forEach(feature => {
+        let value;
+        if (item.entityType !== "") {
+          value = feature.properties[item.entityType];
+        } else {
+          value = feature.properties[baseMap.config.defaultEntityType];
+        }
+        dropDownItems.push({
+          value: value,
+          title: feature.properties["name"]
+        });
+      });
+    }
+
+    // Sort titles from a-z
+    dropDownItems.sort(function (a, b) { return ('' + a.title).localeCompare(b.title); });
+
+    return {
+      enum: Object.values(dropDownItems).map(item => item.value),
+      "Q:options": {
+        enum_titles: Object.values(dropDownItems).map(item => item.title)
+      },
+    };
+  } catch {
+    return {};
+  }
+}
+
 async function getVersions(document) {
   const versions = document.versions.map((version) => version.validFrom);
   const versionTitles = versions.map((version) =>
@@ -254,6 +296,18 @@ module.exports = {
 
     if (optionName === "customCategoriesOrderItem") {
       return getCustomCategoriesOrderEnumAndTitlesCategorical(item.data);
+    }
+
+    if (
+      optionName === "annotationRegions" &&
+      item.baseMap !== undefined &&
+      item.version !== undefined
+    ) {
+      const baseMap = await request.server.methods.getBasemap(item.baseMap, item.version);
+
+      if (baseMap) {
+        return getAnnotationRegions(baseMap, item);
+      }
     }
 
     if (

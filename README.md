@@ -176,6 +176,30 @@ If there is an entry without a value, there will be an extra icon too, for displ
 
 The `categorical` legend will simply map the values to their colors.
 
+#### Annotations
+
+Up to a maximum of five annotations can be added to hexagon maps as well as geographic ones.
+
+The array passed to render the annotations looks as following:
+
+```
+annotations = [
+  {
+    annotation  // The text for the annotation
+    position    // Can be 'top', 'left', 'bottom' or 'right'
+    region      // The region (CH-Kanton or DE-Landkreis) the annotation is linked to
+    id          // The number shown in the icon (automatically generated)
+    coordinates // Coordinates for drawing the icon on the map (automatically generated)
+  }
+]
+```
+
+The annotations are drawn in svg using the `circle` element for the icon and the `line` element for connecting it to its region. For correctly placing them on the hexagon map, the function `setCoordinatesForHexMap()` is used for calculating the coordinates. The same happens for the geographic map using the function `setCoordinatesForGeoMap()`.
+
+An annotation can be positioned on top, left, bottom or right of the map. On narrow viewports (such as mobile screens) the annotations on the left will be automatically displayed on the top and annotations on the right on the bottom, otherwise the map will get too small.
+
+All the `Hexagon` and `Feature` elements, which have an annotation linked to, will be highlighted with a black border.
+
 [to the top](#table-of-contents)
 
 ### Display options

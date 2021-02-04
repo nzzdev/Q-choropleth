@@ -8,6 +8,10 @@
       "title": "Vordefinierte Werte",
       "body": "Die erste Spalte ist auf Basis der Basiskarte, Version der Basiskarte und des Geo-Codes vorausgefüllt. Diese Werte können nicht geändert werden. Du kannst in der zweiten Spalte die passenden Werte eintragen."
     },
+    "mapAnnotationsPosition": {
+      "title": "Position",
+      "body": "Auf kleinen Ansichten (z.Bsp. Mobile) werden Annotationen welche links positioniert sind automatisch oben angezeigt und solche die rechts positioniert sind unten."
+    },
     "customBuckets": {
       "title": "Manuelle Grenzen",
       "body": "Die manuellen Grenzen umfassen nicht alle der in der Datentabelle eingegebenen Werte."

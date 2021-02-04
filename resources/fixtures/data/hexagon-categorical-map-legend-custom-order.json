@@ -33,6 +33,7 @@
       ["Zug", "sehr hoher Wert"],
       ["Zürich", "mittlerer Wert"]
     ],
+    "mapAnnotations": [],
     "sources": [],
     "notes": "",
     "options": {

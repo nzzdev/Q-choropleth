@@ -811,3 +811,337 @@ lab.experiment("single bucket", () => {
     });
   });
 });
+
+lab.experiment("annotations", () => {
+  it("shows annotations on map (geographic)", async () => {
+    const response = await server.inject({
+      url: "/rendering-info/web?_id=someid",
+      method: "POST",
+      payload: {
+        item: require("../resources/fixtures/data/geographic-show-annotations.json"),
+        toolRuntimeConfig: {
+          size: {
+            width: [
+              {
+                comparison: "=",
+                value: 272,
+              },
+            ],
+          },
+        },
+      },
+    });
+
+    return elementCount(
+      response.result.markup,
+      ".q-choropleth-annotation"
+    ).then((value) => {
+      expect(value).to.be.equal(5);
+    });
+  });
+
+  it("shows annotations on map (hexagon)", async () => {
+    const response = await server.inject({
+      url: "/rendering-info/web?_id=someid",
+      method: "POST",
+      payload: {
+        item: require("../resources/fixtures/data/hexagon-show-annotations.json"),
+        toolRuntimeConfig: {
+          size: {
+            width: [
+              {
+                comparison: "=",
+                value: 272,
+              },
+            ],
+          },
+        },
+      },
+    });
+
+    return elementCount(
+      response.result.markup,
+      ".q-choropleth-annotation"
+    ).then((value) => {
+      expect(value).to.be.equal(5);
+    });
+  });
+
+  it("shows annotations in legend (geographic)", async () => {
+    const response = await server.inject({
+      url: "/rendering-info/web?_id=someid",
+      method: "POST",
+      payload: {
+        item: require("../resources/fixtures/data/geographic-show-annotations.json"),
+        toolRuntimeConfig: {
+          size: {
+            width: [
+              {
+                comparison: "=",
+                value: 272,
+              },
+            ],
+          },
+        },
+      },
+    });
+
+    return elementCount(
+      response.result.markup,
+      ".q-choropleth-legend-annotation"
+    ).then((value) => {
+      expect(value).to.be.equal(5);
+    });
+  });
+
+  it("shows annotations in legend (hexagon)", async () => {
+    const response = await server.inject({
+      url: "/rendering-info/web?_id=someid",
+      method: "POST",
+      payload: {
+        item: require("../resources/fixtures/data/hexagon-show-annotations.json"),
+        toolRuntimeConfig: {
+          size: {
+            width: [
+              {
+                comparison: "=",
+                value: 272,
+              },
+            ],
+          },
+        },
+      },
+    });
+
+    return elementCount(
+      response.result.markup,
+      ".q-choropleth-legend-annotation"
+    ).then((value) => {
+      expect(value).to.be.equal(5);
+    });
+  });
+
+  it("annotations on narrow map have correct coordinates (geographic)", async () => {
+    const response = await server.inject({
+      url: "/rendering-info/web?_id=someid",
+      method: "POST",
+      payload: {
+        item: require("../resources/fixtures/data/geographic-show-annotations.json"),
+        toolRuntimeConfig: {
+          size: {
+            width: [
+              {
+                comparison: "=",
+                value: 272,
+              },
+            ],
+          },
+        },
+      },
+    });
+
+    const dom = new JSDOM(response.result.markup);
+    const annotationPoints = dom.window.document.querySelectorAll(".q-choropleth-annotation g");
+    const annotationLines = dom.window.document.querySelectorAll(".q-choropleth-annotation line");
+    const annotationPointsAsObjects = [];
+    const annotationLinesAsObjects = [];
+
+    annotationPoints.forEach(ap => {
+      annotationPointsAsObjects.push({
+        transform: ap.getAttribute("transform"),
+      })
+    });
+
+    annotationLines.forEach(al => {
+      annotationLinesAsObjects.push({
+        x1: al.getAttribute("x1"),
+        y1: al.getAttribute("y1"),
+        x2: al.getAttribute("x2"),
+        y2: al.getAttribute("y2")
+      })
+    });
+
+    expect(annotationPointsAsObjects).to.be.equal([
+      { transform: 'translate(123.06, -16)'    },
+      { transform: 'translate(28.01, -16)'     },
+      { transform: 'translate(223.46, 385.42)' },
+      { transform: 'translate(63.77, 385.42)'  },
+      { transform: 'translate(168.48, 385.42)' }
+    ]);
+    expect(annotationLinesAsObjects).to.be.equal([
+      { x1: '123.06', y1: '-16', x2: '123.06', y2: '76.73' },
+      { x1: '28.01', y1: '-16', x2: '28.01', y2: '189.17' },
+      { x1: '223.46', y1: '385.42', x2: '223.46', y2: '128.32' },
+      { x1: '63.77', y1: '385.42', x2: '63.77', y2: '318.56' },
+      { x1: '168.48', y1: '385.42', x2: '168.48', y2: '330.54' }
+    ]);
+  });
+
+  it("annotations on narrow map have correct coordinates (hexagon)", async () => {
+    const response = await server.inject({
+      url: "/rendering-info/web?_id=someid",
+      method: "POST",
+      payload: {
+        item: require("../resources/fixtures/data/hexagon-show-annotations.json"),
+        toolRuntimeConfig: {
+          size: {
+            width: [
+              {
+                comparison: "=",
+                value: 272,
+              },
+            ],
+          },
+        },
+      },
+    });
+
+    const dom = new JSDOM(response.result.markup);
+    const annotationPoints = dom.window.document.querySelectorAll(".q-choropleth-annotation g");
+    const annotationLines = dom.window.document.querySelectorAll(".q-choropleth-annotation line");
+    const annotationPointsAsObjects = [];
+    const annotationLinesAsObjects = [];
+
+    annotationPoints.forEach(ap => {
+      annotationPointsAsObjects.push({
+        transform: ap.getAttribute("transform"),
+      })
+    });
+
+    annotationLines.forEach(al => {
+      annotationLinesAsObjects.push({
+        x1: al.getAttribute("x1"),
+        y1: al.getAttribute("y1"),
+        x2: al.getAttribute("x2"),
+        y2: al.getAttribute("y2")
+      })
+    });
+
+    expect(annotationPointsAsObjects).to.be.equal([
+      { transform: 'translate(172.27, -16)' },
+      { transform: 'translate(81.6, -16)' },
+      { transform: 'translate(244.8, 183.51)' },
+      { transform: 'translate(154.13, 183.51)' },
+      { transform: 'translate(99.73, 183.51)' }
+    ]);
+    expect(annotationLinesAsObjects).to.be.equal([
+      { x1: '172.27', y1: '-16', x2: '172.27', y2: '36.64' },
+      { x1: '81.6', y1: '-16', x2: '81.6', y2: '68.05' },
+      { x1: '244.8', y1: '183.51', x2: '244.8', y2: '99.46' },
+      { x1: '154.13', y1: '183.51', x2: '154.13', y2: '130.87' },
+      { x1: '99.73', y1: '183.51', x2: '99.73', y2: '162.27' }
+    ]);
+  });
+
+  it("annotations on wide map have correct coordinates (geographic)", async () => {
+    const response = await server.inject({
+      url: "/rendering-info/web?_id=someid",
+      method: "POST",
+      payload: {
+        item: require("../resources/fixtures/data/geographic-show-annotations.json"),
+        toolRuntimeConfig: {
+          size: {
+            width: [
+              {
+                comparison: "=",
+                value: 472,
+              },
+            ],
+          },
+        },
+      },
+    });
+
+    const dom = new JSDOM(response.result.markup);
+    const annotationPoints = dom.window.document.querySelectorAll(".q-choropleth-annotation g");
+    const annotationLines = dom.window.document.querySelectorAll(".q-choropleth-annotation line");
+    const annotationPointsAsObjects = [];
+    const annotationLinesAsObjects = [];
+
+    annotationPoints.forEach(ap => {
+      annotationPointsAsObjects.push({
+        transform: ap.getAttribute("transform"),
+      })
+    });
+
+    annotationLines.forEach(al => {
+      annotationLinesAsObjects.push({
+        x1: al.getAttribute("x1"),
+        y1: al.getAttribute("y1"),
+        x2: al.getAttribute("x2"),
+        y2: al.getAttribute("y2")
+      })
+    });
+
+    expect(annotationPointsAsObjects).to.be.equal([
+      { transform: 'translate(183.21, -16)'    },
+      { transform: 'translate(-16, 281.64)'    },
+      { transform: 'translate(420.96, 191.05)' },
+      { transform: 'translate(94.94, 566)'     },
+      { transform: 'translate(250.84, 566)'    }
+    ]);
+    expect(annotationLinesAsObjects).to.be.equal([
+      { x1: '183.21', y1: '-16', x2: '183.21', y2: '114.23' },
+      { x1: '-16', y1: '281.64', x2: '41.71', y2: '281.64' },
+      { x1: '332.69', y1: '191.05', x2: '420.96', y2: '191.05' },
+      { x1: '94.94', y1: '566', x2: '94.94', y2: '474.28' },
+      { x1: '250.84', y1: '566', x2: '250.84', y2: '492.11' }
+    ]);
+  });
+
+  it("annotations on wide map have correct coordinates (hexagon)", async () => {
+    const response = await server.inject({
+      url: "/rendering-info/web?_id=someid",
+      method: "POST",
+      payload: {
+        item: require("../resources/fixtures/data/hexagon-show-annotations.json"),
+        toolRuntimeConfig: {
+          size: {
+            width: [
+              {
+                comparison: "=",
+                value: 472,
+              },
+            ],
+          },
+        },
+      },
+    });
+
+    const dom = new JSDOM(response.result.markup);
+    const annotationPoints = dom.window.document.querySelectorAll(".q-choropleth-annotation g");
+    const annotationLines = dom.window.document.querySelectorAll(".q-choropleth-annotation line");
+    const annotationPointsAsObjects = [];
+    const annotationLinesAsObjects = [];
+
+    annotationPoints.forEach(ap => {
+      annotationPointsAsObjects.push({
+        transform: ap.getAttribute("transform"),
+      })
+    });
+
+    annotationLines.forEach(al => {
+      annotationLinesAsObjects.push({
+        x1: al.getAttribute("x1"),
+        y1: al.getAttribute("y1"),
+        x2: al.getAttribute("x2"),
+        y2: al.getAttribute("y2")
+      })
+    });
+
+    expect(annotationPointsAsObjects).to.be.equal([
+      { transform: 'translate(267.27, -16)' },
+      { transform: 'translate(-16, 113.7)' },
+      { transform: 'translate(438, 113.7)' },
+      { transform: 'translate(239.13, 275.88)' },
+      { transform: 'translate(154.73, 275.88)' }
+    ]);
+    expect(annotationLinesAsObjects).to.be.equal([
+      { x1: '267.27', y1: '-16', x2: '267.27', y2: '56.85' },
+      { x1: '-16', y1: '113.7', x2: '112.53', y2: '113.7' },
+      { x1: '393.87', y1: '113.7', x2: '438', y2: '113.7' },
+      { x1: '239.13', y1: '275.88', x2: '239.13', y2: '203.03' },
+      { x1: '154.73', y1: '275.88', x2: '154.73', y2: '251.76' }
+    ]);
+  });
+});

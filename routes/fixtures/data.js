@@ -8,6 +8,7 @@ const fixtureData = [
   require(`${fixtureDataDirectory}/geographic-numeric-map-custom-bucket-colors.json`),
   require(`${fixtureDataDirectory}/geographic-numeric-map-with-null.json`),
   require(`${fixtureDataDirectory}/geographic-numeric-map.json`),
+  require(`${fixtureDataDirectory}/geographic-show-annotations.json`),
   require(`${fixtureDataDirectory}/hexagon-categorical-map-legend-custom-order.json`),
   require(`${fixtureDataDirectory}/hexagon-categorical-map-legend-default-order.json`),
   require(`${fixtureDataDirectory}/hexagon-kmeans.json`),
@@ -22,6 +23,7 @@ const fixtureData = [
   require(`${fixtureDataDirectory}/hexagon-categorical-map-with-empty.json`),
   require(`${fixtureDataDirectory}/hexagon-convert.json`),
   require(`${fixtureDataDirectory}/hexagon-median.json`),
+  require(`${fixtureDataDirectory}/hexagon-show-annotations.json`),
 ];
 
 module.exports = {

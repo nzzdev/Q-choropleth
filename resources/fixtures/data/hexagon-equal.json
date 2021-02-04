@@ -33,6 +33,7 @@
     ["Zug", "900"],
     ["Zürich", "900"]
   ],
+  "mapAnnotations": [],
   "sources": [],
   "options": {
     "choroplethType": "numerical",

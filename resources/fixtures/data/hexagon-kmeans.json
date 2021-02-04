@@ -32,6 +32,7 @@
     ["Zug", "900"],
     ["Zürich", "900"]
   ],
+  "mapAnnotations": [],
   "sources": [
     {
       "link": {

@@ -33,6 +33,7 @@
     ["25", "2.3"],
     ["26", null]
   ],
+  "mapAnnotations": [],
   "sources": [],
   "options": {
     "choroplethType": "numerical",

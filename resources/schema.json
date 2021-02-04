@@ -144,6 +144,62 @@
       },
       "minItems": 1
     },
+    "mapAnnotations": {
+      "title": "Annotationen",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "title": "Annotation",
+        "properties": {
+          "region": {
+            "title": "Region",
+            "type": "string",
+            "Q:options": {
+              "dynamicSchema": {
+                "type": "ToolEndpoint",
+                "config": {
+                  "endpoint": "dynamic-schema/annotationRegions",
+                  "fields": ["baseMap", "version", "entityType"]
+                }
+              }
+            }
+          },
+          "annotation": {
+            "title": "Annotation",
+            "type": "string"
+          },
+          "position": {
+            "title": "Position",
+            "type": "string",
+            "enum": ["top", "left", "bottom", "right"],
+            "Q:options": {
+              "enum_titles": ["oben", "links", "unten", "rechts"]
+            }
+          }
+        },
+        "required": ["annotation"]
+      },
+      "Q:options": {
+        "compact": true,
+        "expandable": {
+          "itemLabelProperty": "annotation"
+        },
+        "notificationChecks": [
+          {
+            "type": "ToolEndpoint",
+            "config": {
+              "endpoint": "notification/mapAnnotationsPosition",
+              "fields": ["mapAnnotations"]
+            },
+            "priority": {
+              "type": "low",
+              "value": 1
+            }
+          }
+        ]
+      },
+      "maxItems": 5
+    },
     "sources": {
       "title": "Quelle(n)",
       "type": "array",
