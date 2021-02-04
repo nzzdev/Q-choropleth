@@ -8,6 +8,10 @@
       "title": "Predefined content",
       "body": "Values in first column are predefined based on chosen base map, version of base map and geo code and cannot be changed. Corresponding values can be entered in the second column."
     },
+    "mapAnnotationsPosition": {
+      "title": "Position",
+      "body": "On small views (e.g. Mobile) annotations which are positioned on the left will be automatically shown on top and such on the right will be shown on the bottom."
+    },
     "customBuckets": {
       "title": "Custom borders",
       "body": "Some values in data table are not covered by custom borders."

@@ -408,6 +408,7 @@
     ["16076", "12"],
     ["16077", "68"]
   ],
+  "mapAnnotations": [],
   "sources": [],
   "options": {
     "choroplethType": "numerical",

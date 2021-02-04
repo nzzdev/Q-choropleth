@@ -408,6 +408,7 @@
     ["DEG0N", "Kein Lockdown"],
     ["DEG0P", "Kein Lockdown"]
   ],
+  "mapAnnotations": [],
   "sources": [],
   "options": {
     "choroplethType": "categorical",

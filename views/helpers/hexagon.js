@@ -7,11 +7,27 @@ function heightFromWidth(width) {
 }
 
 /**
+ * For a pointy topped hexagon, get the width for a given height.
+ */
+function widthFromHeight(height) {
+  // Formula from https://www.redblobgames.com/grids/hexagons/#size-and-spacing
+  return Math.sqrt(3) * sizeFromHeight(height);
+}
+
+/**
  * For a pointy topped hexagon, get the size (distance from center to corner) for a given width.
  */
 function sizeFromWidth(width) {
   // Formula from https://www.redblobgames.com/grids/hexagons/#size-and-spacing
   return width / Math.sqrt(3);
+}
+
+/**
+ * For a pointy topped hexagon, get the size (distance from center to corner) for a given height.
+ */
+function sizeFromHeight(height) {
+  // Formula from https://www.redblobgames.com/grids/hexagons/#size-and-spacing
+  return height / 2;
 }
 
 /**
@@ -42,7 +58,9 @@ function pointyHexToPixel({ q, r }, size) {
 
 module.exports = {
   heightFromWidth,
+  widthFromHeight,
   sizeFromWidth,
+  sizeFromHeight,
   pointyHexCorners,
   pointyHexCorner,
   pointyHexToPixel,
