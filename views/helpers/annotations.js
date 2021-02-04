@@ -2,17 +2,19 @@ const extent = require("../helpers/extent.js");
 
 /**
  * Returns true, if there is at least one annotation on the left or on the right.
+ * On narrow viewports (such as mobile screens) no annotations are displayed on the left or right.
  */
 function hasAnnotationOnLeftOrRight(annotations, cssModifier) {
-  if (cssModifier === "narrow") return false; // on mobile...
+  if (cssModifier === "narrow") return false;
   return annotations.some(a => a.position === "left" || a.position === "right");
 }
 
 /**
  * Returns true, if there is at least one annotation on the top or on the bottom.
+ * On narrow viewports (such as mobile screens) all annotations are displayed on top or bottom.
  */
 function hasAnnotationOnTopOrBottom(annotations, cssModifier) {
-  if (cssModifier === "narrow" && annotations.length > 0) return true; // on mobile...
+  if (cssModifier === "narrow" && annotations.length > 0) return true;
   return annotations.some(a => a.position === "top" || a.position === "bottom");
 }
 
@@ -30,26 +32,26 @@ function setCoordinatesForHexMap(annotations, hexagons, annotationStartPosition,
   const [xMin, xMax] = extent.getExtents(hexagons, ({ x }) => x);
   const [yMin, yMax] = extent.getExtents(hexagons, ({ y }) => y);
 
-  annotations.forEach(a => {
-    let hexagon = hexagons.find(h => h.text[0] === a.region);
+  annotations.forEach(annotation => {
+    let hexagon = hexagons.find(h => h.text[0] === annotation.region);
 
     if(hexagon) {
       let horizontalIncrement = hexagon.width/4;
       let verticalIncrement = hexagon.height/4;
 
-      if (a.position === "top" || a.position === "left") {
+      if (annotation.position === "top" || annotation.position === "left") {
         // If contentWidth (cssModifier) is narrow, all annotations on the left will be drawn on the top
-        a.coordinates = getTopCoordinates(hexagon.x, hexagon.y, yMin, horizontalIncrement, verticalIncrement, annotationStartPosition);
+        annotation.coordinates = getTopCoordinates(hexagon.x, hexagon.y, yMin, horizontalIncrement, verticalIncrement, annotationStartPosition);
         
-        if (cssModifier !== "narrow" && a.position === "left") {
-          a.coordinates = getLeftCoordinates(hexagon.x, hexagon.y, xMin, verticalIncrement, annotationStartPosition);
+        if (cssModifier !== "narrow" && annotation.position === "left") {
+          annotation.coordinates = getLeftCoordinates(hexagon.x, hexagon.y, xMin, verticalIncrement, annotationStartPosition);
         }
       } else {
         // If contentWidth (cssModifier) is narrow, all annotations on the right will be drawn on the bottom
-        a.coordinates = getBottomCoordinates(hexagon.x, hexagon.y, yMax, hexagon.height, horizontalIncrement, verticalIncrement, annotationStartPosition);
+        annotation.coordinates = getBottomCoordinates(hexagon.x, hexagon.y, yMax, hexagon.height, horizontalIncrement, verticalIncrement, annotationStartPosition);
         
-        if (cssModifier !== "narrow" && a.position === "right") {
-          a.coordinates = getRightCoordinates(hexagon.x, hexagon.y, xMax, hexagon.width, verticalIncrement, annotationStartPosition);
+        if (cssModifier !== "narrow" && annotation.position === "right") {
+          annotation.coordinates = getRightCoordinates(hexagon.x, hexagon.y, xMax, hexagon.width, verticalIncrement, annotationStartPosition);
         }
       }
     }
@@ -66,25 +68,25 @@ function setCoordinatesForGeoMap(annotations, geoParameters, entityType, annotat
   let yMax = geoParameters.bounds[1][1];
   let xMax = geoParameters.bounds[1][0];
 
-  annotations.forEach(a => {
-    let feature = features.find(f => f.properties[entityType] === a.region);
+  annotations.forEach(annotation => {
+    let feature = features.find(f => f.properties[entityType] === annotation.region);
 
     if (feature) {
       let centroid = path.centroid(feature);
 
-      if (a.position === "top" || a.position === "left") {
+      if (annotation.position === "top" || annotation.position === "left") {
         // If contentWidth (cssModifier) is narrow, all annotations on the left will be drawn on the top
-        a.coordinates = getTopCoordinates(centroid[0], centroid[1], 0, 0, 0, annotationStartPosition);
+        annotation.coordinates = getTopCoordinates(centroid[0], centroid[1], 0, 0, 0, annotationStartPosition);
         
-        if (cssModifier !== "narrow" && a.position === "left") {
-          a.coordinates = getLeftCoordinates(centroid[0], centroid[1], 0, 0, annotationStartPosition);
+        if (cssModifier !== "narrow" && annotation.position === "left") {
+          annotation.coordinates = getLeftCoordinates(centroid[0], centroid[1], 0, 0, annotationStartPosition);
         }
       } else {
         // If contentWidth (cssModifier) is narrow, all annotations on the right will be drawn on the bottom
-        a.coordinates = getBottomCoordinates(centroid[0], centroid[1], yMax, 0, 0, 0, annotationStartPosition);
+        annotation.coordinates = getBottomCoordinates(centroid[0], centroid[1], yMax, 0, 0, 0, annotationStartPosition);
         
-        if (cssModifier !== "narrow" && a.position === "right") {
-          a.coordinates = getRightCoordinates(centroid[0], centroid[1], xMax, 0, 0, annotationStartPosition);
+        if (cssModifier !== "narrow" && annotation.position === "right") {
+          annotation.coordinates = getRightCoordinates(centroid[0], centroid[1], xMax, 0, 0, annotationStartPosition);
         }
       }
     }
@@ -92,9 +94,6 @@ function setCoordinatesForGeoMap(annotations, geoParameters, entityType, annotat
   return annotations;
 }
 
-/**
- * Helper function for setCoordinatesForHexMap() and setCoordinatesForGeoMap()
- */
 function getTopCoordinates(x, y, yMin, horizontalIncrement, verticalIncrement, annotationStartPosition) {
   return {
     x: x + horizontalIncrement,
@@ -106,9 +105,6 @@ function getTopCoordinates(x, y, yMin, horizontalIncrement, verticalIncrement, a
   }
 }
 
-/**
- * Helper function for setCoordinatesForHexMap() and setCoordinatesForGeoMap()
- */
 function getLeftCoordinates(x, y, xMin, verticalIncrement, annotationStartPosition) {
   return {
     x: xMin - annotationStartPosition,
@@ -120,9 +116,6 @@ function getLeftCoordinates(x, y, xMin, verticalIncrement, annotationStartPositi
   }
 }
 
-/**
- * Helper function for setCoordinatesForHexMap() and setCoordinatesForGeoMap()
- */
 function getBottomCoordinates(x, y, yMax, hexHeight, horizontalIncrement, verticalIncrement, annotationStartPosition) {
   return {
     x: x + (horizontalIncrement * 3), // show on right side of hex
@@ -134,9 +127,6 @@ function getBottomCoordinates(x, y, yMax, hexHeight, horizontalIncrement, vertic
   }
 }
 
-/**
- * Helper function for setCoordinatesForHexMap() and setCoordinatesForGeoMap()
- */
 function getRightCoordinates(x, y, xMax, hexWidth, verticalIncrement, annotationStartPosition) {
   return {
     x: xMax + hexWidth + annotationStartPosition,

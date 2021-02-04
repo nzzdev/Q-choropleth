@@ -23,7 +23,6 @@
 
   let cssModifier = getCssModifier(contentWidth);
 
-  // Constants for annotations
   const annotationStartPosition = annotationRadius * 2;
   const annotationSpace = 2 * (annotationRadius + annotationStartPosition + 1); // times two, because annotations can be on both sides (top/bottom or left/right)
 

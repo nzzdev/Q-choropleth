@@ -23,7 +23,6 @@
   
   let cssModifier = getCssModifier(contentWidth);
 
-  // Constants for annotations
   const annotationStartPosition = annotationRadius * 2;
   const annotationSpace = 2 * (annotationRadius + annotationStartPosition + 1); // times two, because annotations can be on both sides (top/bottom or left/right)
   
@@ -77,8 +76,7 @@
       {/each}
       <g class="q-choropleth-features">
         <!--
-          We're finally adding the features with annotations here and not before, because then we can make sure
-          that those features are "on top" of everything else and the border around them is drawn correctly.
+          Features with annotations are added here, so the border around them is drawn correctly.
         -->
         {#each getFeaturesWithAnnotation(geoParameters.features.features, annotations, entityType) as feature}
           <Feature

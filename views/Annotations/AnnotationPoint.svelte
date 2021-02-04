@@ -1,5 +1,4 @@
 <script>
-  // General props
   export let id = 0;
   export let radius = 8;
   export let x;
@@ -21,8 +20,7 @@
     stroke="#000"
     stroke-width={strokeWidth} />
   <!--
-    Why y=4 you ask? Because this makes sure, that the text is vertically
-    centered on most common browsers and (!) on QToPrint.
+    y=4 to vertically center text (important for QToPrint)
   -->
   <text
     y=4

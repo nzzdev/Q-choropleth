@@ -2,7 +2,6 @@
   import AnnotationPoint from "./AnnotationPoint.svelte";
   import { round } from "../helpers/data.js";
 
-  // General props
   export let id = 0;
   export let radius = 8;
   export let coordinates = [];

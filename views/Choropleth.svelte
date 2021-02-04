@@ -20,7 +20,7 @@
   const dataMapping = new Map(item.data);
 
   const maxHeight = 550;
-  const annotations = item.mapAnnotations.map((value, index) => ({ id: index + 1, ...value })); // add id to each annotation
+  const annotations = item.mapAnnotations.map((value, index) => ({ id: index + 1, ...value }));
   const annotationRadius = 8;
 </script>
 

@@ -1,7 +1,6 @@
 <script>
   import AnnotationPoint from "./AnnotationPoint.svelte";
   
-  // General props
   export let annotations = [];
   export let annotationRadius = 8;
   
