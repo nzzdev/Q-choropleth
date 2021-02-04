@@ -196,7 +196,7 @@ annotations = [
 
 The annotations are drawn in svg using the `circle` element for the icon and the `line` element for connecting it to its region. For correctly placing them on the hexagon map, the function `setCoordinatesForHexMap()` is used for calculating the coordinates. The same happens for the geographic map using the function `setCoordinatesForGeoMap()`.
 
-An annotation can be positioned on top, left, bottom or right of the map. On narrow viewports (such as mobile screens) the annotations on the left will be automatically displayed on the top and annotations on the right on the bottom, otherwise the map will get to small.
+An annotation can be positioned on top, left, bottom or right of the map. On narrow viewports (such as mobile screens) the annotations on the left will be automatically displayed on the top and annotations on the right on the bottom, otherwise the map will get too small.
 
 All the `Hexagon` and `Feature` elements, which have an annotation linked to, will be highlighted with a black border.
 
