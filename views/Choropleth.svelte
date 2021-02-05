@@ -74,6 +74,9 @@
           {annotations}
           {annotationRadius} />
       {/if}
+      <AnnotationsLegend
+        {annotations}
+        {annotationRadius} />
       {#if legendData.type === 'numerical'}
         <MethodBox
           {legendData}
@@ -82,9 +85,6 @@
           methodBoxText={methodBox.text}
           methodBoxArticle={methodBox.article} />
       {/if}
-      <AnnotationsLegend
-        {annotations}
-        {annotationRadius} />
     </div>
   {/if}
   <Footer {item} />
