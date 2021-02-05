@@ -818,7 +818,7 @@ lab.experiment("annotations", () => {
       url: "/rendering-info/web?_id=someid",
       method: "POST",
       payload: {
-        item: require("../resources/fixtures/data/geographic-show-annotations.json"),
+        item: require("../resources/fixtures/data/geographic-categorical-show-annotations.json"),
         toolRuntimeConfig: {
           size: {
             width: [
@@ -845,7 +845,7 @@ lab.experiment("annotations", () => {
       url: "/rendering-info/web?_id=someid",
       method: "POST",
       payload: {
-        item: require("../resources/fixtures/data/hexagon-show-annotations.json"),
+        item: require("../resources/fixtures/data/hexagon-categorical-show-annotations.json"),
         toolRuntimeConfig: {
           size: {
             width: [
@@ -872,7 +872,7 @@ lab.experiment("annotations", () => {
       url: "/rendering-info/web?_id=someid",
       method: "POST",
       payload: {
-        item: require("../resources/fixtures/data/geographic-show-annotations.json"),
+        item: require("../resources/fixtures/data/geographic-categorical-show-annotations.json"),
         toolRuntimeConfig: {
           size: {
             width: [
@@ -899,7 +899,7 @@ lab.experiment("annotations", () => {
       url: "/rendering-info/web?_id=someid",
       method: "POST",
       payload: {
-        item: require("../resources/fixtures/data/hexagon-show-annotations.json"),
+        item: require("../resources/fixtures/data/hexagon-categorical-show-annotations.json"),
         toolRuntimeConfig: {
           size: {
             width: [
@@ -926,7 +926,7 @@ lab.experiment("annotations", () => {
       url: "/rendering-info/web?_id=someid",
       method: "POST",
       payload: {
-        item: require("../resources/fixtures/data/geographic-show-annotations.json"),
+        item: require("../resources/fixtures/data/geographic-categorical-show-annotations.json"),
         toolRuntimeConfig: {
           size: {
             width: [
@@ -982,7 +982,7 @@ lab.experiment("annotations", () => {
       url: "/rendering-info/web?_id=someid",
       method: "POST",
       payload: {
-        item: require("../resources/fixtures/data/hexagon-show-annotations.json"),
+        item: require("../resources/fixtures/data/hexagon-categorical-show-annotations.json"),
         toolRuntimeConfig: {
           size: {
             width: [
@@ -1038,7 +1038,7 @@ lab.experiment("annotations", () => {
       url: "/rendering-info/web?_id=someid",
       method: "POST",
       payload: {
-        item: require("../resources/fixtures/data/geographic-show-annotations.json"),
+        item: require("../resources/fixtures/data/geographic-categorical-show-annotations.json"),
         toolRuntimeConfig: {
           size: {
             width: [
@@ -1094,7 +1094,7 @@ lab.experiment("annotations", () => {
       url: "/rendering-info/web?_id=someid",
       method: "POST",
       payload: {
-        item: require("../resources/fixtures/data/hexagon-show-annotations.json"),
+        item: require("../resources/fixtures/data/hexagon-categorical-show-annotations.json"),
         toolRuntimeConfig: {
           size: {
             width: [

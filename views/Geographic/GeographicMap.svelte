@@ -67,24 +67,26 @@
         {/each}
       </g>
     {/if}
-    <g class="q-choropleth-annotations">
-      {#each annotations as { id, coordinates }}
-        <AnnotationPointWithLine
-          id = {id}
-          radius = {annotationRadius}
-          coordinates = {coordinates} />
-      {/each}
-      <g class="q-choropleth-features">
-        <!--
-          Features with annotations are added here, so the border around them is drawn correctly.
-        -->
-        {#each getFeaturesWithAnnotation(geoParameters.features.features, annotations, entityType) as feature}
-          <Feature
-            color={getColor(dataMapping.get(feature.properties[entityType]), legendData)}
-            path={roundCoordinatesInPath(geoParameters.path(feature), 1)}
-            hasAnnotation={true} />
+    {#if annotations && annotations.length > 0}
+      <g class="q-choropleth-annotations">
+        {#each annotations as { id, coordinates }}
+          <AnnotationPointWithLine
+            id = {id}
+            radius = {annotationRadius}
+            coordinates = {coordinates} />
         {/each}
+        <g class="q-choropleth-features">
+          <!--
+            Features with annotations are added here, so the border around them is drawn correctly.
+          -->
+          {#each getFeaturesWithAnnotation(geoParameters.features.features, annotations, entityType) as feature}
+            <Feature
+              color={getColor(dataMapping.get(feature.properties[entityType]), legendData)}
+              path={roundCoordinatesInPath(geoParameters.path(feature), 1)}
+              hasAnnotation={true} />
+          {/each}
+        </g>
       </g>
-    </g>
+    {/if}
   </svg>
 </ResponsiveSvg>

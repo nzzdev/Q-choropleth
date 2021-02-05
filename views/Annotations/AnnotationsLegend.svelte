@@ -8,7 +8,7 @@
   let y = (annotationRadius + 1);
 </script>
 
-<div class="q-choropleth-legend-annotations s-font-note" style="display: flex; flex-direction: column;">
+<div class="q-choropleth-legend-annotations s-font-note" style="display: flex; flex-direction: column; margin-bottom: 8px;">
   {#each annotations as { id, annotation }}
     <div class="q-choropleth-legend-annotation" style="display: flex; flex-direction: row; margin-top: 4px;">
       <div style="height: 18px; width: 18px; margin-right: 4px;">
