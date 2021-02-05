@@ -145,13 +145,15 @@
           {hasAnnotation} />
       {/each}
     </g>
-    <g class="q-choropleth-annotations">
-      {#each annotations as { id, coordinates }}
-        <AnnotationPointWithLine
-          id = {id}
-          radius = {annotationRadius}
-          coordinates = {coordinates} />
-      {/each}
-    </g>
+    {#if annotations && annotations.length > 0}
+      <g class="q-choropleth-annotations">
+        {#each annotations as { id, coordinates }}
+          <AnnotationPointWithLine
+            id = {id}
+            radius = {annotationRadius}
+            coordinates = {coordinates} />
+        {/each}
+      </g>
+    {/if}
   </svg>
 </ResponsiveSvg>
