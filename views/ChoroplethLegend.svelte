@@ -137,10 +137,10 @@
         class="q-choropleth-legend-container"
         style="width: {widthConfig.legend}%">
         <div class="q-choropleth-legend-value-container">
-          <span class="q-choropleth-legend-value-container--minVal s-font-note">
+          <span class="q-choropleth-legend-value-container--minVal s-font-note s-font-note--tabularnums">
             {getFormattedValueForBuckets(formattingOptions, legendData.minValue)}
           </span>
-          <span class="q-choropleth-legend-value-container--maxVal s-font-note">
+          <span class="q-choropleth-legend-value-container--maxVal s-font-note s-font-note--tabularnums">
             {getFormattedValueForBuckets(formattingOptions, legendData.maxValue)}
           </span>
         </div>
@@ -182,7 +182,7 @@
         </div>
         {#if labelLegend.label !== 'noLabel'}
           <div
-            class="q-choropleth-legend-marker s-font-note"
+            class="q-choropleth-legend-marker s-font-note s-font-note--tabularnums"
             style={getDescriptionAlignment(labelLegend)}>
             {labelLegend.label}: {getFormattedValue(formattingOptions, labelLegend.value)}
           </div>
@@ -205,7 +205,7 @@
                     class="q-choropleth-legend-bucket {getColorClass(legendData.buckets[0])}"
                     style="fill: {getCustomColor(legendData.buckets[0])}" />
                 </svg>
-                <div class="s-legend-item-label__item__label">
+                <div class="s-legend-item-label__item__label s-font-note--tabularnums">
                   = {getFormattedValueForBuckets(formattingOptions, legendData.buckets[0].from)}
                 </div>
               </div>

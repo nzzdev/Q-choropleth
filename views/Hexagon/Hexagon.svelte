@@ -20,7 +20,8 @@
     getPolygonPoints(x, y, width, growFactor),
     1
   );
-  const fontNoteClass = (cssModifier === "narrow" ? "s-font-note-s" : "s-font-note");
+  const fontNoteClass =
+    cssModifier === "narrow" ? "s-font-note-s" : "s-font-note";
 
   /**
    * grow factor = 1 would mean, that hexagons are sticked together
@@ -31,9 +32,9 @@
    */
   function getGrowFactor(hasAnnotation, cssModifier, type) {
     if (hasAnnotation) {
-      return (cssModifier === "narrow" ? 0.935 : 0.96);
+      return cssModifier === "narrow" ? 0.935 : 0.96;
     } else {
-      return (type === 'fill' ? 0.98 : 0.97);
+      return type === "fill" ? 0.98 : 0.97;
     }
   }
 
@@ -77,7 +78,7 @@
     fill={color.customColor && color.customColor.length > 0 ? color.customColor : 'currentColor'}
     stroke={undefined}
     stroke-width={undefined} />
-  <g class={fontNoteClass}>
+  <g class="{fontNoteClass} s-font-note--tabularnums">
     {#if valuesOnMap}
       <text
         x={x + width / 2}
@@ -121,7 +122,7 @@
     fill="#fff"
     stroke="currentColor"
     stroke-width="0.4" />
-  <g class={fontNoteClass}>
+  <g class="{fontNoteClass} s-font-note--tabularnums">
     {#if valuesOnMap}
       <text
         x={x + width / 2}

@@ -20,7 +20,7 @@
             q-choropleth-methods-circle-static s-legend-item-label__item__icon
             s-legend-item-label__item__icon--default"
             style="color: {bucket.color.customColor !== undefined ? bucket.color.customColor : ''};" />
-          <div class="s-legend-item-label__item__label">
+          <div class="s-legend-item-label__item__label s-font-note--tabularnums">
             {#if index === 0 && legendData.hasSingleValueBucket}
               {getFormattedValueForBuckets(formattingOptions, bucket.from)} (nur
               ein Datenpunkt)
@@ -43,7 +43,7 @@
   </div>
   <div class="q-choropleth-methods-container hidden s-font-note-s">
     <div class="q-choropleth-methods-legend">
-      <table class="q-choropleth-methods-legend-table">
+      <table class="q-choropleth-methods-legend-table s-font-note--tabularnums">
         {#each legendData.buckets as bucket, index}
           <tr>
             <td>
@@ -64,7 +64,7 @@
               <td>
                 {getFormattedValueForBuckets(formattingOptions, bucket.from)}
               </td>
-              <td>-</td>
+              <td>–</td>
               <td>
                 {getFormattedValueForBuckets(formattingOptions, bucket.to)}
               </td>
