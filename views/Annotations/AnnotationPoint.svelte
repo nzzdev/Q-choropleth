@@ -22,7 +22,7 @@
     stroke="#000"
     stroke-width={strokeWidth} />
   <!--
-    y=4 to vertically center text (important for QToPrint)
+    y=0.35em to vertically center text (important for QToPrint)
   -->
   <text
     y="0.35em"
