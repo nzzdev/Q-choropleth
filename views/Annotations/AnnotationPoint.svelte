@@ -12,9 +12,11 @@
   export let textColorClass;
 </script>
 
-<g class="s-font-note-s" transform="translate({x}, {y})">
+<g class="s-font-note-s">
   <circle
     r={radius}
+    cx="{x}"
+    cy="{y}"
     class={circleColorClass}
     fill={circleColorClass ? "currentColor" : "#fff"}
     stroke="#000"
@@ -23,7 +25,9 @@
     y=4 to vertically center text (important for QToPrint)
   -->
   <text
-    y=4
+    y="0.35em"
+    dx="{x}"
+    dy="{y}"
     class={textColorClass}
     fill="currentColor"
     font-weight=700
