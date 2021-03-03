@@ -8,10 +8,10 @@
   let y = "50%";
 </script>
 
-<div class="s-q-item__legend-annotations s-font-note">
+<div class="s-q-item__annotation-legend s-font-note">
   {#each annotations as { id, annotation }}
-    <div class="s-q-item__legend-annotation">
-      <div class="s-q-item__legend-annotation__icon">
+    <div class="s-q-item__annotation-item">
+      <div class="s-q-item__annotation-item__icon">
         <svg width="1.4em" height="1.4em">
           <AnnotationPoint
             {id}
@@ -20,7 +20,7 @@
             {y} />
         </svg>
       </div>
-      <div class="s-q-item__legend-annotation__label">{annotation}</div>
+      <div class="s-q-item__annotation-item__label">{annotation}</div>
     </div>
   {/each}
 </div>
