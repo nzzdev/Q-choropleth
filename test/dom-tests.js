@@ -873,7 +873,7 @@ lab.experiment("annotations", () => {
 
     return elementCount(
       response.result.markup,
-      ".s-q-item__legend-annotation"
+      ".s-q-item__annotation-legend__item"
     ).then((value) => {
       expect(value).to.be.equal(5);
     });
@@ -900,7 +900,7 @@ lab.experiment("annotations", () => {
 
     return elementCount(
       response.result.markup,
-      ".s-q-item__legend-annotation"
+      ".s-q-item__annotation-legend__item"
     ).then((value) => {
       expect(value).to.be.equal(5);
     });
@@ -927,7 +927,7 @@ lab.experiment("annotations", () => {
 
     return elementCount(
       response.result.markup,
-      ".s-q-item__legend-annotation"
+      ".s-q-item__annotation-legend__item"
     ).then((value) => {
       expect(value).to.be.equal(5);
     });
@@ -954,7 +954,7 @@ lab.experiment("annotations", () => {
 
     return elementCount(
       response.result.markup,
-      ".s-q-item__legend-annotation"
+      ".s-q-item__annotation-legend__item"
     ).then((value) => {
       expect(value).to.be.equal(5);
     });
