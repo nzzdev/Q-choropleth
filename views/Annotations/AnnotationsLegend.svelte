@@ -1,18 +1,18 @@
 <script>
   import AnnotationPoint from "./AnnotationPoint.svelte";
-  
+
   export let annotations = [];
   export let annotationRadius = 8;
-  
-  let x = (annotationRadius + 1);
-  let y = (annotationRadius + 1);
+
+  let x = "50%";
+  let y = "50%";
 </script>
 
-<div class="q-choropleth-legend-annotations s-font-note" style="display: flex; flex-direction: column; margin-bottom: 8px;">
+<div class="s-q-item__annotation-legend s-font-note">
   {#each annotations as { id, annotation }}
-    <div class="q-choropleth-legend-annotation" style="display: flex; flex-direction: row; margin-top: 4px;">
-      <div style="height: 18px; width: 18px; margin-right: 4px;">
-        <svg width=18 height=18 viewBox="0 0 18 18">
+    <div class="s-q-item__annotation-legend__item">
+      <div class="s-q-item__annotation-legend__item__icon">
+        <svg width="1.4em" height="1.4em">
           <AnnotationPoint
             {id}
             radius = {annotationRadius}
@@ -20,7 +20,7 @@
             {y} />
         </svg>
       </div>
-      <div style="display: flex; align-items: center;">{annotation}</div>
+      <div class="s-q-item__annotation-legend__item__label">{annotation}</div>
     </div>
   {/each}
 </div>
