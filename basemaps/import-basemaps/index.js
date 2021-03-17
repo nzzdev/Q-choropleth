@@ -75,7 +75,6 @@ async function saveBasemap(basemapName, basemap) {
       return await insert(basemap);
     } else {
       const doc = response.docs.pop();
-      basemap._id = doc._id;
       basemap._rev = doc._rev;
       return await insert(basemap);
     }
@@ -95,6 +94,7 @@ async function main() {
         const basemapUrl = await uploadBasemapData(id, version.data, bearer);
         version.data = basemapUrl;
       }
+      basemap._id = basemapName;
       const response = await saveBasemap(basemapName, basemap);
       if (response.status === "success") {
         console.log(`Successfully stored ${basemapName}`);

@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "download-basemaps": "node ./prepare-basemaps/download-basemaps/index.js",
+    "import-basemaps": "node ./import-basemaps/dev.js"
   },
   "author": "",
   "license": "MIT",

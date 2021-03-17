@@ -14,6 +14,13 @@
     {
       "type": "node",
       "request": "launch",
+      "name": "Debug download-basemaps script",
+      "program": "index.js",
+      "cwd": "${workspaceFolder}/basemaps/prepare-basemaps/download-basemaps/"
+    },
+    {
+      "type": "node",
+      "request": "launch",
       "name": "Debug import-basemaps script",
       "program": "dev.js",
       "cwd": "${workspaceFolder}/basemaps/import-basemaps/"
