@@ -15,7 +15,38 @@
             "entityTypes": { "ags": "AGS", "nuts": "NUTS" }
           },
           "entities": {
-            "dataUrl": "https://daten.gdz.bkg.bund.de/produkte/vg/vg1000_ebenen_0101/aktuell/vg1000_01-01.gk3.shape.ebenen.zip"
+            "dataUrl": "https://daten.gdz.bkg.bund.de/produkte/vg/vg1000_ebenen_0101/aktuell/vg1000_01-01.gk3.shape.ebenen.zip",
+            "dataPath": "./00-download-basemaps/data/vg1000_01-01.gk3.shape.ebenen/vg1000_ebenen_0101/VG1000_KRS.shp",
+            "dataPropertyMapping": {
+              "ags": "AGS",
+              "name": "GEN",
+              "nuts": "NUTS"
+            },
+            "rewriteProperties": {
+              "03458": "Kreis Oldenburg",
+              "03459": "Kreis Osnabrück",
+              "06633": "Kreis Kassel",
+              "07335": "Kreis Kaiserslautern",
+              "08125": "Kreis Heilbronn",
+              "08215": "Kreis Karlsruhe",
+              "09184": "Kreis München",
+              "09187": "Kreis Rosenheim",
+              "09274": "Kreis Landshut",
+              "09275": "Kreis Passau",
+              "09375": "Kreis Regensburg",
+              "09471": "Kreis Bamberg",
+              "09472": "Kreis Bayreuth",
+              "09473": "Kreis Coburg",
+              "09475": "Kreis Hof",
+              "09571": "Kreis Ansbach",
+              "09573": "Kreis Fürth",
+              "09671": "Kreis Aschaffenburg",
+              "09678": "Kreis Schweinfurt",
+              "09679": "Kreis Würzburg",
+              "09772": "Kreis Augsburg",
+              "13072": "Kreis Rostock",
+              "14729": "Kreis Leipzig"
+            }
           }
         }
       }

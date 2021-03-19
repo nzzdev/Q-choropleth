@@ -16,7 +16,21 @@
       "request": "launch",
       "name": "Debug download-basemaps script",
       "program": "index.js",
-      "cwd": "${workspaceFolder}/basemaps/prepare-basemaps/download-basemaps/"
+      "cwd": "${workspaceFolder}/basemaps/prepare-basemaps/00-download-basemaps/"
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Debug generate-basemaps script",
+      "program": "index.js",
+      "cwd": "${workspaceFolder}/basemaps/prepare-basemaps/01-generate-basemaps/"
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Debug final-basemaps script",
+      "program": "index.js",
+      "cwd": "${workspaceFolder}/basemaps/prepare-basemaps/02-final-basemaps/"
     },
     {
       "type": "node",

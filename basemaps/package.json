@@ -4,7 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "download-basemaps": "node ./prepare-basemaps/download-basemaps/index.js",
+    "download-basemaps": "node ./prepare-basemaps/00-download-basemaps/index.js",
+    "generate-basemaps": "node ./prepare-basemaps/01-generate-basemaps/index.js",
+    "final-basemaps": "node ./prepare-basemaps/02-final-basemaps/index.js",
+    "prepare-basemaps": "npm run download-basemaps && npm run generate-basemaps && npm run final-basemaps",
     "import-basemaps": "node ./import-basemaps/dev.js"
   },
   "author": "",
@@ -13,6 +16,8 @@
     "form-data": "^4.0.0",
     "nano": "^8.2.1",
     "node-fetch": "^2.6.1",
-    "promptly": "^3.2.0"
+    "promptly": "^3.2.0",
+    "shelljs": "^0.8.4",
+    "unzipper": "^0.10.11"
   }
 }

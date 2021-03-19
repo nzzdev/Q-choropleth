@@ -5,8 +5,7 @@ const glob = require("glob");
 const fetch = require("node-fetch");
 const FormData = require("form-data");
 const promptly = require("promptly");
-const basemapsPath = "../prepare-basemaps/final-basemaps";
-const basemaps = glob.sync(`./${basemapsPath}/*.json`);
+const basemaps = glob.sync("../prepare-basemaps/02-final-basemaps/data/*.json");
 
 async function getBearerToken() {
   if (!process.env.Q_SERVER_AUTH) {
