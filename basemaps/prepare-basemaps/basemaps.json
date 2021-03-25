@@ -16,8 +16,9 @@
           },
           "entities": {
             "dataUrl": "https://daten.gdz.bkg.bund.de/produkte/vg/vg1000_ebenen_0101/aktuell/vg1000_01-01.gk3.shape.ebenen.zip",
-            "dataPath": "./00-download-basemaps/data/vg1000_01-01.gk3.shape.ebenen/vg1000_ebenen_0101/VG1000_KRS.shp",
-            "dataPropertyMapping": {
+            "featuresPath": "./00-download-basemaps/data/vg1000_01-01.gk3.shape.ebenen/vg1000_ebenen_0101/VG1000_KRS.shp",
+            "outlinesPath": "./00-download-basemaps/data/vg1000_01-01.gk3.shape.ebenen/vg1000_ebenen_0101/VG1000_LAN.shp",
+            "featuresPropertyMapping": {
               "ags": "AGS",
               "name": "GEN",
               "nuts": "NUTS"

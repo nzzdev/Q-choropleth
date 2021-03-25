@@ -2,40 +2,46 @@ const path = require("path");
 const insert = require("./db.js").insert;
 const get = require("./db.js").get;
 const glob = require("glob");
+const basemaps = glob.sync(
+  `${__dirname}/../prepare-basemaps/02-final-basemaps/data/*.json`
+);
 const fetch = require("node-fetch");
 const FormData = require("form-data");
 const promptly = require("promptly");
-const basemaps = glob.sync("../prepare-basemaps/02-final-basemaps/data/*.json");
 
 async function getBearerToken() {
-  if (!process.env.Q_SERVER_AUTH) {
-    const password = await promptly.password(
-      "Enter your livingdocs password: ",
-      {
-        replace: "*",
-      }
-    );
-
-    const response = await fetch(
-      `${process.env.Q_SERVER_BASE_URL}/authenticate`,
-      {
-        method: "POST",
-        body: JSON.stringify({
-          username: process.env.LD_USERNAME,
-          password: password.trim(),
-        }),
-      }
-    );
-    if (response.ok) {
-      const body = await response.json();
-      return `Bearer ${body.access_token}`;
-    } else {
-      throw new Error(
-        `Error occured while authenticating: (${response.status}) ${response.statusText}`
+  try {
+    if (!process.env.Q_SERVER_AUTH) {
+      const password = await promptly.password(
+        "Enter your livingdocs password: ",
+        {
+          replace: "*",
+        }
       );
+
+      const response = await fetch(
+        `${process.env.Q_SERVER_BASE_URL}/authenticate`,
+        {
+          method: "POST",
+          body: JSON.stringify({
+            username: process.env.LD_USERNAME,
+            password: password.trim(),
+          }),
+        }
+      );
+      if (response.ok) {
+        const body = await response.json();
+        return `Bearer ${body.access_token}`;
+      } else {
+        throw new Error(
+          `Error occured while authenticating: (${response.status}) ${response.statusText}`
+        );
+      }
+    } else {
+      return `Bearer ${process.env.Q_SERVER_AUTH}`;
     }
-  } else {
-    return `Bearer ${process.env.Q_SERVER_AUTH}`;
+  } catch (error) {
+    console.log(error);
   }
 }
 

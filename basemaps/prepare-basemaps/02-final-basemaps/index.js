@@ -4,7 +4,7 @@ const basemaps = require("../basemaps.json");
 async function main() {
   for (let basemap of basemaps) {
     for (let version of basemap.versions) {
-      if (version.data.entities.dataPath) {
+      if (version.data.entities.featuresPath) {
         const geojson = require(`${__dirname}/../01-generate-basemaps/data/${basemap.id}-${version.validFrom}.json`);
         version.data.entities = geojson;
       }
