@@ -95,4 +95,56 @@ module.exports = [
       },
     ],
   },
+  {
+    id: "hexagonDEBundesländer",
+    title: "Hexagon Deutschland (Bundesländer)",
+    versions: [
+      {
+        validFrom: "1990-01-01T00:00:00.000Z",
+        data: {
+          config: {
+            displayEntityType: "code",
+            defaultEntityType: "name",
+            entityTypes: {
+              ags: "AGS",
+              code: "Abkürzung",
+              name: "Name",
+            },
+          },
+          entities: [
+            [
+              null,
+              { ags: "01", code: "SH", name: "Schleswig-Holstein" },
+              { ags: "13", code: "MV", name: "Mecklenburg-Vorpommern" },
+            ],
+            [
+              { ags: "04", code: "HB", name: "Bremen" },
+              { ags: "02", code: "HH", name: "Hamburg" },
+              { ags: "12", code: "BB", name: "Brandenburg" },
+            ],
+            [
+              { ags: "03", code: "NI", name: "Niedersachsen" },
+              { ags: "15", code: "ST", name: "Sachsen-Anhalt" },
+              { ags: "11", code: "BE", name: "Berlin" },
+            ],
+            [
+              { ags: "05", code: "NW", name: "Nordrhein-Westfalen" },
+              { ags: "16", code: "TH", name: "Thüringen" },
+              { ags: "14", code: "SN", name: "Sachsen" },
+            ],
+            [
+              { ags: "07", code: "RP", name: "Rheinland-Pfalz" },
+              { ags: "06", code: "HE", name: "Hessen" },
+              { ags: "09", code: "BY", name: "Bayern" },
+            ],
+            [
+              { ags: "10", code: "SL", name: "Saarland" },
+              { ags: "08", code: "BW", name: "Baden-Württemberg" },
+              null,
+            ],
+          ],
+        },
+      },
+    ],
+  },
 ];
