@@ -1,21 +1,16 @@
-const unzipper = require("unzipper");
-const fetch = require("node-fetch");
-const basemaps = require("../basemaps.json");
+const basemaps = require("../config/basemaps.js");
 
 async function main() {
-  for (let basemap of basemaps) {
-    for (let version of basemap.versions) {
-      if (version.data.entities.dataUrl) {
-        const response = await fetch(version.data.entities.dataUrl);
-        if (response.ok) {
-          response.body.pipe(
-            unzipper.Extract({
-              path: `${__dirname}/data`,
-            })
-          );
+  try {
+    for (let basemap of basemaps) {
+      for (let version of basemap.versions) {
+        if (version.data.entities.download) {
+          await version.data.entities.download(basemap, version);
         }
       }
     }
+  } catch (error) {
+    console.log(error);
   }
 }
 

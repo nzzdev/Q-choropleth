@@ -4,11 +4,11 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "prepare-basemaps": "npm run download-basemaps && npm run generate-basemaps && npm run final-basemaps",
+    "import-basemaps": "node ./import-basemaps/dev.js",
     "download-basemaps": "node ./prepare-basemaps/00-download-basemaps/index.js",
     "generate-basemaps": "node ./prepare-basemaps/01-generate-basemaps/index.js",
-    "final-basemaps": "node ./prepare-basemaps/02-final-basemaps/index.js",
-    "prepare-basemaps": "npm run download-basemaps && npm run generate-basemaps && npm run final-basemaps",
-    "import-basemaps": "node ./import-basemaps/dev.js"
+    "final-basemaps": "node ./prepare-basemaps/02-final-basemaps/index.js"
   },
   "author": "",
   "license": "MIT",
