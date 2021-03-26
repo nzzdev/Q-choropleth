@@ -1,42 +1,24 @@
 module.exports = [
   {
-    id: "de-landkreise-geographic",
-    title: "Deutschland » Landkreise (geografisch)",
+    id: "ch-cantons-geographic",
+    title: "Schweiz » Kantone (geografisch)",
     versions: [
       {
-        validFrom: "2020-01-01T00:00:00.000Z",
+        validFrom: "2021-01-01T00:00:00.000Z",
         source: {
           url:
-            "https://gdz.bkg.bund.de/index.php/default/digitale-geodaten/verwaltungsgebiete/verwaltungsgebiete-1-1-000-000-ebenen-stand-01-01-vg1000-ebenen-01-01.html",
-          label: "© GeoBasis-DE / BKG 2020",
-        },
-        data: {
-          config: {
-            defaultEntityType: "ags",
-            entityTypes: { ags: "AGS", nuts: "NUTS" },
-          },
-          entities: require("./basemaps/de-landkreise-geographic.js"),
-        },
-      },
-    ],
-  },
-  {
-    id: "de-bundeslander-geographic",
-    title: "Deutschland » Bundesländer (geografisch)",
-    versions: [
-      {
-        validFrom: "2020-01-01T00:00:00.000Z",
-        source: {
-          url:
-            "https://gdz.bkg.bund.de/index.php/default/digitale-geodaten/verwaltungsgebiete/verwaltungsgebiete-1-1-000-000-ebenen-stand-01-01-vg1000-ebenen-01-01.html",
-          label: "© GeoBasis-DE / BKG 2020",
+            "https://www.swisstopo.admin.ch/de/geodata/landscape/boundaries3d.html",
+          label: "© Swisstopo",
         },
         data: {
           config: {
             defaultEntityType: "name",
-            entityTypes: { ags: "AGS", name: "Name", nuts: "NUTS" },
+            entityTypes: {
+              name: "Name",
+              bfsNumber: "BfS Nummer",
+            },
           },
-          entities: require("./basemaps/de-bundeslander-geographic.js"),
+          entities: require("./basemaps/ch-cantons-geographic.js"),
         },
       },
     ],
@@ -117,6 +99,27 @@ module.exports = [
     ],
   },
   {
+    id: "de-bundeslander-geographic",
+    title: "Deutschland » Bundesländer (geografisch)",
+    versions: [
+      {
+        validFrom: "2020-01-01T00:00:00.000Z",
+        source: {
+          url:
+            "https://gdz.bkg.bund.de/index.php/default/digitale-geodaten/verwaltungsgebiete/verwaltungsgebiete-1-1-000-000-ebenen-stand-01-01-vg1000-ebenen-01-01.html",
+          label: "© GeoBasis-DE / BKG 2020",
+        },
+        data: {
+          config: {
+            defaultEntityType: "name",
+            entityTypes: { ags: "AGS", name: "Name", nuts: "NUTS" },
+          },
+          entities: require("./basemaps/de-bundeslander-geographic.js"),
+        },
+      },
+    ],
+  },
+  {
     id: "de-bundeslander-hexagon",
     title: "Deutschland » Bundesländer (hexagon)",
     versions: [
@@ -164,6 +167,27 @@ module.exports = [
               null,
             ],
           ],
+        },
+      },
+    ],
+  },
+  {
+    id: "de-landkreise-geographic",
+    title: "Deutschland » Landkreise (geografisch)",
+    versions: [
+      {
+        validFrom: "2020-01-01T00:00:00.000Z",
+        source: {
+          url:
+            "https://gdz.bkg.bund.de/index.php/default/digitale-geodaten/verwaltungsgebiete/verwaltungsgebiete-1-1-000-000-ebenen-stand-01-01-vg1000-ebenen-01-01.html",
+          label: "© GeoBasis-DE / BKG 2020",
+        },
+        data: {
+          config: {
+            defaultEntityType: "ags",
+            entityTypes: { ags: "AGS", nuts: "NUTS" },
+          },
+          entities: require("./basemaps/de-landkreise-geographic.js"),
         },
       },
     ],

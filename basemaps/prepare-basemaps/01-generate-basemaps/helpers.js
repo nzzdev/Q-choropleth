@@ -14,7 +14,7 @@ function getNameValue(defaultValue, rewriteProperties, properties) {
   // rewrite some name values as defined in rewriteProperties
   for (let [rewriteKey, rewriteValue] of Object.entries(rewriteProperties)) {
     for (let [propertyKey, propertyValue] of Object.entries(properties))
-      if (propertyValue === rewriteKey) {
+      if (propertyValue.toString() === rewriteKey.toString()) {
         name = rewriteValue;
       }
   }
@@ -28,9 +28,9 @@ function setProperties(fileName, propertyMapping, rewriteProperties) {
     const properties = {};
     for (let [key, value] of Object.entries(propertyMapping)) {
       if (feature.properties[value]) {
-        properties[key] = feature.properties[value];
+        properties[key] = feature.properties[value].toString();
         if (key === "name") {
-          const defaultValue = feature.properties[value];
+          const defaultValue = feature.properties[value].toString();
           properties[key] = getNameValue(
             defaultValue,
             rewriteProperties,
