@@ -1,7 +1,7 @@
 {
   "title": "FIXTURE: Geographisch Deutschland (Landkreise) - Kategorisch",
   "subtitle": "Subtitle",
-  "baseMap": "geographicDELandkreise",
+  "baseMap": "de-landkreise-geographic",
   "version": "2020-01-01T00:00:00.000Z",
   "entityType": "nuts",
   "data": [

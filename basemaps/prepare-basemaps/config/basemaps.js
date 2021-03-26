@@ -1,7 +1,7 @@
 module.exports = [
   {
-    id: "geographicDELandkreise",
-    title: "Geographisch Deutschland (Landkreise)",
+    id: "de-landkreise-geographic",
+    title: "Deutschland » Landkreise (geografisch)",
     versions: [
       {
         validFrom: "2020-01-01T00:00:00.000Z",
@@ -15,14 +15,14 @@ module.exports = [
             defaultEntityType: "ags",
             entityTypes: { ags: "AGS", nuts: "NUTS" },
           },
-          entities: require("./geographicDELandkreise.js"),
+          entities: require("./basemaps/de-landkreise-geographic.js"),
         },
       },
     ],
   },
   {
-    id: "geographicDEBundesländer",
-    title: "Geographisch Deutschland (Bundesländer)",
+    id: "de-bundeslander-geographic",
+    title: "Deutschland » Bundesländer (geografisch)",
     versions: [
       {
         validFrom: "2020-01-01T00:00:00.000Z",
@@ -36,14 +36,14 @@ module.exports = [
             defaultEntityType: "name",
             entityTypes: { ags: "AGS", name: "Name", nuts: "NUTS" },
           },
-          entities: require("./geographicDEBundeslander.js"),
+          entities: require("./basemaps/de-bundeslander-geographic.js"),
         },
       },
     ],
   },
   {
-    id: "hexagonCHCantons",
-    title: "Hexagon Schweiz (Kantone)",
+    id: "ch-cantons-hexagon",
+    title: "Schweiz » Kantone (hexagon)",
     versions: [
       {
         validFrom: "1997-01-01T00:00:00.000Z",
@@ -117,8 +117,8 @@ module.exports = [
     ],
   },
   {
-    id: "hexagonDEBundesländer",
-    title: "Hexagon Deutschland (Bundesländer)",
+    id: "de-bundeslander-hexagon",
+    title: "Deutschland » Bundesländer (hexagon)",
     versions: [
       {
         validFrom: "1990-01-01T00:00:00.000Z",

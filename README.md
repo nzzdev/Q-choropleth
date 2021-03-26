@@ -95,7 +95,7 @@ The basemaps are stored in a couchdb database. Basemaps are versioned, because a
 
 ```json
 {
-  "_id": "hexagonCHCantons",
+  "_id": "ch-cantons-hexagon",
   "title": "Hexagon Schweiz (Kantone)",
   "versions": [
     {

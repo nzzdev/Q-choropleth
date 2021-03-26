@@ -1,7 +1,7 @@
 {
   "title": "FIXTURE: Hexagon Schweiz (Kantone) - Nummerisch mit Annotationen",
   "subtitle": "Subtitle",
-  "baseMap": "hexagonCHCantons",
+  "baseMap": "ch-cantons-hexagon",
   "version": "1997-01-01T00:00:00.000Z",
   "entityType": "name",
   "data": [
@@ -34,11 +34,11 @@
     ["Zürich", "15"]
   ],
   "mapAnnotations": [
-    {"annotation": "Zürich", "region": "ZH", "position": "top"},
-    {"annotation": "Bern", "region": "BE", "position": "left"},
-    {"annotation": "St. Gallen", "region": "SG", "position": "right"},
-    {"annotation": "Nidwalden", "region": "NW", "position": "bottom"},
-    {"annotation": "Wallis", "region": "VS", "position": "bottom"}
+    { "annotation": "Zürich", "region": "ZH", "position": "top" },
+    { "annotation": "Bern", "region": "BE", "position": "left" },
+    { "annotation": "St. Gallen", "region": "SG", "position": "right" },
+    { "annotation": "Nidwalden", "region": "NW", "position": "bottom" },
+    { "annotation": "Wallis", "region": "VS", "position": "bottom" }
   ],
   "sources": [],
   "notes": "",
