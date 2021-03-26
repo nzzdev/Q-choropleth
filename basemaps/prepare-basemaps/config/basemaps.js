@@ -21,6 +21,27 @@ module.exports = [
     ],
   },
   {
+    id: "geographicDEBundesländer",
+    title: "Geographisch Deutschland (Bundesländer)",
+    versions: [
+      {
+        validFrom: "2020-01-01T00:00:00.000Z",
+        source: {
+          url:
+            "https://gdz.bkg.bund.de/index.php/default/digitale-geodaten/verwaltungsgebiete/verwaltungsgebiete-1-1-000-000-ebenen-stand-01-01-vg1000-ebenen-01-01.html",
+          label: "© GeoBasis-DE / BKG 2020",
+        },
+        data: {
+          config: {
+            defaultEntityType: "name",
+            entityTypes: { ags: "AGS", name: "Name", nuts: "NUTS" },
+          },
+          entities: require("./geographicDEBundeslander.js"),
+        },
+      },
+    ],
+  },
+  {
     id: "hexagonCHCantons",
     title: "Hexagon Schweiz (Kantone)",
     versions: [
