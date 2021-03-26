@@ -24,7 +24,7 @@ async function getBearerToken() {
         {
           method: "POST",
           body: JSON.stringify({
-            username: process.env.LD_USERNAME,
+            username: process.env.USERNAME,
             password: password.trim(),
           }),
         }

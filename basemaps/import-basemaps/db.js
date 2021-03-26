@@ -7,8 +7,8 @@ if (process.env.COUCHDB) {
     url: `https://${couchdbConfig.host}/${couchdbConfig.database}/`,
     requestDefaults: {
       auth: {
-        user: couchdbConfig.user,
-        pass: couchdbConfig.pass,
+        user: couchdbConfig.username,
+        pass: couchdbConfig.password,
       },
     },
   };

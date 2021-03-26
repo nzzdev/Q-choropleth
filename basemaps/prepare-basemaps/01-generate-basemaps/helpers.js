@@ -1,5 +1,4 @@
 const shell = require("shelljs");
-const path = require("path");
 const fs = require("fs");
 
 function convertToGeojson(inputPath, outputPath, commandExtension) {
