@@ -49,7 +49,7 @@ Defines the Q-Server-Baseurl which is used to upload a basemap file to an object
 
 Defines the username which is used to get the authentication token in order to upload a basemap file.
 
-### (optional) Q_SERVER_AUTH
+#### (optional) Q_SERVER_AUTH
 
 Defines the bearer token directly. If this environment variable is set, the password will not be asked. This can be used for debugging or in server environment where a password prompt is not desirable.
 
@@ -57,5 +57,4 @@ The import basemaps process can be run like this:
 
 ```js
 npm run import-basemaps
-
 ```
