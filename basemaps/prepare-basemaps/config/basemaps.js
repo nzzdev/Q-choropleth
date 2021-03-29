@@ -192,4 +192,28 @@ module.exports = [
       },
     ],
   },
+  {
+    id: "europe-countries-geographic",
+    title: "Europa » Länder (geografisch)",
+    versions: [
+      {
+        validFrom: "2020-01-01T00:00:00.000Z",
+        source: {
+          url:
+            "https://ec.europa.eu/eurostat/web/gisco/geodata/reference-data/administrative-units-statistical-units/nuts",
+          label: "© EuroGeographics",
+        },
+        data: {
+          config: {
+            defaultEntityType: "name",
+            entityTypes: {
+              name: "Name",
+              nuts: "NUTS",
+            },
+          },
+          entities: require("./basemaps/europe-countries-geographic.js"),
+        },
+      },
+    ],
+  },
 ];
