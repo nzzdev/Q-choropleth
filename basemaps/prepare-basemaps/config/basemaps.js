@@ -149,6 +149,30 @@ module.exports = [
     ],
   },
   {
+    id: "ch-zurich-municipalities-geographic",
+    title: "Schweiz » Zürich » Gemeinden",
+    versions: [
+      {
+        validFrom: "2019-01-01T00:00:00.000Z",
+        source: {
+          url:
+            "https://www.zh.ch/de/planen-bauen/geoinformation/geodaten/geodatenshop/vorlagen-fuer-administrativer-grenzen-und-karten.html#1791164494",
+          label: "© Statistisches Amt Kanton Zürich",
+        },
+        data: {
+          config: {
+            defaultEntityType: "id",
+            entityTypes: {
+              id: "BfS Nummer",
+            },
+            projection: "mercator",
+          },
+          entities: require("./basemaps/ch-zurich-municipalities-geographic.js"),
+        },
+      },
+    ],
+  },
+  {
     id: "de-bundeslander-geographic",
     title: "Deutschland » Bundesländer (geografisch)",
     versions: [
