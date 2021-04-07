@@ -149,6 +149,29 @@ module.exports = [
     ],
   },
   {
+    id: "ch-zurich-city-districts-geographic",
+    title: "Schweiz » Zürich » Stadtkreise",
+    versions: [
+      {
+        validFrom: "2021-01-01T00:00:00.000Z",
+        source: {
+          url: "https://data.stadt-zuerich.ch/dataset/geo_stadtkreise",
+          label: "© Open Data Zürich",
+        },
+        data: {
+          config: {
+            defaultEntityType: "id",
+            entityTypes: {
+              id: "Kreis Nummer",
+            },
+            projection: "mercator",
+          },
+          entities: require("./basemaps/ch-zurich-city-districts-geographic.js"),
+        },
+      },
+    ],
+  },
+  {
     id: "ch-zurich-municipalities-geographic",
     title: "Schweiz » Zürich » Gemeinden",
     versions: [

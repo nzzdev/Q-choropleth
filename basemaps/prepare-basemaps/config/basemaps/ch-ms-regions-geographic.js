@@ -9,6 +9,7 @@ const config = {
     "./2021_GEOM_TK/GEOM_2021/00_TOPO/K4_seenyyyymmdd/k4seenyyyymmdd11_ch2007Poly.shp",
   featuresPropertyMapping: {
     id: "ID0",
+    name: "ID1",
   },
   rewriteProperties: {},
 };
