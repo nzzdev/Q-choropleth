@@ -47,7 +47,7 @@ function setProperties(fileName, propertyMapping, rewriteProperties) {
 
 function convertToTopojson(path, name) {
   shell.exec(
-    `npx mapshaper -i ${path} encoding=utf8 -proj wgs84 -simplify 20% -rename-layers ${name} -o ${path} force format=topojson `
+    `npx mapshaper -i ${path} encoding=utf8 -proj wgs84 -rename-layers ${name} -o ${path} force format=topojson `
   );
 }
 

@@ -12,12 +12,9 @@ const promptly = require("promptly");
 async function getBearerToken() {
   try {
     if (!process.env.Q_SERVER_AUTH) {
-      const password = await promptly.password(
-        "Enter your livingdocs password: ",
-        {
-          replace: "*",
-        }
-      );
+      const password = await promptly.password("Enter your password: ", {
+        replace: "*",
+      });
 
       const response = await fetch(
         `${process.env.Q_SERVER_BASE_URL}/authenticate`,

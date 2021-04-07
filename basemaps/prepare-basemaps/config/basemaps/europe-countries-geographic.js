@@ -65,7 +65,11 @@ module.exports = {
     // generate features topojson file
     const inputFeaturesPath = `${__dirname}/../../00-download-basemaps/data/${basemap.id}-${version.validFrom}/${config.featuresPath}`;
     const outputFeaturesPath = `${__dirname}/../../01-generate-basemaps/data/${basemap.id}-${version.validFrom}/${basemap.id}-${version.validFrom}.json`;
-    helpers.convertToGeojson(inputFeaturesPath, outputFeaturesPath, "");
+    helpers.convertToGeojson(
+      inputFeaturesPath,
+      outputFeaturesPath,
+      "-simplify 20%"
+    );
     helpers.setProperties(
       outputFeaturesPath,
       config.featuresPropertyMapping,

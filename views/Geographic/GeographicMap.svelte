@@ -1,6 +1,7 @@
 <script>
   import Feature from "./Feature.svelte";
   import OutlineFeature from "./OutlineFeature.svelte";
+  import WaterFeature from "./WaterFeature.svelte";
   import ResponsiveSvg from "../svg/ResponsiveSvg.svelte";
   import AnnotationPointWithLine from "../Annotations/AnnotationPointWithLine.svelte";
   import { round } from "../helpers/data.js";
@@ -64,6 +65,14 @@
         {#each geoParameters.outlines.features as outline}
           <OutlineFeature
             path={roundCoordinatesInPath(geoParameters.path(outline), 1)} />
+        {/each}
+      </g>
+    {/if}
+    {#if geoParameters.water.features !== undefined}
+      <g class="q-choropleth-water">
+        {#each geoParameters.water.features as water}
+          <WaterFeature
+            path={roundCoordinatesInPath(geoParameters.path(water), 1)} />
         {/each}
       </g>
     {/if}

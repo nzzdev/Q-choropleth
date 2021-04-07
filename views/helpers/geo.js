@@ -4,6 +4,7 @@ const topojson = require("topojson");
 function getGeoParameters(baseMap, width, maxHeight) {
   const features = getFeatureCollection(baseMap.entities, "features");
   const outlines = getFeatureCollection(baseMap.entities, "outlines");
+  const water = getFeatureCollection(baseMap.entities, "water");
   let projection = geo.geoMercator().fitWidth(width, features);
   let path = geo.geoPath(projection);
   let bounds = path.bounds(features);
@@ -14,7 +15,7 @@ function getGeoParameters(baseMap, width, maxHeight) {
     path = geo.geoPath(projection);
     bounds = path.bounds(features);
   }
-  return { path, bounds, features, outlines };
+  return { path, bounds, features, outlines, water };
 }
 
 function getFeatureCollection(topojsonObject, objectName) {

@@ -32,7 +32,7 @@ module.exports = {
     helpers.convertToGeojson(
       inputFeaturesPath,
       outputFeaturesPath,
-      "-filter 'GF === 4'"
+      "-filter 'GF === 4' -simplify 20%"
     );
     helpers.setProperties(
       outputFeaturesPath,

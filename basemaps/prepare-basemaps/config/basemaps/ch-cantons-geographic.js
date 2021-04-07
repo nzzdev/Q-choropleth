@@ -37,7 +37,7 @@ module.exports = {
     helpers.convertToGeojson(
       inputFeaturesPath,
       outputFeaturesPath,
-      "-dissolve fields=KANTONSNUM,NAME"
+      "-dissolve fields=KANTONSNUM,NAME -simplify 20%"
     );
     helpers.setProperties(
       outputFeaturesPath,

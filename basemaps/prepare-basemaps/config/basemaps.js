@@ -99,6 +99,29 @@ module.exports = [
     ],
   },
   {
+    id: "ch-ms-regions-geographic",
+    title: "Schweiz » MS-Regionen (geografisch)",
+    versions: [
+      {
+        validFrom: "2021-01-01T00:00:00.000Z",
+        source: {
+          url:
+            "https://www.bfs.admin.ch/bfs/en/home/statistics/regional-statistics/base-maps/cartographic-bases.assetdetail.15784603.html",
+          label: "© BFS, ThemaKart",
+        },
+        data: {
+          config: {
+            defaultEntityType: "id",
+            entityTypes: {
+              id: "MS-Regionen ID",
+            },
+          },
+          entities: require("./basemaps/ch-ms-regions-geographic.js"),
+        },
+      },
+    ],
+  },
+  {
     id: "de-bundeslander-geographic",
     title: "Deutschland » Bundesländer (geografisch)",
     versions: [
