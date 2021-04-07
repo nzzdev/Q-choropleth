@@ -3,51 +3,14 @@ const fetch = require("node-fetch");
 
 const config = {
   dataUrl:
-    "https://gisco-services.ec.europa.eu/distribution/v2/nuts/download/ref-nuts-2021-01m.geojson.zip",
-  featuresPath: "./NUTS_RG_01M_2021_4326_LEVL_0.geojson",
+    "https://gisco-services.ec.europa.eu/distribution/v2/nuts/download/ref-nuts-2021-10m.geojson.zip",
+  featuresPath: "./NUTS_RG_10M_2021_4326_LEVL_2.geojson",
   featuresPropertyMapping: {
     name: "NAME_LATN",
     nuts: "NUTS_ID",
   },
-  rewriteProperties: {
-    BE: "Belgien",
-    BG: "Bulgarien",
-    DK: "Dänemark",
-    DE: "Deutschland",
-    EE: "Estland",
-    FI: "Finnland",
-    FR: "Frankreich",
-    EL: "Griechenland",
-    IE: "Irland",
-    IT: "Italien",
-    HR: "Kroatien",
-    LV: "Lettland",
-    LT: "Litauen",
-    LU: "Luxemburg",
-    MT: "Malta",
-    NL: "Niederlande",
-    AT: "Österreich",
-    PL: "Polen",
-    PT: "Portugal",
-    RO: "Rumänien",
-    SE: "Schweden",
-    SI: "Slowenien",
-    SK: "Slowakei",
-    ES: "Spanien",
-    CZ: "Tschechien",
-    HU: "Ungarn",
-    UK: "Grossbritanien",
-    CY: "Zypern",
-    IS: "Island",
-    LI: "Liechtenstein",
-    NO: "Norwegen",
-    CH: "Schweiz",
-    AL: "Albanien",
-    ME: "Montenegro",
-    MK: "Nordmazedonien",
-    RS: "Serbien",
-    TR: "Türkei",
-  },
+  rewriteProperties: {},
+  bbox: "-24.65,34.11,45.82,71.49",
 };
 
 module.exports = {
@@ -68,7 +31,7 @@ module.exports = {
     helpers.convertToGeojson(
       inputFeaturesPath,
       outputFeaturesPath,
-      "-simplify 20%"
+      `-clip bbox=${config.bbox}`
     );
     helpers.setProperties(
       outputFeaturesPath,

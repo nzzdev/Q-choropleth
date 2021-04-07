@@ -222,11 +222,11 @@ module.exports = [
     ],
   },
   {
-    id: "europe-countries-geographic",
-    title: "Europa » Länder (geografisch)",
+    id: "europe-nuts0-geographic",
+    title: "Europa » NUTS0 (geografisch)",
     versions: [
       {
-        validFrom: "2020-01-01T00:00:00.000Z",
+        validFrom: "2021-01-01T00:00:00.000Z",
         source: {
           url:
             "https://ec.europa.eu/eurostat/web/gisco/geodata/reference-data/administrative-units-statistical-units/nuts",
@@ -239,9 +239,81 @@ module.exports = [
               name: "Name",
               nuts: "NUTS",
             },
-            projection: "mercator",
+            projection: "robinson",
           },
-          entities: require("./basemaps/europe-countries-geographic.js"),
+          entities: require("./basemaps/europe-nuts0-geographic.js"),
+        },
+      },
+    ],
+  },
+  {
+    id: "europe-nuts1-geographic",
+    title: "Europa » NUTS1 (geografisch)",
+    versions: [
+      {
+        validFrom: "2021-01-01T00:00:00.000Z",
+        source: {
+          url:
+            "https://ec.europa.eu/eurostat/web/gisco/geodata/reference-data/administrative-units-statistical-units/nuts",
+          label: "© EuroGeographics",
+        },
+        data: {
+          config: {
+            defaultEntityType: "nuts",
+            entityTypes: {
+              nuts: "NUTS",
+            },
+            projection: "robinson",
+          },
+          entities: require("./basemaps/europe-nuts1-geographic.js"),
+        },
+      },
+    ],
+  },
+  {
+    id: "europe-nuts2-geographic",
+    title: "Europa » NUTS2 (geografisch)",
+    versions: [
+      {
+        validFrom: "2021-01-01T00:00:00.000Z",
+        source: {
+          url:
+            "https://ec.europa.eu/eurostat/web/gisco/geodata/reference-data/administrative-units-statistical-units/nuts",
+          label: "© EuroGeographics",
+        },
+        data: {
+          config: {
+            defaultEntityType: "nuts",
+            entityTypes: {
+              nuts: "NUTS",
+            },
+            projection: "robinson",
+          },
+          entities: require("./basemaps/europe-nuts2-geographic.js"),
+        },
+      },
+    ],
+  },
+  {
+    id: "europe-nuts3-geographic",
+    title: "Europa » NUTS3 (geografisch)",
+    versions: [
+      {
+        validFrom: "2021-01-01T00:00:00.000Z",
+        source: {
+          url:
+            "https://ec.europa.eu/eurostat/web/gisco/geodata/reference-data/administrative-units-statistical-units/nuts",
+          label: "© EuroGeographics",
+        },
+        data: {
+          config: {
+            defaultEntityType: "nuts",
+            entityTypes: {
+              nuts: "NUTS",
+            },
+            projection: "robinson",
+          },
+          entities: require("./basemaps/europe-nuts3-geographic.js"),
         },
       },
     ],
