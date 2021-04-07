@@ -17,6 +17,7 @@ module.exports = [
               name: "Name",
               bfsNumber: "BfS Nummer",
             },
+            projection: "mercator",
           },
           entities: require("./basemaps/ch-cantons-geographic.js"),
         },
@@ -38,6 +39,7 @@ module.exports = [
               bfsNumber: "BfS Nummer",
               code: "Abkürzung",
             },
+            projection: "mercator",
           },
           entities: [
             [
@@ -115,6 +117,7 @@ module.exports = [
             entityTypes: {
               id: "MS-Regionen ID",
             },
+            projection: "mercator",
           },
           entities: require("./basemaps/ch-ms-regions-geographic.js"),
         },
@@ -136,6 +139,7 @@ module.exports = [
           config: {
             defaultEntityType: "name",
             entityTypes: { ags: "AGS", name: "Name", nuts: "NUTS" },
+            projection: "mercator",
           },
           entities: require("./basemaps/de-bundeslander-geographic.js"),
         },
@@ -157,6 +161,7 @@ module.exports = [
               code: "Abkürzung",
               name: "Name",
             },
+            projection: "mercator",
           },
           entities: [
             [
@@ -209,6 +214,7 @@ module.exports = [
           config: {
             defaultEntityType: "ags",
             entityTypes: { ags: "AGS", nuts: "NUTS" },
+            projection: "mercator",
           },
           entities: require("./basemaps/de-landkreise-geographic.js"),
         },
@@ -233,8 +239,33 @@ module.exports = [
               name: "Name",
               nuts: "NUTS",
             },
+            projection: "mercator",
           },
           entities: require("./basemaps/europe-countries-geographic.js"),
+        },
+      },
+    ],
+  },
+  {
+    id: "world-countries-geographic",
+    title: "Welt » Länder (geografisch)",
+    versions: [
+      {
+        validFrom: "2020-01-01T00:00:00.000Z",
+        source: {
+          url: "https://www.naturalearthdata.com/",
+          label: "Natural Earth",
+        },
+        data: {
+          config: {
+            defaultEntityType: "name",
+            entityTypes: {
+              name: "Name",
+              isoAlpha3: "ISO-Code",
+            },
+            projection: "robinson",
+          },
+          entities: require("./basemaps/world-countries-geographic.js"),
         },
       },
     ],

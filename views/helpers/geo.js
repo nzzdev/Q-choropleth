@@ -1,21 +1,30 @@
 const geo = require("d3-geo");
+const geoProjection = require("d3-geo-projection");
 const topojson = require("topojson");
 
 function getGeoParameters(baseMap, width, maxHeight) {
   const features = getFeatureCollection(baseMap.entities, "features");
   const outlines = getFeatureCollection(baseMap.entities, "outlines");
   const water = getFeatureCollection(baseMap.entities, "water");
-  let projection = geo.geoMercator().fitWidth(width, features);
+  let projection = getProjection(baseMap).fitWidth(width, features);
   let path = geo.geoPath(projection);
   let bounds = path.bounds(features);
   const height = bounds[1][1];
 
   if (height > maxHeight) {
-    projection = geo.geoMercator().fitHeight(maxHeight, features);
+    projection = getProjection(baseMap).fitHeight(maxHeight, features);
     path = geo.geoPath(projection);
     bounds = path.bounds(features);
   }
   return { path, bounds, features, outlines, water };
+}
+
+function getProjection(baseMap) {
+  if (baseMap.config.projection === "robinson") {
+    return geoProjection.geoRobinson();
+  } else {
+    return geo.geoMercator();
+  }
 }
 
 function getFeatureCollection(topojsonObject, objectName) {
