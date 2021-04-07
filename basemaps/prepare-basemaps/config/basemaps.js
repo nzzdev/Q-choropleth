@@ -4,11 +4,11 @@ module.exports = [
     title: "Schweiz » Kantone (geografisch)",
     versions: [
       {
-        validFrom: "2021-01-01T00:00:00.000Z",
+        validFrom: "1997-01-01T00:00:00.000Z",
         source: {
           url:
-            "https://www.swisstopo.admin.ch/de/geodata/landscape/boundaries3d.html",
-          label: "© Swisstopo",
+            "https://www.bfs.admin.ch/bfs/en/home/statistics/regional-statistics/base-maps/cartographic-bases.assetdetail.15784603.html",
+          label: "© BFS, ThemaKart",
         },
         data: {
           config: {
@@ -101,8 +101,32 @@ module.exports = [
     ],
   },
   {
+    id: "ch-municipalities-geographic",
+    title: "Schweiz » Gemeinden",
+    versions: [
+      {
+        validFrom: "2021-01-01T00:00:00.000Z",
+        source: {
+          url:
+            "https://www.bfs.admin.ch/bfs/en/home/statistics/regional-statistics/base-maps/cartographic-bases.assetdetail.15784603.html",
+          label: "© BFS, ThemaKart",
+        },
+        data: {
+          config: {
+            defaultEntityType: "id",
+            entityTypes: {
+              id: "BfS Nummer",
+            },
+            projection: "mercator",
+          },
+          entities: require("./basemaps/ch-municipalities-geographic.js"),
+        },
+      },
+    ],
+  },
+  {
     id: "ch-ms-regions-geographic",
-    title: "Schweiz » MS-Regionen (geografisch)",
+    title: "Schweiz » MS-Regionen",
     versions: [
       {
         validFrom: "2021-01-01T00:00:00.000Z",
@@ -201,7 +225,7 @@ module.exports = [
   },
   {
     id: "de-landkreise-geographic",
-    title: "Deutschland » Landkreise (geografisch)",
+    title: "Deutschland » Landkreise",
     versions: [
       {
         validFrom: "2020-01-01T00:00:00.000Z",
@@ -223,7 +247,7 @@ module.exports = [
   },
   {
     id: "europe-nuts0-geographic",
-    title: "Europa » NUTS0 (geografisch)",
+    title: "Europa » NUTS0",
     versions: [
       {
         validFrom: "2021-01-01T00:00:00.000Z",
@@ -248,7 +272,7 @@ module.exports = [
   },
   {
     id: "europe-nuts1-geographic",
-    title: "Europa » NUTS1 (geografisch)",
+    title: "Europa » NUTS1",
     versions: [
       {
         validFrom: "2021-01-01T00:00:00.000Z",
@@ -272,7 +296,7 @@ module.exports = [
   },
   {
     id: "europe-nuts2-geographic",
-    title: "Europa » NUTS2 (geografisch)",
+    title: "Europa » NUTS2",
     versions: [
       {
         validFrom: "2021-01-01T00:00:00.000Z",
@@ -296,7 +320,7 @@ module.exports = [
   },
   {
     id: "europe-nuts3-geographic",
-    title: "Europa » NUTS3 (geografisch)",
+    title: "Europa » NUTS3",
     versions: [
       {
         validFrom: "2021-01-01T00:00:00.000Z",
@@ -320,7 +344,7 @@ module.exports = [
   },
   {
     id: "world-countries-geographic",
-    title: "Welt » Länder (geografisch)",
+    title: "Welt » Länder",
     versions: [
       {
         validFrom: "2020-01-01T00:00:00.000Z",

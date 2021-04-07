@@ -4,41 +4,14 @@ const fetch = require("node-fetch");
 const config = {
   dataUrl: "https://www.bfs.admin.ch/bfsstatic/dam/assets/15784603/master",
   featuresPath:
-    "./2021_GEOM_TK/GEOM_2021/01_INST/Gesamtfl�che_gf/K4_kant19970101_gf/K4kant19970101gf_ch2007Poly.shp",
+    "./2021_GEOM_TK/GEOM_2021/01_INST/Gesamtfl�che_gf/K4_polg20210101_gf/K4polg20210101gf_ch2007Poly.shp",
   waterPath:
     "./2021_GEOM_TK/GEOM_2021/00_TOPO/K4_seenyyyymmdd/k4seenyyyymmdd11_ch2007Poly.shp",
   featuresPropertyMapping: {
-    bfsNumber: "ID0",
-    name: "ID1",
+    id: "id",
+    name: "name",
   },
-  rewriteProperties: {
-    1: "Zürich",
-    2: "Bern",
-    3: "Luzern",
-    4: "Uri",
-    5: "Schwyz",
-    6: "Obwalden",
-    7: "Nidwalden",
-    8: "Glarus",
-    9: "Zug",
-    10: "Freiburg",
-    11: "Solothurn",
-    12: "Basel-Stadt",
-    13: "Basel-Landschaft",
-    14: "Schaffhausen",
-    15: "Appenzell Ausserhoden",
-    16: "Appenzell Innerhoden",
-    17: "St. Gallen",
-    18: "Graubünden",
-    19: "Aargau",
-    20: "Thurgau",
-    21: "Tessin",
-    22: "Waadt",
-    23: "Wallis",
-    24: "Neuenburg",
-    25: "Genf",
-    26: "Jura",
-  },
+  rewriteProperties: {},
 };
 
 module.exports = {
