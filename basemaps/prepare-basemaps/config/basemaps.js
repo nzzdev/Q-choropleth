@@ -1,5 +1,30 @@
 module.exports = [
   {
+    id: "austria-states-geographic",
+    title: "Österreich » Bundesländer",
+    versions: [
+      {
+        validFrom: "2021-01-01T00:00:00.000Z",
+        source: {
+          url:
+            "https://ec.europa.eu/eurostat/web/gisco/geodata/reference-data/administrative-units-statistical-units/nuts",
+          label: "© EuroGeographics",
+        },
+        data: {
+          config: {
+            defaultEntityType: "name",
+            entityTypes: {
+              name: "Name",
+              nuts: "NUTS",
+            },
+            projection: "mercator",
+          },
+          entities: require("./basemaps/austria-states-geographic.js"),
+        },
+      },
+    ],
+  },
+  {
     id: "ch-cantons-geographic",
     title: "Schweiz » Kantone (geografisch)",
     versions: [
@@ -385,6 +410,56 @@ module.exports = [
             projection: "robinson",
           },
           entities: require("./basemaps/europe-nuts3-geographic.js"),
+        },
+      },
+    ],
+  },
+  {
+    id: "france-regions-geographic",
+    title: "Frankreich » Regionen",
+    versions: [
+      {
+        validFrom: "2018-01-01T00:00:00.000Z",
+        source: {
+          url:
+            "https://ec.europa.eu/eurostat/web/gisco/geodata/reference-data/administrative-units-statistical-units/nuts",
+          label: "© EuroGeographics",
+        },
+        data: {
+          config: {
+            defaultEntityType: "name",
+            entityTypes: {
+              name: "Name",
+              nuts: "NUTS",
+            },
+            projection: "mercator",
+          },
+          entities: require("./basemaps/france-regions-geographic.js"),
+        },
+      },
+    ],
+  },
+  {
+    id: "italy-regions-geographic",
+    title: "Italien » Regionen",
+    versions: [
+      {
+        validFrom: "2021-01-01T00:00:00.000Z",
+        source: {
+          url:
+            "https://ec.europa.eu/eurostat/web/gisco/geodata/reference-data/administrative-units-statistical-units/nuts",
+          label: "© EuroGeographics",
+        },
+        data: {
+          config: {
+            defaultEntityType: "name",
+            entityTypes: {
+              name: "Name",
+              nuts: "NUTS",
+            },
+            projection: "mercator",
+          },
+          entities: require("./basemaps/italy-regions-geographic.js"),
         },
       },
     ],
