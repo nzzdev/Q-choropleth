@@ -33,7 +33,7 @@
   const svgSize = getSvgSize(bounds, contentWidth, annotations, annotationSpace);
 
   annotations = setCoordinatesForGeoMap(annotations, geoParameters, entityType, annotationStartPosition, cssModifier);
-
+  
   function getSvgSize(bounds, contentWidth, annotations, annotationSpace) {
     let xMin = bounds[0][0];
     let yMin = bounds[0][1];

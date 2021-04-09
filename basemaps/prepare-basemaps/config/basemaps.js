@@ -390,6 +390,31 @@ module.exports = [
     ],
   },
   {
+    id: "usa-states-geographic",
+    title: "USA » Bundesstaaten",
+    versions: [
+      {
+        validFrom: "2019-01-01T00:00:00.000Z",
+        source: {
+          url:
+            "https://www.census.gov/geographies/mapping-files/time-series/geo/cartographic-boundary.html",
+          label: "U.S. Census Bureau",
+        },
+        data: {
+          config: {
+            defaultEntityType: "name",
+            entityTypes: {
+              name: "Name",
+              isoCode: "ISO-Code",
+            },
+            projection: "albersUsa",
+          },
+          entities: require("./basemaps/usa-states-geographic.js"),
+        },
+      },
+    ],
+  },
+  {
     id: "world-countries-geographic",
     title: "Welt » Länder",
     versions: [

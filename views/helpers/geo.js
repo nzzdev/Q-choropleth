@@ -16,12 +16,15 @@ function getGeoParameters(baseMap, width, maxHeight) {
     path = geo.geoPath(projection);
     bounds = path.bounds(features);
   }
+
   return { path, bounds, features, outlines, water };
 }
 
 function getProjection(baseMap) {
   if (baseMap.config.projection === "robinson") {
     return geoProjection.geoRobinson();
+  } else if (baseMap.config.projection === "albersUsa") {
+    return geo.geoAlbersUsa();
   } else {
     return geo.geoMercator();
   }
@@ -42,7 +45,13 @@ function makeFeatureCollection(features) {
 }
 
 function roundCoordinatesInPath(path, precision = 1) {
-  return path.replace(/\d+\.\d+/g, (s) => parseFloat(s).toFixed(precision));
+  try {
+    if (path) {
+      return path.replace(/\d+\.\d+/g, (s) => parseFloat(s).toFixed(precision));
+    }
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 module.exports = {
