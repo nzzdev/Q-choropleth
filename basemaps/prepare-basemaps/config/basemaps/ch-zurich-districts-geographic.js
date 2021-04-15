@@ -2,11 +2,13 @@ const unzipper = require("unzipper");
 const fetch = require("node-fetch");
 
 const config = {
-  dataUrl: "https://www.web.statistik.zh.ch/data/KTZH_180_Bezirk.zip",
-  featuresPath: "./GEN_A4_BEZIRKE_epsg4326_json/GEN_A4_BEZIRKE_epsg4326.json",
-  waterPath: "./GEN_A4_BEZIRKE_epsg4326_json/GEN_A4_BEZIRKE_SEEN_epsg4326.json",
+  dataUrl: "https://www.web.statistik.zh.ch/data/KTZH_151_Gemeinden2019.zip",
+  featuresPath:
+    "./GEN_A4_GEMEINDEN_2019_epsg4326_json/GEN_A4_GEMEINDEN_2019_epsg4326.json",
+  waterPath:
+    "./GEN_A4_GEMEINDEN_2019_epsg4326_json/GEN_A4_GEMEINDEN_SEEN_2019_epsg4326.json",
   featuresPropertyMapping: {
-    id: "BEZ_ID",
+    id: "BFS",
     name: "NAME",
   },
   rewriteProperties: {},

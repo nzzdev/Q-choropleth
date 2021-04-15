@@ -197,6 +197,30 @@ module.exports = [
     ],
   },
   {
+    id: "ch-zurich-districts-geographic",
+    title: "Schweiz » Zürich » Bezirke",
+    versions: [
+      {
+        validFrom: "2019-01-01T00:00:00.000Z",
+        source: {
+          url:
+            "https://www.zh.ch/de/planen-bauen/geoinformation/geodaten/geodatenshop/vorlagen-fuer-administrativer-grenzen-und-karten.html#1791164494",
+          label: "© Statistisches Amt Kanton Zürich",
+        },
+        data: {
+          config: {
+            defaultEntityType: "id",
+            entityTypes: {
+              id: "Bezirks Nummer",
+            },
+            projection: "mercator",
+          },
+          entities: require("./basemaps/ch-zurich-municipalities-geographic.js"),
+        },
+      },
+    ],
+  },
+  {
     id: "ch-zurich-municipalities-geographic",
     title: "Schweiz » Zürich » Gemeinden",
     versions: [
