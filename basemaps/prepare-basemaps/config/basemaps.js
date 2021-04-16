@@ -5,12 +5,12 @@ module.exports = [
     versions: [
       {
         validFrom: "2021-01-01T00:00:00.000Z",
-        source: {
-          url:
-            "https://ec.europa.eu/eurostat/web/gisco/geodata/reference-data/administrative-units-statistical-units/nuts",
-          label: "© EuroGeographics",
-        },
         data: {
+          source: {
+            url:
+              "https://ec.europa.eu/eurostat/web/gisco/geodata/reference-data/administrative-units-statistical-units/nuts",
+            label: "© EuroGeographics",
+          },
           config: {
             defaultEntityType: "name",
             entityTypes: {
@@ -30,12 +30,12 @@ module.exports = [
     versions: [
       {
         validFrom: "1997-01-01T00:00:00.000Z",
-        source: {
-          url:
-            "https://www.bfs.admin.ch/bfs/en/home/statistics/regional-statistics/base-maps/cartographic-bases.assetdetail.15784603.html",
-          label: "© BFS, ThemaKart",
-        },
         data: {
+          source: {
+            url:
+              "https://www.bfs.admin.ch/bfs/en/home/statistics/regional-statistics/base-maps/cartographic-bases.assetdetail.15784603.html",
+            label: "© BfS, ThemaKart",
+          },
           config: {
             defaultEntityType: "name",
             entityTypes: {
@@ -131,12 +131,12 @@ module.exports = [
     versions: [
       {
         validFrom: "2021-01-01T00:00:00.000Z",
-        source: {
-          url:
-            "https://www.bfs.admin.ch/bfs/en/home/statistics/regional-statistics/base-maps/cartographic-bases.assetdetail.15784603.html",
-          label: "© BFS, ThemaKart",
-        },
         data: {
+          source: {
+            url:
+              "https://www.bfs.admin.ch/bfs/en/home/statistics/regional-statistics/base-maps/cartographic-bases.assetdetail.15784603.html",
+            label: "© BfS, ThemaKart",
+          },
           config: {
             defaultEntityType: "id",
             entityTypes: {
@@ -155,12 +155,12 @@ module.exports = [
     versions: [
       {
         validFrom: "2021-01-01T00:00:00.000Z",
-        source: {
-          url:
-            "https://www.bfs.admin.ch/bfs/en/home/statistics/regional-statistics/base-maps/cartographic-bases.assetdetail.15784603.html",
-          label: "© BFS, ThemaKart",
-        },
         data: {
+          source: {
+            url:
+              "https://www.bfs.admin.ch/bfs/en/home/statistics/regional-statistics/base-maps/cartographic-bases.assetdetail.15784603.html",
+            label: "© BfS, ThemaKart",
+          },
           config: {
             defaultEntityType: "id",
             entityTypes: {
@@ -179,12 +179,12 @@ module.exports = [
     versions: [
       {
         validFrom: "2021-01-01T00:00:00.000Z",
-        source: {
-          url:
-            "https://www.bfs.admin.ch/bfs/en/home/statistics/regional-statistics/base-maps/cartographic-bases.assetdetail.15784603.html",
-          label: "© BFS, ThemaKart",
-        },
         data: {
+          source: {
+            url:
+              "https://www.bfs.admin.ch/bfs/en/home/statistics/regional-statistics/base-maps/cartographic-bases.assetdetail.15784603.html",
+            label: "© BfS, ThemaKart",
+          },
           config: {
             defaultEntityType: "id",
             entityTypes: {
@@ -203,11 +203,11 @@ module.exports = [
     versions: [
       {
         validFrom: "2021-01-01T00:00:00.000Z",
-        source: {
-          url: "https://data.stadt-zuerich.ch/dataset/geo_stadtkreise",
-          label: "© Open Data Zürich",
-        },
         data: {
+          source: {
+            url: "https://data.stadt-zuerich.ch/dataset/geo_stadtkreise",
+            label: "© Open Data Zürich",
+          },
           config: {
             defaultEntityType: "id",
             entityTypes: {
@@ -226,12 +226,12 @@ module.exports = [
     versions: [
       {
         validFrom: "2019-01-01T00:00:00.000Z",
-        source: {
-          url:
-            "https://www.zh.ch/de/planen-bauen/geoinformation/geodaten/geodatenshop/vorlagen-fuer-administrativer-grenzen-und-karten.html#1791164494",
-          label: "© Statistisches Amt Kanton Zürich",
-        },
         data: {
+          source: {
+            url:
+              "https://www.zh.ch/de/planen-bauen/geoinformation/geodaten/geodatenshop/vorlagen-fuer-administrativer-grenzen-und-karten.html#1791164494",
+            label: "© Statistik Kt. Zürich",
+          },
           config: {
             defaultEntityType: "id",
             entityTypes: {
@@ -250,12 +250,12 @@ module.exports = [
     versions: [
       {
         validFrom: "2019-01-01T00:00:00.000Z",
-        source: {
-          url:
-            "https://www.zh.ch/de/planen-bauen/geoinformation/geodaten/geodatenshop/vorlagen-fuer-administrativer-grenzen-und-karten.html#1791164494",
-          label: "© Statistisches Amt Kanton Zürich",
-        },
         data: {
+          source: {
+            url:
+              "https://www.zh.ch/de/planen-bauen/geoinformation/geodaten/geodatenshop/vorlagen-fuer-administrativer-grenzen-und-karten.html#1791164494",
+            label: "© Statistik Kt. Zürich",
+          },
           config: {
             defaultEntityType: "id",
             entityTypes: {
@@ -274,12 +274,12 @@ module.exports = [
     versions: [
       {
         validFrom: "2020-01-01T00:00:00.000Z",
-        source: {
-          url:
-            "https://gdz.bkg.bund.de/index.php/default/digitale-geodaten/verwaltungsgebiete/verwaltungsgebiete-1-1-000-000-ebenen-stand-01-01-vg1000-ebenen-01-01.html",
-          label: "© GeoBasis-DE / BKG 2020",
-        },
         data: {
+          source: {
+            url:
+              "https://gdz.bkg.bund.de/index.php/default/digitale-geodaten/verwaltungsgebiete/verwaltungsgebiete-1-1-000-000-ebenen-stand-01-01-vg1000-ebenen-01-01.html",
+            label: "© GeoBasis-DE / BKG",
+          },
           config: {
             defaultEntityType: "name",
             entityTypes: { ags: "AGS", name: "Name", nuts: "NUTS" },
@@ -349,12 +349,12 @@ module.exports = [
     versions: [
       {
         validFrom: "2020-01-01T00:00:00.000Z",
-        source: {
-          url:
-            "https://gdz.bkg.bund.de/index.php/default/digitale-geodaten/verwaltungsgebiete/verwaltungsgebiete-1-1-000-000-ebenen-stand-01-01-vg1000-ebenen-01-01.html",
-          label: "© GeoBasis-DE / BKG 2020",
-        },
         data: {
+          source: {
+            url:
+              "https://gdz.bkg.bund.de/index.php/default/digitale-geodaten/verwaltungsgebiete/verwaltungsgebiete-1-1-000-000-ebenen-stand-01-01-vg1000-ebenen-01-01.html",
+            label: "© GeoBasis-DE / BKG",
+          },
           config: {
             defaultEntityType: "ags",
             entityTypes: { ags: "AGS", nuts: "NUTS" },
@@ -371,12 +371,12 @@ module.exports = [
     versions: [
       {
         validFrom: "2021-01-01T00:00:00.000Z",
-        source: {
-          url:
-            "https://ec.europa.eu/eurostat/web/gisco/geodata/reference-data/administrative-units-statistical-units/nuts",
-          label: "© EuroGeographics",
-        },
         data: {
+          source: {
+            url:
+              "https://ec.europa.eu/eurostat/web/gisco/geodata/reference-data/administrative-units-statistical-units/nuts",
+            label: "© EuroGeographics",
+          },
           config: {
             defaultEntityType: "name",
             entityTypes: {
@@ -396,12 +396,12 @@ module.exports = [
     versions: [
       {
         validFrom: "2021-01-01T00:00:00.000Z",
-        source: {
-          url:
-            "https://ec.europa.eu/eurostat/web/gisco/geodata/reference-data/administrative-units-statistical-units/nuts",
-          label: "© EuroGeographics",
-        },
         data: {
+          source: {
+            url:
+              "https://ec.europa.eu/eurostat/web/gisco/geodata/reference-data/administrative-units-statistical-units/nuts",
+            label: "© EuroGeographics",
+          },
           config: {
             defaultEntityType: "nuts",
             entityTypes: {
@@ -420,12 +420,12 @@ module.exports = [
     versions: [
       {
         validFrom: "2021-01-01T00:00:00.000Z",
-        source: {
-          url:
-            "https://ec.europa.eu/eurostat/web/gisco/geodata/reference-data/administrative-units-statistical-units/nuts",
-          label: "© EuroGeographics",
-        },
         data: {
+          source: {
+            url:
+              "https://ec.europa.eu/eurostat/web/gisco/geodata/reference-data/administrative-units-statistical-units/nuts",
+            label: "© EuroGeographics",
+          },
           config: {
             defaultEntityType: "nuts",
             entityTypes: {
@@ -444,12 +444,12 @@ module.exports = [
     versions: [
       {
         validFrom: "2021-01-01T00:00:00.000Z",
-        source: {
-          url:
-            "https://ec.europa.eu/eurostat/web/gisco/geodata/reference-data/administrative-units-statistical-units/nuts",
-          label: "© EuroGeographics",
-        },
         data: {
+          source: {
+            url:
+              "https://ec.europa.eu/eurostat/web/gisco/geodata/reference-data/administrative-units-statistical-units/nuts",
+            label: "© EuroGeographics",
+          },
           config: {
             defaultEntityType: "nuts",
             entityTypes: {
@@ -468,12 +468,12 @@ module.exports = [
     versions: [
       {
         validFrom: "2018-01-01T00:00:00.000Z",
-        source: {
-          url:
-            "https://ec.europa.eu/eurostat/web/gisco/geodata/reference-data/administrative-units-statistical-units/nuts",
-          label: "© EuroGeographics",
-        },
         data: {
+          source: {
+            url:
+              "https://ec.europa.eu/eurostat/web/gisco/geodata/reference-data/administrative-units-statistical-units/nuts",
+            label: "© EuroGeographics",
+          },
           config: {
             defaultEntityType: "name",
             entityTypes: {
@@ -493,12 +493,12 @@ module.exports = [
     versions: [
       {
         validFrom: "2021-01-01T00:00:00.000Z",
-        source: {
-          url:
-            "https://ec.europa.eu/eurostat/web/gisco/geodata/reference-data/administrative-units-statistical-units/nuts",
-          label: "© EuroGeographics",
-        },
         data: {
+          source: {
+            url:
+              "https://ec.europa.eu/eurostat/web/gisco/geodata/reference-data/administrative-units-statistical-units/nuts",
+            label: "© EuroGeographics",
+          },
           config: {
             defaultEntityType: "name",
             entityTypes: {
@@ -518,12 +518,12 @@ module.exports = [
     versions: [
       {
         validFrom: "2019-01-01T00:00:00.000Z",
-        source: {
-          url:
-            "https://www.census.gov/geographies/mapping-files/time-series/geo/cartographic-boundary.html",
-          label: "U.S. Census Bureau",
-        },
         data: {
+          source: {
+            url:
+              "https://www.census.gov/geographies/mapping-files/time-series/geo/cartographic-boundary.html",
+            label: "© U.S. Census Bureau",
+          },
           config: {
             defaultEntityType: "name",
             entityTypes: {
@@ -543,11 +543,11 @@ module.exports = [
     versions: [
       {
         validFrom: "2020-01-01T00:00:00.000Z",
-        source: {
-          url: "https://www.naturalearthdata.com/",
-          label: "Natural Earth",
-        },
         data: {
+          source: {
+            url: "https://www.naturalearthdata.com/",
+            label: "© Natural Earth",
+          },
           config: {
             defaultEntityType: "name",
             entityTypes: {
