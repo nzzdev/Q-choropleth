@@ -150,6 +150,30 @@ module.exports = [
     ],
   },
   {
+    id: "ch-arbeitsmarkt-regions-geographic",
+    title: "Schweiz » Arbeitsmarktregionen",
+    versions: [
+      {
+        validFrom: "2021-01-01T00:00:00.000Z",
+        source: {
+          url:
+            "https://www.bfs.admin.ch/bfs/en/home/statistics/regional-statistics/base-maps/cartographic-bases.assetdetail.15784603.html",
+          label: "© BFS, ThemaKart",
+        },
+        data: {
+          config: {
+            defaultEntityType: "id",
+            entityTypes: {
+              id: "Arbeitsmarktregionen ID",
+            },
+            projection: "mercator",
+          },
+          entities: require("./basemaps/ch-arbeitsmarkt-regions-geographic.js"),
+        },
+      },
+    ],
+  },
+  {
     id: "ch-ms-regions-geographic",
     title: "Schweiz » MS-Regionen",
     versions: [
