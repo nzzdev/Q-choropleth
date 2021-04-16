@@ -57,15 +57,15 @@ module.exports = {
     if (response.ok) {
       response.body.pipe(
         unzipper.Extract({
-          path: `${__dirname}/../../00-download-basemaps/data/${basemap.id}-${version.validFrom}`,
+          path: `${__dirname}/../../00-download-basemaps/data/${basemap.id}/${version.validFrom}`,
         })
       );
     }
   },
   transform: async function (helpers, basemap, version) {
     // generate features topojson file
-    const inputFeaturesPath = `${__dirname}/../../00-download-basemaps/data/${basemap.id}-${version.validFrom}/${config.featuresPath}`;
-    const outputFeaturesPath = `${__dirname}/../../01-generate-basemaps/data/${basemap.id}-${version.validFrom}/${basemap.id}-${version.validFrom}.json`;
+    const inputFeaturesPath = `${__dirname}/../../00-download-basemaps/data/${basemap.id}/${version.validFrom}/${config.featuresPath}`;
+    const outputFeaturesPath = `${__dirname}/../../01-generate-basemaps/data/${basemap.id}/${version.validFrom}/${basemap.id}.json`;
     helpers.convertToGeojson(
       inputFeaturesPath,
       outputFeaturesPath,

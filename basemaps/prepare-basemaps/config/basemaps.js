@@ -239,7 +239,7 @@ module.exports = [
             },
             projection: "mercator",
           },
-          entities: require("./basemaps/ch-zurich-municipalities-geographic.js"),
+          entities: require("./basemaps/ch-zurich-districts-geographic.js"),
         },
       },
     ],

@@ -68,15 +68,15 @@ module.exports = {
     if (response.ok) {
       response.body.pipe(
         unzipper.Extract({
-          path: `${__dirname}/../../00-download-basemaps/data/${basemap.id}-${version.validFrom}`,
+          path: `${__dirname}/../../00-download-basemaps/data/${basemap.id}/${version.validFrom}`,
         })
       );
     }
   },
   transform: async function (helpers, basemap, version) {
     // generate features topojson file
-    const inputFeaturesPath = `${__dirname}/../../00-download-basemaps/data/${basemap.id}-${version.validFrom}/${config.featuresPath}`;
-    const outputFeaturesPath = `${__dirname}/../../01-generate-basemaps/data/${basemap.id}-${version.validFrom}/features.json`;
+    const inputFeaturesPath = `${__dirname}/../../00-download-basemaps/data/${basemap.id}/${version.validFrom}/${config.featuresPath}`;
+    const outputFeaturesPath = `${__dirname}/../../01-generate-basemaps/data/${basemap.id}/${version.validFrom}/features.json`;
     helpers.convertToGeojson(
       inputFeaturesPath,
       outputFeaturesPath,
@@ -90,8 +90,8 @@ module.exports = {
     helpers.convertToTopojson(outputFeaturesPath, "features");
 
     // generate outlines topojson file
-    const inputOutlinesPath = `${__dirname}/../../00-download-basemaps/data/${basemap.id}-${version.validFrom}/${config.outlinesPath}`;
-    const outputOutlinesPath = `${__dirname}/../../01-generate-basemaps/data/${basemap.id}-${version.validFrom}/outlines.json`;
+    const inputOutlinesPath = `${__dirname}/../../00-download-basemaps/data/${basemap.id}/${version.validFrom}/${config.outlinesPath}`;
+    const outputOutlinesPath = `${__dirname}/../../01-generate-basemaps/data/${basemap.id}/${version.validFrom}/outlines.json`;
     helpers.convertToGeojson(
       inputOutlinesPath,
       outputOutlinesPath,
@@ -100,7 +100,7 @@ module.exports = {
     helpers.convertToTopojson(outputOutlinesPath, "outlines");
 
     // merge features and outlines into single topojson file
-    const outputPath = `${__dirname}/../../01-generate-basemaps/data/${basemap.id}-${version.validFrom}/${basemap.id}-${version.validFrom}.json`;
+    const outputPath = `${__dirname}/../../01-generate-basemaps/data/${basemap.id}/${version.validFrom}/${basemap.id}.json`;
     helpers.mergeTopojsons(outputFeaturesPath, outputOutlinesPath, outputPath);
   },
 };
