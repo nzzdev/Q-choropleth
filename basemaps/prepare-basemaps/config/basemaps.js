@@ -147,6 +147,42 @@ module.exports = [
           entities: require("./basemaps/ch-municipalities-geographic.js"),
         },
       },
+      {
+        validFrom: "2020-01-01T00:00:00.000Z",
+        data: {
+          source: {
+            url:
+              "https://www.bfs.admin.ch/bfs/en/home/statistics/regional-statistics/base-maps/cartographic-bases.assetdetail.15784603.html",
+            label: "© BfS, ThemaKart",
+          },
+          config: {
+            defaultEntityType: "id",
+            entityTypes: {
+              id: "BfS Nummer",
+            },
+            projection: "mercator",
+          },
+          entities: require("./basemaps/ch-municipalities-geographic.js"),
+        },
+      },
+      {
+        validFrom: "2019-01-01T00:00:00.000Z",
+        data: {
+          source: {
+            url:
+              "https://www.bfs.admin.ch/bfs/en/home/statistics/regional-statistics/base-maps/cartographic-bases.assetdetail.15784603.html",
+            label: "© BfS, ThemaKart",
+          },
+          config: {
+            defaultEntityType: "id",
+            entityTypes: {
+              id: "BfS Nummer",
+            },
+            projection: "mercator",
+          },
+          entities: require("./basemaps/ch-municipalities-geographic.js"),
+        },
+      },
     ],
   },
   {
