@@ -3,7 +3,7 @@ const fetch = require("node-fetch");
 
 const config = {
   dataUrl:
-    "https://nzz-q-assets.s3.eu-west-1.amazonaws.com/2021/04/07/AL_Global_Choropleth-d87fae7d4e733775607ef72f78de578b.json",
+    "https://nzz-q-assets.s3.eu-west-1.amazonaws.com/2021/04/26/AL_Global_Choropleth-cfad9024f2009bcef548f6d2ff5c824c.json",
   featuresPath: "features.json",
   featuresPropertyMapping: {
     name: "ADMIN",

@@ -4,22 +4,13 @@ const fetch = require("node-fetch");
 const config = {
   "2021-01-01T00:00:00.000Z": {
     dataUrl: "https://www.bfs.admin.ch/bfsstatic/dam/assets/16804410/master",
-    featuresPath: "./ggg_2021-LV95/shp/k4k21.shp",
+    featuresPath: "./ggg_2021-LV95/shp/k4b21.shp",
     waterPath: "./ggg_2021-LV95/shp/k4s21.shp",
     featuresPropertyMapping: {
-      id: "KTNR",
-      name: "KTNAME",
+      id: "BZNR",
+      name: "BZNAME",
     },
-  },
-  rewriteProperties: {
-    "Bern / Berne": "Bern",
-    "Fribourg / Freiburg": "Freiburg",
-    "Graubünden / Grigioni / Grischun": "Graubünden",
-    Ticino: "Tessin",
-    Vaud: "Waadt",
-    "Valais / Wallis": "Wallis",
-    Neuchâtel: "Neuenburg",
-    Genève: "Genf",
+    rewriteProperties: {},
   },
 };
 
@@ -44,7 +35,7 @@ module.exports = {
     helpers.setProperties(
       outputFeaturesPath,
       config[version.validFrom].featuresPropertyMapping,
-      config.rewriteProperties
+      config[version.validFrom].rewriteProperties
     );
     helpers.convertToTopojson(outputFeaturesPath, "features");
 

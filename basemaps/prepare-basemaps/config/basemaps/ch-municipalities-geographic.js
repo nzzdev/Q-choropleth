@@ -2,36 +2,40 @@ const unzipper = require("unzipper");
 const fetch = require("node-fetch");
 
 const config = {
-  "2021-01-01T00:00:00.000Z": {
-    dataUrl: "https://www.bfs.admin.ch/bfsstatic/dam/assets/15784603/master",
-    featuresPath:
-      "./2021_GEOM_TK/GEOM_2021/01_INST/Gesamtfl�che_gf/K4_polg20210101_gf/K4polg20210101gf_ch2007Poly.shp",
-    waterPath:
-      "./2021_GEOM_TK/GEOM_2021/00_TOPO/K4_seenyyyymmdd/k4seenyyyymmdd11_ch2007Poly.shp",
+  "2021-04-18T00:00:00.000Z": {
+    dataUrl: "https://www.bfs.admin.ch/bfsstatic/dam/assets/16804410/master",
+    featuresPath: "./ggg_2021-LV95/shp/k4g21_18042021.shp",
+    waterPath: "./ggg_2021-LV95/shp/k4s21.shp",
     featuresPropertyMapping: {
-      id: "id",
-      name: "name",
+      id: "GMDNR",
+      name: "GMDNAME",
+    },
+    rewriteProperties: {},
+  },
+  "2021-01-01T00:00:00.000Z": {
+    dataUrl: "https://www.bfs.admin.ch/bfsstatic/dam/assets/16804410/master",
+    featuresPath: "./ggg_2021-LV95/shp/k4g21_01012021.shp",
+    waterPath: "./ggg_2021-LV95/shp/k4s21.shp",
+    featuresPropertyMapping: {
+      id: "GMDNR",
+      name: "GMDNAME",
     },
     rewriteProperties: {},
   },
   "2020-01-01T00:00:00.000Z": {
-    dataUrl: "https://www.bfs.admin.ch/bfsstatic/dam/assets/11927607/master",
-    featuresPath:
-      "./2020_GEOM_TK/GEOM_2020/01_INST/Gesamtfl�che_gf/K4_polg20200101_gf/K4polg20200101gf_ch2007Poly.shp",
-    waterPath:
-      "./2020_GEOM_TK/GEOM_2020/00_TOPO/K4_seenyyyymmdd/k4seenyyyymmdd11_ch2007Poly.shp",
+    dataUrl: "https://www.bfs.admin.ch/bfsstatic/dam/assets/11947559/master",
+    featuresPath: "./ggg_2020-LV95/shp/K4g20.shp",
+    waterPath: "./ggg_2020-LV95/shp/k4s20.shp",
     featuresPropertyMapping: {
-      id: "GDENR",
-      name: "GDENAME",
+      id: "GMDNR",
+      name: "GMDNAME",
     },
     rewriteProperties: {},
   },
   "2019-01-01T00:00:00.000Z": {
-    dataUrl: "https://www.bfs.admin.ch/bfsstatic/dam/assets/7546178/master",
-    featuresPath:
-      "./2019_THK_PRO/PRO/01_INST/Gesamtfl�che_gf/K4_polg20190101_gf/K4polg20190101gf_ch2007Poly.shp",
-    waterPath:
-      "./2019_THK_PRO/PRO/00_TOPO/K4_seenyyyymmdd/k4seenyyyymmdd11_ch2007Poly.shp",
+    dataUrl: "https://www.bfs.admin.ch/bfsstatic/dam/assets/7566557/master",
+    featuresPath: "./ggg_2019-LV95/shp/K4g19.shp",
+    waterPath: "./ggg_2019-LV95/shp/k4s19.shp",
     featuresPropertyMapping: {
       id: "GDENR",
       name: "GDENAME",

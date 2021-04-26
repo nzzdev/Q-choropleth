@@ -25,15 +25,39 @@ module.exports = [
     ],
   },
   {
+    id: "ch-districts-geographic",
+    title: "Schweiz » Bezirke",
+    versions: [
+      {
+        validFrom: "2021-01-01T00:00:00.000Z",
+        data: {
+          source: {
+            url:
+              "https://www.bfs.admin.ch/bfs/de/home/dienstleistungen/geostat/geodaten-bundesstatistik/administrative-grenzen/generalisierte-gemeindegrenzen.html",
+            label: "© BfS, ThemaKart",
+          },
+          config: {
+            defaultEntityType: "id",
+            entityTypes: {
+              id: "Bezirks Nummer",
+            },
+            projection: "mercator",
+          },
+          entities: require("./basemaps/ch-districts-geographic.js"),
+        },
+      },
+    ],
+  },
+  {
     id: "ch-cantons-geographic",
     title: "Schweiz » Kantone (geografisch)",
     versions: [
       {
-        validFrom: "1997-01-01T00:00:00.000Z",
+        validFrom: "2021-01-01T00:00:00.000Z",
         data: {
           source: {
             url:
-              "https://www.bfs.admin.ch/bfs/en/home/statistics/regional-statistics/base-maps/cartographic-bases.assetdetail.15784603.html",
+              "https://www.bfs.admin.ch/bfs/de/home/dienstleistungen/geostat/geodaten-bundesstatistik/administrative-grenzen/generalisierte-gemeindegrenzen.assetdetail.16804410.html",
             label: "© BfS, ThemaKart",
           },
           config: {
@@ -130,11 +154,29 @@ module.exports = [
     title: "Schweiz » Gemeinden",
     versions: [
       {
+        validFrom: "2021-04-18T00:00:00.000Z",
+        data: {
+          source: {
+            url:
+              "https://www.bfs.admin.ch/bfs/de/home/dienstleistungen/geostat/geodaten-bundesstatistik/administrative-grenzen/generalisierte-gemeindegrenzen.html",
+            label: "© BfS, ThemaKart",
+          },
+          config: {
+            defaultEntityType: "id",
+            entityTypes: {
+              id: "BfS Nummer",
+            },
+            projection: "mercator",
+          },
+          entities: require("./basemaps/ch-municipalities-geographic.js"),
+        },
+      },
+      {
         validFrom: "2021-01-01T00:00:00.000Z",
         data: {
           source: {
             url:
-              "https://www.bfs.admin.ch/bfs/en/home/statistics/regional-statistics/base-maps/cartographic-bases.assetdetail.15784603.html",
+              "https://www.bfs.admin.ch/bfs/de/home/dienstleistungen/geostat/geodaten-bundesstatistik/administrative-grenzen/generalisierte-gemeindegrenzen.html",
             label: "© BfS, ThemaKart",
           },
           config: {
@@ -152,7 +194,7 @@ module.exports = [
         data: {
           source: {
             url:
-              "https://www.bfs.admin.ch/bfs/en/home/statistics/regional-statistics/base-maps/cartographic-bases.assetdetail.15784603.html",
+              "https://www.bfs.admin.ch/bfs/de/home/dienstleistungen/geostat/geodaten-bundesstatistik/administrative-grenzen/generalisierte-gemeindegrenzen.html",
             label: "© BfS, ThemaKart",
           },
           config: {
@@ -170,7 +212,7 @@ module.exports = [
         data: {
           source: {
             url:
-              "https://www.bfs.admin.ch/bfs/en/home/statistics/regional-statistics/base-maps/cartographic-bases.assetdetail.15784603.html",
+              "https://www.bfs.admin.ch/bfs/de/home/dienstleistungen/geostat/geodaten-bundesstatistik/administrative-grenzen/generalisierte-gemeindegrenzen.html",
             label: "© BfS, ThemaKart",
           },
           config: {
