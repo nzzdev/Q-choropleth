@@ -64,7 +64,7 @@ module.exports = [
             defaultEntityType: "name",
             entityTypes: {
               name: "Name",
-              bfsNumber: "BfS Nummer",
+              id: "BfS Nummer",
             },
             projection: "mercator",
           },
