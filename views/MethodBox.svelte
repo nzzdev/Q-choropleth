@@ -10,29 +10,31 @@
 </script>
 
 {#if isStatic}
-  <div class="s-font-title-s">Daten und Methodik</div>
-  <div>
-    <div class="s-legend-icon-label">
-      {#each legendData.buckets as bucket, index}
-        <div class="s-legend-item-label__item q-choropleth-methods-box-static">
-          <div
-            class="{bucket.color.colorClass !== undefined ? bucket.color.colorClass : ''}
-            q-choropleth-methods-circle-static s-legend-item-label__item__icon
-            s-legend-item-label__item__icon--default"
-            style="color: {bucket.color.customColor !== undefined ? bucket.color.customColor : ''};" />
-          <div class="s-legend-item-label__item__label s-font-note--tabularnums">
-            {#if index === 0 && legendData.hasSingleValueBucket}
-              {getFormattedValueForBuckets(formattingOptions, bucket.from)} (nur
-              ein Datenpunkt)
-            {:else}
-              {getFormattedValueForBuckets(formattingOptions, bucket.from)}–{getFormattedValueForBuckets(formattingOptions, bucket.to)}
-            {/if}
+  <div class="q-choropleth-methods-static">
+    <div class="s-font-title-s">Daten und Methodik</div>
+    <div>
+      <div class="s-legend-icon-label">
+        {#each legendData.buckets as bucket, index}
+          <div class="s-legend-item-label__item q-choropleth-methods-box-static">
+            <div
+              class="{bucket.color.colorClass !== undefined ? bucket.color.colorClass : ''}
+              q-choropleth-methods-circle-static s-legend-item-label__item__icon
+              s-legend-item-label__item__icon--default"
+              style="color: {bucket.color.customColor !== undefined ? bucket.color.customColor : ''};" />
+            <div class="s-legend-item-label__item__label s-font-note--tabularnums">
+              {#if index === 0 && legendData.hasSingleValueBucket}
+                {getFormattedValueForBuckets(formattingOptions, bucket.from)} (nur
+                ein Datenpunkt)
+              {:else}
+                {getFormattedValueForBuckets(formattingOptions, bucket.from)}–{getFormattedValueForBuckets(formattingOptions, bucket.to)}
+              {/if}
+            </div>
           </div>
-        </div>
-      {/each}
-    </div>
-    <div class="q-choropleth-methods-description s-font-note-s">
-      {methodBoxText}
+        {/each}
+      </div>
+      <div class="q-choropleth-methods-description s-font-note-s">
+        {methodBoxText}
+      </div>
     </div>
   </div>
 {:else}

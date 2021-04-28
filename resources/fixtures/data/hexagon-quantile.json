@@ -2,7 +2,7 @@
   "title": "FIXTURE: Hexagon Schweiz (Kantone) - Quantile",
   "subtitle": "Subtitle",
   "acronym": "phk.",
-  "baseMap": "hexagonCHCantons",
+  "baseMap": "ch-cantons-hexagon",
   "version": "1997-01-01T00:00:00.000Z",
   "entityType": "name",
   "data": [

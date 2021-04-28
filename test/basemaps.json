@@ -1,6 +1,6 @@
 [
   {
-    "_id": "geographicDELandkreise",
+    "_id": "de-landkreise-geographic",
     "title": "Geographisch Deutschland (Landkreise)",
     "versions": [
       {
@@ -14,7 +14,7 @@
     ]
   },
   {
-    "_id": "hexagonCHCantons",
+    "_id": "ch-cantons-hexagon",
     "title": "Hexagon Schweiz (Kantone)",
     "versions": [
       {

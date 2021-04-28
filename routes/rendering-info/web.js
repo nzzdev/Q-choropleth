@@ -84,6 +84,7 @@ module.exports = {
         item.baseMap,
         item.version
       );
+      context.isStatic = toolRuntimeConfig.noInteraction;
 
       if (item.options.choroplethType === "numerical") {
         const divisor = dataHelpers.getDivisor(item.data);
@@ -112,7 +113,6 @@ module.exports = {
         );
 
         context.valuesOnMap = !item.options.numericalOptions.noValuesOnMap;
-        context.isStatic = toolRuntimeConfig.noInteraction;
         context.methodBox = methodBoxHelpers.getMethodBoxInfo(
           item.options.numericalOptions.bucketType
         );

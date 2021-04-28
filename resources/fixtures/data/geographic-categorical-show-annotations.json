@@ -1,7 +1,7 @@
 {
   "title": "FIXTURE: Geographisch Deutschland (Landkreise) - Kategorisch mit Annotationen",
   "subtitle": "Subtitle",
-  "baseMap": "geographicDELandkreise",
+  "baseMap": "de-landkreise-geographic",
   "version": "2020-01-01T00:00:00.000Z",
   "entityType": "nuts",
   "data": [
@@ -409,11 +409,11 @@
     ["DEG0P", "Kein Lockdown"]
   ],
   "mapAnnotations": [
-    {"annotation": "Hamburg", "region": "DE600", "position": "top"},
-    {"annotation": "Düsseldorf", "region": "DEA11", "position": "left"},
-    {"annotation": "Berlin", "region": "DE300", "position": "right"},
-    {"annotation": "Ortenaukreis", "region": "DE134", "position": "bottom"},
-    {"annotation": "München", "region": "DE212", "position": "bottom"}
+    { "annotation": "Hamburg", "region": "DE600", "position": "top" },
+    { "annotation": "Düsseldorf", "region": "DEA11", "position": "left" },
+    { "annotation": "Berlin", "region": "DE300", "position": "right" },
+    { "annotation": "Ortenaukreis", "region": "DE134", "position": "bottom" },
+    { "annotation": "München", "region": "DE212", "position": "bottom" }
   ],
   "sources": [],
   "options": {

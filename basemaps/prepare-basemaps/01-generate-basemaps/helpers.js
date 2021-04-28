@@ -13,10 +13,11 @@ function getNameValue(defaultValue, rewriteProperties, properties) {
 
   // rewrite some name values as defined in rewriteProperties
   for (let [rewriteKey, rewriteValue] of Object.entries(rewriteProperties)) {
-    for (let [propertyKey, propertyValue] of Object.entries(properties))
-      if (propertyValue === rewriteKey) {
+    for (let [propertyKey, propertyValue] of Object.entries(properties)) {
+      if (String(propertyValue) === String(rewriteKey)) {
         name = rewriteValue;
       }
+    }
   }
 
   return name;
@@ -28,9 +29,9 @@ function setProperties(fileName, propertyMapping, rewriteProperties) {
     const properties = {};
     for (let [key, value] of Object.entries(propertyMapping)) {
       if (feature.properties[value]) {
-        properties[key] = feature.properties[value];
+        properties[key] = String(feature.properties[value]);
         if (key === "name") {
-          const defaultValue = feature.properties[value];
+          const defaultValue = String(feature.properties[value]);
           properties[key] = getNameValue(
             defaultValue,
             rewriteProperties,
@@ -46,7 +47,7 @@ function setProperties(fileName, propertyMapping, rewriteProperties) {
 
 function convertToTopojson(path, name) {
   shell.exec(
-    `npx mapshaper -i ${path} encoding=utf8 -proj wgs84 -simplify 20% -rename-layers ${name} -o ${path} force format=topojson `
+    `npx mapshaper -i ${path} encoding=utf8 -proj wgs84 -rename-layers ${name} -o ${path} force format=topojson `
   );
 }
 

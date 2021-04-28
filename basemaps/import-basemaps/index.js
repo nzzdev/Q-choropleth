@@ -9,43 +9,39 @@ const fetch = require("node-fetch");
 const FormData = require("form-data");
 const promptly = require("promptly");
 
-async function getBearerToken() {
+async function getAccessToken() {
   try {
-    if (!process.env.Q_SERVER_AUTH) {
-      const password = await promptly.password(
-        "Enter your livingdocs password: ",
-        {
-          replace: "*",
-        }
-      );
+    const password = await promptly.password("Enter your password: ", {
+      replace: "*",
+    });
 
-      const response = await fetch(
-        `${process.env.Q_SERVER_BASE_URL}/authenticate`,
-        {
-          method: "POST",
-          body: JSON.stringify({
-            username: process.env.USERNAME,
-            password: password.trim(),
-          }),
-        }
-      );
-      if (response.ok) {
-        const body = await response.json();
-        return `Bearer ${body.access_token}`;
-      } else {
-        throw new Error(
-          `Error occured while authenticating: (${response.status}) ${response.statusText}`
-        );
+    const response = await fetch(
+      `${process.env.Q_SERVER_BASE_URL}/authenticate`,
+      {
+        method: "POST",
+        body: JSON.stringify({
+          username: process.env.USERNAME,
+          password: password.trim(),
+        }),
       }
+    );
+    if (response.ok) {
+      const body = await response.json();
+      return {
+        accessToken: `Bearer ${body.access_token}`,
+        cookie: response.headers.get("set-cookie"),
+      };
     } else {
-      return `Bearer ${process.env.Q_SERVER_AUTH}`;
+      throw new Error(
+        `Error occured while authenticating: (${response.status}) ${response.statusText}`
+      );
     }
   } catch (error) {
     console.log(error);
   }
 }
 
-async function uploadBasemapData(id, basemap, bearer) {
+async function uploadBasemapData(id, basemap, accessToken) {
   try {
     const form = new FormData();
     form.append("file", JSON.stringify(basemap), {
@@ -59,7 +55,8 @@ async function uploadBasemapData(id, basemap, bearer) {
       body: form,
       headers: {
         ...formHeaders,
-        Authorization: bearer,
+        Authorization: accessToken.accessToken,
+        Cookie: accessToken.cookie,
       },
     });
     if (response.ok) {
@@ -90,13 +87,17 @@ async function saveBasemap(basemapName, basemap) {
 
 async function main() {
   try {
-    const bearer = await getBearerToken();
+    const accessToken = await getAccessToken();
     for (let basemapPath of basemaps) {
       const basemap = require(basemapPath);
       const basemapName = path.basename(basemapPath, ".json");
       for (let version of basemap.versions) {
         const id = `${basemapName}-${version.validFrom}`;
-        const basemapUrl = await uploadBasemapData(id, version.data, bearer);
+        const basemapUrl = await uploadBasemapData(
+          id,
+          version.data,
+          accessToken
+        );
         version.data = basemapUrl;
       }
       basemap._id = basemapName;
