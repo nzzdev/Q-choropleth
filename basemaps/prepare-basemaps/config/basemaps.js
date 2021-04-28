@@ -57,7 +57,7 @@ module.exports = [
         data: {
           source: {
             url:
-              "https://www.bfs.admin.ch/bfs/de/home/dienstleistungen/geostat/geodaten-bundesstatistik/administrative-grenzen/generalisierte-gemeindegrenzen.assetdetail.16804410.html",
+              "https://www.bfs.admin.ch/bfs/de/home/dienstleistungen/geostat/geodaten-bundesstatistik/administrative-grenzen/generalisierte-gemeindegrenzen.html",
             label: "© BfS, ThemaKart",
           },
           config: {
@@ -307,7 +307,7 @@ module.exports = [
         data: {
           source: {
             url:
-              "https://www.zh.ch/de/planen-bauen/geoinformation/geodaten/geodatenshop/vorlagen-fuer-administrativer-grenzen-und-karten.html#1791164494",
+              "https://www.zh.ch/de/planen-bauen/geoinformation/geodaten/geodatenshop/vorlagen-fuer-administrativer-grenzen-und-karten.html",
             label: "© Statistik Kt. Zürich",
           },
           config: {
@@ -331,7 +331,7 @@ module.exports = [
         data: {
           source: {
             url:
-              "https://www.zh.ch/de/planen-bauen/geoinformation/geodaten/geodatenshop/vorlagen-fuer-administrativer-grenzen-und-karten.html#1791164494",
+              "https://www.zh.ch/de/planen-bauen/geoinformation/geodaten/geodatenshop/vorlagen-fuer-administrativer-grenzen-und-karten.html",
             label: "© Statistik Kt. Zürich",
           },
           config: {
