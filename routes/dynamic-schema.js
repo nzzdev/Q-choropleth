@@ -108,10 +108,16 @@ function getColorOverwriteEnumAndTitlesNumerical(numericalOptions) {
   }
 }
 
-function getColorOverwriteEnumAndTitlesCategorical(data, customCategoriesOrder) {
+function getColorOverwriteEnumAndTitlesCategorical(
+  data,
+  customCategoriesOrder
+) {
   data = dataHelpers.getDataWithoutHeaderRow(data);
   let enumValues = [null];
-  const categories = dataHelpers.getUniqueCategoriesObject(data, customCategoriesOrder).categories;
+  const categories = dataHelpers.getUniqueCategoriesObject(
+    data,
+    customCategoriesOrder
+  ).categories;
   const numberItems = categories.length;
   for (let index = 0; index < numberItems; index++) {
     enumValues.push(index + 1);
@@ -135,7 +141,7 @@ function getCustomCategoriesOrderEnumAndTitlesCategorical(data) {
     return {
       enum: categories,
       "Q:options": {
-        enum_titles: categories
+        enum_titles: categories,
       },
     };
   } catch {
@@ -198,18 +204,18 @@ function getPredefinedContent(baseMap, item) {
 function getAnnotationRegions(baseMap, item) {
   try {
     let dropDownItems = [];
-    
+
     if (item.baseMap.includes("hexagon")) {
       array2d.eachCell(baseMap.entities, (cell) => {
         if (cell !== null) {
           dropDownItems.push({
             value: cell[baseMap.config.displayEntityType],
-            title: cell[baseMap.config.defaultEntityType]
+            title: cell[baseMap.config.defaultEntityType],
           });
         }
       });
     } else if (item.baseMap.includes("geographic")) {
-      baseMap.entities.objects.features.geometries.forEach(feature => {
+      baseMap.entities.objects.features.geometries.forEach((feature) => {
         let value;
         if (item.entityType !== "") {
           value = feature.properties[item.entityType];
@@ -218,18 +224,20 @@ function getAnnotationRegions(baseMap, item) {
         }
         dropDownItems.push({
           value: value,
-          title: feature.properties["name"]
+          title: feature.properties["name"],
         });
       });
     }
 
     // Sort titles from a-z
-    dropDownItems.sort(function (a, b) { return ('' + a.title).localeCompare(b.title); });
+    dropDownItems.sort(function (a, b) {
+      return ("" + a.title).localeCompare(b.title);
+    });
 
     return {
-      enum: Object.values(dropDownItems).map(item => item.value),
+      enum: Object.values(dropDownItems).map((item) => item.value),
       "Q:options": {
-        enum_titles: Object.values(dropDownItems).map(item => item.title)
+        enum_titles: Object.values(dropDownItems).map((item) => item.title),
       },
     };
   } catch {
@@ -262,6 +270,7 @@ module.exports = {
   },
   handler: async function (request, h) {
     const item = request.payload.item;
+    const roles = request.payload.roles;
     const optionName = request.params.optionName;
 
     if (optionName === "scale") {
@@ -286,7 +295,10 @@ module.exports = {
           item.options.numericalOptions
         );
       } else {
-        return getColorOverwriteEnumAndTitlesCategorical(item.data, item.options.categoricalOptions.customCategoriesOrder);
+        return getColorOverwriteEnumAndTitlesCategorical(
+          item.data,
+          item.options.categoricalOptions.customCategoriesOrder
+        );
       }
     }
 
@@ -303,7 +315,10 @@ module.exports = {
       item.baseMap !== undefined &&
       item.version !== undefined
     ) {
-      const baseMap = await request.server.methods.getBasemap(item.baseMap, item.version);
+      const baseMap = await request.server.methods.getBasemap(
+        item.baseMap,
+        item.version
+      );
 
       if (baseMap) {
         return getAnnotationRegions(baseMap, item);
@@ -351,7 +366,15 @@ module.exports = {
     }
 
     if (optionName === "baseMap") {
-      const documents = await request.server.methods.getAllDocuments();
+      let documents = await request.server.methods.getAllDocuments();
+      documents = documents.filter((document) => {
+        return (
+          roles.includes("expert-choropleth") ||
+          !["ch-cantons-geographic", "de-bundeslander-geographic"].includes(
+            document.doc._id
+          )
+        );
+      });
       return {
         enum: documents.map((document) => document.doc._id),
         "Q:options": {

@@ -20,7 +20,7 @@
     "baseMap": {
       "title": "Basiskarte",
       "type": "string",
-      "default": "hexagonCHCantons",
+      "default": "ch-cantons-hexagon",
       "Q:options": {
         "dynamicSchema": {
           "type": "ToolEndpoint",
@@ -594,7 +594,11 @@
                         "type": "ToolEndpoint",
                         "config": {
                           "endpoint": "dynamic-schema/colorOverwritesItem",
-                          "fields": ["options.choroplethType", "options.categoricalOptions.customCategoriesOrder", "data"]
+                          "fields": [
+                            "options.choroplethType",
+                            "options.categoricalOptions.customCategoriesOrder",
+                            "data"
+                          ]
                         }
                       }
                     }

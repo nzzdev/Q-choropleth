@@ -2,6 +2,7 @@
   import HexagonMap from "./Hexagon/HexagonMap.svelte";
   import GeographicMap from "./Geographic/GeographicMap.svelte";
   import ChoroplethLegend from "./ChoroplethLegend.svelte";
+  import Attribution from "./Attribution.svelte";
   import MethodBox from "./MethodBox.svelte";
   import AnnotationsLegend from "./Annotations/AnnotationsLegend.svelte";
   import Footer from "./Footer.svelte";
@@ -79,6 +80,9 @@
           {annotations}
           {annotationRadius} />
       {/if}
+      {#if baseMap.source}
+        <Attribution source={baseMap.source} {isStatic}/>
+      {/if}
       {#if legendData.type === 'numerical'}
         <MethodBox
           {legendData}
@@ -87,6 +91,7 @@
           methodBoxText={methodBox.text}
           methodBoxArticle={methodBox.article} />
       {/if}
+
     </div>
   {/if}
   <Footer {item} />
