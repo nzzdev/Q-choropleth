@@ -8,8 +8,7 @@
       "type": "node",
       "request": "launch",
       "name": "Launch Program",
-      "program": "${workspaceFolder}/dev.js",
-      "runtimeVersion": "14.15.2"
+      "program": "${workspaceFolder}/dev.js"
     },
     {
       "type": "node",
