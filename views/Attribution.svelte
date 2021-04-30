@@ -3,7 +3,7 @@
   export let isStatic;
 </script>
 
-<div class="q-choropleth-attribution s-font-note-s">
+<div class="q-choropleth-attribution s-font-note-s s-font-note-s--light">
   {#if isStatic}
     Kartengrundlage: {source.label}
   {:else}
