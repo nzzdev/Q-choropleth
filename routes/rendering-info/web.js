@@ -145,12 +145,14 @@ module.exports = {
               fetch("${baseMapUrl}").then(function(result) {
                 if(result) {
                   result.json().then(function(baseMap) {
+                    var target = document.querySelector('#${
+                      context.id
+                    }_container');
+                    target.innerHTML = "";
                     var props = JSON.parse('${JSON.stringify(context)}');
                     props.baseMap = baseMap;
                     new window._q_choropleth.Choropleth({
-                      "target": document.querySelector('#${
-                        context.id
-                      }_container'),
+                      "target": target,
                       "props": props
                     })
                   });
