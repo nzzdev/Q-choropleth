@@ -151,9 +151,6 @@ module.exports = {
                     target.innerHTML = "";
                     var props = JSON.parse('${JSON.stringify(context)}');
                     props.baseMap = baseMap;
-                    if(props.contentWidth === undefined) {
-                      props.contentWidth = target.getBoundingClientRect().width;
-                    }
                     new window._q_choropleth.Choropleth({
                       "target": target,
                       "props": props
