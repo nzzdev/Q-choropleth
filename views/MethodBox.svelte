@@ -140,8 +140,11 @@
   </div>
 {:else}
   <div class="methodbox-link s-font-note-s" on:click={handleMethodBoxClicked}>
-    <OpenIcon {isMethodBoxOpen}/>
-    <CloseIcon {isMethodBoxOpen}/>
+    {#if isMethodBoxOpen}
+      <CloseIcon/>
+    {:else}
+      <OpenIcon/>
+    {/if}
     <div class="methodbox-link-text">Daten und Methodik</div>
   </div>
   {#if isMethodBoxOpen} 
