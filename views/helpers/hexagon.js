@@ -1,7 +1,7 @@
 /**
  * For a pointy topped hexagon, get the height for a given width.
  */
-function heightFromWidth(width) {
+export function heightFromWidth(width) {
   // Formula from https://www.redblobgames.com/grids/hexagons/#size-and-spacing
   return 2 * sizeFromWidth(width);
 }
@@ -9,7 +9,7 @@ function heightFromWidth(width) {
 /**
  * For a pointy topped hexagon, get the width for a given height.
  */
-function widthFromHeight(height) {
+export function widthFromHeight(height) {
   // Formula from https://www.redblobgames.com/grids/hexagons/#size-and-spacing
   return Math.sqrt(3) * sizeFromHeight(height);
 }
@@ -17,7 +17,7 @@ function widthFromHeight(height) {
 /**
  * For a pointy topped hexagon, get the size (distance from center to corner) for a given width.
  */
-function sizeFromWidth(width) {
+export function sizeFromWidth(width) {
   // Formula from https://www.redblobgames.com/grids/hexagons/#size-and-spacing
   return width / Math.sqrt(3);
 }
@@ -25,7 +25,7 @@ function sizeFromWidth(width) {
 /**
  * For a pointy topped hexagon, get the size (distance from center to corner) for a given height.
  */
-function sizeFromHeight(height) {
+export function sizeFromHeight(height) {
   // Formula from https://www.redblobgames.com/grids/hexagons/#size-and-spacing
   return height / 2;
 }
@@ -33,14 +33,14 @@ function sizeFromHeight(height) {
 /**
  * For a pointy topped hexagon, get all corner coordinates given center and size.
  */
-function pointyHexCorners(center, size) {
+export function pointyHexCorners(center, size) {
   return Array.from({ length: 6 }, (_, i) => pointyHexCorner(center, size, i));
 }
 
 /**
  * For a pointy topped hexagon, get coordinates of one corner.
  */
-function pointyHexCorner(center, size, i) {
+export function pointyHexCorner(center, size, i) {
   // Formulas from https://www.redblobgames.com/grids/hexagons/#angles
   const angleDegrees = 60 * i - 30;
   const angleRadians = (Math.PI / 180) * angleDegrees;
@@ -50,18 +50,8 @@ function pointyHexCorner(center, size, i) {
   };
 }
 
-function pointyHexToPixel({ q, r }, size) {
+export function pointyHexToPixel({ q, r }, size) {
   const x = size * (Math.sqrt(3) * q + (Math.sqrt(3) / 2) * r);
   const y = size * ((3 / 2) * r);
   return { x, y };
 }
-
-module.exports = {
-  heightFromWidth,
-  widthFromHeight,
-  sizeFromWidth,
-  sizeFromHeight,
-  pointyHexCorners,
-  pointyHexCorner,
-  pointyHexToPixel,
-};

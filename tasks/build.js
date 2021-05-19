@@ -12,11 +12,12 @@ const stylesDir = path.join(__dirname, "/../styles_src/");
 const scriptsDir = path.join(__dirname, "/../scripts_src/");
 
 const rollup = require("rollup");
-const buble = require("rollup-plugin-buble");
+const buble = require("@rollup/plugin-buble");
 const { terser } = require("rollup-plugin-terser");
-const resolve = require("rollup-plugin-node-resolve");
-const commonjs = require("rollup-plugin-commonjs");
-const json = require("rollup-plugin-json");
+const { nodeResolve } = require("@rollup/plugin-node-resolve");
+const commonjs = require("@rollup/plugin-commonjs");
+const json = require("@rollup/plugin-json");
+const svelte = require("rollup-plugin-svelte");
 
 function writeHashmap(hashmapPath, files, fileext) {
   const hashMap = {};
@@ -103,14 +104,15 @@ async function buildScripts() {
       input: `${scriptsDir}${filename}.js`,
       plugins: [
         json({ namedExports: false }),
+        svelte(),
+        nodeResolve({ browser: true }),
+        commonjs(),
         buble({
           transforms: {
             dangerousForOf: true,
           },
         }),
         terser(),
-        resolve({ browser: true }),
-        commonjs(),
       ],
     };
     const outputOptions = {

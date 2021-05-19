@@ -1,4 +1,4 @@
-function getColor(value, legendData) {
+export function getColor(value, legendData) {
   if (value === null || value === undefined) {
     return {
       colorClass: "s-color-gray-4",
@@ -47,5 +47,3 @@ function getColor(value, legendData) {
     }
   }
 }
-
-module.exports = { getColor };

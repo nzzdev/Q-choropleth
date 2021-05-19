@@ -1,27 +1,36 @@
-const data = require("../helpers/data.js");
-const cssModifierHelpers = require("../helpers/cssModifier.js");
-const annotationsHelpers = require("../helpers/annotations.js");
+import { round } from "../helpers/data.js";
+import { getCssModifier } from "../helpers/cssModifier.js";
+import {
+  hasAnnotationOnTopOrBottom,
+  hasAnnotationOnLeftOrRight,
+} from "../helpers/annotations.js";
 
-function getAspectRatioViewBox(xMin, yMin, width, height, contentWidth, annotations, annotationSpace) {
-  let cssModifier = cssModifierHelpers.getCssModifier(contentWidth);
+export function getAspectRatioViewBox(
+  xMin,
+  yMin,
+  width,
+  height,
+  contentWidth,
+  annotations,
+  annotationSpace
+) {
+  let cssModifier = getCssModifier(contentWidth);
 
   if (annotations.length > 0) {
-    if (annotationsHelpers.hasAnnotationOnTopOrBottom(annotations, cssModifier)) {
-      yMin   += -(annotationSpace/2);
-      height += annotationSpace
+    if (hasAnnotationOnTopOrBottom(annotations, cssModifier)) {
+      yMin += -(annotationSpace / 2);
+      height += annotationSpace;
     }
-    if (annotationsHelpers.hasAnnotationOnLeftOrRight(annotations, cssModifier)) {
-      xMin  += -(annotationSpace/2);
+    if (hasAnnotationOnLeftOrRight(annotations, cssModifier)) {
+      xMin += -(annotationSpace / 2);
       width += annotationSpace;
     }
   }
 
   const viewBox = [xMin, yMin, width, height]
-    .map(value => data.round(value))
+    .map((value) => round(value))
     .join(" ");
   const aspectRatio = contentWidth / height;
 
   return { aspectRatio, viewBox };
 }
-
-module.exports = { getAspectRatioViewBox };

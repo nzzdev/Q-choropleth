@@ -1,19 +1,19 @@
-const geo = require("d3-geo");
-const geoProjection = require("d3-geo-projection");
-const topojson = require("topojson");
+import { geoPath, geoAlbersUsa, geoMercator } from "d3-geo";
+import { geoRobinson } from "d3-geo-projection";
+import { feature } from "topojson";
 
-function getGeoParameters(baseMap, width, maxHeight) {
+export function getGeoParameters(baseMap, width, maxHeight) {
   const features = getFeatureCollection(baseMap.entities, "features");
   const outlines = getFeatureCollection(baseMap.entities, "outlines");
   const water = getFeatureCollection(baseMap.entities, "water");
   let projection = getProjection(baseMap).fitWidth(width, features);
-  let path = geo.geoPath(projection);
+  let path = geoPath(projection);
   let bounds = path.bounds(features);
   const height = bounds[1][1];
 
   if (height > maxHeight) {
     projection = getProjection(baseMap).fitHeight(maxHeight, features);
-    path = geo.geoPath(projection);
+    path = geoPath(projection);
     bounds = path.bounds(features);
   }
 
@@ -22,17 +22,17 @@ function getGeoParameters(baseMap, width, maxHeight) {
 
 function getProjection(baseMap) {
   if (baseMap.config.projection === "robinson") {
-    return geoProjection.geoRobinson();
+    return geoRobinson();
   } else if (baseMap.config.projection === "albersUsa") {
-    return geo.geoAlbersUsa();
+    return geoAlbersUsa();
   } else {
-    return geo.geoMercator();
+    return geoMercator();
   }
 }
 
 function getFeatureCollection(topojsonObject, objectName) {
   if (topojsonObject && topojsonObject.objects[objectName]) {
-    return topojson.feature(topojsonObject, topojsonObject.objects[objectName]);
+    return feature(topojsonObject, topojsonObject.objects[objectName]);
   }
   return makeFeatureCollection([]);
 }
@@ -44,7 +44,7 @@ function makeFeatureCollection(features) {
   };
 }
 
-function roundCoordinatesInPath(path, precision = 1) {
+export function roundCoordinatesInPath(path, precision = 1) {
   try {
     if (path) {
       return path.replace(/\d+\.\d+/g, (s) => parseFloat(s).toFixed(precision));
@@ -53,8 +53,3 @@ function roundCoordinatesInPath(path, precision = 1) {
     console.log(error);
   }
 }
-
-module.exports = {
-  getGeoParameters,
-  roundCoordinatesInPath,
-};

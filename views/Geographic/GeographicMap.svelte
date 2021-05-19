@@ -14,10 +14,8 @@
   export let dataMapping;
   export let entityType;
   export let legendData;
-  export let valuesOnMap;
   export let contentWidth;
   export let baseMap;
-  export let formattingOptions;
   export let maxHeight = 550;
   export let annotations = [];
   export let annotationRadius = 8;

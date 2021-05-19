@@ -89,14 +89,6 @@
       align-self: center;
     }
 
-    &-icon-plus.hidden {
-      display: none;
-    }
-
-    &-icon-close.hidden {
-      display: none;
-    }
-
     &-text {
       margin-left: 4px;
     }
@@ -145,10 +137,6 @@
     box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.1);
     border: 1px solid #f0f0f2;
     padding: 8px;
-
-    &.hidden {
-      display: none;
-    }
   }
 
   &-legend {

@@ -1,4 +1,4 @@
-function getCssModifier(contentWidth) {
+export function getCssModifier(contentWidth) {
   if (contentWidth < 400) {
     return "narrow";
   } else if (contentWidth < 470) {
@@ -9,5 +9,3 @@ function getCssModifier(contentWidth) {
     return "extra-wide";
   }
 }
-
-module.exports = { getCssModifier };
