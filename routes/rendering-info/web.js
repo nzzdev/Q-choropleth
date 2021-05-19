@@ -75,10 +75,6 @@ module.exports = {
         id: `q_choropleth_${toolRuntimeConfig.requestId}`,
         displayOptions: request.payload.toolRuntimeConfig.displayOptions || {},
       };
-      context.baseMap = await request.server.methods.getBasemap(
-        item.baseMap,
-        item.version
-      );
       context.isStatic = toolRuntimeConfig.noInteraction;
 
       if (item.options.choroplethType === "numerical") {
@@ -131,6 +127,7 @@ module.exports = {
         context.contentWidth = exactPixelWidth;
       }
 
+      const baseMapUrl = `${toolRuntimeConfig.toolBaseUrl}/basemap/${item.baseMap}?version=${item.version}`;
       const renderingInfo = {
         polyfills: ["Promise", "Element.prototype.classList", "CustomEvent"],
         stylesheets: [
@@ -144,10 +141,22 @@ module.exports = {
           },
           {
             content: `
-            new window._q_choropleth.Choropleth({
-              "target": document.querySelector('#${context.id}_container'), 
-              "props": JSON.parse('${JSON.stringify(context)}')
-            })`,
+            (function () {
+              fetch("${baseMapUrl}").then(function(result) {
+                if(result) {
+                  result.json().then(function(baseMap) {
+                    var props = JSON.parse('${JSON.stringify(context)}');
+                    props.baseMap = baseMap;
+                    new window._q_choropleth.Choropleth({
+                      "target": document.querySelector('#${
+                        context.id
+                      }_container'),
+                      "props": props
+                    })
+                  });
+                }
+              });
+            })();`,
           },
         ],
         markup: staticTemplate.render(context).html,
