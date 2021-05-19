@@ -10,7 +10,6 @@
   let labelLegend = getLabelLegend(legendData);
 
   const legendBarHeight = 16;
-  const singleValueBucketWidth = 8;
   const widthConfig = {
     legend: 55,
     average: 100,
@@ -94,6 +93,69 @@
     return isStatic ? "static" : "interactive";
   }
 </script>
+<style>
+.legend-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.legend {
+  height: 32px;
+  width: 100%;
+}
+
+.legend-bucket {
+  fill: currentColor;
+}
+
+.legend-value-container {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.legend-value-container--minVal {
+  margin-left: 2px;
+}
+
+.legend-value-container--maxVal {
+  margin-right: 2px;
+}
+
+.legend-border-container {
+  position: relative;
+}
+
+.legend-borders {
+  position: absolute;
+  height: 28px;
+  top: 0px;
+  border-right: 0.5px solid currentColor;
+  border-left: 0.5px solid currentColor;
+  width: 100%;
+}
+
+.legend-info--single-bucket {
+  margin-right: 16px;
+}
+
+.legend-info-icon {
+  margin-right: 8px;
+}
+
+.legend-info-icon--interactive {
+  margin-top: -2px;
+}
+
+.legend-info-icon--static {
+  margin-top: 1px;
+}
+
+.legend--numerical {
+  display: flex;
+  justify-content: center;
+}
+</style>
 
 {#if legendData !== undefined}
   {#if legendData.type === 'categorical'}
@@ -116,8 +178,8 @@
           <svg
             width="11"
             height="11"
-            class="s-legend-item-label__item__icon q-choropleth-legend-info-icon
-            q-choropleth-legend-info-icon--{getIconClass(isStatic)}">
+            class="s-legend-item-label__item__icon legend-info-icon
+            legend-info-icon--{getIconClass(isStatic)}">
             <rect
               width="11"
               height="11"
@@ -132,25 +194,25 @@
     {/if}
   {:else if legendData.type === 'numerical'}
     <!-- display bucket legend -->
-    <div class="q-choropleth-legend--numerical">
+    <div class="legend--numerical">
       <div
-        class="q-choropleth-legend-container"
+        class="legend-container"
         style="width: {widthConfig.legend}%">
-        <div class="q-choropleth-legend-value-container">
-          <span class="q-choropleth-legend-value-container--minVal s-font-note s-font-note--tabularnums">
+        <div class="legend-value-container">
+          <span class="legend-value-container--minVal s-font-note s-font-note--tabularnums">
             {getFormattedValueForBuckets(formattingOptions, legendData.minValue)}
           </span>
-          <span class="q-choropleth-legend-value-container--maxVal s-font-note s-font-note--tabularnums">
+          <span class="legend-value-container--maxVal s-font-note s-font-note--tabularnums">
             {getFormattedValueForBuckets(formattingOptions, legendData.maxValue)}
           </span>
         </div>
-        <div class="q-choropleth-legend-border-container">
-          <svg class="q-choropleth-legend">
+        <div class="legend-border-container">
+          <svg class="legend">
             <g>
               {#each legendData.buckets as bucket, index}
                 {#if !(legendData.hasSingleValueBucket && index === 0)}
                   <rect
-                    class="q-choropleth-legend-bucket {getColorClass(bucket)}"
+                    class="legend-bucket {getColorClass(bucket)}"
                     style="fill: {getCustomColor(bucket)}"
                     width="{getAspectWidth(legendData, bucket)}%"
                     height={legendBarHeight}
@@ -178,11 +240,11 @@
               </g>
             {/if}
           </svg>
-          <div class="q-choropleth-legend-borders s-color-gray-6" />
+          <div class="legend-borders s-color-gray-6" />
         </div>
         {#if labelLegend.label !== 'noLabel'}
           <div
-            class="q-choropleth-legend-marker s-font-note s-font-note--tabularnums"
+            class="legend-marker s-font-note s-font-note--tabularnums"
             style={getDescriptionAlignment(labelLegend)}>
             {labelLegend.label}: {getFormattedValue(formattingOptions, labelLegend.value)}
           </div>
@@ -192,17 +254,17 @@
             {#if hasSingleValueBucket(legendData)}
               <div
                 class="s-legend-item-label__item
-                q-choropleth-legend-info--single-bucket">
+                legend-info--single-bucket">
                 <svg
                   width="11"
                   height="11"
                   class="s-legend-item-label__item__icon
-                  q-choropleth-legend-info-icon 
-                  q-choropleth-legend-info-icon--{getIconClass(isStatic)}">
+                  legend-info-icon 
+                  legend-info-icon--{getIconClass(isStatic)}">
                   <rect
                     width="11"
                     height="11"
-                    class="q-choropleth-legend-bucket {getColorClass(legendData.buckets[0])}"
+                    class="legend-bucket {getColorClass(legendData.buckets[0])}"
                     style="fill: {getCustomColor(legendData.buckets[0])}" />
                 </svg>
                 <div class="s-legend-item-label__item__label s-font-note--tabularnums">
@@ -213,12 +275,12 @@
             {#if legendData.hasNullValues}
               <div
                 class="s-legend-item-label__item
-                q-choropleth-legend-info--no-data ">
+                legend-info--no-data ">
                 <svg
                   width="11"
                   height="11"
                   class="s-legend-item-label__item__icon
-                  q-choropleth-legend-info-icon q-choropleth-legend-info-icon--{getIconClass(isStatic)}">
+                  legend-info-icon legend-info-icon--{getIconClass(isStatic)}">
                   <rect
                     width="11"
                     height="11"

@@ -16,7 +16,7 @@
   let lineY2 = round(coordinates.lineY2);
 </script>
 
-<g class="q-choropleth-annotation">
+<g>
   <line
     x1={lineX1}
     y1={lineY1}

@@ -51,7 +51,7 @@
 
 <ResponsiveSvg aspectRatio={svgSize.aspectRatio}>
   <svg viewbox={svgSize.viewBox}>
-    <g class="q-choropleth-features">
+    <g>
       {#each getFeaturesWithoutAnnotation(geoParameters.features.features, annotations, entityType) as feature}
         <Feature
           color={getColor(dataMapping.get(feature.properties[entityType]), legendData)}
@@ -59,7 +59,7 @@
       {/each}
     </g>
     {#if geoParameters.outlines.features !== undefined}
-      <g class="q-choropleth-outlines">
+      <g>
         {#each geoParameters.outlines.features as outline}
           <OutlineFeature
             path={roundCoordinatesInPath(geoParameters.path(outline), 1)} />
@@ -67,7 +67,7 @@
       </g>
     {/if}
     {#if geoParameters.water.features !== undefined}
-      <g class="q-choropleth-water">
+      <g>
         {#each geoParameters.water.features as water}
           <WaterFeature
             path={roundCoordinatesInPath(geoParameters.path(water), 1)} />
@@ -75,14 +75,14 @@
       </g>
     {/if}
     {#if annotations && annotations.length > 0}
-      <g class="q-choropleth-annotations">
+      <g class="annotations">
         {#each annotations as { id, coordinates }}
           <AnnotationPointWithLine
             id = {id}
             radius = {annotationRadius}
             coordinates = {coordinates} />
         {/each}
-        <g class="q-choropleth-features">
+        <g>
           <!--
             Features with annotations are added here, so the border around them is drawn correctly.
           -->

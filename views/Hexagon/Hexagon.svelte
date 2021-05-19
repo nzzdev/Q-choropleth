@@ -96,7 +96,7 @@
         y={getValueTextY(y, height)}
         dominant-baseline="central"
         text-anchor="middle"
-        class="{color.textColor} q-choropleth-hexagon-value"
+        class="{color.textColor}"
         fill="currentColor"
         font-size={fontSize}>
         {text[1]}

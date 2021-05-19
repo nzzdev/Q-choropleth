@@ -130,7 +130,7 @@
 
 <ResponsiveSvg aspectRatio={svgSize.aspectRatio}>
   <svg viewbox={svgSize.viewBox}>
-    <g class="q-choropleth-hexagons">
+    <g>
       {#each hexagons as { text, color, width, height, type, x, y, hasAnnotation }}
         <Hexagon
           {valuesOnMap}
@@ -146,7 +146,7 @@
       {/each}
     </g>
     {#if annotations && annotations.length > 0}
-      <g class="q-choropleth-annotations">
+      <g class="annotations">
         {#each annotations as { id, coordinates }}
           <AnnotationPointWithLine
             id = {id}

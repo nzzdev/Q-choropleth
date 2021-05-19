@@ -2,8 +2,12 @@
   export let source;
   export let isStatic;
 </script>
-
-<div class="q-choropleth-attribution s-font-note-s s-font-note-s--light">
+<style>
+.attribution {
+  margin-bottom: 8px;
+}
+</style>
+<div class="attribution s-font-note-s s-font-note-s--light">
   {#if isStatic}
     Kartengrundlage: {source.label}
   {:else}

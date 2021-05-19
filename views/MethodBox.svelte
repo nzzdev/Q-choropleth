@@ -18,8 +18,8 @@
         eventInfo: {
           componentName: "q-choropleth",
           eventAction: isMethodBoxOpen
-            ? "close-methods-box"
-            : "open-methods-box",
+            ? "close-methodbox-box"
+            : "open-methodbox-box",
           eventNonInteractive: false,
         },
       },
@@ -41,17 +41,85 @@
     event.target.dispatchEvent(trackingEvent);
   }
 </script>
+<style>
+.methodbox-link {
+  display: flex;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.methodbox-link:hover {
+  opacity: 0.6;
+}
+
+.methodbox-link-text {
+  margin-left: 4px;
+}
+
+.methodbox-description {
+  margin-top: 4px;
+}
+
+.methodbox-circle {
+  position: relative;
+  box-sizing: content-box;
+  width: 7px;
+  height: 7px;
+  margin: 2px 8px 2px 2px;
+  border: 1px solid;
+  border-radius: 50%;
+}
+
+.methodbox-circle--circle-fill {
+  background-color: currentColor;
+}
+
+.methodbox-circle-static {
+  margin-right: 8px;
+}
+
+.methodbox-box-static {
+  margin-right: 20px;
+}
+
+.methodbox-article-container {
+  margin-top: 4px;
+}
+
+.methodbox-article-link {
+  color: #05032d;
+}
+
+.methodbox-container {
+  margin-top: 8px;
+  box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.1);
+  border: 1px solid #f0f0f2;
+  padding: 8px;
+}
+
+.methodbox-legend-table {
+  table-layout: auto !important;
+}
+
+.methodbox-legend-table tr {
+  text-align: right;
+}
+
+.methodbox-legend-table td {
+  width: auto !important;
+}
+</style>
 
 {#if isStatic}
-  <div class="q-choropleth-methods-static">
+  <div>
     <div class="s-font-title-s">Daten und Methodik</div>
     <div>
       <div class="s-legend-icon-label">
         {#each legendData.buckets as bucket, index}
-          <div class="s-legend-item-label__item q-choropleth-methods-box-static">
+          <div class="s-legend-item-label__item methodbox-box-static">
             <div
               class="{bucket.color.colorClass !== undefined ? bucket.color.colorClass : ''}
-              q-choropleth-methods-circle-static s-legend-item-label__item__icon
+              methodbox-circle-static s-legend-item-label__item__icon
               s-legend-item-label__item__icon--default"
               style="color: {bucket.color.customColor !== undefined ? bucket.color.customColor : ''};" />
             <div class="s-legend-item-label__item__label s-font-note--tabularnums">
@@ -65,28 +133,28 @@
           </div>
         {/each}
       </div>
-      <div class="q-choropleth-methods-description s-font-note-s">
+      <div class="methodbox-description s-font-note-s">
         {methodBoxText}
       </div>
     </div>
   </div>
 {:else}
-  <div class="q-choropleth-methods-link s-font-note-s" on:click={handleMethodBoxClicked}>
+  <div class="methodbox-link s-font-note-s" on:click={handleMethodBoxClicked}>
     <OpenIcon {isMethodBoxOpen}/>
     <CloseIcon {isMethodBoxOpen}/>
-    <div class="q-choropleth-methods-link-text">Daten und Methodik</div>
+    <div class="methodbox-link-text">Daten und Methodik</div>
   </div>
   {#if isMethodBoxOpen} 
-    <div class="q-choropleth-methods-container s-font-note-s">
-      <div class="q-choropleth-methods-legend">
-        <table class="q-choropleth-methods-legend-table s-font-note--tabularnums">
+    <div class="methodbox-container s-font-note-s">
+      <div class="methodbox-legend">
+        <table class="methodbox-legend-table s-font-note--tabularnums">
           {#each legendData.buckets as bucket, index}
             <tr>
               <td>
                 <div
                   class="{bucket.color.colorClass !== undefined ? bucket.color.colorClass : ''}
-                  q-choropleth-methods-circle
-                  q-choropleth-methods-circle--circle-fill"
+                  methodbox-circle
+                  methodbox-circle--circle-fill"
                   style="color: {bucket.color.customColor !== undefined ? bucket.color.customColor : ''}" />
               </td>
               {#if index === 0 && legendData.hasSingleValueBucket}
@@ -110,9 +178,9 @@
           {/each}
         </table>
       </div>
-      <div class="q-choropleth-methods-description">{methodBoxText}</div>
+      <div class="methodbox-description">{methodBoxText}</div>
       {#if methodBoxArticle}
-        <div class="q-choropleth-methods-article-container" on:click={trackClickOnMethodBoxArticleLink}>
+        <div class="methodbox-article-container" on:click={trackClickOnMethodBoxArticleLink}>
           <a
             href={methodBoxArticle.url}
             target="_blank"

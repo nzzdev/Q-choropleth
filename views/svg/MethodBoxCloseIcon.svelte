@@ -1,8 +1,18 @@
 <script>
   export let isMethodBoxOpen
 </script>
+<style>
+.methodbox-link-icon {
+  display: flex;
+  align-self: center;
+}
+.methodbox-link-icon svg {
+  height: 10px;
+  width: 10px;
+}
+</style>
 {#if isMethodBoxOpen}
-  <div class="q-choropleth-methods-link-icon-close">
+  <div class="methodbox-link-icon">
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15 15">
       <g>
         <path
