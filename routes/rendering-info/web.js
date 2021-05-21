@@ -129,7 +129,12 @@ module.exports = {
 
       const baseMapUrl = `${toolRuntimeConfig.toolBaseUrl}/basemap/${item.baseMap}?version=${item.version}`;
       const renderingInfo = {
-        polyfills: ["Promise", "Element.prototype.classList", "CustomEvent"],
+        polyfills: [
+          "fetch",
+          "Promise",
+          "Element.prototype.classList",
+          "CustomEvent",
+        ],
         stylesheets: [
           {
             name: styleHashMap["default"],
