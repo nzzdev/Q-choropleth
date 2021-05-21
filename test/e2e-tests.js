@@ -137,7 +137,7 @@ lab.experiment("stylesheets endpoint", () => {
 });
 
 // all the fixtures render
-lab.experiment("all fixtures render", async () => {
+lab.experiment("all fixtures render", () => {
   const fixtureFiles = glob.sync(
     `${__dirname}/../resources/fixtures/data/*.json`
   );

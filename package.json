@@ -16,7 +16,7 @@
   "dependencies": {
     "@hapi/boom": "^9.1.2",
     "@hapi/catbox-memory": "^5.0.1",
-    "@hapi/hapi": "^19.2.0",
+    "@hapi/hapi": "^20.1.3",
     "@hapi/inert": "^6.0.3",
     "@hapi/joi": "^17.1.1",
     "ajv": "^6.12.6",
@@ -31,7 +31,7 @@
   },
   "devDependencies": {
     "@hapi/code": "^8.0.3",
-    "@hapi/lab": "^22.0.5",
+    "@hapi/lab": "^24.2.1",
     "@rollup/plugin-buble": "^0.21.3",
     "@rollup/plugin-commonjs": "^19.0.0",
     "@rollup/plugin-json": "^4.1.0",
