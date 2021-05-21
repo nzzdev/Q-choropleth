@@ -128,6 +128,7 @@ module.exports = {
       }
 
       const baseMapUrl = `${toolRuntimeConfig.toolBaseUrl}/basemap/${item.baseMap}?version=${item.version}`;
+      const staticTemplateRender = staticTemplate.render(context);
       const renderingInfo = {
         polyfills: [
           "fetch",
@@ -136,6 +137,9 @@ module.exports = {
           "CustomEvent",
         ],
         stylesheets: [
+          {
+            content: staticTemplateRender.css.code,
+          },
           {
             name: styleHashMap["default"],
           },
@@ -166,7 +170,7 @@ module.exports = {
             })();`,
           },
         ],
-        markup: staticTemplate.render(context).html,
+        markup: staticTemplateRender.html,
       };
 
       return renderingInfo;
