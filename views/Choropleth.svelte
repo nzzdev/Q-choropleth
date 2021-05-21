@@ -5,94 +5,78 @@
   import Attribution from "./Attribution.svelte";
   import MethodBox from "./MethodBox.svelte";
   import AnnotationsLegend from "./Annotations/AnnotationsLegend.svelte";
-  import Footer from "./Footer.svelte";
 
   export let item;
-  export let id;
   export let legendData;
   export let valuesOnMap;
   export let baseMap;
-  export let contentWidth;
   export let methodBox;
-  export let displayOptions;
   export let formattingOptions;
   export let isStatic;
 
   const dataMapping = new Map(item.data);
-
   const maxHeight = 550;
   const annotations = getAnnotationsWithId(item.mapAnnotations);
   const annotationRadius = 8;
+  let contentWidth;
 
   function getAnnotationsWithId(mapAnnotations) {
     if (!mapAnnotations) return [];
-    return mapAnnotations.map((value, index) => ({ id: index + 1, ...value }));
+    return mapAnnotations.map((value, index) => {
+      value.id = index + 1;
+      return value;
+    });
   }
 </script>
 
-<div id="{id}_container" class="s-q-item q-choropleth">
-  {#if !displayOptions.hideTitle}
-    <h3 class="s-q-item__title">{item.title}</h3>
+<div bind:offsetWidth={contentWidth}>
+{#if contentWidth}
+  {#if !(legendData.type === 'categorical' && valuesOnMap)}
+    <ChoroplethLegend
+      {legendData}
+      {formattingOptions}
+      {contentWidth}
+      {isStatic} />
   {/if}
-  {#if item.subtitle || item.subtitleSuffix}
-    <div class="s-q-item__subtitle">
-      {#if item.subtitle}{item.subtitle}{/if}
-      {#if item.subtitleSuffix}{item.subtitleSuffix}{/if}
-    </div>
+  {#if item.baseMap.includes('hexagon')}
+    <HexagonMap
+      {dataMapping}
+      entityType={item.entityType}
+      {valuesOnMap}
+      {legendData}
+      {baseMap}
+      {contentWidth}
+      {formattingOptions}
+      {maxHeight}
+      {annotations}
+      {annotationRadius} />
   {/if}
-  {#if contentWidth}
-    <div class="q-choropleth-container">
-      {#if !(legendData.type === 'categorical' && valuesOnMap)}
-        <ChoroplethLegend
-          {legendData}
-          {formattingOptions}
-          {contentWidth}
-          {isStatic} />
-      {/if}
-      {#if item.baseMap.includes('hexagon')}
-        <HexagonMap
-          {dataMapping}
-          entityType={item.entityType}
-          {valuesOnMap}
-          {legendData}
-          {baseMap}
-          {contentWidth}
-          {formattingOptions}
-          {maxHeight}
-          {annotations}
-          {annotationRadius} />
-      {/if}
-      {#if item.baseMap.includes('geographic')}
-        <GeographicMap
-          {dataMapping}
-          entityType={item.entityType}
-          {valuesOnMap}
-          {legendData}
-          {baseMap}
-          {contentWidth}
-          {formattingOptions}
-          {maxHeight}
-          {annotations}
-          {annotationRadius} />
-      {/if}
-      {#if annotations && annotations.length > 0}
-        <AnnotationsLegend
-          {annotations}
-          {annotationRadius} />
-      {/if}
-      {#if baseMap.source}
-        <Attribution source={baseMap.source} {isStatic}/>
-      {/if}
-      {#if legendData.type === 'numerical'}
-        <MethodBox
-          {legendData}
-          {formattingOptions}
-          {isStatic}
-          methodBoxText={methodBox.text}
-          methodBoxArticle={methodBox.article} />
-      {/if}
-
-    </div>
+  {#if item.baseMap.includes('geographic')}
+    <GeographicMap
+      {dataMapping}
+      entityType={item.entityType}
+      {legendData}
+      {baseMap}
+      {contentWidth}
+      {maxHeight}
+      {annotations}
+      {annotationRadius} />
   {/if}
-  <Footer {item} />
+  {#if annotations && annotations.length > 0}
+    <AnnotationsLegend
+      {annotations}
+      {annotationRadius} />
+  {/if}
+  {#if baseMap.source}
+    <Attribution source={baseMap.source} {isStatic}/>
+  {/if}
+  {#if legendData.type === 'numerical'}
+    <MethodBox
+      {legendData}
+      {formattingOptions}
+      {isStatic}
+      methodBoxText={methodBox.text}
+      methodBoxArticle={methodBox.article} />
+  {/if}
+{/if}
 </div>

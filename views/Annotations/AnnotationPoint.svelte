@@ -15,23 +15,25 @@
 <g class="s-font-note-s">
   <circle
     r={radius}
-    cx="{x}"
-    cy="{y}"
+    cx={x}
+    cy={y}
     class={circleColorClass}
     fill={circleColorClass ? "currentColor" : "#fff"}
     stroke="#000"
-    stroke-width={strokeWidth} />
+    stroke-width={strokeWidth}
+  />
   <!--
     y=0.35em to vertically center text (important for QToPrint)
   -->
   <text
     y="0.35em"
-    dx="{x}"
-    dy="{y}"
+    dx={x}
+    dy={y}
     class={textColorClass}
     fill="currentColor"
-    font-weight=700
-    text-anchor="middle">
+    font-weight="700"
+    text-anchor="middle"
+  >
     {id}
   </text>
 </g>

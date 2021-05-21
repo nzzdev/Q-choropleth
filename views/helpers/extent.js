@@ -1,7 +1,7 @@
 // Extent function from d3-array v2.5.0, BSD 3-Clause License
 // Source: https://github.com/d3/d3-array/blob/v2.5.0/src/extent.js
 
-function getExtents(values, valueof) {
+export function getExtents(values, valueof) {
   let min;
   let max;
   if (valueof === undefined) {
@@ -30,5 +30,3 @@ function getExtents(values, valueof) {
   }
   return [min, max];
 }
-
-module.exports = { getExtents };

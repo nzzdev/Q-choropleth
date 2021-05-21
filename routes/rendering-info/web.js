@@ -6,8 +6,8 @@ const legendHelpers = require("../../helpers/legend.js");
 const dataHelpers = require("../../helpers/data.js");
 const methodBoxHelpers = require("../../helpers/methodBox");
 
-const getExactPixelWidth = require("../../helpers/toolRuntimeConfig.js")
-  .getExactPixelWidth;
+const getExactPixelWidth =
+  require("../../helpers/toolRuntimeConfig.js").getExactPixelWidth;
 
 const stylesDir = path.join(__dirname, "/../../styles/");
 const styleHashMap = require(path.join(stylesDir, "hashMap.json"));
@@ -17,7 +17,7 @@ const viewsDir = `${__dirname}/../../views/`;
 
 // setup svelte
 require("svelte/register");
-const staticTemplate = require(viewsDir + "Choropleth.svelte").default;
+const staticTemplate = require(viewsDir + "App.svelte").default;
 
 // POSTed item will be validated against given schema
 // hence we fetch the JSON schema...
@@ -65,11 +65,6 @@ module.exports = {
   handler: async function (request, h) {
     try {
       const item = request.payload.item;
-
-      // we need a copy of the unchanged item to hand it over to client side script
-      // in case no width is given we call rendering info route again with this item
-      // and client side measured width of container
-      const originalItem = { ...item };
       const toolRuntimeConfig = request.payload.toolRuntimeConfig;
 
       // since we do not need header row for further processing we remove it here first
@@ -80,10 +75,6 @@ module.exports = {
         id: `q_choropleth_${toolRuntimeConfig.requestId}`,
         displayOptions: request.payload.toolRuntimeConfig.displayOptions || {},
       };
-      context.baseMap = await request.server.methods.getBasemap(
-        item.baseMap,
-        item.version
-      );
       context.isStatic = toolRuntimeConfig.noInteraction;
 
       if (item.options.choroplethType === "numerical") {
@@ -136,39 +127,51 @@ module.exports = {
         context.contentWidth = exactPixelWidth;
       }
 
+      const baseMapUrl = `${toolRuntimeConfig.toolBaseUrl}/basemap/${item.baseMap}?version=${item.version}`;
+      const staticTemplateRender = staticTemplate.render(context);
       const renderingInfo = {
-        polyfills: ["Promise", "Element.prototype.classList", "CustomEvent"],
+        polyfills: [
+          "fetch",
+          "Promise",
+          "Element.prototype.classList",
+          "CustomEvent",
+        ],
         stylesheets: [
+          {
+            content: staticTemplateRender.css.code,
+          },
           {
             name: styleHashMap["default"],
           },
         ],
-        markup: staticTemplate.render(context).html,
-      };
-
-      renderingInfo.scripts = [];
-
-      // if the graphic will be deployed static, as in screenshot or Q-to-print, no scripts shall be loaded
-      if (!toolRuntimeConfig.isStatic) {
-        renderingInfo.scripts.push(
+        scripts: [
           {
             name: scriptHashMap["default"],
           },
           {
             content: `
-          new window._q_choropleth.Choropleth(document.querySelector('#${
-            context.id
-          }_container'), ${JSON.stringify({
-              qId: context.item.id,
-              requestId: context.id,
-              choroplethType: context.item.options.choroplethType,
-              width: context.contentWidth,
-              item: originalItem,
-              toolRuntimeConfig: toolRuntimeConfig,
-            })})`,
-          }
-        );
-      }
+            (function () {
+              fetch("${baseMapUrl}").then(function(result) {
+                if(result) {
+                  result.json().then(function(baseMap) {
+                    var target = document.querySelector('#${
+                      context.id
+                    }_container');
+                    target.innerHTML = "";
+                    var props = JSON.parse('${JSON.stringify(context)}');
+                    props.baseMap = baseMap;
+                    new window._q_choropleth.Choropleth({
+                      "target": target,
+                      "props": props
+                    })
+                  });
+                }
+              });
+            })();`,
+          },
+        ],
+        markup: staticTemplateRender.html,
+      };
 
       return renderingInfo;
     } catch (e) {

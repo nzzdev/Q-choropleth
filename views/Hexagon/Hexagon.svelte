@@ -14,14 +14,16 @@
   export let cssModifier;
   export let hasAnnotation = false;
 
-  const growFactor = getGrowFactor(hasAnnotation, cssModifier, type);
-  const transform = `translate(${x} ${y})`;
-  const points = roundCoordinatesInPath(
-    getPolygonPoints(x, y, width, growFactor),
-    1
-  );
-  const fontNoteClass =
-    cssModifier === "narrow" ? "s-font-note-s" : "s-font-note";
+  let growFactor, transform, points, fontNoteClass;
+  $: {
+    growFactor = getGrowFactor(hasAnnotation, cssModifier, type);
+    transform = `translate(${x} ${y})`;
+    points = roundCoordinatesInPath(
+      getPolygonPoints(x, y, width, growFactor),
+      1
+    );
+    fontNoteClass = cssModifier === "narrow" ? "s-font-note-s" : "s-font-note";
+  }
 
   /**
    * grow factor = 1 would mean, that hexagons are sticked together
@@ -70,14 +72,17 @@
   }
 </script>
 
-{#if type === 'fill'}
+{#if type === "fill"}
   <polygon
     {transform}
     {points}
     class={color.colorClass}
-    fill={color.customColor && color.customColor.length > 0 ? color.customColor : 'currentColor'}
+    fill={color.customColor && color.customColor.length > 0
+      ? color.customColor
+      : "currentColor"}
     stroke={undefined}
-    stroke-width={undefined} />
+    stroke-width={undefined}
+  />
   <g class="{fontNoteClass} s-font-note--tabularnums">
     {#if valuesOnMap}
       <text
@@ -88,7 +93,8 @@
         text-anchor="middle"
         class={color.textColor}
         fill="currentColor"
-        font-size={fontSize}>
+        font-size={fontSize}
+      >
         {text[0]}
       </text>
       <text
@@ -96,9 +102,10 @@
         y={getValueTextY(y, height)}
         dominant-baseline="central"
         text-anchor="middle"
-        class="{color.textColor} q-choropleth-hexagon-value"
+        class={color.textColor}
         fill="currentColor"
-        font-size={fontSize}>
+        font-size={fontSize}
+      >
         {text[1]}
       </text>
     {:else}
@@ -109,7 +116,8 @@
         text-anchor="middle"
         class={color.textColor}
         fill="currentColor"
-        font-size={fontSize}>
+        font-size={fontSize}
+      >
         {text[0]}
       </text>
     {/if}
@@ -121,7 +129,8 @@
     class={color.colorClass}
     fill="#fff"
     stroke="currentColor"
-    stroke-width="0.4" />
+    stroke-width="0.4"
+  />
   <g class="{fontNoteClass} s-font-note--tabularnums">
     {#if valuesOnMap}
       <text
@@ -132,7 +141,8 @@
         text-anchor="middle"
         class="s-color-gray-4"
         fill="currentColor"
-        font-size={fontSize}>
+        font-size={fontSize}
+      >
         {text[0]}
       </text>
       <text
@@ -142,7 +152,8 @@
         text-anchor="middle"
         class={color.textColor}
         fill="currentColor"
-        font-size={fontSize}>
+        font-size={fontSize}
+      >
         --
       </text>
     {:else}
@@ -153,7 +164,8 @@
         text-anchor="middle"
         class="s-color-gray-4"
         fill="currentColor"
-        font-size={fontSize}>
+        font-size={fontSize}
+      >
         {text[0]}
       </text>
     {/if}
@@ -166,5 +178,6 @@
     class="s-color-gray-9"
     fill="transparent"
     stroke="currentColor"
-    stroke-width="1.4" />
+    stroke-width="1.4"
+  />
 {/if}
