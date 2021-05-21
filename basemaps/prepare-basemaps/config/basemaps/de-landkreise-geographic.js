@@ -80,7 +80,7 @@ module.exports = {
     helpers.convertToGeojson(
       inputFeaturesPath,
       outputFeaturesPath,
-      "-filter 'GF === 4' -simplify 20%"
+      "-filter 'GF === 4' -simplify 8%"
     );
     helpers.setProperties(
       outputFeaturesPath,
@@ -95,7 +95,7 @@ module.exports = {
     helpers.convertToGeojson(
       inputOutlinesPath,
       outputOutlinesPath,
-      "-filter 'GF === 4' -innerlines -simplify 20%"
+      "-filter 'GF === 4' -innerlines -simplify 8%"
     );
     helpers.convertToTopojson(outputOutlinesPath, "outlines");
 

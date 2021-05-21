@@ -1,30 +1,28 @@
-const d3 = {
-  format: require("d3-format"),
-};
+import { formatLocale } from "d3-format";
 
 const fourPerEmSpace = "\u2005";
 const enDash = "\u2013";
 
-const formatLocale = d3.format.formatLocale({
+const formatLocaleLarge = formatLocale({
   decimal: ",",
   thousands: fourPerEmSpace,
   minus: enDash,
   grouping: [3],
 });
 
-const formatLocaleSmall = d3.format.formatLocale({
+const formatLocaleSmall = formatLocale({
   decimal: ",",
   minus: enDash,
 });
 
-function getFormattedValueForBuckets(formattingOptions, value) {
+export function getFormattedValueForBuckets(formattingOptions, value) {
   if (formattingOptions.roundingBucketBorders) {
     return getFormattedValue(formattingOptions, value);
   }
   return getFormattedValue({}, value);
 }
 
-function getFormattedValue(formattingOptions, value) {
+export function getFormattedValue(formattingOptions, value) {
   if (value === null) {
     return value;
   }
@@ -40,18 +38,12 @@ function getFormattedValue(formattingOptions, value) {
 
   // if we have number >= 10 000 we add a space after each 3 digits
   if (value >= Math.pow(10, 4)) {
-    return formatLocale.format(formatSpecifier)(value);
+    return formatLocaleLarge.format(formatSpecifier)(value);
   } else {
     return formatLocaleSmall.format(formatSpecifier)(value);
   }
 }
 
-function round(number) {
+export function round(number) {
   return Math.round(number * 100) / 100;
 }
-
-module.exports = {
-  getFormattedValueForBuckets,
-  getFormattedValue,
-  round,
-};

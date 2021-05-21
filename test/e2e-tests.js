@@ -137,7 +137,7 @@ lab.experiment("stylesheets endpoint", () => {
 });
 
 // all the fixtures render
-lab.experiment("all fixtures render", async () => {
+lab.experiment("all fixtures render", () => {
   const fixtureFiles = glob.sync(
     `${__dirname}/../resources/fixtures/data/*.json`
   );
@@ -191,8 +191,23 @@ lab.experiment("assets", () => {
       },
     });
     const stylesheetRes = await server.inject(
-      `/stylesheet/${res.result.stylesheets[0].name}`
+      `/stylesheet/${res.result.stylesheets[1].name}`
     );
     expect(stylesheetRes.statusCode).to.be.equal(200);
+  });
+
+  it("returnes basemap", async () => {
+    const fixture = JSON.parse(
+      fs.readFileSync(
+        `${__dirname}/../resources/fixtures/data/hexagon-kmeans.json`,
+        { encoding: "utf-8" }
+      )
+    );
+    const response = await server.inject({
+      url: `/basemap/${fixture.baseMap}?version=${fixture.version}`,
+      method: "GET",
+    });
+
+    expect(response.statusCode).to.be.equal(200);
   });
 });

@@ -1,116 +1,57 @@
 const fs = require("fs");
 const path = require("path");
 const crypto = require("crypto");
+const rollup = require("rollup");
+const buble = require("@rollup/plugin-buble");
+const { terser } = require("rollup-plugin-terser");
+const { nodeResolve } = require("@rollup/plugin-node-resolve");
+const commonjs = require("@rollup/plugin-commonjs");
+const json = require("@rollup/plugin-json");
+const svelte = require("rollup-plugin-svelte");
+const css = require("rollup-plugin-css-only");
 
-const sass = require("sass");
-const postcss = require("postcss");
-const postcssImport = require("postcss-import");
-const autoprefixer = require("autoprefixer");
-const cssnano = require("cssnano");
-
-const stylesDir = path.join(__dirname, "/../styles_src/");
 const scriptsDir = path.join(__dirname, "/../scripts_src/");
 
-const rollup = require("rollup");
-const buble = require("rollup-plugin-buble");
-const { terser } = require("rollup-plugin-terser");
-const resolve = require("rollup-plugin-node-resolve");
-const commonjs = require("rollup-plugin-commonjs");
-const json = require("rollup-plugin-json");
+function writeHashmap(hashmapPath, file, fileext) {
+  const hash = crypto.createHash("md5");
+  hash.update(file.content, { encoding: "utf8" });
+  file.hash = hash.digest("hex");
 
-function writeHashmap(hashmapPath, files, fileext) {
   const hashMap = {};
-  files
-    .map((file) => {
-      const hash = crypto.createHash("md5");
-      hash.update(file.content, { encoding: "utf8" });
-      file.hash = hash.digest("hex");
-      return file;
-    })
-    .map((file) => {
-      hashMap[file.name] = `${file.name}.${file.hash.substring(
-        0,
-        8
-      )}.${fileext}`;
-    });
-
+  hashMap[file.name] = `${file.name}.${file.hash.substring(0, 8)}.${fileext}`;
   fs.writeFileSync(hashmapPath, JSON.stringify(hashMap));
 }
 
-async function compileStylesheet(name) {
-  return new Promise((resolve, reject) => {
-    const filePath = path.join(stylesDir, `${name}.scss`);
-    fs.access(filePath, fs.constants.R_OK, (err) => {
-      if (err) {
-        reject(new Error(`stylesheet ${filePath} cannot be read`));
-        process.exit(1);
-      }
-      sass.render(
-        {
-          file: filePath,
-          outputStyle: "compressed",
-        },
-        (err, sassResult) => {
-          if (err) {
-            reject(err);
-          } else {
-            postcss()
-              .use(postcssImport)
-              .use(autoprefixer)
-              .use(cssnano)
-              .process(sassResult.css, {
-                from: path.join(stylesDir, `${name}.css`),
-              })
-              .then((prefixedResult) => {
-                if (prefixedResult.warnings().length > 0) {
-                  console.log(`failed to compile stylesheet ${name}`);
-                  process.exit(1);
-                }
-                resolve(prefixedResult.css);
-              });
-          }
-        }
-      );
-    });
-  });
-}
-
-async function buildStyles() {
-  try {
-    // compile styles
-    const styleFiles = [
-      {
-        name: "default",
-        content: await compileStylesheet("default"),
-      },
-    ];
-
-    styleFiles.map((file) => {
-      fs.writeFileSync(`styles/${file.name}.css`, file.content);
-    });
-
-    writeHashmap("styles/hashMap.json", styleFiles, "css");
-  } catch (err) {
-    console.error(err);
-    process.exit(1);
-  }
-}
-
-async function buildScripts() {
+async function build() {
   try {
     const filename = "default";
     const inputOptions = {
       input: `${scriptsDir}${filename}.js`,
       plugins: [
         json({ namedExports: false }),
+        svelte(),
+        css({
+          output: `styles/${filename}.css`,
+          output: function (styles, styleNodes) {
+            fs.writeFileSync(`styles/${filename}.css`, styles);
+            writeHashmap(
+              "styles/hashMap.json",
+              {
+                name: filename,
+                content: styles,
+              },
+              "css"
+            );
+          },
+        }),
+        nodeResolve({ browser: true }),
+        commonjs(),
         buble({
           transforms: {
             dangerousForOf: true,
           },
         }),
         terser(),
-        resolve({ browser: true }),
-        commonjs(),
       ],
     };
     const outputOptions = {
@@ -119,26 +60,26 @@ async function buildScripts() {
       file: `scripts/${filename}.js`,
       sourcemap: false,
     };
+
     // create the bundle and write it to disk
     const bundle = await rollup.rollup(inputOptions);
     const { output } = await bundle.generate(outputOptions);
     await bundle.write(outputOptions);
-
-    const scriptFiles = [
+    writeHashmap(
+      "scripts/hashMap.json",
       {
         name: filename,
         content: output[0].code,
       },
-    ];
-
-    writeHashmap("scripts/hashMap.json", scriptFiles, "js");
+      "js"
+    );
   } catch (err) {
     console.error(err);
     process.exit(1);
   }
 }
 
-Promise.all([buildScripts(), buildStyles()])
+Promise.all([build()])
   .then((res) => {
     console.log("build complete");
   })
