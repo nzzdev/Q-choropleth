@@ -11,7 +11,6 @@
   let isMethodBoxOpen = false;
 
   function handleMethodBoxClicked(event) {
-    isMethodBoxOpen = !isMethodBoxOpen;
     const trackingEvent = new CustomEvent("q-tracking-event", {
       bubbles: true,
       detail: {
@@ -25,6 +24,7 @@
       },
     });
     event.target.dispatchEvent(trackingEvent);
+    isMethodBoxOpen = !isMethodBoxOpen;
   }
 
   function trackClickOnMethodBoxArticleLink(event) {
