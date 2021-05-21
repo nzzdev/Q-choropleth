@@ -41,74 +41,6 @@
     event.target.dispatchEvent(trackingEvent);
   }
 </script>
-<style>
-.methodbox-link {
-  display: flex;
-  cursor: pointer;
-  text-decoration: underline;
-}
-
-.methodbox-link:hover {
-  opacity: 0.6;
-}
-
-.methodbox-link-text {
-  margin-left: 4px;
-}
-
-.methodbox-description {
-  margin-top: 4px;
-}
-
-.methodbox-circle {
-  position: relative;
-  box-sizing: content-box;
-  width: 7px;
-  height: 7px;
-  margin: 2px 8px 2px 2px;
-  border: 1px solid;
-  border-radius: 50%;
-}
-
-.methodbox-circle--circle-fill {
-  background-color: currentColor;
-}
-
-.methodbox-circle-static {
-  margin-right: 8px;
-}
-
-.methodbox-box-static {
-  margin-right: 20px;
-}
-
-.methodbox-article-container {
-  margin-top: 4px;
-}
-
-.methodbox-article-link {
-  color: #05032d;
-}
-
-.methodbox-container {
-  margin-top: 8px;
-  box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.1);
-  border: 1px solid #f0f0f2;
-  padding: 8px;
-}
-
-.methodbox-legend-table {
-  table-layout: auto !important;
-}
-
-.methodbox-legend-table tr {
-  text-align: right;
-}
-
-.methodbox-legend-table td {
-  width: auto !important;
-}
-</style>
 
 {#if isStatic}
   <div>
@@ -118,16 +50,26 @@
         {#each legendData.buckets as bucket, index}
           <div class="s-legend-item-label__item methodbox-box-static">
             <div
-              class="{bucket.color.colorClass !== undefined ? bucket.color.colorClass : ''}
+              class="{bucket.color.colorClass !== undefined
+                ? bucket.color.colorClass
+                : ''}
               methodbox-circle-static s-legend-item-label__item__icon
               s-legend-item-label__item__icon--default"
-              style="color: {bucket.color.customColor !== undefined ? bucket.color.customColor : ''};" />
-            <div class="s-legend-item-label__item__label s-font-note--tabularnums">
+              style="color: {bucket.color.customColor !== undefined
+                ? bucket.color.customColor
+                : ''};"
+            />
+            <div
+              class="s-legend-item-label__item__label s-font-note--tabularnums"
+            >
               {#if index === 0 && legendData.hasSingleValueBucket}
                 {getFormattedValueForBuckets(formattingOptions, bucket.from)} (nur
                 ein Datenpunkt)
               {:else}
-                {getFormattedValueForBuckets(formattingOptions, bucket.from)}–{getFormattedValueForBuckets(formattingOptions, bucket.to)}
+                {getFormattedValueForBuckets(
+                  formattingOptions,
+                  bucket.from
+                )}–{getFormattedValueForBuckets(formattingOptions, bucket.to)}
               {/if}
             </div>
           </div>
@@ -141,13 +83,13 @@
 {:else}
   <div class="methodbox-link s-font-note-s" on:click={handleMethodBoxClicked}>
     {#if isMethodBoxOpen}
-      <CloseIcon/>
+      <CloseIcon />
     {:else}
-      <OpenIcon/>
+      <OpenIcon />
     {/if}
     <div class="methodbox-link-text">Daten und Methodik</div>
   </div>
-  {#if isMethodBoxOpen} 
+  {#if isMethodBoxOpen}
     <div class="methodbox-container s-font-note-s">
       <div class="methodbox-legend">
         <table class="methodbox-legend-table s-font-note--tabularnums">
@@ -155,10 +97,15 @@
             <tr>
               <td>
                 <div
-                  class="{bucket.color.colorClass !== undefined ? bucket.color.colorClass : ''}
+                  class="{bucket.color.colorClass !== undefined
+                    ? bucket.color.colorClass
+                    : ''}
                   methodbox-circle
                   methodbox-circle--circle-fill"
-                  style="color: {bucket.color.customColor !== undefined ? bucket.color.customColor : ''}" />
+                  style="color: {bucket.color.customColor !== undefined
+                    ? bucket.color.customColor
+                    : ''}"
+                />
               </td>
               {#if index === 0 && legendData.hasSingleValueBucket}
                 <td />
@@ -183,11 +130,15 @@
       </div>
       <div class="methodbox-description">{methodBoxText}</div>
       {#if methodBoxArticle}
-        <div class="methodbox-article-container" on:click={trackClickOnMethodBoxArticleLink}>
+        <div
+          class="methodbox-article-container"
+          on:click={trackClickOnMethodBoxArticleLink}
+        >
           <a
             href={methodBoxArticle.url}
             target="_blank"
-            rel="noopener noreferrer">
+            rel="noopener noreferrer"
+          >
             {methodBoxArticle.title}
           </a>
         </div>
@@ -195,3 +146,72 @@
     </div>
   {/if}
 {/if}
+
+<style>
+  .methodbox-link {
+    display: flex;
+    cursor: pointer;
+    text-decoration: underline;
+  }
+
+  .methodbox-link:hover {
+    opacity: 0.6;
+  }
+
+  .methodbox-link-text {
+    margin-left: 4px;
+  }
+
+  .methodbox-description {
+    margin-top: 4px;
+  }
+
+  .methodbox-circle {
+    position: relative;
+    box-sizing: content-box;
+    width: 7px;
+    height: 7px;
+    margin: 2px 8px 2px 2px;
+    border: 1px solid;
+    border-radius: 50%;
+  }
+
+  .methodbox-circle--circle-fill {
+    background-color: currentColor;
+  }
+
+  .methodbox-circle-static {
+    margin-right: 8px;
+  }
+
+  .methodbox-box-static {
+    margin-right: 20px;
+  }
+
+  .methodbox-article-container {
+    margin-top: 4px;
+  }
+
+  .methodbox-article-link {
+    color: #05032d;
+  }
+
+  .methodbox-container {
+    margin-top: 8px;
+    box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.1);
+    border: 1px solid #f0f0f2;
+    padding: 8px;
+  }
+
+  .methodbox-legend-table {
+    table-layout: auto !important;
+  }
+
+  .methodbox-legend-table tr {
+    text-align: right;
+  }
+
+  .methodbox-legend-table td {
+    width: auto !important;
+  }
+</style>

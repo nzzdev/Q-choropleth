@@ -1,5 +1,4 @@
 <script>
-  import { onMount } from 'svelte';
   import HexagonMap from "./Hexagon/HexagonMap.svelte";
   import GeographicMap from "./Geographic/GeographicMap.svelte";
   import ChoroplethLegend from "./ChoroplethLegend.svelte";
@@ -30,7 +29,7 @@
   }
 </script>
 
-<div bind:clientWidth={contentWidth}>
+<div bind:offsetWidth={contentWidth}>
 {#if contentWidth}
   {#if !(legendData.type === 'categorical' && valuesOnMap)}
     <ChoroplethLegend

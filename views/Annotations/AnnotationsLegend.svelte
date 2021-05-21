@@ -13,11 +13,7 @@
     <div class="s-q-item__annotation-legend__item">
       <div class="s-q-item__annotation-legend__item__icon">
         <svg width="1.4em" height="1.4em">
-          <AnnotationPoint
-            {id}
-            radius = {annotationRadius}
-            {x}
-            {y} />
+          <AnnotationPoint {id} radius={annotationRadius} {x} {y} />
         </svg>
       </div>
       <div class="s-q-item__annotation-legend__item__label">{annotation}</div>

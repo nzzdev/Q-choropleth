@@ -8,8 +8,12 @@
   import { getFormattedValue } from "../helpers/data.js";
   import { getAspectRatioViewBox } from "../helpers/svg.js";
   import { heightFromWidth, widthFromHeight } from "../helpers/hexagon.js";
-  import { hasAnnotationOnLeftOrRight, regionHasAnnotation, setCoordinatesForHexMap } from "../helpers/annotations";
-  
+  import {
+    hasAnnotationOnLeftOrRight,
+    regionHasAnnotation,
+    setCoordinatesForHexMap,
+  } from "../helpers/annotations";
+
   export let dataMapping;
   export let entityType;
   export let legendData;
@@ -21,33 +25,79 @@
   export let annotations = [];
   export let annotationRadius = 8;
 
-  let cssModifier = getCssModifier(contentWidth);
-
   const annotationStartPosition = annotationRadius * 2;
   const annotationSpace = 2 * (annotationRadius + annotationStartPosition + 1); // times two, because annotations can be on both sides (top/bottom or left/right)
 
-  // Calculate width and height of a hexagon using contentWidth and maxHeight
-  let cellWidthAndHeight = getCellWidthAndHeight(baseMap.entities, contentWidth, maxHeight, cssModifier, annotations, annotationSpace);
-  let cellWidth = cellWidthAndHeight.cellWidth;
-  let cellHeight = cellWidthAndHeight.cellHeight;
+  let cssModifier,
+    cellWidthAndHeight,
+    cellWidth,
+    cellHeight,
+    rowHeight,
+    hexagons,
+    svgSize;
+  $: {
+    cssModifier = getCssModifier(contentWidth);
+    // Calculate width and height of a hexagon using contentWidth and maxHeight
+    cellWidthAndHeight = getCellWidthAndHeight(
+      baseMap.entities,
+      contentWidth,
+      maxHeight,
+      cssModifier,
+      annotations,
+      annotationSpace
+    );
+    cellWidth = cellWidthAndHeight.cellWidth;
+    cellHeight = cellWidthAndHeight.cellHeight;
+    // See https://www.redblobgames.com/grids/hexagons/#size-and-spacing
+    rowHeight = (cellHeight * 3) / 4;
+    hexagons = getHexagons(cellWidth, cellHeight, rowHeight, annotations);
+    svgSize = getSvgSize(
+      hexagons,
+      contentWidth,
+      annotations,
+      annotationSpace,
+      cellWidth,
+      cellHeight
+    );
+    annotations = setCoordinatesForHexMap(
+      annotations,
+      hexagons,
+      annotationStartPosition,
+      cssModifier
+    );
+  }
 
-  // See https://www.redblobgames.com/grids/hexagons/#size-and-spacing
-  const rowHeight = (cellHeight * 3) / 4;
-  const hexagons = getHexagons();
-
-  const svgSize = getSvgSize(hexagons, contentWidth, annotations, annotationSpace);
-
-  annotations = setCoordinatesForHexMap(annotations, hexagons, annotationStartPosition, cssModifier);
-
-  function getSvgSize(hexagons, contentWidth, annotations, annotationSpace) {
+  function getSvgSize(
+    hexagons,
+    contentWidth,
+    annotations,
+    annotationSpace,
+    cellWidth,
+    cellHeight
+  ) {
     let [xMin, xMax] = getExtents(hexagons, ({ x }) => x);
     let [yMin, yMax] = getExtents(hexagons, ({ y }) => y);
     let width = xMax - xMin + cellWidth;
     let height = yMax - yMin + cellHeight;
-    return getAspectRatioViewBox(xMin, yMin, width, height, contentWidth, annotations, annotationSpace);
+    return getAspectRatioViewBox(
+      xMin,
+      yMin,
+      width,
+      height,
+      contentWidth,
+      annotations,
+      annotationSpace
+    );
   }
-  
-  function getCellWidthAndHeight(baseMapEntities, contentWidth, maxHeight, cssModifier, annotations, annotationSpace) {
+
+  function getCellWidthAndHeight(
+    baseMapEntities,
+    contentWidth,
+    maxHeight,
+    cssModifier,
+    annotations,
+    annotationSpace
+  ) {
     let cellWidth = 0;
     let cellHeight = 0;
     let countHexagons = getCountHexagons(baseMapEntities);
@@ -57,37 +107,42 @@
     if (hasAnnotationOnLeftOrRight(annotations, cssModifier)) {
       cellWidth = (contentWidth - annotationSpace) / countHexagonsHorizontal;
     } else {
-      cellWidth = (contentWidth) / countHexagonsHorizontal;
+      cellWidth = contentWidth / countHexagonsHorizontal;
     }
 
     cellHeight = heightFromWidth(cellWidth);
 
-    if (cellHeight > (maxHeight / countHexagonsVertical)) {
+    if (cellHeight > maxHeight / countHexagonsVertical) {
       cellWidth = widthFromHeight(maxHeight / countHexagonsVertical);
-      cellHeight = (maxHeight / countHexagonsVertical);
+      cellHeight = maxHeight / countHexagonsVertical;
     }
 
     return { cellWidth, cellHeight };
   }
 
   function getCountHexagons(baseMapEntities) {
-    if (!baseMapEntities || baseMapEntities.length < 1) return { horizontal: 0, vertical: 0 };
+    if (!baseMapEntities || baseMapEntities.length < 1)
+      return { horizontal: 0, vertical: 0 };
 
-    let lengthOfFirstArray = (baseMapEntities[0].length < 1 ? 1 : baseMapEntities[0].length);
+    let lengthOfFirstArray =
+      baseMapEntities[0].length < 1 ? 1 : baseMapEntities[0].length;
     let horizontal = Array(baseMapEntities.length).fill(0);
     let vertical = Array(lengthOfFirstArray).fill(0);
-    
-    baseMapEntities.forEach( (hexagons, rowIndex) => {
-      hexagons.forEach( (hexagon, columnIndex) => {
-        if(hexagon != null) {
+
+    baseMapEntities.forEach((hexagons, rowIndex) => {
+      hexagons.forEach((hexagon, columnIndex) => {
+        if (hexagon != null) {
           horizontal[rowIndex] += 1;
-          vertical[columnIndex] += (rowIndex % 2 === 1 ? 0.5 : 1);
+          vertical[columnIndex] += rowIndex % 2 === 1 ? 0.5 : 1;
         }
       });
-      horizontal[rowIndex] += (rowIndex % 2 === 1 ? 0.5 : 0);
+      horizontal[rowIndex] += rowIndex % 2 === 1 ? 0.5 : 0;
     });
 
-    return { horizontal: Math.max(...horizontal), vertical: Math.max(...vertical) };
+    return {
+      horizontal: Math.max(...horizontal),
+      vertical: Math.max(...vertical),
+    };
   }
 
   function getDisplayValue(value) {
@@ -97,7 +152,7 @@
     return value;
   }
 
-  function getHexagons() {
+  function getHexagons(cellWidth, cellHeight, rowHeight, annotations) {
     const hexagons = [];
     baseMap.entities.forEach((row, rowIndex) => {
       row.forEach((cell, columnIndex) => {
@@ -119,7 +174,7 @@
             type: displayValue ? "fill" : "stroke",
             x,
             y: rowIndex * rowHeight,
-            hasAnnotation: regionHasAnnotation(annotations, displayEntity)
+            hasAnnotation: regionHasAnnotation(annotations, displayEntity),
           });
         }
       });
@@ -142,16 +197,18 @@
           {x}
           {y}
           {cssModifier}
-          {hasAnnotation} />
+          {hasAnnotation}
+        />
       {/each}
     </g>
     {#if annotations && annotations.length > 0}
       <g class="annotations">
         {#each annotations as { id, coordinates }}
           <AnnotationPointWithLine
-            id = {id}
-            radius = {annotationRadius}
-            coordinates = {coordinates} />
+            {id}
+            radius={annotationRadius}
+            {coordinates}
+          />
         {/each}
       </g>
     {/if}
