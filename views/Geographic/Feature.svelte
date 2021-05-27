@@ -10,7 +10,7 @@
       ? color.customColor
       : "currentColor"}
     stroke="#fff"
-    stroke-width="0.3"
+    stroke-width="0.2"
     d={path}
   />
   {#if hasAnnotation}
@@ -18,7 +18,7 @@
       class="s-color-gray-9"
       fill="transparent"
       stroke="currentColor"
-      stroke-width="1.3"
+      stroke-width="1.2"
       d={path}
     />
   {/if}
