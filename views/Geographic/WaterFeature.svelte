@@ -2,4 +2,4 @@
   export let path;
 </script>
 
-<path class="s-viz-color-eight-1" fill="currentcolor" stroke="none" d={path} />
+<path fill="#d0e2ec" stroke="none" d={path} />
