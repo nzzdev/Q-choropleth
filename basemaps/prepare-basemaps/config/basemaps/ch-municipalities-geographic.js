@@ -64,7 +64,7 @@ module.exports = {
     helpers.convertToGeojson(
       inputFeaturesPath,
       outputFeaturesPath,
-      "-simplify 20%"
+      "-simplify 80%"
     );
     helpers.setProperties(
       outputFeaturesPath,
@@ -81,7 +81,7 @@ module.exports = {
     helpers.convertToGeojson(
       inputWaterPath,
       outputWaterPath,
-      "-drop fields=* -simplify 20%"
+      "-drop fields=* -simplify 80%"
     );
     helpers.convertToTopojson(outputWaterPath, "water");
 
