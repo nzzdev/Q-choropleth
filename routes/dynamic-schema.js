@@ -1,5 +1,5 @@
 const Boom = require("@hapi/boom");
-const Joi = require("@hapi/joi");
+const Joi = require("joi");
 const dataHelpers = require("../helpers/data.js");
 const array2d = require("array2d");
 const d3 = require("d3-time-format");

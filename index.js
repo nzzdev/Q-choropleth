@@ -1,5 +1,5 @@
 const Hapi = require("@hapi/hapi");
-const Joi = require("@hapi/joi");
+const Joi = require("joi");
 const baseMapHelpers = require("./helpers/baseMap.js");
 
 const serverMethodCacheOptions = {
