@@ -92,23 +92,29 @@ async function main() {
       for (let basemapPath of basemaps) {
         const basemap = require(basemapPath);
         const basemapName = path.basename(basemapPath, ".json");
-        for (let version of basemap.versions) {
-          const id = `${basemapName}-${version.validFrom}`;
-          const basemapUrl = await uploadBasemapData(
-            id,
-            version.data,
-            accessToken
-          );
-          version.data = basemapUrl;
-        }
-        basemap._id = basemapName;
-        const response = await saveBasemap(basemapName, basemap);
-        if (response.status === "success") {
-          console.log(`Successfully stored ${basemapName}`);
-        } else {
-          throw new Error(
-            `${basemapName} couldn't be saved: ${JSON.stringify(response)}`
-          );
+        // Allow to run step only for a single basemap `npm run import-basemaps --basemap=ch-municipalities-geographic`
+        if (
+          process.env.npm_config_basemap &&
+          basemapName === process.env.npm_config_basemap
+        ) {
+          for (let version of basemap.versions) {
+            const id = `${basemapName}-${version.validFrom}`;
+            const basemapUrl = await uploadBasemapData(
+              id,
+              version.data,
+              accessToken
+            );
+            version.data = basemapUrl;
+          }
+          basemap._id = basemapName;
+          const response = await saveBasemap(basemapName, basemap);
+          if (response.status === "success") {
+            console.log(`Successfully stored ${basemapName}`);
+          } else {
+            throw new Error(
+              `${basemapName} couldn't be saved: ${JSON.stringify(response)}`
+            );
+          }
         }
       }
     }
