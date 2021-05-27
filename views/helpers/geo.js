@@ -1,6 +1,6 @@
 import { geoPath, geoAlbersUsa, geoMercator } from "d3-geo";
 import { geoRobinson } from "d3-geo-projection";
-import { feature } from "topojson";
+import { feature } from "topojson-client";
 
 export function getGeoParameters(baseMap, width, maxHeight) {
   const features = getFeatureCollection(baseMap.entities, "features");
