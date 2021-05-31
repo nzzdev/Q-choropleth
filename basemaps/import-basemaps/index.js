@@ -94,8 +94,9 @@ async function main() {
         const basemapName = path.basename(basemapPath, ".json");
         // Allow to run step only for a single basemap `npm run import-basemaps --basemap=ch-municipalities-geographic`
         if (
-          process.env.npm_config_basemap &&
-          basemapName === process.env.npm_config_basemap
+          (process.env.npm_config_basemap &&
+            basemapName === process.env.npm_config_basemap) ||
+          process.env.npm_config_basemap === undefined
         ) {
           for (let version of basemap.versions) {
             const id = `${basemapName}-${version.validFrom}`;

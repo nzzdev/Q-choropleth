@@ -31,7 +31,6 @@ async function build() {
         json({ namedExports: false }),
         svelte(),
         css({
-          output: `styles/${filename}.css`,
           output: function (styles, styleNodes) {
             fs.writeFileSync(`styles/${filename}.css`, styles);
             writeHashmap(
