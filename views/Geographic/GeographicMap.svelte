@@ -26,9 +26,10 @@
   const annotationStartPosition = annotationRadius * 2;
   const annotationSpace = 2 * (annotationRadius + annotationStartPosition + 1); // times two, because annotations can be on both sides (top/bottom or left/right)
 
-  let geoParameters, svgSize;
+  let geoParameters, svgSize, strokeWidth;
   $: {
-    let cssModifier = getCssModifier(contentWidth);
+    const cssModifier = getCssModifier(contentWidth);
+    strokeWidth = cssModifier === "narrow" ? 0.15 : 0.3;
     geoParameters = getGeoParameters(baseMap, contentWidth, maxHeight);
     const bounds = geoParameters.bounds;
     svgSize = getSvgSize(bounds, contentWidth, annotations, annotationSpace);
@@ -80,6 +81,7 @@
             legendData
           )}
           path={roundCoordinatesInPath(geoParameters.path(feature), 1)}
+          {strokeWidth}
         />
       {/each}
     </g>
@@ -88,6 +90,7 @@
         {#each geoParameters.outlines.features as outline}
           <OutlineFeature
             path={roundCoordinatesInPath(geoParameters.path(outline), 1)}
+            {strokeWidth}
           />
         {/each}
       </g>
@@ -122,6 +125,7 @@
               )}
               path={roundCoordinatesInPath(geoParameters.path(feature), 1)}
               hasAnnotation={true}
+              {strokeWidth}
             />
           {/each}
         </g>
