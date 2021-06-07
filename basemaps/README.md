@@ -8,7 +8,7 @@ The prepare basemaps step is responsible for extracting and transforming the sou
 
 The basemap configuration file contains all details for each kind of basemap. Each basemap has specific requirements to extracting and transforming. Therefore each basemap provides a `download` and `transform` function. This makes it possible that each basemap can handle these steps according to their specific requirements.
 
-Every step of the prepare basemap process can be run separately. This makes debugging a problem easier:
+Every step of the prepare basemap process can be run separately. This makes debugging easier:
 
 ```js
 // downloads the source data of all basemaps
@@ -22,6 +22,22 @@ npm run final-basemaps
 
 // runs all three steps after each other
 npm run prepare-basemaps
+```
+
+Optionally its possible to run a step only for a single basemap:
+
+```js
+// downloads the source data of all basemaps
+npm run download-basemaps --basemap=ch-municipalities-geographic
+
+// generates the basemaps based on the source data
+npm run generate-basemaps --basemap=ch-municipalities-geographic
+
+// combines versions of each basemap to a single file
+npm run final-basemaps --basemap=ch-municipalities-geographic
+
+// runs all three steps after each other
+npm run prepare-basemaps --basemap=ch-municipalities-geographic
 ```
 
 ### Import Basemaps
@@ -57,4 +73,10 @@ The import basemaps process can be run like this:
 
 ```js
 npm run import-basemaps
+```
+
+Or for a single basemap like this:
+
+```js
+npm run import-basemaps --basemap=ch-municipalities-geographic
 ```

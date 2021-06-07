@@ -2,6 +2,7 @@
   export let color;
   export let path;
   export let hasAnnotation = false;
+  export let strokeWidth;
 </script>
 
 <g class={color.colorClass}>
@@ -10,7 +11,7 @@
       ? color.customColor
       : "currentColor"}
     stroke="#fff"
-    stroke-width="0.3"
+    stroke-width={strokeWidth}
     d={path}
   />
   {#if hasAnnotation}
@@ -18,7 +19,7 @@
       class="s-color-gray-9"
       fill="transparent"
       stroke="currentColor"
-      stroke-width="1.3"
+      stroke-width={strokeWidth + 1}
       d={path}
     />
   {/if}

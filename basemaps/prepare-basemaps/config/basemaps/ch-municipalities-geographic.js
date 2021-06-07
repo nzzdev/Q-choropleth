@@ -61,11 +61,7 @@ module.exports = {
       basemap.id
     }/${version.validFrom}/${config[version.validFrom].featuresPath}`;
     const outputFeaturesPath = `${__dirname}/../../01-generate-basemaps/data/${basemap.id}/${version.validFrom}/${basemap.id}.json`;
-    helpers.convertToGeojson(
-      inputFeaturesPath,
-      outputFeaturesPath,
-      "-simplify 20%"
-    );
+    helpers.convertToGeojson(inputFeaturesPath, outputFeaturesPath, "");
     helpers.setProperties(
       outputFeaturesPath,
       config[version.validFrom].featuresPropertyMapping,
@@ -78,11 +74,7 @@ module.exports = {
       basemap.id
     }/${version.validFrom}/${config[version.validFrom].waterPath}`;
     const outputWaterPath = `${__dirname}/../../01-generate-basemaps/data/${basemap.id}/${version.validFrom}/water.json`;
-    helpers.convertToGeojson(
-      inputWaterPath,
-      outputWaterPath,
-      "-drop fields=* -simplify 20%"
-    );
+    helpers.convertToGeojson(inputWaterPath, outputWaterPath, "-drop fields=*");
     helpers.convertToTopojson(outputWaterPath, "water");
 
     // merge features and water into single topojson file

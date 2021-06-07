@@ -1,5 +1,6 @@
 <script>
   export let path;
+  export let strokeWidth;
 </script>
 
-<path fill="none" stroke="#fff" stroke-width="1.3px" d={path} />
+<path fill="none" stroke="#fff" stroke-width={strokeWidth + 1} d={path} />
