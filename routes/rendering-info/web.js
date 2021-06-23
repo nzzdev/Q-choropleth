@@ -158,7 +158,7 @@ module.exports = {
                       context.id
                     }_container');
                     target.innerHTML = "";
-                    var props = JSON.parse('${JSON.stringify(context)}');
+                    var props = ${JSON.stringify(context)};
                     props.baseMap = baseMap;
                     new window._q_choropleth.Choropleth({
                       "target": target,
