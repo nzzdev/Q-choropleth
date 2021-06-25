@@ -366,15 +366,7 @@ module.exports = {
     }
 
     if (optionName === "baseMap") {
-      let documents = await request.server.methods.getAllDocuments();
-      documents = documents.filter((document) => {
-        return (
-          roles.includes("expert-choropleth") ||
-          !["ch-cantons-geographic", "de-bundeslander-geographic"].includes(
-            document.doc._id
-          )
-        );
-      });
+      const documents = await request.server.methods.getAllDocuments();
       return {
         enum: documents.map((document) => document.doc._id),
         "Q:options": {
