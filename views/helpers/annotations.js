@@ -179,7 +179,7 @@ function getTopCoordinates(
     x: x + horizontalIncrement,
     y: yMin - annotationStartPosition,
     lineX1: x + horizontalIncrement,
-    lineY1: yMin - annotationStartPosition,
+    lineY1: yMin - annotationStartPosition / 2,
     lineX2: x + horizontalIncrement,
     lineY2: y + verticalIncrement / 2,
   };
@@ -195,7 +195,7 @@ function getLeftCoordinates(
   return {
     x: xMin - annotationStartPosition,
     y: y + verticalIncrement,
-    lineX1: xMin - annotationStartPosition,
+    lineX1: xMin - annotationStartPosition / 2,
     lineY1: y + verticalIncrement,
     lineX2: x,
     lineY2: y + verticalIncrement,
@@ -215,7 +215,7 @@ function getBottomCoordinates(
     x: x + horizontalIncrement * 3, // show on right side of hex
     y: yMax + hexHeight + annotationStartPosition,
     lineX1: x + horizontalIncrement * 3,
-    lineY1: yMax + hexHeight + annotationStartPosition,
+    lineY1: yMax + hexHeight + annotationStartPosition / 2,
     lineX2: x + horizontalIncrement * 3,
     lineY2: y + hexHeight - verticalIncrement / 2,
   };
@@ -234,7 +234,7 @@ function getRightCoordinates(
     y: y + verticalIncrement,
     lineX1: x + hexWidth,
     lineY1: y + verticalIncrement,
-    lineX2: xMax + hexWidth + annotationStartPosition,
+    lineX2: xMax + hexWidth + annotationStartPosition / 2,
     lineY2: y + verticalIncrement,
   };
 }

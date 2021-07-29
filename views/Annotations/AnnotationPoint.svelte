@@ -18,10 +18,10 @@
     cx={x}
     cy={y}
     class={circleColorClass}
-    fill={circleColorClass ? "currentColor" : "#fff"}
-    stroke="#000"
+    fill="none"
+    stroke="currentColor"
     stroke-width={strokeWidth}
-  />
+    />
   <!--
     y=0.35em to vertically center text (important for QToPrint)
   -->
@@ -33,7 +33,7 @@
     fill="currentColor"
     font-weight="700"
     text-anchor="middle"
-  >
+    >
     {id}
   </text>
 </g>
