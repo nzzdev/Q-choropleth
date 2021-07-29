@@ -25,9 +25,17 @@
     y1={lineY1}
     x2={lineX2}
     y2={lineY2}
-    stroke="#000"
+    fill="none"
+    stroke="#6e6e7e"
     stroke-width="1"
-    stroke-dasharray="2.5"
-  />
-  <AnnotationPoint {id} {radius} {x} {y} />
+    stroke-dasharray="1.1"
+    />
+  <AnnotationPoint
+    circleColorClass={"s-color-gray-7"}
+    {id}
+    {radius}
+    textColorClass={"s-color-gray-7"}
+    {x}
+    {y}
+    />
 </g>
