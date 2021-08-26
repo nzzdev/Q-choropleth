@@ -32,10 +32,6 @@
       "title": "Unsupported values",
       "body": "All values have to be numerical (or empty) in order to create a numerical choropleth map."
     },
-    "moreThanTwoColumns": {
-      "title": "Data contains too many columns",
-      "body": "Only the first two columns are taken into account, other columns will be ignored"
-    },
     "Titel": "Title",
     "Der Titel bringt die Kernaussage der Grafik auf den Punkt&#46;": "The title brings the core message of the graphic to the point.",
     "Untertitel": "Subtitle",

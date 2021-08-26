@@ -31,10 +31,6 @@
     "unsupportedValuesForType": {
       "title": "Ungültige Werte",
       "body": "Für eine numerische Choroplethenkarte müssen alle Werte numerisch oder leer sein"
-    },
-    "moreThanTwoColumns": {
-      "title": "Zu viele Spalten",
-      "body": "Für die Choroplethenkarte werden nur die ersten beiden Spalten verwendet. Alle anderen Spalten werden ignoriert"
     }
   }
 }

@@ -115,17 +115,6 @@
               "type": "medium",
               "value": 2
             }
-          },
-          {
-            "type": "ToolEndpoint",
-            "config": {
-              "endpoint": "notification/moreThanTwoColumns",
-              "fields": ["data"]
-            },
-            "priority": {
-              "type": "low",
-              "value": 1
-            }
           }
         ]
       },
