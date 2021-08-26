@@ -13,7 +13,6 @@ module.exports = [
   require("./notifications/customBuckets.js"),
   require("./notifications/numberBucketsExceedsDataSet.js"),
   require("./notifications/unsupportedValuesForType.js"),
-  require("./notifications/moreThanTwoColumns.js"),
   require("./notifications/numberBucketsOutOfColorScale.js"),
   require("./notifications/numberCategoriesOutOfColorScale.js"),
   require("./dynamic-schema.js"),
