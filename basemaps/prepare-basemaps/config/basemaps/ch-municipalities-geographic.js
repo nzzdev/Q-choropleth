@@ -2,6 +2,16 @@ const unzipper = require("unzipper");
 const fetch = require("node-fetch");
 
 const config = {
+  "2021-07-01T00:00:00.000Z": {
+    dataUrl: "https://www.bfs.admin.ch/bfsstatic/dam/assets/17964056/master",
+    featuresPath: "./ggg_2021-LV95/shp/k4g21_01072021.shp",
+    waterPath: "./ggg_2021-LV95/shp/k4s21.shp",
+    featuresPropertyMapping: {
+      id: "GMDNR",
+      name: "GMDNAME",
+    },
+    rewriteProperties: {},
+  },
   "2021-04-18T00:00:00.000Z": {
     dataUrl: "https://www.bfs.admin.ch/bfsstatic/dam/assets/16804410/master",
     featuresPath: "./ggg_2021-LV95/shp/k4g21_18042021.shp",
