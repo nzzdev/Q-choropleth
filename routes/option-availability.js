@@ -12,7 +12,6 @@ module.exports = {
     validate: {
       payload: Joi.object(),
     },
-    cors: true,
   },
   handler: async function (request, h) {
     const item = request.payload.item;
