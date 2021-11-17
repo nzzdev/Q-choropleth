@@ -26,6 +26,7 @@ const fixtureData = [
   require(`${fixtureDataDirectory}/hexagon-median.json`),
   require(`${fixtureDataDirectory}/hexagon-numeric-show-annotations.json`),
   require(`${fixtureDataDirectory}/hexagon-quantile.json`),
+  require(`${fixtureDataDirectory}/hexagon-multiple-annotations.json`),
 ];
 
 module.exports = {
