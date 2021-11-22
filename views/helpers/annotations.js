@@ -26,7 +26,9 @@ export function hasAnnotationOnTopOrBottom(annotations, cssModifier) {
  * Returns true, if the region (Kanton, Landkreis, etc.) has at least one annotation.
  */
 export function regionHasAnnotation(annotations, region) {
-  return annotations.some((a) => a.region === region);
+  return annotations.some((annotation) => {
+    return annotation.regions.some((id) => id === region);
+  });
 }
 
 /**
@@ -94,7 +96,7 @@ export function setCoordinatesForHexMap(
           }
         }
         return {
-          region,
+          id: region,
           coordinates,
         };
       }
@@ -172,7 +174,7 @@ export function setCoordinatesForGeoMap(
         }
 
         return {
-          region,
+          id: region,
           coordinates,
         };
       }
