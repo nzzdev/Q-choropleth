@@ -106,12 +106,14 @@
     {/if}
     {#if annotations && annotations.length > 0}
       <g class="annotations">
-        {#each annotations as { id, coordinates }}
-          <AnnotationPointWithLine
-            {id}
-            radius={annotationRadius}
-            {coordinates}
-          />
+        {#each annotations as annotation}
+          {#each annotation.regions as region}
+            <AnnotationPointWithLine
+              id={annotation.id}
+              radius={annotationRadius}
+              coordinates={region.coordinates}
+            />
+          {/each}
         {/each}
         <g>
           <!--

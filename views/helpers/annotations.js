@@ -42,57 +42,65 @@ export function setCoordinatesForHexMap(
   const [yMin, yMax] = getExtents(hexagons, ({ y }) => y);
 
   annotations.forEach((annotation) => {
-    let hexagon = hexagons.find((h) => h.text[0] === annotation.region);
+    annotation.regions = annotation.regions.map((region) => {
+      let hexagon = hexagons.find((h) => h.text[0] === region);
 
-    if (hexagon) {
-      let horizontalIncrement = hexagon.width / 4;
-      let verticalIncrement = hexagon.height / 4;
+      if (hexagon) {
+        let horizontalIncrement = hexagon.width / 4;
+        let verticalIncrement = hexagon.height / 4;
+        let coordinates;
 
-      if (annotation.position === "top" || annotation.position === "left") {
-        // If contentWidth (cssModifier) is narrow, all annotations on the left will be drawn on the top
-        annotation.coordinates = getTopCoordinates(
-          hexagon.x,
-          hexagon.y,
-          yMin,
-          horizontalIncrement,
-          verticalIncrement,
-          annotationStartPosition
-        );
-
-        if (cssModifier !== "narrow" && annotation.position === "left") {
-          annotation.coordinates = getLeftCoordinates(
+        if (annotation.position === "top" || annotation.position === "left") {
+          // If contentWidth (cssModifier) is narrow, all annotations on the left will be drawn on the top
+          coordinates = getTopCoordinates(
             hexagon.x,
             hexagon.y,
-            xMin,
+            yMin,
+            horizontalIncrement,
             verticalIncrement,
             annotationStartPosition
           );
-        }
-      } else {
-        // If contentWidth (cssModifier) is narrow, all annotations on the right will be drawn on the bottom
-        annotation.coordinates = getBottomCoordinates(
-          hexagon.x,
-          hexagon.y,
-          yMax,
-          hexagon.height,
-          horizontalIncrement,
-          verticalIncrement,
-          annotationStartPosition
-        );
 
-        if (cssModifier !== "narrow" && annotation.position === "right") {
-          annotation.coordinates = getRightCoordinates(
+          if (cssModifier !== "narrow" && annotation.position === "left") {
+            coordinates = getLeftCoordinates(
+              hexagon.x,
+              hexagon.y,
+              xMin,
+              verticalIncrement,
+              annotationStartPosition
+            );
+          }
+        } else {
+          // If contentWidth (cssModifier) is narrow, all annotations on the right will be drawn on the bottom
+          coordinates = getBottomCoordinates(
             hexagon.x,
             hexagon.y,
-            xMax,
-            hexagon.width,
+            yMax,
+            hexagon.height,
+            horizontalIncrement,
             verticalIncrement,
             annotationStartPosition
           );
+
+          if (cssModifier !== "narrow" && annotation.position === "right") {
+            coordinates = getRightCoordinates(
+              hexagon.x,
+              hexagon.y,
+              xMax,
+              hexagon.width,
+              verticalIncrement,
+              annotationStartPosition
+            );
+          }
         }
+        return {
+          region,
+          coordinates,
+        };
       }
-    }
+    });
   });
+  console.log(annotations);
   return annotations;
 }
 
@@ -112,58 +120,65 @@ export function setCoordinatesForGeoMap(
   let xMax = geoParameters.bounds[1][0];
 
   annotations.forEach((annotation) => {
-    let feature = features.find(
-      (f) => f.properties[entityType] === annotation.region
-    );
+    annotation.regions = annotation.regions.map((region) => {
+      let feature = features.find((f) => f.properties[entityType] === region);
 
-    if (feature) {
-      let centroid = path.centroid(feature);
+      if (feature) {
+        let centroid = path.centroid(feature);
+        let coordinates;
 
-      if (annotation.position === "top" || annotation.position === "left") {
-        // If contentWidth (cssModifier) is narrow, all annotations on the left will be drawn on the top
-        annotation.coordinates = getTopCoordinates(
-          centroid[0],
-          centroid[1],
-          0,
-          0,
-          0,
-          annotationStartPosition
-        );
-
-        if (cssModifier !== "narrow" && annotation.position === "left") {
-          annotation.coordinates = getLeftCoordinates(
+        if (annotation.position === "top" || annotation.position === "left") {
+          // If contentWidth (cssModifier) is narrow, all annotations on the left will be drawn on the top
+          coordinates = getTopCoordinates(
             centroid[0],
             centroid[1],
             0,
             0,
+            0,
             annotationStartPosition
           );
-        }
-      } else {
-        // If contentWidth (cssModifier) is narrow, all annotations on the right will be drawn on the bottom
-        annotation.coordinates = getBottomCoordinates(
-          centroid[0],
-          centroid[1],
-          yMax,
-          0,
-          0,
-          0,
-          annotationStartPosition
-        );
 
-        if (cssModifier !== "narrow" && annotation.position === "right") {
-          annotation.coordinates = getRightCoordinates(
+          if (cssModifier !== "narrow" && annotation.position === "left") {
+            coordinates = getLeftCoordinates(
+              centroid[0],
+              centroid[1],
+              0,
+              0,
+              annotationStartPosition
+            );
+          }
+        } else {
+          // If contentWidth (cssModifier) is narrow, all annotations on the right will be drawn on the bottom
+          coordinates = getBottomCoordinates(
             centroid[0],
             centroid[1],
-            xMax,
+            yMax,
+            0,
             0,
             0,
             annotationStartPosition
           );
+
+          if (cssModifier !== "narrow" && annotation.position === "right") {
+            coordinates = getRightCoordinates(
+              centroid[0],
+              centroid[1],
+              xMax,
+              0,
+              0,
+              annotationStartPosition
+            );
+          }
         }
+
+        return {
+          region,
+          coordinates,
+        };
       }
-    }
+    });
   });
+  console.log(annotations);
   return annotations;
 }
 
