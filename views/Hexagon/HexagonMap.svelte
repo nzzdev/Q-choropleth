@@ -1,7 +1,7 @@
 <script>
   import Hexagon from "./Hexagon.svelte";
   import ResponsiveSvg from "../svg/ResponsiveSvg.svelte";
-  import AnnotationPointWithLine from "../Annotations/AnnotationPointWithLine.svelte";
+  import Annotation from "../Annotations/Annotation.svelte";
   import { getColor } from "../helpers/color.js";
   import { getExtents } from "../helpers/extent.js";
   import { getCssModifier } from "../helpers/cssModifier.js";
@@ -204,9 +204,11 @@
     {#if annotations && annotations.length > 0}
       <g class="annotations">
         {#each annotations as annotation}
-          {#each annotation.regions as region}
-            <AnnotationPointWithLine
+          {#each annotation.regions as region, index}
+            <Annotation
               id={annotation.id}
+              {index}
+              hasMultipleAnnotations={annotation.regions.length > 1}
               radius={annotationRadius}
               coordinates={region.coordinates}
             />

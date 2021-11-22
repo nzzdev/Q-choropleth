@@ -94,10 +94,29 @@ export function setCoordinatesForHexMap(
             );
           }
         }
+        // assign hexagon coordinates for being able to sort by axis
+        Object.assign(region.coordinates, {
+          hexagonX: hexagon.x,
+          hexagonY: hexagon.y,
+        });
       }
     });
+
+    // if multiple annotations, sort by coordinates
+    if (annotation.regions.length > 1) {
+      annotation.regions.sort((regionA, regionB) => {
+        if (
+          annotation.position === "TOP" ||
+          annotation.position === "BOTTOM" ||
+          cssModifier === "narrow"
+        ) {
+          return regionA.coordinates.hexagonX - regionB.coordinates.hexagonX;
+        } else {
+          return regionA.coordinates.hexagonY - regionB.coordinates.hexagonY;
+        }
+      });
+    }
   });
-  console.log(annotations);
   return annotations;
 }
 
