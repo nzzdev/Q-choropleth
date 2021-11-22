@@ -27,7 +27,7 @@ export function hasAnnotationOnTopOrBottom(annotations, cssModifier) {
  */
 export function regionHasAnnotation(annotations, region) {
   return annotations.some((annotation) => {
-    return annotation.regions.some((id) => id === region);
+    return annotation.regions.some((r) => r.id === region);
   });
 }
 
@@ -44,17 +44,16 @@ export function setCoordinatesForHexMap(
   const [yMin, yMax] = getExtents(hexagons, ({ y }) => y);
 
   annotations.forEach((annotation) => {
-    annotation.regions = annotation.regions.map((region) => {
-      let hexagon = hexagons.find((h) => h.text[0] === region);
+    annotation.regions.forEach((region) => {
+      let hexagon = hexagons.find((h) => h.text[0] === region.id);
 
       if (hexagon) {
         let horizontalIncrement = hexagon.width / 4;
         let verticalIncrement = hexagon.height / 4;
-        let coordinates;
 
         if (annotation.position === "top" || annotation.position === "left") {
           // If contentWidth (cssModifier) is narrow, all annotations on the left will be drawn on the top
-          coordinates = getTopCoordinates(
+          region.coordinates = getTopCoordinates(
             hexagon.x,
             hexagon.y,
             yMin,
@@ -64,7 +63,7 @@ export function setCoordinatesForHexMap(
           );
 
           if (cssModifier !== "narrow" && annotation.position === "left") {
-            coordinates = getLeftCoordinates(
+            region.coordinates = getLeftCoordinates(
               hexagon.x,
               hexagon.y,
               xMin,
@@ -74,7 +73,7 @@ export function setCoordinatesForHexMap(
           }
         } else {
           // If contentWidth (cssModifier) is narrow, all annotations on the right will be drawn on the bottom
-          coordinates = getBottomCoordinates(
+          region.coordinates = getBottomCoordinates(
             hexagon.x,
             hexagon.y,
             yMax,
@@ -85,7 +84,7 @@ export function setCoordinatesForHexMap(
           );
 
           if (cssModifier !== "narrow" && annotation.position === "right") {
-            coordinates = getRightCoordinates(
+            region.coordinates = getRightCoordinates(
               hexagon.x,
               hexagon.y,
               xMax,
@@ -95,10 +94,6 @@ export function setCoordinatesForHexMap(
             );
           }
         }
-        return {
-          id: region,
-          coordinates,
-        };
       }
     });
   });
@@ -131,7 +126,7 @@ export function setCoordinatesForGeoMap(
 
         if (annotation.position === "top" || annotation.position === "left") {
           // If contentWidth (cssModifier) is narrow, all annotations on the left will be drawn on the top
-          coordinates = getTopCoordinates(
+          region.coordinates = getTopCoordinates(
             centroid[0],
             centroid[1],
             0,
@@ -141,7 +136,7 @@ export function setCoordinatesForGeoMap(
           );
 
           if (cssModifier !== "narrow" && annotation.position === "left") {
-            coordinates = getLeftCoordinates(
+            region.coordinates = getLeftCoordinates(
               centroid[0],
               centroid[1],
               0,
@@ -151,7 +146,7 @@ export function setCoordinatesForGeoMap(
           }
         } else {
           // If contentWidth (cssModifier) is narrow, all annotations on the right will be drawn on the bottom
-          coordinates = getBottomCoordinates(
+          region.coordinates = getBottomCoordinates(
             centroid[0],
             centroid[1],
             yMax,
@@ -162,7 +157,7 @@ export function setCoordinatesForGeoMap(
           );
 
           if (cssModifier !== "narrow" && annotation.position === "right") {
-            coordinates = getRightCoordinates(
+            region.coordinates = getRightCoordinates(
               centroid[0],
               centroid[1],
               xMax,
@@ -180,7 +175,6 @@ export function setCoordinatesForGeoMap(
       }
     });
   });
-  console.log(annotations);
   return annotations;
 }
 

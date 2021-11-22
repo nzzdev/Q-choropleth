@@ -16,13 +16,16 @@
 
   const dataMapping = new Map(item.data);
   const maxHeight = 550;
-  const annotations = getAnnotationsWithId(item.mapAnnotations);
+  const annotations = getMutatedAnnotations(item.mapAnnotations);
   const annotationRadius = 8;
   let contentWidth;
 
-  function getAnnotationsWithId(mapAnnotations) {
+  function getMutatedAnnotations(mapAnnotations) {
     if (!mapAnnotations) return [];
     return mapAnnotations.map((value, index) => {
+      value.regions = value.regions.map((region) => {
+        return { id: region };
+      });
       value.id = index + 1;
       return value;
     });
