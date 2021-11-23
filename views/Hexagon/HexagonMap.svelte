@@ -2,6 +2,7 @@
   import Hexagon from "./Hexagon.svelte";
   import ResponsiveSvg from "../svg/ResponsiveSvg.svelte";
   import Annotation from "../Annotations/Annotation.svelte";
+  import AnnotationLine from "../Annotations/AnnotationLine.svelte";
   import { getColor } from "../helpers/color.js";
   import { getExtents } from "../helpers/extent.js";
   import { getCssModifier } from "../helpers/cssModifier.js";
@@ -12,6 +13,7 @@
     hasAnnotationOnLeftOrRight,
     regionHasAnnotation,
     setCoordinatesForHexMap,
+    getConnectionLineCoordinates,
   } from "../helpers/annotations";
 
   export let dataMapping;
@@ -213,6 +215,16 @@
               coordinates={region.coordinates}
             />
           {/each}
+          {#if annotation.regions.length > 1}
+            <AnnotationLine
+              coordinates={getConnectionLineCoordinates(
+                annotation.regions,
+                annotation.position,
+                annotationRadius,
+                cssModifier
+              )}
+            />
+          {/if}
         {/each}
       </g>
     {/if}

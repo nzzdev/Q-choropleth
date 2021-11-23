@@ -2,11 +2,8 @@
   import { round } from "../helpers/data.js";
   export let coordinates = [];
 
-  let x, y, lineX1, lineY1, lineX2, lineY2;
+  let lineX1, lineY1, lineX2, lineY2;
   $: {
-    x = round(coordinates.x);
-    y = round(coordinates.y);
-
     // Line props
     lineX1 = round(coordinates.lineX1);
     lineY1 = round(coordinates.lineY1);

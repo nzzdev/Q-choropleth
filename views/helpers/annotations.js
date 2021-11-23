@@ -197,6 +197,40 @@ export function setCoordinatesForGeoMap(
   return annotations;
 }
 
+/**
+ * Returns the coordinates of the connection line between the multiple annotations
+ */
+export function getConnectionLineCoordinates(
+  regions,
+  annotationPosition,
+  annotationRadius,
+  cssModifier
+) {
+  let firstRegion = regions[0];
+  let lastRegion = regions[regions.length - 1];
+  if (
+    annotationPosition === "TOP" ||
+    annotationPosition === "TOP" ||
+    cssModifier === "narrow"
+  ) {
+    // horizontal line
+    return {
+      lineX1: firstRegion.coordinates.lineX1 + annotationRadius,
+      lineX2: lastRegion.coordinates.lineX1 - annotationRadius,
+      lineY1: firstRegion.coordinates.lineY1 - annotationRadius,
+      lineY2: firstRegion.coordinates.lineY1 - annotationRadius,
+    };
+  } else {
+    // vertical line
+    return {
+      lineX1: firstRegion.coordinates.lineX1 - annotationRadius,
+      lineX2: firstRegion.coordinates.lineX1 - annotationRadius,
+      lineY1: firstRegion.coordinates.lineY1 + annotationRadius,
+      lineY2: lastRegion.coordinates.lineY1 - annotationRadius,
+    };
+  }
+}
+
 function getTopCoordinates(
   x,
   y,
