@@ -106,8 +106,8 @@ export function setCoordinatesForHexMap(
     if (annotation.regions.length > 1) {
       annotation.regions.sort((regionA, regionB) => {
         if (
-          annotation.position === "TOP" ||
-          annotation.position === "BOTTOM" ||
+          annotation.position === "top" ||
+          annotation.position === "bottom" ||
           cssModifier === "narrow"
         ) {
           return regionA.coordinates.hexagonX - regionB.coordinates.hexagonX;
@@ -209,22 +209,36 @@ export function getConnectionLineCoordinates(
   let firstRegion = regions[0];
   let lastRegion = regions[regions.length - 1];
   if (
-    annotationPosition === "TOP" ||
-    annotationPosition === "TOP" ||
-    cssModifier === "narrow"
+    annotationPosition === "top" ||
+    (cssModifier === "narrow" && annotationPosition === "left")
   ) {
-    // horizontal line
     return {
       lineX1: firstRegion.coordinates.lineX1 + annotationRadius,
       lineX2: lastRegion.coordinates.lineX1 - annotationRadius,
       lineY1: firstRegion.coordinates.lineY1 - annotationRadius,
       lineY2: firstRegion.coordinates.lineY1 - annotationRadius,
     };
-  } else {
-    // vertical line
+  } else if (
+    annotationPosition === "bottom" ||
+    (cssModifier === "narrow" && annotationPosition === "right")
+  ) {
+    return {
+      lineX1: firstRegion.coordinates.lineX1 + annotationRadius,
+      lineX2: lastRegion.coordinates.lineX1 - annotationRadius,
+      lineY1: firstRegion.coordinates.lineY1 + annotationRadius,
+      lineY2: firstRegion.coordinates.lineY1 + annotationRadius,
+    };
+  } else if (annotationPosition === "left") {
     return {
       lineX1: firstRegion.coordinates.lineX1 - annotationRadius,
       lineX2: firstRegion.coordinates.lineX1 - annotationRadius,
+      lineY1: firstRegion.coordinates.lineY1 + annotationRadius,
+      lineY2: lastRegion.coordinates.lineY1 - annotationRadius,
+    };
+  } else if (annotationPosition === "right") {
+    return {
+      lineX1: firstRegion.coordinates.lineX2 + annotationRadius,
+      lineX2: firstRegion.coordinates.lineX2 + annotationRadius,
       lineY1: firstRegion.coordinates.lineY1 + annotationRadius,
       lineY2: lastRegion.coordinates.lineY1 - annotationRadius,
     };

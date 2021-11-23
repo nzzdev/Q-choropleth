@@ -3,17 +3,53 @@
   import AnnotationLine from "./AnnotationLine.svelte";
   export let id;
   export let index;
-  export let hasMultipleAnnotations;
-  export let radius;
+  export let annotationRadius;
   export let coordinates;
+  export let annotationPosition;
+  export let cssModifier;
+  export let hasMultipleAnnotations;
+  export let isLastItem;
+
+  function moveToConnectionLine(
+    coordinates,
+    annotationRadius,
+    annotationPosition,
+    cssModifier
+  ) {
+    if (
+      annotationPosition === "top" ||
+      (cssModifier === "narrow" && annotationPosition === "left")
+    ) {
+      coordinates.lineY1 -= annotationRadius - 1;
+    } else if (
+      annotationPosition === "bottom" ||
+      (cssModifier === "narrow" && annotationPosition === "right")
+    ) {
+      coordinates.lineY1 += annotationRadius - 1;
+    } else if (annotationPosition === "left") {
+      coordinates.lineX1 -= annotationRadius - 1;
+    } else if (annotationPosition === "right") {
+      coordinates.lineX2 += annotationRadius - 1;
+    }
+    return coordinates;
+  }
 </script>
 
 {#if hasMultipleAnnotations}
   {#if index === 0}
-    <AnnotationPointWithLine {id} {radius} {coordinates} />
+    <AnnotationPointWithLine {id} {annotationRadius} {coordinates} />
+  {:else if !isLastItem}
+    <AnnotationLine
+      coordinates={moveToConnectionLine(
+        coordinates,
+        annotationRadius,
+        annotationPosition,
+        cssModifier
+      )}
+    />
   {:else}
     <AnnotationLine {coordinates} />
   {/if}
 {:else}
-  <AnnotationPointWithLine {id} {radius} {coordinates} />
+  <AnnotationPointWithLine {id} {annotationRadius} {coordinates} />
 {/if}
