@@ -50,10 +50,14 @@ export function setCoordinatesForHexMap(
       if (hexagon) {
         let horizontalIncrement = hexagon.width / 4;
         let verticalIncrement = hexagon.height / 4;
+        let coordinates;
 
-        if (annotation.position === "top" || annotation.position === "left") {
+        if (
+          annotation.position === "top" ||
+          (cssModifier === "narrow" && annotation.position === "left")
+        ) {
           // If contentWidth (cssModifier) is narrow, all annotations on the left will be drawn on the top
-          region.coordinates = getTopCoordinates(
+          coordinates = getTopCoordinates(
             hexagon.x,
             hexagon.y,
             yMin,
@@ -61,19 +65,12 @@ export function setCoordinatesForHexMap(
             verticalIncrement,
             annotationStartPosition
           );
-
-          if (cssModifier !== "narrow" && annotation.position === "left") {
-            region.coordinates = getLeftCoordinates(
-              hexagon.x,
-              hexagon.y,
-              xMin,
-              verticalIncrement,
-              annotationStartPosition
-            );
-          }
-        } else {
-          // If contentWidth (cssModifier) is narrow, all annotations on the right will be drawn on the bottom
-          region.coordinates = getBottomCoordinates(
+        } else if (
+          annotation.position === "bottom" ||
+          (cssModifier === "narrow" && annotation.position === "right")
+        ) {
+          // If contentWidth (cssModifier) is narrow, all annotations on the right will be drawn on the bottom// bottom
+          coordinates = getBottomCoordinates(
             hexagon.x,
             hexagon.y,
             yMax,
@@ -82,37 +79,50 @@ export function setCoordinatesForHexMap(
             verticalIncrement,
             annotationStartPosition
           );
-
-          if (cssModifier !== "narrow" && annotation.position === "right") {
-            region.coordinates = getRightCoordinates(
-              hexagon.x,
-              hexagon.y,
-              xMax,
-              hexagon.width,
-              verticalIncrement,
-              annotationStartPosition
-            );
-          }
+        } else if (annotation.position === "left") {
+          coordinates = getLeftCoordinates(
+            hexagon.x,
+            hexagon.y,
+            xMin,
+            verticalIncrement,
+            annotationStartPosition
+          );
+        } else if (annotation.position === "right") {
+          coordinates = getRightCoordinates(
+            hexagon.x,
+            hexagon.y,
+            xMax,
+            hexagon.width,
+            verticalIncrement,
+            annotationStartPosition
+          );
         }
-        // assign hexagon coordinates for being able to sort by axis
-        Object.assign(region.coordinates, {
-          hexagonX: hexagon.x,
-          hexagonY: hexagon.y,
-        });
+        region.coordinates = coordinates;
       }
     });
 
-    // if multiple annotations, sort by coordinates
     if (annotation.regions.length > 1) {
+      // check if there's an annotation on the same axis (x, y)
+      annotation.regions.forEach((region, index) => {
+        region.hasSameAxisAnnotation = regionHasSameAxisAnnotation(
+          annotation.regions,
+          region,
+          annotation.position,
+          cssModifier
+        );
+        console.log(region.hasSameAxisAnnotation);
+      });
+
+      // sort by coordinates depending on where they're displayed, to display the first one on the left (y) or top (x)
       annotation.regions.sort((regionA, regionB) => {
         if (
           annotation.position === "top" ||
           annotation.position === "bottom" ||
           cssModifier === "narrow"
         ) {
-          return regionA.coordinates.hexagonX - regionB.coordinates.hexagonX;
+          return regionA.coordinates.featureX - regionB.coordinates.featureX;
         } else {
-          return regionA.coordinates.hexagonY - regionB.coordinates.hexagonY;
+          return regionA.coordinates.featureY - regionB.coordinates.featureY;
         }
       });
     }
@@ -260,6 +270,8 @@ function getTopCoordinates(
     lineY1: yMin - annotationStartPosition / 2,
     lineX2: x + horizontalIncrement,
     lineY2: y + verticalIncrement / 2,
+    featureX: x,
+    featureY: y,
   };
 }
 
@@ -277,6 +289,8 @@ function getLeftCoordinates(
     lineY1: y + verticalIncrement,
     lineX2: x,
     lineY2: y + verticalIncrement,
+    featureX: x,
+    featureY: y,
   };
 }
 
@@ -296,6 +310,8 @@ function getBottomCoordinates(
     lineY1: yMax + hexHeight + annotationStartPosition / 2,
     lineX2: x + horizontalIncrement * 3,
     lineY2: y + hexHeight - verticalIncrement / 2,
+    featureX: x,
+    featureY: y,
   };
 }
 
@@ -314,5 +330,36 @@ function getRightCoordinates(
     lineY1: y + verticalIncrement,
     lineX2: xMax + hexWidth + annotationStartPosition / 2,
     lineY2: y + verticalIncrement,
+    featureX: x,
+    featureY: y,
   };
+}
+
+function regionHasSameAxisAnnotation(
+  regions,
+  region,
+  annotationPosition,
+  cssModifier
+) {
+  let hasSameAxisAnnotation = false;
+  if (
+    annotationPosition === "top" ||
+    annotationPosition === "bottom" ||
+    cssModifier === "narrow"
+  ) {
+    // when annotations displayed top/bottom, check if all features of a region are on the same x position (horizontally aligned)
+    if (!hasSameAxisAnnotation) {
+      hasSameAxisAnnotation = regions.every(
+        (r) => r.coordinates.featureX === region.coordinates.featureX
+      );
+    }
+  } else {
+    // when annotations displayed left/right, check if all features of a region are on the same y position (vertically aligned)
+    if (!hasSameAxisAnnotation) {
+      hasSameAxisAnnotation = regions.every(
+        (r) => r.coordinates.featureY === region.coordinates.featureY
+      );
+    }
+  }
+  return hasSameAxisAnnotation;
 }
