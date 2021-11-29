@@ -100,6 +100,7 @@ function getMetaData(values, numberValues, maxDigitsAfterComma) {
 
 function getNumericalValues(data) {
   return data.map((row) => {
+    if (!row[1]) row[1] = null;
     if (row[1] !== null) {
       if (row[1].match(/^[+-]?\d+(\.\d+)?$/) === null) {
         throw new Error("value is not a valid floating point number");
