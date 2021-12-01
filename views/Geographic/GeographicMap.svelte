@@ -80,6 +80,7 @@
             dataMapping.get(feature.properties[entityType]),
             legendData
           )}
+          value={dataMapping.get(feature.properties[entityType])}
           path={roundCoordinatesInPath(geoParameters.path(feature), 1)}
           {strokeWidth}
         />
@@ -123,6 +124,7 @@
                 dataMapping.get(feature.properties[entityType]),
                 legendData
               )}
+              value={dataMapping.get(feature.properties[entityType])}
               path={roundCoordinatesInPath(geoParameters.path(feature), 1)}
               hasAnnotation={true}
               {strokeWidth}
