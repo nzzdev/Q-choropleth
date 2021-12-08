@@ -12,7 +12,7 @@
   import {
     hasAnnotationOnLeftOrRight,
     regionHasAnnotation,
-    setCoordinatesForHexMap,
+    getAnnotationsForHexMap,
   } from "../helpers/annotations";
 
   export let dataMapping;
@@ -35,7 +35,8 @@
     cellHeight,
     rowHeight,
     hexagons,
-    svgSize;
+    svgSize,
+    annotationLines;
   $: {
     cssModifier = getCssModifier(contentWidth);
     // Calculate width and height of a hexagon using contentWidth and maxHeight
@@ -60,7 +61,7 @@
       cellWidth,
       cellHeight
     );
-    annotations = setCoordinatesForHexMap(
+    annotationLines = getAnnotationsForHexMap(
       annotations,
       hexagons,
       annotationStartPosition,
@@ -204,23 +205,21 @@
     </g>
     {#if annotations && annotations.length > 0}
       <g class="annotations">
-        {#each annotations as annotation}
-          {#each annotation.regions as region, index}
+        {#each annotationLines as annotationLine}
+          {#each annotationLine.coordinates as coordinates, index}
             <Annotation
-              id={annotation.id}
               {index}
               {annotationRadius}
-              coordinates={region.coordinates}
-              annotationPosition={annotation.position}
+              {coordinates}
               {cssModifier}
-              hasMultipleAnnotations={annotation.regions.length > 1}
-              isLastItem={index === annotation.regions.length - 1}
+              annotationPosition={annotationLine.position}
+              isLastItem={index === annotationLine.coordinates.length - 1}
+              hasMultipleAnnotations={annotationLine.coordinates.length > 1}
             />
           {/each}
-          {#if annotation.regions.length > 1}
+          {#if annotationLine.coordinates.length > 1}
             <AnnotationConnectionLine
-              regions={annotation.regions}
-              annotationPosition={annotation.position}
+              {annotationLine}
               {annotationRadius}
               {cssModifier}
             />

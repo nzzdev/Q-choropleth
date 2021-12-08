@@ -1,16 +1,14 @@
 <script>
   import AnnotationLine from "./AnnotationLine.svelte";
   import { getConnectionLineCoordinates } from "../helpers/annotations";
-  import Annotation from "./Annotation.svelte";
 
-  export let regions;
-  export let annotationPosition;
+  export let annotationLine;
   export let annotationRadius;
   export let cssModifier;
 
   let coordinates = getConnectionLineCoordinates(
-    regions,
-    annotationPosition,
+    annotationLine,
+    annotationLine.position,
     annotationRadius,
     cssModifier
   );
@@ -50,7 +48,12 @@
 <g>
   <AnnotationLine {coordinates} />
   <path
-    d={getPath(coordinates, annotationRadius, annotationPosition, cssModifier)}
+    d={getPath(
+      coordinates,
+      annotationRadius,
+      annotationLine.position,
+      cssModifier
+    )}
     fill="none"
     stroke="#6e6e7e"
     stroke-width="1"

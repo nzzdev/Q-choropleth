@@ -34,16 +34,18 @@ export function regionHasAnnotation(annotations, region) {
 /**
  * Links the annotations to the hexagons and sets all the coordinates needed for drawing the annotations correctly
  */
-export function setCoordinatesForHexMap(
+export function getAnnotationsForHexMap(
   annotations,
   hexagons,
   annotationStartPosition,
   cssModifier
 ) {
+  let annotationLines = [];
+
   const [xMin, xMax] = getExtents(hexagons, ({ x }) => x);
   const [yMin, yMax] = getExtents(hexagons, ({ y }) => y);
-
   annotations.forEach((annotation) => {
+    let annotationLine = { position: annotation.position, coordinates: [] };
     annotation.regions.forEach((region) => {
       let hexagon = hexagons.find((h) => h.text[0] === region.id);
 
@@ -51,12 +53,10 @@ export function setCoordinatesForHexMap(
         let horizontalIncrement = hexagon.width / 4;
         let verticalIncrement = hexagon.height / 4;
         let coordinates;
-
         if (
           annotation.position === "top" ||
           (cssModifier === "narrow" && annotation.position === "left")
         ) {
-          // If contentWidth (cssModifier) is narrow, all annotations on the left will be drawn on the top
           coordinates = getTopCoordinates(
             hexagon.x,
             hexagon.y,
@@ -69,7 +69,6 @@ export function setCoordinatesForHexMap(
           annotation.position === "bottom" ||
           (cssModifier === "narrow" && annotation.position === "right")
         ) {
-          // If contentWidth (cssModifier) is narrow, all annotations on the right will be drawn on the bottom// bottom
           coordinates = getBottomCoordinates(
             hexagon.x,
             hexagon.y,
@@ -97,39 +96,14 @@ export function setCoordinatesForHexMap(
             annotationStartPosition
           );
         }
-        region.coordinates = coordinates;
+        annotationLine.coordinates.push(coordinates);
       }
     });
-
-    if (annotation.regions.length > 1) {
-      // check if there's an annotation on the same axis (x, y)
-      annotation.regions.forEach((region, index) => {
-        region.hasSameAxisAnnotation = regionHasSameAxisAnnotation(
-          annotation.regions,
-          region,
-          annotation.position,
-          cssModifier
-        );
-        console.log(region.hasSameAxisAnnotation);
-      });
-
-      // sort by coordinates depending on where they're displayed, to display the first one on the left (y) or top (x)
-      annotation.regions.sort((regionA, regionB) => {
-        if (
-          annotation.position === "top" ||
-          annotation.position === "bottom" ||
-          cssModifier === "narrow"
-        ) {
-          return regionA.coordinates.featureX - regionB.coordinates.featureX;
-        } else {
-          return regionA.coordinates.featureY - regionB.coordinates.featureY;
-        }
-      });
-    }
+    annotationLines.push(annotationLine);
   });
-  return annotations;
+  annotationLines = removeDoubleAxisCoordinates(annotationLines, cssModifier);
+  return annotationLines;
 }
-
 /**
  * Links the annotations to the features of the geo map and sets all the coordinates needed for drawing the annotations correctly
  */
@@ -211,46 +185,47 @@ export function setCoordinatesForGeoMap(
  * Returns the coordinates of the connection line between the multiple annotations
  */
 export function getConnectionLineCoordinates(
-  regions,
+  annotationLine,
   annotationPosition,
   annotationRadius,
   cssModifier
 ) {
-  let firstRegion = regions[0];
-  let lastRegion = regions[regions.length - 1];
+  let firstRegion = annotationLine.coordinates[0];
+  let lastRegion =
+    annotationLine.coordinates[annotationLine.coordinates.length - 1];
   if (
     annotationPosition === "top" ||
     (cssModifier === "narrow" && annotationPosition === "left")
   ) {
     return {
-      lineX1: firstRegion.coordinates.lineX1 + annotationRadius,
-      lineX2: lastRegion.coordinates.lineX1 - annotationRadius,
-      lineY1: firstRegion.coordinates.lineY1 - annotationRadius,
-      lineY2: firstRegion.coordinates.lineY1 - annotationRadius,
+      lineX1: firstRegion.lineX1 + annotationRadius,
+      lineX2: lastRegion.lineX1 - annotationRadius,
+      lineY1: firstRegion.lineY1 - annotationRadius,
+      lineY2: firstRegion.lineY1 - annotationRadius,
     };
   } else if (
     annotationPosition === "bottom" ||
     (cssModifier === "narrow" && annotationPosition === "right")
   ) {
     return {
-      lineX1: firstRegion.coordinates.lineX1 + annotationRadius,
-      lineX2: lastRegion.coordinates.lineX1 - annotationRadius,
-      lineY1: firstRegion.coordinates.lineY1 + annotationRadius,
-      lineY2: firstRegion.coordinates.lineY1 + annotationRadius,
+      lineX1: firstRegion.lineX1 + annotationRadius,
+      lineX2: lastRegion.lineX1 - annotationRadius,
+      lineY1: firstRegion.lineY1 + annotationRadius,
+      lineY2: firstRegion.lineY1 + annotationRadius,
     };
   } else if (annotationPosition === "left") {
     return {
-      lineX1: firstRegion.coordinates.lineX1 - annotationRadius,
-      lineX2: firstRegion.coordinates.lineX1 - annotationRadius,
-      lineY1: firstRegion.coordinates.lineY1 + annotationRadius,
-      lineY2: lastRegion.coordinates.lineY1 - annotationRadius,
+      lineX1: firstRegion.lineX1 - annotationRadius,
+      lineX2: firstRegion.lineX1 - annotationRadius,
+      lineY1: firstRegion.lineY1 + annotationRadius,
+      lineY2: lastRegion.lineY1 - annotationRadius,
     };
   } else if (annotationPosition === "right") {
     return {
-      lineX1: firstRegion.coordinates.lineX2 + annotationRadius,
-      lineX2: firstRegion.coordinates.lineX2 + annotationRadius,
-      lineY1: firstRegion.coordinates.lineY1 + annotationRadius,
-      lineY2: lastRegion.coordinates.lineY1 - annotationRadius,
+      lineX1: firstRegion.lineX2 + annotationRadius,
+      lineX2: firstRegion.lineX2 + annotationRadius,
+      lineY1: firstRegion.lineY1 + annotationRadius,
+      lineY2: lastRegion.lineY1 - annotationRadius,
     };
   }
 }
@@ -335,31 +310,68 @@ function getRightCoordinates(
   };
 }
 
-function regionHasSameAxisAnnotation(
-  regions,
-  region,
-  annotationPosition,
-  cssModifier
-) {
-  let hasSameAxisAnnotation = false;
-  if (
-    annotationPosition === "top" ||
-    annotationPosition === "bottom" ||
-    cssModifier === "narrow"
-  ) {
-    // when annotations displayed top/bottom, check if all features of a region are on the same x position (horizontally aligned)
-    if (!hasSameAxisAnnotation) {
-      hasSameAxisAnnotation = regions.every(
-        (r) => r.coordinates.featureX === region.coordinates.featureX
+function removeDoubleAxisCoordinates(annotationLines, cssModifier) {
+  annotationLines.forEach((annotationLine) => {
+    if (annotationLine.coordinates.length > 1) {
+      let unique = [];
+      if (
+        annotationLine.position === "top" ||
+        (cssModifier === "narrow" && annotationLine.position === "left")
+      ) {
+        // get unique x-axis coordinates, with the lowest y axis
+        unique = [
+          ...new Map(
+            annotationLine.coordinates
+              .sort((coordA, coordB) => coordA.featureY - coordB.featureY)
+              .map((v) => [v.featureX, v])
+          ).values(),
+        ];
+      } else if (
+        annotationLine.position === "bottom" ||
+        (cssModifier === "narrow" && annotationLine.position === "right")
+      ) {
+        // get unique x-axis coordinates, with the highest y axis
+        unique = [
+          ...new Map(
+            annotationLine.coordinates
+              .sort((coordA, coordB) => coordB.featureY - coordA.featureY)
+              .map((v) => [v.featureX, v])
+          ).values(),
+        ];
+      } else if (annotationLine.position === "left") {
+        // get unique y-axis coordinates, with the lowest x axis
+        unique = [
+          ...new Map(
+            annotationLine.coordinates
+              .sort((coordA, coordB) => coordA.featureX - coordB.featureX)
+              .map((v) => [v.featureY, v])
+          ).values(),
+        ];
+      } else if (annotationLine.position === "right") {
+        // get unique y-axis coordinates, with the highest x axis
+        unique = [
+          ...new Map(
+            annotationLine.coordinates
+              .sort((coordA, coordB) => coordB.featureX - coordA.featureX)
+              .map((v) => [v.featureY, v])
+          ).values(),
+        ];
+      }
+      // sort by coordinates depending on where they're displayed, to display the first one on the left (y) or top (x)
+      annotationLine.coordinates = Array.from(unique[0]).sort(
+        (coordA, coordB) => {
+          if (
+            annotationLine.position === "top" ||
+            annotationLine.position === "bottom" ||
+            cssModifier === "narrow"
+          ) {
+            return coordA.featureX - coordB.featureX;
+          } else {
+            return coordA.featureY - coordB.featureY;
+          }
+        }
       );
     }
-  } else {
-    // when annotations displayed left/right, check if all features of a region are on the same y position (vertically aligned)
-    if (!hasSameAxisAnnotation) {
-      hasSameAxisAnnotation = regions.every(
-        (r) => r.coordinates.featureY === region.coordinates.featureY
-      );
-    }
-  }
-  return hasSameAxisAnnotation;
+  });
+  return annotationLines;
 }

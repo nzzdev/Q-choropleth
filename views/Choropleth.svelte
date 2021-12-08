@@ -26,60 +26,61 @@
       value.regions = value.regions.map((region) => {
         return { id: region };
       });
-      value.id = index + 1;
       return value;
     });
   }
 </script>
 
 <div bind:offsetWidth={contentWidth}>
-{#if contentWidth}
-  {#if !(legendData.type === 'categorical' && valuesOnMap)}
-    <ChoroplethLegend
-      {legendData}
-      {formattingOptions}
-      {contentWidth}
-      {isStatic} />
+  {#if contentWidth}
+    {#if !(legendData.type === "categorical" && valuesOnMap)}
+      <ChoroplethLegend
+        {legendData}
+        {formattingOptions}
+        {contentWidth}
+        {isStatic}
+      />
+    {/if}
+    {#if item.baseMap.includes("hexagon")}
+      <HexagonMap
+        {dataMapping}
+        entityType={item.entityType}
+        {valuesOnMap}
+        {legendData}
+        {baseMap}
+        {contentWidth}
+        {formattingOptions}
+        {maxHeight}
+        {annotations}
+        {annotationRadius}
+      />
+    {/if}
+    {#if item.baseMap.includes("geographic")}
+      <GeographicMap
+        {dataMapping}
+        entityType={item.entityType}
+        {legendData}
+        {baseMap}
+        {contentWidth}
+        {maxHeight}
+        {annotations}
+        {annotationRadius}
+      />
+    {/if}
+    {#if annotations && annotations.length > 0}
+      <AnnotationsLegend {annotations} {annotationRadius} />
+    {/if}
+    {#if baseMap.source}
+      <Attribution source={baseMap.source} {isStatic} />
+    {/if}
+    {#if legendData.type === "numerical"}
+      <MethodBox
+        {legendData}
+        {formattingOptions}
+        {isStatic}
+        methodBoxText={methodBox.text}
+        methodBoxArticle={methodBox.article}
+      />
+    {/if}
   {/if}
-  {#if item.baseMap.includes('hexagon')}
-    <HexagonMap
-      {dataMapping}
-      entityType={item.entityType}
-      {valuesOnMap}
-      {legendData}
-      {baseMap}
-      {contentWidth}
-      {formattingOptions}
-      {maxHeight}
-      {annotations}
-      {annotationRadius} />
-  {/if}
-  {#if item.baseMap.includes('geographic')}
-    <GeographicMap
-      {dataMapping}
-      entityType={item.entityType}
-      {legendData}
-      {baseMap}
-      {contentWidth}
-      {maxHeight}
-      {annotations}
-      {annotationRadius} />
-  {/if}
-  {#if annotations && annotations.length > 0}
-    <AnnotationsLegend
-      {annotations}
-      {annotationRadius} />
-  {/if}
-  {#if baseMap.source}
-    <Attribution source={baseMap.source} {isStatic}/>
-  {/if}
-  {#if legendData.type === 'numerical'}
-    <MethodBox
-      {legendData}
-      {formattingOptions}
-      {isStatic}
-      methodBoxText={methodBox.text}
-      methodBoxArticle={methodBox.article} />
-  {/if}
-{/if}
 </div>
