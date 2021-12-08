@@ -24,6 +24,7 @@
     if (!mapAnnotations) return [];
     return mapAnnotations.map((value, index) => {
       value.regions = value.regions.map((region) => {
+        value.id = index + 1;
         return { id: region };
       });
       return value;

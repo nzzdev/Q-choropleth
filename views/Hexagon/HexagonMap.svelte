@@ -208,6 +208,7 @@
         {#each annotationLines as annotationLine}
           {#each annotationLine.coordinates as coordinates, index}
             <Annotation
+              id={annotationLine.id}
               {index}
               {annotationRadius}
               {coordinates}

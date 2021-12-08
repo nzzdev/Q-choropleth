@@ -1,6 +1,7 @@
 <script>
   import AnnotationPointWithLine from "./AnnotationPointWithLine.svelte";
   import AnnotationLine from "./AnnotationLine.svelte";
+  export let id;
   export let index;
   export let annotationRadius;
   export let coordinates;
@@ -36,7 +37,7 @@
 
 {#if hasMultipleAnnotations}
   {#if index === 0}
-    <AnnotationPointWithLine id={index + 1} {annotationRadius} {coordinates} />
+    <AnnotationPointWithLine {id} {annotationRadius} {coordinates} />
   {:else if !isLastItem}
     <AnnotationLine
       coordinates={moveToConnectionLine(
@@ -50,5 +51,5 @@
     <AnnotationLine {coordinates} />
   {/if}
 {:else}
-  <AnnotationPointWithLine id={index + 1} {annotationRadius} {coordinates} />
+  <AnnotationPointWithLine {id} {annotationRadius} {coordinates} />
 {/if}

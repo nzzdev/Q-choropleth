@@ -45,7 +45,11 @@ export function getAnnotationsForHexMap(
   const [xMin, xMax] = getExtents(hexagons, ({ x }) => x);
   const [yMin, yMax] = getExtents(hexagons, ({ y }) => y);
   annotations.forEach((annotation) => {
-    let annotationLine = { position: annotation.position, coordinates: [] };
+    let annotationLine = {
+      id: annotation.id,
+      position: annotation.position,
+      coordinates: [],
+    };
     annotation.regions.forEach((region) => {
       let hexagon = hexagons.find((h) => h.text[0] === region.id);
 
