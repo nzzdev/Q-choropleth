@@ -313,52 +313,45 @@ function getRightCoordinates(
 function removeDoubleAxisCoordinates(annotationLines, cssModifier) {
   annotationLines.forEach((annotationLine) => {
     if (annotationLine.coordinates.length > 1) {
-      let unique = [];
+      let coordMap;
       if (
         annotationLine.position === "top" ||
         (cssModifier === "narrow" && annotationLine.position === "left")
       ) {
         // get unique x-axis coordinates, with the lowest y axis
-        unique = [
-          ...new Map(
-            annotationLine.coordinates
-              .sort((coordA, coordB) => coordA.featureY - coordB.featureY)
-              .map((v) => [v.featureX, v])
-          ).values(),
-        ];
+        coordMap = new Map(
+          annotationLine.coordinates
+            .sort((coordA, coordB) => coordA.featureY - coordB.featureY)
+            .map((coord) => [coord.featureX, coord])
+        ).values();
       } else if (
         annotationLine.position === "bottom" ||
         (cssModifier === "narrow" && annotationLine.position === "right")
       ) {
         // get unique x-axis coordinates, with the highest y axis
-        unique = [
-          ...new Map(
-            annotationLine.coordinates
-              .sort((coordA, coordB) => coordB.featureY - coordA.featureY)
-              .map((v) => [v.featureX, v])
-          ).values(),
-        ];
+        coordMap = new Map(
+          annotationLine.coordinates
+            .sort((coordA, coordB) => coordB.featureY - coordA.featureY)
+            .map((coord) => [coord.featureX, coord])
+        ).values();
       } else if (annotationLine.position === "left") {
         // get unique y-axis coordinates, with the lowest x axis
-        unique = [
-          ...new Map(
-            annotationLine.coordinates
-              .sort((coordA, coordB) => coordA.featureX - coordB.featureX)
-              .map((v) => [v.featureY, v])
-          ).values(),
-        ];
+        coordMap = new Map(
+          annotationLine.coordinates
+            .sort((coordA, coordB) => coordA.featureX - coordB.featureX)
+            .map((coord) => [coord.featureY, coord])
+        ).values();
       } else if (annotationLine.position === "right") {
         // get unique y-axis coordinates, with the highest x axis
-        unique = [
-          ...new Map(
-            annotationLine.coordinates
-              .sort((coordA, coordB) => coordB.featureX - coordA.featureX)
-              .map((v) => [v.featureY, v])
-          ).values(),
-        ];
+        coordMap = new Map(
+          annotationLine.coordinates
+            .sort((coordA, coordB) => coordB.featureX - coordA.featureX)
+            .map((coord) => [coord.featureY, coord])
+        ).values();
       }
+
       // sort by coordinates depending on where they're displayed, to display the first one on the left (y) or top (x)
-      annotationLine.coordinates = Array.from(unique[0]).sort(
+      annotationLine.coordinates = Array.from(coordMap).sort(
         (coordA, coordB) => {
           if (
             annotationLine.position === "top" ||
