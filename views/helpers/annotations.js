@@ -50,6 +50,7 @@ export function getAnnotationsForHexMap(
       position: annotation.position,
       coordinates: [],
     };
+
     annotation.regions.forEach((region) => {
       let hexagon = hexagons.find((h) => h.text[0] === region.id);
 
@@ -57,6 +58,7 @@ export function getAnnotationsForHexMap(
         let horizontalIncrement = hexagon.width / 4;
         let verticalIncrement = hexagon.height / 4;
         let coordinates;
+
         if (
           annotation.position === "top" ||
           (cssModifier === "narrow" && annotation.position === "left")
@@ -105,13 +107,14 @@ export function getAnnotationsForHexMap(
     });
     annotationLines.push(annotationLine);
   });
+
   annotationLines = removeDoubleAxisCoordinates(annotationLines, cssModifier);
   return annotationLines;
 }
 /**
  * Links the annotations to the features of the geo map and sets all the coordinates needed for drawing the annotations correctly
  */
-export function setCoordinatesForGeoMap(
+export function getAnnotationsForGeoMap(
   annotations,
   geoParameters,
   entityType,
@@ -122,10 +125,19 @@ export function setCoordinatesForGeoMap(
   let features = geoParameters.features.features;
   let yMax = geoParameters.bounds[1][1];
   let xMax = geoParameters.bounds[1][0];
+  let annotationLines = [];
 
   annotations.forEach((annotation) => {
-    annotation.regions = annotation.regions.map((region) => {
-      let feature = features.find((f) => f.properties[entityType] === region);
+    let annotationLine = {
+      id: annotation.id,
+      position: annotation.position,
+      coordinates: [],
+    };
+
+    annotation.regions.forEach((region) => {
+      let feature = features.find(
+        (f) => f.properties[entityType] === region.id
+      );
 
       if (feature) {
         let centroid = path.centroid(feature);
@@ -133,7 +145,7 @@ export function setCoordinatesForGeoMap(
 
         if (annotation.position === "top" || annotation.position === "left") {
           // If contentWidth (cssModifier) is narrow, all annotations on the left will be drawn on the top
-          region.coordinates = getTopCoordinates(
+          coordinates = getTopCoordinates(
             centroid[0],
             centroid[1],
             0,
@@ -143,7 +155,7 @@ export function setCoordinatesForGeoMap(
           );
 
           if (cssModifier !== "narrow" && annotation.position === "left") {
-            region.coordinates = getLeftCoordinates(
+            coordinates = getLeftCoordinates(
               centroid[0],
               centroid[1],
               0,
@@ -153,7 +165,7 @@ export function setCoordinatesForGeoMap(
           }
         } else {
           // If contentWidth (cssModifier) is narrow, all annotations on the right will be drawn on the bottom
-          region.coordinates = getBottomCoordinates(
+          coordinates = getBottomCoordinates(
             centroid[0],
             centroid[1],
             yMax,
@@ -164,7 +176,7 @@ export function setCoordinatesForGeoMap(
           );
 
           if (cssModifier !== "narrow" && annotation.position === "right") {
-            region.coordinates = getRightCoordinates(
+            coordinates = getRightCoordinates(
               centroid[0],
               centroid[1],
               xMax,
@@ -174,15 +186,14 @@ export function setCoordinatesForGeoMap(
             );
           }
         }
-
-        return {
-          id: region,
-          coordinates,
-        };
+        annotationLine.coordinates.push(coordinates);
       }
     });
+    annotationLines.push(annotationLine);
   });
-  return annotations;
+
+  annotationLines = removeDoubleAxisCoordinates(annotationLines, cssModifier);
+  return annotationLines;
 }
 
 /**
