@@ -1,6 +1,6 @@
 # Q-choropleth [![Build Status](https://travis-ci.com/nzzdev/Q-choropleth.svg?token=bwR7zbPTTpEoDxbY2dJR&branch=dev)](https://travis-ci.com/nzzdev/Q-choropleth)
 
-**maintainer**: [philipkueng](https://github.com/philipkueng)
+**Maintainer**: [Nicolas Staub](https://github.com/fromdusttilldawn)
 
 Short description of tool and link to either [demo](https://editor.q.tools/) or [playground](https://q-playground.st.nzz.ch).
 
