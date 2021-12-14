@@ -1,5 +1,5 @@
 {
-  "title": "FIXTURE: Geographisch Deutschland (Landkreise) - Nummerisch mit Annotationen",
+  "title": "FIXTURE: Geographisch Deutschland (Landkreise) - Nummerisch mit mehreren Annotationen",
   "subtitle": "Subtitle",
   "baseMap": "de-landkreise-geographic",
   "version": "2020-01-01T00:00:00.000Z",
@@ -410,29 +410,14 @@
   ],
   "mapAnnotations": [
     {
-      "annotation": "Hamburg",
+      "annotation": "Test1",
       "position": "top",
-      "regions": ["DE600"]
+      "regions": ["DE600", "DEA11", "DE300"]
     },
     {
-      "annotation": "Düsseldorf",
-      "position": "left",
-      "regions": ["DEA11"]
-    },
-    {
-      "annotation": "Berlin",
-      "position": "right",
-      "regions": ["DE300"]
-    },
-    {
-      "annotation": "Ortenaukreis",
+      "annotation": "Test2",
       "position": "bottom",
-      "regions": ["DE134"]
-    },
-    {
-      "annotation": "München",
-      "position": "bottom",
-      "regions": ["DE212"]
+      "regions": ["DE134", "DE212"]
     }
   ],
   "sources": [],

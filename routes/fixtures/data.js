@@ -10,6 +10,7 @@ const fixtureData = [
   require(`${fixtureDataDirectory}/geographic-numeric-map-with-null.json`),
   require(`${fixtureDataDirectory}/geographic-numeric-map.json`),
   require(`${fixtureDataDirectory}/geographic-numeric-show-annotations.json`),
+  require(`${fixtureDataDirectory}/geographic-numeric-show-multiple-annotations.json`),
   require(`${fixtureDataDirectory}/hexagon-categorical-map-legend-custom-order.json`),
   require(`${fixtureDataDirectory}/hexagon-categorical-map-legend-default-order.json`),
   require(`${fixtureDataDirectory}/hexagon-categorical-map-with-empty.json`),
