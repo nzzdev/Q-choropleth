@@ -178,23 +178,21 @@ The `categorical` legend will simply map the values to their colors.
 
 #### Annotations
 
-Up to a maximum of five annotations can be added to hexagon maps as well as geographic ones.
+Up to a maximum of five annotations can be added to hexagon maps as well as geographic ones. Each annotation is able to have multiple regions.
 
-The array passed to render the annotations looks as following:
+The array iterated to render the annotations looks as following:
 
 ```
-annotations = [
+annotationLines = [
   {
-    annotation  // The text for the annotation
-    position    // Can be 'top', 'left', 'bottom' or 'right'
-    region      // The region (CH-Kanton or DE-Landkreis) the annotation is linked to
-    id          // The number shown in the icon (automatically generated)
     coordinates // Coordinates for drawing the icon on the map (automatically generated)
+    id          // The number shown in the icon (automatically generated)
+    position    // Can be 'top', 'left', 'bottom' or 'right'
   }
 ]
 ```
 
-The annotations are drawn in svg using the `circle` element for the icon and the `line` element for connecting it to its region. For correctly placing them on the hexagon map, the function `setCoordinatesForHexMap()` is used for calculating the coordinates. The same happens for the geographic map using the function `setCoordinatesForGeoMap()`.
+For correctly placing them on the hexagon map, the function `getAnnotationsForHexMap()` is used for calculating the coordinates. The same happens for the geographic map using the function `getAnnotationsForGeoMap()`. If the annotation has a single region, the annotation is drawn in svg using the `circle` element for the icon and the `line` element for connecting it to its region. If the annotation has mulitple regions, a connection line between the lines and an extra bow will be drawn. If there are multiple annotations on the same axis, the function `removeDoubleAxisCoordinates()` calculates, depending on the position(top, right, bottom, left), which line will be drawn.
 
 An annotation can be positioned on top, left, bottom or right of the map. On narrow viewports (such as mobile screens) the annotations on the left will be automatically displayed on the top and annotations on the right on the bottom, otherwise the map will get too small.
 
