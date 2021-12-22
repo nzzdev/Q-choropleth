@@ -23,30 +23,29 @@
       annotationPosition === "top" ||
       (cssModifier === "narrow" && annotationPosition === "left")
     ) {
-      return `m ${coordinates.lineX2 + 0.5} ${coordinates.lineY2} q ${
-        annotationRadius - 0.5
-      } 0 ${annotationRadius - 0.5} ${annotationRadius - 0.5}`;
+      return `m ${coordinates.lineX2} ${coordinates.lineY2} q ${annotationRadius} 0 ${annotationRadius} ${annotationRadius}`;
     } else if (
       annotationPosition === "bottom" ||
       (cssModifier === "narrow" && annotationPosition === "right")
     ) {
-      return `m ${coordinates.lineX2 + 0.5} ${coordinates.lineY2} q ${
-        annotationRadius - 0.5
-      } 0 ${annotationRadius - 0.5} ${-Math.abs(annotationRadius - 0.5)}`;
+      return `m ${coordinates.lineX2} ${
+        coordinates.lineY2
+      } q ${annotationRadius} 0 ${annotationRadius} ${-Math.abs(
+        annotationRadius
+      )}`;
     } else if (annotationPosition === "left") {
-      return `m ${coordinates.lineX1} ${coordinates.lineY2 + 0.5} q 0 ${
-        annotationRadius - 0.5
-      } ${annotationRadius - 0.5} ${annotationRadius - 0.5}`;
+      return `m ${coordinates.lineX1} ${coordinates.lineY2} q 0 ${annotationRadius} ${annotationRadius} ${annotationRadius}`;
     } else if (annotationPosition === "right") {
-      return `m ${coordinates.lineX1} ${coordinates.lineY2 + 0.5} q 0 ${
-        annotationRadius - 0.5
-      } ${-Math.abs(annotationRadius - 0.5)} ${annotationRadius - 0.5}`;
+      return `m ${coordinates.lineX1} ${
+        coordinates.lineY2
+      } q 0 ${annotationRadius} ${-Math.abs(
+        annotationRadius
+      )} ${annotationRadius}`;
     }
   }
 </script>
 
 <g>
-  <AnnotationLine {coordinates} />
   <path
     d={getPath(
       coordinates,
@@ -59,4 +58,5 @@
     stroke-width="1"
     stroke-dasharray="1.1"
   />
+  <AnnotationLine {coordinates} />
 </g>
