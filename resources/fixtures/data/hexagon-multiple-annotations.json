@@ -1,0 +1,61 @@
+{
+  "title": "FIXTURE: Hexagon Schweiz (Kantone) - Multiple Annotationen",
+  "acronym": "phk.",
+  "baseMap": "ch-cantons-hexagon",
+  "version": "1997-01-01T00:00:00.000Z",
+  "data": [
+    ["ID", "Wert"],
+    ["Aargau", "1"],
+    ["Appenzell Ausserrhoden", "2"],
+    ["Appenzell Innerrhoden", "3"],
+    ["Basel-Landschaft", "4"],
+    ["Basel-Stadt", "5"],
+    ["Bern", "1"],
+    ["Freiburg", "2"],
+    ["Genf", "3"],
+    ["Glarus", "4"],
+    ["Graubünden", "5"],
+    ["Jura", "1"],
+    ["Luzern", "2"],
+    ["Neuenburg", "3"],
+    ["Nidwalden", "4"],
+    ["Obwalden", "5"],
+    ["Schaffhausen", "1"],
+    ["Schwyz", "2"],
+    ["Solothurn", "3"],
+    ["St. Gallen", "4"],
+    ["Tessin", "5"],
+    ["Thurgau", "1"],
+    ["Uri", "2"],
+    ["Waadt", "3"],
+    ["Wallis", "4"],
+    ["Zug", "5"],
+    ["Zürich", "1"]
+  ],
+  "mapAnnotations": [
+    {
+      "regions": ["NE", "BL", "FR"],
+      "annotation": "test",
+      "position": "top"
+    }
+  ],
+  "sources": [],
+  "options": {
+    "choroplethType": "numerical",
+    "numericalOptions": {
+      "noValuesOnMap": false,
+      "labelLegend": "noLabel",
+      "bucketType": "ckmeans",
+      "numberBuckets": 5,
+      "scale": "sequential",
+      "colorScheme": "one",
+      "colorOverwrites": []
+    },
+    "categoricalOptions": {
+      "valuesOnMap": false,
+      "colorOverwrites": [],
+      "customCategoriesOrder": []
+    }
+  },
+  "entityType": "name"
+}

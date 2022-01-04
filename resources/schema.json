@@ -140,15 +140,19 @@
         "type": "object",
         "title": "Annotation",
         "properties": {
-          "region": {
-            "title": "Region",
-            "type": "string",
-            "Q:options": {
-              "dynamicSchema": {
-                "type": "ToolEndpoint",
-                "config": {
-                  "endpoint": "dynamic-schema/annotationRegions",
-                  "fields": ["baseMap", "version", "entityType"]
+          "regions": {
+            "title": "Regionen",
+            "type": "array",
+            "items": {
+              "title": "Region",
+              "type": "string",
+              "Q:options": {
+                "dynamicSchema": {
+                  "type": "ToolEndpoint",
+                  "config": {
+                    "endpoint": "dynamic-schema/annotationRegions",
+                    "fields": ["baseMap", "version", "entityType"]
+                  }
                 }
               }
             }
