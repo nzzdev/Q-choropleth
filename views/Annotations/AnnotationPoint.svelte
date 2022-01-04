@@ -18,7 +18,7 @@
     cx={x}
     cy={y}
     class={circleColorClass}
-    fill="none"
+    fill="white"
     stroke="currentColor"
     stroke-width={strokeWidth}
     />

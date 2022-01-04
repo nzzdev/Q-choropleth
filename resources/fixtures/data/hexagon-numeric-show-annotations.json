@@ -34,11 +34,31 @@
     ["Zürich", "15"]
   ],
   "mapAnnotations": [
-    { "annotation": "Zürich", "region": "ZH", "position": "top" },
-    { "annotation": "Bern", "region": "BE", "position": "left" },
-    { "annotation": "St. Gallen", "region": "SG", "position": "right" },
-    { "annotation": "Nidwalden", "region": "NW", "position": "bottom" },
-    { "annotation": "Wallis", "region": "VS", "position": "bottom" }
+    {
+      "annotation": "Zürich",
+      "position": "top",
+      "regions": ["ZH"]
+    },
+    {
+      "annotation": "Bern",
+      "position": "left",
+      "regions": ["BE"]
+    },
+    {
+      "annotation": "St. Gallen",
+      "position": "right",
+      "regions": ["SG"]
+    },
+    {
+      "annotation": "Nidwalden",
+      "position": "bottom",
+      "regions": ["NW"]
+    },
+    {
+      "annotation": "Wallis",
+      "position": "bottom",
+      "regions": ["VS"]
+    }
   ],
   "sources": [],
   "notes": "",

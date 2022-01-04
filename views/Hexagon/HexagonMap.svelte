@@ -1,7 +1,8 @@
 <script>
   import Hexagon from "./Hexagon.svelte";
   import ResponsiveSvg from "../svg/ResponsiveSvg.svelte";
-  import AnnotationPointWithLine from "../Annotations/AnnotationPointWithLine.svelte";
+  import Annotation from "../Annotations/Annotation.svelte";
+  import AnnotationConnectionLine from "../Annotations/AnnotationConnectionLine.svelte";
   import { getColor } from "../helpers/color.js";
   import { getExtents } from "../helpers/extent.js";
   import { getCssModifier } from "../helpers/cssModifier.js";
@@ -11,7 +12,7 @@
   import {
     hasAnnotationOnLeftOrRight,
     regionHasAnnotation,
-    setCoordinatesForHexMap,
+    getAnnotationsForHexMap,
   } from "../helpers/annotations";
 
   export let dataMapping;
@@ -34,7 +35,8 @@
     cellHeight,
     rowHeight,
     hexagons,
-    svgSize;
+    svgSize,
+    annotationLines;
   $: {
     cssModifier = getCssModifier(contentWidth);
     // Calculate width and height of a hexagon using contentWidth and maxHeight
@@ -59,7 +61,7 @@
       cellWidth,
       cellHeight
     );
-    annotations = setCoordinatesForHexMap(
+    annotationLines = getAnnotationsForHexMap(
       annotations,
       hexagons,
       annotationStartPosition,
@@ -203,12 +205,26 @@
     </g>
     {#if annotations && annotations.length > 0}
       <g class="annotations">
-        {#each annotations as { id, coordinates }}
-          <AnnotationPointWithLine
-            {id}
-            radius={annotationRadius}
-            {coordinates}
-          />
+        {#each annotationLines as annotationLine}
+          {#each annotationLine.coordinates as coordinates, index}
+            <Annotation
+              id={annotationLine.id}
+              {index}
+              {annotationRadius}
+              {coordinates}
+              {cssModifier}
+              annotationPosition={annotationLine.position}
+              isLastItem={index === annotationLine.coordinates.length - 1}
+              hasMultipleAnnotations={annotationLine.coordinates.length > 1}
+            />
+          {/each}
+          {#if annotationLine.coordinates.length > 1}
+            <AnnotationConnectionLine
+              {annotationLine}
+              {annotationRadius}
+              {cssModifier}
+            />
+          {/if}
         {/each}
       </g>
     {/if}

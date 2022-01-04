@@ -3,7 +3,8 @@
   import OutlineFeature from "./OutlineFeature.svelte";
   import WaterFeature from "./WaterFeature.svelte";
   import ResponsiveSvg from "../svg/ResponsiveSvg.svelte";
-  import AnnotationPointWithLine from "../Annotations/AnnotationPointWithLine.svelte";
+  import Annotation from "../Annotations/Annotation.svelte";
+  import AnnotationConnectionLine from "../Annotations/AnnotationConnectionLine.svelte";
   import { round } from "../helpers/data.js";
   import { getColor } from "../helpers/color.js";
   import { getCssModifier } from "../helpers/cssModifier.js";
@@ -11,7 +12,7 @@
   import { getGeoParameters, roundCoordinatesInPath } from "../helpers/geo.js";
   import {
     regionHasAnnotation,
-    setCoordinatesForGeoMap,
+    getAnnotationsForGeoMap,
   } from "../helpers/annotations";
 
   export let dataMapping;
@@ -26,14 +27,14 @@
   const annotationStartPosition = annotationRadius * 2;
   const annotationSpace = 2 * (annotationRadius + annotationStartPosition + 1); // times two, because annotations can be on both sides (top/bottom or left/right)
 
-  let geoParameters, svgSize, strokeWidth;
+  let geoParameters, svgSize, strokeWidth, cssModifier, annotationLines;
   $: {
-    const cssModifier = getCssModifier(contentWidth);
+    cssModifier = getCssModifier(contentWidth);
     strokeWidth = cssModifier === "narrow" ? 0.15 : 0.3;
     geoParameters = getGeoParameters(baseMap, contentWidth, maxHeight);
     const bounds = geoParameters.bounds;
     svgSize = getSvgSize(bounds, contentWidth, annotations, annotationSpace);
-    annotations = setCoordinatesForGeoMap(
+    annotationLines = getAnnotationsForGeoMap(
       annotations,
       geoParameters,
       entityType,
@@ -59,15 +60,15 @@
   }
 
   function getFeaturesWithoutAnnotation(features, annotations, entityType) {
-    return features.filter(
-      (f) => !regionHasAnnotation(annotations, f.properties[entityType])
-    );
+    return features.filter((f) => {
+      return !regionHasAnnotation(annotations, f.properties[entityType]);
+    });
   }
 
   function getFeaturesWithAnnotation(features, annotations, entityType) {
-    return features.filter((f) =>
-      regionHasAnnotation(annotations, f.properties[entityType])
-    );
+    return features.filter((f) => {
+      return regionHasAnnotation(annotations, f.properties[entityType]);
+    });
   }
 </script>
 
@@ -107,12 +108,26 @@
     {/if}
     {#if annotations && annotations.length > 0}
       <g class="annotations">
-        {#each annotations as { id, coordinates }}
-          <AnnotationPointWithLine
-            {id}
-            radius={annotationRadius}
-            {coordinates}
-          />
+        {#each annotationLines as annotationLine}
+          {#each annotationLine.coordinates as coordinates, index}
+            <Annotation
+              id={annotationLine.id}
+              {index}
+              {annotationRadius}
+              {coordinates}
+              {cssModifier}
+              annotationPosition={annotationLine.position}
+              isLastItem={index === annotationLine.coordinates.length - 1}
+              hasMultipleAnnotations={annotationLine.coordinates.length > 1}
+            />
+          {/each}
+          {#if annotationLine.coordinates.length > 1}
+            <AnnotationConnectionLine
+              {annotationLine}
+              {annotationRadius}
+              {cssModifier}
+            />
+          {/if}
         {/each}
         <g>
           <!--

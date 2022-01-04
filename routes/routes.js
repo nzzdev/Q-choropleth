@@ -16,4 +16,5 @@ module.exports = [
   require("./notifications/numberBucketsOutOfColorScale.js"),
   require("./notifications/numberCategoriesOutOfColorScale.js"),
   require("./dynamic-schema.js"),
+  require("./migration.js"),
 ].concat(require("./schema.js"));
