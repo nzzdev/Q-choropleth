@@ -154,6 +154,23 @@ module.exports = [
     title: "Schweiz » Gemeinden",
     versions: [
       {
+        validFrom: "2022-01-01T00:00:00.000Z",
+        data: {
+          source: {
+            url: "https://www.bfs.admin.ch/bfs/de/home/dienstleistungen/geostat/geodaten-bundesstatistik/administrative-grenzen/generalisierte-gemeindegrenzen.html",
+            label: "© BfS, ThemaKart",
+          },
+          config: {
+            defaultEntityType: "id",
+            entityTypes: {
+              id: "BfS Nummer",
+            },
+            projection: "mercator",
+          },
+          entities: require("./basemaps/ch-municipalities-geographic.js"),
+        },
+      },
+      {
         validFrom: "2021-07-01T00:00:00.000Z",
         data: {
           source: {
@@ -481,6 +498,31 @@ module.exports = [
             projection: "mercator",
           },
           entities: require("./basemaps/france-regions-geographic.js"),
+        },
+      },
+    ],
+  },
+  {
+    id: "france-departements-geographic",
+    title: "Frankreich » Departements",
+    versions: [
+      {
+        validFrom: "2018-01-01T00:00:00.000Z",
+        data: {
+          source: {
+            url: 
+              "https://ec.europa.eu/eurostat/web/gisco/geodata/reference-data/administrative-units-statistical-units/nuts",
+            label: "© EuroGeographics",
+          },
+          config: {
+            defaultEntityType: "name",
+            entityTypes: {
+              name: "Name",
+              nuts: "NUTS",
+            },
+            projection: "mercator",
+          },
+          entities: require("./basemaps/france-departements-geographic.js"),
         },
       },
     ],
