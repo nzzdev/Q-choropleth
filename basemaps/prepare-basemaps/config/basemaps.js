@@ -321,9 +321,9 @@ module.exports = [
             label: "Statistik Kt. Zürich",
           },
           config: {
-            defaultEntityType: "bezeichnung",
+            defaultEntityType: "id",
             entityTypes: {
-              bezeichnung: "Wahlkreis Bezeichnung",
+              id: "Wahlkreis Bezeichnung",
             },
             projection: "mercator",
           },

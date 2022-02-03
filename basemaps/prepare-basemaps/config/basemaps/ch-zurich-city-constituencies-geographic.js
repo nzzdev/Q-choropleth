@@ -6,8 +6,7 @@ const config = {
     "https://www.ogd.stadt-zuerich.ch/wfs/geoportal/Stimmkreise?service=WFS&version=1.1.0&request=GetFeature&outputFormat=GeoJSON&typename=adm_zaehlkreise_a",
   featuresPath: "features.json",
   featuresPropertyMapping: {
-    id: "objid",
-    name: "bezeichnung",
+    id: "bezeichnung",
   },
   rewriteProperties: {},
 };
