@@ -323,7 +323,7 @@ module.exports = [
           config: {
             defaultEntityType: "id",
             entityTypes: {
-              id: "WKR_ID ID",
+              id: "Wahlkreis ID",
             },
             projection: "mercator",
           },
