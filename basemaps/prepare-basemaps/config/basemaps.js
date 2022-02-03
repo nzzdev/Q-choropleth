@@ -322,9 +322,8 @@ module.exports = [
           },
           config: {
             defaultEntityType: "id",
-            // TODO: Check correct entity type for 'Wahlkreis'
             entityTypes: {
-              id: "Wahlkreis Nummer",
+              id: "WKR_ID ID",
             },
             projection: "mercator",
           },

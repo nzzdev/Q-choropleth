@@ -8,7 +8,7 @@ const config = {
   waterPath:
     "./GEN_WAHLKREISE_epsg4326_json/GEN_WAHLKREISE_SEEN_epsg4326.json",
   featuresPropertyMapping: {
-    id: "BFS",
+    id: "WKR_ID",
     name: "NAME",
   },
   rewriteProperties: {},
