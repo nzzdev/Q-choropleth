@@ -310,6 +310,30 @@ module.exports = [
     ],
   },
   {
+    id: "ch-zurich-city-constituencies-geographic",
+    title: "Schweiz » Zürich » Wahlkreise",
+    versions: [
+      {
+        validFrom: "2021-01-01T00:00:00.000Z",
+        data: {
+          source: {
+            url: "https://www.zh.ch/de/planen-bauen/geoinformation/geodaten/geodatenshop/vorlagen-fuer-administrativer-grenzen-und-karten.html",
+            label: "Statistik Kt. Zürich",
+          },
+          config: {
+            defaultEntityType: "id",
+            // TODO: Check correct entity type for 'Wahlkreis'
+            entityTypes: {
+              id: "Wahlkreis Nummer",
+            },
+            projection: "mercator",
+          },
+          entities: require("./basemaps/ch-zurich-city-constituencies-geographic.js"),
+        },
+      },
+    ],
+  },
+  {
     id: "ch-zurich-city-districts-geographic",
     title: "Schweiz » Zürich » Stadtkreise",
     versions: [
