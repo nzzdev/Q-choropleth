@@ -3,6 +3,8 @@ import { geoRobinson } from "d3-geo-projection";
 import { feature } from "topojson-client";
 
 export function getGeoParameters(baseMap, width, maxHeight) {
+  if (!baseMap) return undefined;
+  
   const features = getFeatureCollection(baseMap.entities, "features");
   const outlines = getFeatureCollection(baseMap.entities, "outlines");
   const water = getFeatureCollection(baseMap.entities, "water");

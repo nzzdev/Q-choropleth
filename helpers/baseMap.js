@@ -31,7 +31,7 @@ async function getDocument(id) {
   }
 }
 
-async function getBasemap(id, validFrom) {
+async function getBasemap(id, validFrom, isWide = true) {
   try {
     const document = await this.server.methods.getDocument(id);
     let version = document.versions.find(
@@ -39,19 +39,32 @@ async function getBasemap(id, validFrom) {
         new Date(versionItem.validFrom).getTime() ===
         new Date(validFrom).getTime()
     );
+    let dataMobile;
 
     // return the newest available version if version is not defined
     if (version === undefined) {
       version = document.versions.shift();
     }
 
-    if (version.data) {
-      const response = await fetch(version.data);
-      if (response.ok) {
-        return await response.json();
-      } else {
-        return undefined;
-      }
+    if (!isWide) {
+      dataMobile = fetchJSON(version.dataMobile);
+      if (dataMobile) return dataMobile;
+    }
+
+    return fetchJSON(version.data);
+  } catch (error) {
+    return undefined;
+  }
+}
+
+async function fetchJSON(url) {
+  if (!url) return undefined;
+  try {
+    const response = await fetch(url);
+    if (response.ok) {
+      return await response.json();
+    } else {
+      return undefined;
     }
   } catch (error) {
     return undefined;

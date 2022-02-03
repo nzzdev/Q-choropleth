@@ -121,6 +121,7 @@ export function getAnnotationsForGeoMap(
   annotationStartPosition,
   cssModifier
 ) {
+  if (!geoParameters) return [];
   let path = geoParameters.path;
   let features = geoParameters.features.features;
   let yMax = geoParameters.bounds[1][1];
@@ -140,7 +141,7 @@ export function getAnnotationsForGeoMap(
       );
 
       if (feature) {
-        let centroid = path.centroid(feature);
+        let centroid = feature.centroidOverride ? feature.centroidOverride : path.centroid(feature);
         let coordinates;
 
         if (annotation.position === "top" || annotation.position === "left") {

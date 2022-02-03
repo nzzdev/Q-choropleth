@@ -12,13 +12,15 @@ module.exports = {
       },
       query: {
         version: Joi.string().required(),
+        isWide: Joi.boolean().required(),
       },
     },
   },
   handler: async (request, h) => {
     const basemap = await request.server.methods.getBasemap(
       request.params.id,
-      request.query.version
+      request.query.version,
+      request.query.isWide,
     );
     return h
       .response(basemap)

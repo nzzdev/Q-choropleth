@@ -19,6 +19,8 @@
   const annotations = getMutatedAnnotations(item.mapAnnotations);
   const annotationRadius = 8;
   let contentWidth;
+  console.log(baseMap)
+  $: hasBaseMapTwoParts = baseMap.entitiesPartTwo ? true : false;
 
   function getMutatedAnnotations(mapAnnotations) {
     if (!mapAnnotations) return [];
@@ -29,6 +31,15 @@
       });
       return value;
     });
+  }
+
+  function getSecondPartOfBaseMap() {
+    if (!baseMap) return undefined;
+    const retVal = { ...baseMap };
+    retVal.entities = retVal.entitiesPartTwo;
+    delete baseMap.entitiesPartTwo;
+    delete retVal.entitiesPartTwo;
+    return retVal;
   }
 </script>
 
@@ -67,6 +78,18 @@
         {annotations}
         {annotationRadius}
       />
+      {#if hasBaseMapTwoParts}
+        <GeographicMap
+          {dataMapping}
+          entityType={item.entityType}
+          {legendData}
+          baseMap={getSecondPartOfBaseMap()}
+          {contentWidth}
+          {maxHeight}
+          {annotations}
+          {annotationRadius}
+        />
+      {/if}
     {/if}
     {#if annotations && annotations.length > 0}
       <AnnotationsLegend {annotations} {annotationRadius} />

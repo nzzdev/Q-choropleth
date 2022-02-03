@@ -1,4 +1,6 @@
 <script>
+  // import { scaleSqrt as d3ScaleSqrt } from "d3-scale";
+  // import { extent as d3Extent } from "d3-array";
   import Feature from "./Feature.svelte";
   import OutlineFeature from "./OutlineFeature.svelte";
   import WaterFeature from "./WaterFeature.svelte";
@@ -26,13 +28,17 @@
 
   const annotationStartPosition = annotationRadius * 2;
   const annotationSpace = 2 * (annotationRadius + annotationStartPosition + 1); // times two, because annotations can be on both sides (top/bottom or left/right)
+  // const data = [1000000, 2000000, 3000000, 4000000, 5000000, 6000000, 7000000, 8000000, 9000000, 10000000];
+  // const radiusFor = d3ScaleSqrt()
+  //   .domain(d3Extent(data, (d) => d))
+  //   .range([1.5, 7.5])
 
-  let geoParameters, svgSize, strokeWidth, cssModifier, annotationLines;
+  let bounds, geoParameters, svgSize, strokeWidth, cssModifier, annotationLines;
   $: {
     cssModifier = getCssModifier(contentWidth);
     strokeWidth = cssModifier === "narrow" ? 0.15 : 0.3;
     geoParameters = getGeoParameters(baseMap, contentWidth, maxHeight);
-    const bounds = geoParameters.bounds;
+    bounds = geoParameters ? geoParameters.bounds : undefined;
     svgSize = getSvgSize(bounds, contentWidth, annotations, annotationSpace);
     annotationLines = getAnnotationsForGeoMap(
       annotations,
@@ -42,8 +48,10 @@
       cssModifier
     );
   }
+  $: console.log("-- geoParameters", geoParameters);
 
   function getSvgSize(bounds, contentWidth, annotations, annotationSpace) {
+    if (!bounds) return { aspectRatio: 1, viewBox: [0, 0, contentWidth, maxHeight] };
     let xMin = bounds[0][0];
     let yMin = bounds[0][1];
     let width = bounds[1][0];
@@ -70,83 +78,99 @@
       return regionHasAnnotation(annotations, f.properties[entityType]);
     });
   }
+
+  // function getRandomNumber(min, max) {
+  //   return Math.floor(Math.random() * (max - min + 1)) + min;
+  // }
 </script>
 
 <ResponsiveSvg aspectRatio={svgSize.aspectRatio}>
   <svg viewbox={svgSize.viewBox}>
-    <g>
-      {#each getFeaturesWithoutAnnotation(geoParameters.features.features, annotations, entityType) as feature}
-        <Feature
-          color={getColor(
-            dataMapping.get(feature.properties[entityType]),
-            legendData
-          )}
-          value={dataMapping.get(feature.properties[entityType])}
-          path={roundCoordinatesInPath(geoParameters.path(feature), 1)}
-          {strokeWidth}
-        />
-      {/each}
-    </g>
-    {#if geoParameters.outlines.features !== undefined}
+    {#if geoParameters}
       <g>
-        {#each geoParameters.outlines.features as outline}
-          <OutlineFeature
-            path={roundCoordinatesInPath(geoParameters.path(outline), 1)}
+        {#each getFeaturesWithoutAnnotation(geoParameters.features.features, annotations, entityType) as feature}
+          <Feature
+            color={getColor(
+              dataMapping.get(feature.properties[entityType]),
+              legendData
+            )}
+            value={dataMapping.get(feature.properties[entityType])}
+            path={roundCoordinatesInPath(geoParameters.path(feature), 1)}
             {strokeWidth}
           />
         {/each}
       </g>
-    {/if}
-    {#if geoParameters.water.features !== undefined}
-      <g>
-        {#each geoParameters.water.features as water}
-          <WaterFeature
-            path={roundCoordinatesInPath(geoParameters.path(water), 1)}
-          />
-        {/each}
-      </g>
-    {/if}
-    {#if annotations && annotations.length > 0}
-      <g class="annotations">
-        {#each annotationLines as annotationLine}
-          {#each annotationLine.coordinates as coordinates, index}
-            <Annotation
-              id={annotationLine.id}
-              {index}
-              {annotationRadius}
-              {coordinates}
-              {cssModifier}
-              annotationPosition={annotationLine.position}
-              isLastItem={index === annotationLine.coordinates.length - 1}
-              hasMultipleAnnotations={annotationLine.coordinates.length > 1}
-            />
-          {/each}
-          {#if annotationLine.coordinates.length > 1}
-            <AnnotationConnectionLine
-              {annotationLine}
-              {annotationRadius}
-              {cssModifier}
-            />
-          {/if}
-        {/each}
+      {#if geoParameters.outlines.features !== undefined}
         <g>
-          <!--
-            Features with annotations are added here, so the border around them is drawn correctly.
-          -->
-          {#each getFeaturesWithAnnotation(geoParameters.features.features, annotations, entityType) as feature}
-            <Feature
-              color={getColor(
-                dataMapping.get(feature.properties[entityType]),
-                legendData
-              )}
-              value={dataMapping.get(feature.properties[entityType])}
-              path={roundCoordinatesInPath(geoParameters.path(feature), 1)}
-              hasAnnotation={true}
+          {#each geoParameters.outlines.features as outline}
+            <OutlineFeature
+              path={roundCoordinatesInPath(geoParameters.path(outline), 1)}
               {strokeWidth}
             />
           {/each}
         </g>
-      </g>
+      {/if}
+      {#if geoParameters.water.features !== undefined}
+        <g>
+          {#each geoParameters.water.features as water}
+            <WaterFeature
+              path={roundCoordinatesInPath(geoParameters.path(water), 1)}
+            />
+          {/each}
+        </g>
+      {/if}
+      {#if annotations && annotations.length > 0}
+        <g class="annotations">
+          {#each annotationLines as annotationLine}
+            {#each annotationLine.coordinates as coordinates, index}
+              <Annotation
+                id={annotationLine.id}
+                {index}
+                {annotationRadius}
+                {coordinates}
+                {cssModifier}
+                annotationPosition={annotationLine.position}
+                isLastItem={index === annotationLine.coordinates.length - 1}
+                hasMultipleAnnotations={annotationLine.coordinates.length > 1}
+              />
+            {/each}
+            {#if annotationLine.coordinates.length > 1}
+              <AnnotationConnectionLine
+                {annotationLine}
+                {annotationRadius}
+                {cssModifier}
+              />
+            {/if}
+          {/each}
+          <g>
+            <!--
+              Features with annotations are added here, so the border around them is drawn correctly.
+            -->
+            {#each getFeaturesWithAnnotation(geoParameters.features.features, annotations, entityType) as feature}
+              <Feature
+                color={getColor(
+                  dataMapping.get(feature.properties[entityType]),
+                  legendData
+                )}
+                value={dataMapping.get(feature.properties[entityType])}
+                path={roundCoordinatesInPath(geoParameters.path(feature), 1)}
+                hasAnnotation={true}
+                {strokeWidth}
+              />
+            {/each}
+          </g>
+        </g>
+      {/if}
+      <!-- {#each geoParameters.features.features as feature}
+        <circle
+          fill="#69b3a2"
+          opacity=0.95
+          stroke="#000"
+          cx={geoParameters.path.centroid(feature)[0]}
+          cy={geoParameters.path.centroid(feature)[1]}
+          r={radiusFor(getRandomNumber(1000000, 10000000))}
+        />
+      {/each} -->
     {/if}
   </svg>
 </ResponsiveSvg>
