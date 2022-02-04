@@ -12,7 +12,7 @@ module.exports = {
       },
       query: {
         version: Joi.string().required(),
-        isWide: Joi.boolean().required(),
+        isWide: Joi.boolean().default(true),
       },
     },
   },
