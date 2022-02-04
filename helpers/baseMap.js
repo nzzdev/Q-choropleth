@@ -47,7 +47,7 @@ async function getBasemap(id, validFrom, isWide = true) {
       version = document.versions.shift();
     }
 
-    if (!isWide) {
+    if (!isWide && version.dataMobile) {
       dataMobile = fetchJSON(version.dataMobile);
       if (dataMobile) return dataMobile;
     }
