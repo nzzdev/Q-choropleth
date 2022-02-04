@@ -122,14 +122,13 @@ module.exports = {
         request.payload.toolRuntimeConfig
       );
 
-      console.log("exactPixelWidth", exactPixelWidth)
-
       // if we have the exact pixel width we add it to context
       // if not the client side script will handle client side measuring
       if (typeof exactPixelWidth === "number") {
         context.contentWidth = exactPixelWidth;
-        if (exactPixelWidth > 400) isWide = true;
+        if (exactPixelWidth <= 400) isWide = false;
       }
+      console.log("exactPixelWidth", exactPixelWidth, isWide)
 
       const baseMapUrl = `${toolRuntimeConfig.toolBaseUrl}/basemap/${item.baseMap}?version=${item.version}&isWide=${isWide}`;
       const staticTemplateRender = staticTemplate.render(context);
