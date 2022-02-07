@@ -536,6 +536,30 @@ module.exports = [
     ],
   },
   {
+    id: "france-departements-paris-geographic",
+    title: "Frankreich » Departements » Paris",
+    versions: [
+      {
+        validFrom: "2018-01-01T00:00:00.000Z",
+        data: {
+          source: {
+            url: "https://ec.europa.eu/eurostat/web/gisco/geodata/reference-data/administrative-units-statistical-units/nuts",
+            label: "© EuroGeographics",
+          },
+          config: {
+            defaultEntityType: "name",
+            entityTypes: {
+              name: "Name",
+              nuts: "NUTS",
+            },
+            projection: "mercator",
+          },
+          entities: require("./basemaps/france-departements-paris-geographic.js"),
+        },
+      },
+    ],
+  },
+  {
     id: "italy-regions-geographic",
     title: "Italien » Regionen",
     versions: [
