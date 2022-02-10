@@ -1,6 +1,5 @@
 <script>
-  // import { scaleSqrt as d3ScaleSqrt } from "d3-scale";
-  // import { extent as d3Extent } from "d3-array";
+  import Bubble from "./Bubble.svelte";
   import Feature from "./Feature.svelte";
   import OutlineFeature from "./OutlineFeature.svelte";
   import WaterFeature from "./WaterFeature.svelte";
@@ -25,13 +24,10 @@
   export let maxHeight = 550;
   export let annotations = [];
   export let annotationRadius = 8;
+  export let showBubbleMap;
 
   const annotationStartPosition = annotationRadius * 2;
   const annotationSpace = 2 * (annotationRadius + annotationStartPosition + 1); // times two, because annotations can be on both sides (top/bottom or left/right)
-  // const data = [1000000, 2000000, 3000000, 4000000, 5000000, 6000000, 7000000, 8000000, 9000000, 10000000];
-  // const radiusFor = d3ScaleSqrt()
-  //   .domain(d3Extent(data, (d) => d))
-  //   .range([1.5, 7.5])
 
   let bounds, geoParameters, svgSize, strokeWidth, cssModifier, annotationLines;
   $: {
@@ -48,7 +44,6 @@
       cssModifier
     );
   }
-  $: console.log("-- geoParameters", geoParameters);
 
   function getSvgSize(bounds, contentWidth, annotations, annotationSpace) {
     if (!bounds) return { aspectRatio: 1, viewBox: [0, 0, contentWidth, maxHeight] };
@@ -78,10 +73,6 @@
       return regionHasAnnotation(annotations, f.properties[entityType]);
     });
   }
-
-  // function getRandomNumber(min, max) {
-  //   return Math.floor(Math.random() * (max - min + 1)) + min;
-  // }
 </script>
 
 <ResponsiveSvg aspectRatio={svgSize.aspectRatio}>
@@ -94,7 +85,7 @@
               dataMapping.get(feature.properties[entityType]),
               legendData
             )}
-            value={dataMapping.get(feature.properties[entityType])}
+            value={showBubbleMap ? undefined : dataMapping.get(feature.properties[entityType])}
             path={roundCoordinatesInPath(geoParameters.path(feature), 1)}
             {strokeWidth}
           />
@@ -152,7 +143,7 @@
                   dataMapping.get(feature.properties[entityType]),
                   legendData
                 )}
-                value={dataMapping.get(feature.properties[entityType])}
+                value={showBubbleMap ? undefined : dataMapping.get(feature.properties[entityType])}
                 path={roundCoordinatesInPath(geoParameters.path(feature), 1)}
                 hasAnnotation={true}
                 {strokeWidth}
@@ -161,16 +152,20 @@
           </g>
         </g>
       {/if}
-      <!-- {#each geoParameters.features.features as feature}
-        <circle
-          fill="#69b3a2"
-          opacity=0.95
-          stroke="#000"
-          cx={geoParameters.path.centroid(feature)[0]}
-          cy={geoParameters.path.centroid(feature)[1]}
-          r={radiusFor(getRandomNumber(1000000, 10000000))}
-        />
-      {/each} -->
+      {#if showBubbleMap}
+        {#each geoParameters.features.features as feature}
+          <Bubble
+            color={getColor(
+              dataMapping.get(feature.properties[entityType]),
+              legendData
+            )}
+            centroid={feature.properties.centroid}
+            population={feature.properties.population}
+            {strokeWidth}
+            value={dataMapping.get(feature.properties[entityType])}
+          />
+        {/each}
+      {/if}
     {/if}
   </svg>
 </ResponsiveSvg>

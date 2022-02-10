@@ -647,6 +647,22 @@
               }
             }
           }
+        },
+        "showBubbleMap": {
+          "title": "showBubbleMap",
+          "type": "boolean",
+          "default": false,
+          "Q:options": {
+            "availabilityChecks": [
+              {
+                "type": "ToolEndpoint",
+                "config": {
+                  "endpoint": "option-availability/showBubbleMap",
+                  "fields": ["baseMap"]
+                }
+              }
+            ]
+          }
         }
       }
     }

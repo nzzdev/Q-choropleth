@@ -13,13 +13,14 @@
   export let methodBox;
   export let formattingOptions;
   export let isStatic;
+  export let showBubbleMap = false;
 
   const dataMapping = new Map(item.data);
   const maxHeight = 550;
   const annotations = getMutatedAnnotations(item.mapAnnotations);
   const annotationRadius = 8;
   let contentWidth;
-  console.log(baseMap)
+  console.log(baseMap, showBubbleMap)
   $: hasBaseMapTwoParts = baseMap.entitiesPartTwo ? true : false;
 
   function getMutatedAnnotations(mapAnnotations) {
@@ -77,6 +78,7 @@
         {maxHeight}
         {annotations}
         {annotationRadius}
+        {showBubbleMap}
       />
       {#if hasBaseMapTwoParts}
         <GeographicMap
@@ -88,6 +90,7 @@
           {maxHeight}
           {annotations}
           {annotationRadius}
+          {showBubbleMap}
         />
       {/if}
     {/if}

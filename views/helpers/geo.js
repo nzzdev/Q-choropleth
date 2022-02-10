@@ -19,6 +19,11 @@ export function getGeoParameters(baseMap, width, maxHeight) {
     bounds = path.bounds(features);
   }
 
+  for (const feature of features.features) {
+    if (feature.properties.centroid_lat && feature.properties.centroid_lon)
+      feature.properties.centroid = projection([feature.properties.centroid_lat, feature.properties.centroid_lon]);
+  }
+
   return { path, bounds, features, outlines, water };
 }
 

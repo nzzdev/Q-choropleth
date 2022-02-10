@@ -117,6 +117,7 @@ module.exports = {
       }
 
       context.item = item;
+      context.showBubbleMap = item.options.showBubbleMap;
 
       const exactPixelWidth = getExactPixelWidth(
         request.payload.toolRuntimeConfig

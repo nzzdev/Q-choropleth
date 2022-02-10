@@ -141,7 +141,7 @@ export function getAnnotationsForGeoMap(
       );
 
       if (feature) {
-        let centroid = feature.centroidOverride ? feature.centroidOverride : path.centroid(feature);
+        const centroid = feature.properties.centroid ? feature.properties.centroid : path.centroid(feature);
         let coordinates;
 
         if (annotation.position === "top" || annotation.position === "left") {
