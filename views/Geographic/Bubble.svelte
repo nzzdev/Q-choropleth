@@ -2,9 +2,9 @@
   import { scaleSqrt as d3ScaleSqrt } from "d3-scale";
   
   export let color;
-  export let centroid;
+  export let centroid = [0, 0];
   export let hasAnnotation = false;
-  export let population;
+  export let population = 0;
   export let strokeWidth;
   export let value;
 
@@ -20,7 +20,7 @@
         : "currentColor";
   const radiusFor = d3ScaleSqrt()
     .domain([140, 1379302771])
-    .range([1.5, 75])
+    .range([1.5, 37.5])
 </script>
 
 <g class={color.colorClass}>

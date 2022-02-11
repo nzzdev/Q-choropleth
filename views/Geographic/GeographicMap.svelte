@@ -159,8 +159,8 @@
               dataMapping.get(feature.properties[entityType]),
               legendData
             )}
-            centroid={feature.properties.centroid}
-            population={feature.properties.population}
+            centroid={feature.properties?.centroid}
+            population={feature.properties?.population}
             {strokeWidth}
             value={dataMapping.get(feature.properties[entityType])}
           />
