@@ -34,25 +34,35 @@ async function getDocument(id) {
 async function getBasemap(id, validFrom, isWide = true) {
   try {
     console.log("getBasemap", id, validFrom, isWide);
+    const retVal = {};
     const document = await this.server.methods.getDocument(id);
     let version = document.versions.find(
       (versionItem) =>
         new Date(versionItem.validFrom).getTime() ===
         new Date(validFrom).getTime()
     );
-    let dataMobile;
 
     // return the newest available version if version is not defined
     if (version === undefined) {
       version = document.versions.shift();
     }
 
-    if (!isWide && version.dataMobile) {
-      dataMobile = fetchJSON(version.dataMobile);
-      if (dataMobile) return dataMobile;
+    if (isWide || !version.mobile) {
+      retVal.data = await fetchJSON(version.data);
+    } else {
+      retVal.mobile = [];
+      retVal.data = await fetchJSON(version.mobile.shift().data);
+      for (const baseMap of version.mobile) {
+        retVal.mobile.push({ data: await fetchJSON(baseMap.data) });
+      }
+    }
+    
+    if (version.miniMap && (isWide && !version.miniMap.mobile || !isWide && version.miniMap.mobile)) {
+      retVal.miniMap = { ...version.miniMap };
+      retVal.miniMap.data = await fetchJSON(version.miniMap.data);
     }
 
-    return fetchJSON(version.data);
+    return retVal;
   } catch (error) {
     return undefined;
   }

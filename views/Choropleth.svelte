@@ -21,8 +21,6 @@
   const annotationRadius = 8;
   let contentWidth;
   console.log(baseMap, showBubbleMap)
-  $: hasBaseMapTwoParts = baseMap.entitiesPartTwo ? true : false;
-
   function getMutatedAnnotations(mapAnnotations) {
     if (!mapAnnotations) return [];
     return mapAnnotations.map((value, index) => {
@@ -32,15 +30,6 @@
       });
       return value;
     });
-  }
-
-  function getSecondPartOfBaseMap() {
-    if (!baseMap) return undefined;
-    const retVal = { ...baseMap };
-    retVal.entities = retVal.entitiesPartTwo;
-    delete baseMap.entitiesPartTwo;
-    delete retVal.entitiesPartTwo;
-    return retVal;
   }
 </script>
 
@@ -60,7 +49,7 @@
         entityType={item.entityType}
         {valuesOnMap}
         {legendData}
-        {baseMap}
+        baseMap={baseMap.data}
         {contentWidth}
         {formattingOptions}
         {maxHeight}
@@ -69,36 +58,55 @@
       />
     {/if}
     {#if item.baseMap.includes("geographic")}
-      <GeographicMap
-        {dataMapping}
-        entityType={item.entityType}
-        {legendData}
-        {baseMap}
-        {contentWidth}
-        {maxHeight}
-        {annotations}
-        {annotationRadius}
-        {showBubbleMap}
-      />
-      {#if hasBaseMapTwoParts}
+      <div style="position: relative;">
         <GeographicMap
           {dataMapping}
           entityType={item.entityType}
           {legendData}
-          baseMap={getSecondPartOfBaseMap()}
+          baseMap={baseMap.data}
           {contentWidth}
           {maxHeight}
           {annotations}
           {annotationRadius}
           {showBubbleMap}
         />
-      {/if}
+        {#if baseMap.mobile && baseMap.mobile.length > 0}
+          {#each baseMap.mobile as mobileBaseMap}
+            <GeographicMap
+              {dataMapping}
+              entityType={item.entityType}
+              {legendData}
+              baseMap={mobileBaseMap.data}
+              {contentWidth}
+              {maxHeight}
+              {annotations}
+              {annotationRadius}
+              {showBubbleMap}
+            />
+          {/each}
+        {/if}
+        {#if baseMap.miniMap}
+          <div style="border: 1px solid silver; position: absolute; {baseMap.miniMap.top ? "top: 0" : "bottom: 0"}; {baseMap.miniMap.left ? "left: 0" : "right: 0"}; width: {baseMap.miniMap.width}px;">
+            <GeographicMap
+              {dataMapping}
+              entityType={item.entityType}
+              {legendData}
+              baseMap={baseMap.miniMap.data}
+              contentWidth={baseMap.miniMap.width}
+              {maxHeight}
+              {annotations}
+              {annotationRadius}
+              {showBubbleMap}
+            />
+          </div>
+        {/if}
+      </div>
     {/if}
     {#if annotations && annotations.length > 0}
       <AnnotationsLegend {annotations} {annotationRadius} />
     {/if}
-    {#if baseMap.source}
-      <Attribution source={baseMap.source} {isStatic} />
+    {#if baseMap.data.source}
+      <Attribution source={baseMap.data.source} {isStatic} />
     {/if}
     {#if legendData.type === "numerical"}
       <MethodBox
