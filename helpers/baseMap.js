@@ -57,9 +57,15 @@ async function getBasemap(id, validFrom, isWide = true) {
       }
     }
     
-    if (version.miniMap && (isWide && !version.miniMap.mobile || !isWide && version.miniMap.mobile)) {
-      retVal.miniMap = { ...version.miniMap };
-      retVal.miniMap.data = await fetchJSON(version.miniMap.data);
+    if (version.miniMaps) {
+      retVal.miniMaps = [];
+      for (const miniMap of version.miniMaps) {
+        if (isWide && !miniMap.mobile || !isWide && miniMap.mobile) {
+          let miniMapCopy = { ...miniMap };
+          miniMapCopy.data = await fetchJSON(miniMap.data);
+          retVal.miniMaps.push(miniMapCopy);
+        }
+      }
     }
 
     return retVal;
