@@ -3,31 +3,38 @@
   
   export let color;
   export let centroid = [0, 0];
+  export let cssModifier;
   export let hasAnnotation = false;
   export let population = 0;
   export let strokeWidth;
   export let value;
 
-  $: fill = value !== null && value !== undefined
-    ? color.customColor && color.customColor.length > 0
-      ? color.customColor
-      : "currentColor"
-    : "#fff";
-  $: stroke = value !== null && value !== undefined
-    ? "#fff"
-      : color.customColor && color.customColor.length > 0
-        ? color.customColor
-        : "currentColor";
   const radiusFor = d3ScaleSqrt()
-    .domain([140, 1379302771])
-    .range([1.5, 37.5])
+    .domain([140, 1379302771]) // TODO: get max value from data
+    .range([1.5, cssModifier === "narrow" ? 19 : 25])
+
+  function getFillColor() {
+    if (!value)
+      return "#fff";
+    if (color.customColor && color.customColor.length > 0)
+      return color.customColor;
+    return "currentColor";
+  }
+
+  function getStrokeColor() {
+    if (value)
+      return "#fff";
+    if (color.customColor && color.customColor.length > 0)
+      return color.customColor;
+    return "currentColor";
+  }
 </script>
 
 <g class={color.colorClass}>
   <circle
-    {fill}
-    opacity=0.95
-    {stroke}
+    fill={getFillColor()}
+    opacity=0.9
+    stroke={getStrokeColor()}
     transform="translate({centroid[0]},{centroid[1]})"
     r={radiusFor(population)}
   />

@@ -87,9 +87,25 @@
             )}
             value={showBubbleMap ? undefined : dataMapping.get(feature.properties[entityType])}
             path={roundCoordinatesInPath(geoParameters.path(feature), 1)}
+            {showBubbleMap}
             {strokeWidth}
           />
         {/each}
+        {#if showBubbleMap}
+          {#each getFeaturesWithoutAnnotation(geoParameters.features.features, annotations, entityType) as feature}
+            <Bubble
+              color={getColor(
+                dataMapping.get(feature.properties[entityType]),
+                legendData
+              )}
+              centroid={feature.properties?.centroid}
+              {cssModifier}
+              population={feature.properties?.population}
+              {strokeWidth}
+              value={dataMapping.get(feature.properties[entityType])}
+            />
+          {/each}
+        {/if}
       </g>
       {#if geoParameters.outlines.features !== undefined}
         <g>
@@ -112,6 +128,24 @@
       {/if}
       {#if annotations && annotations.length > 0}
         <g class="annotations">
+          <g>
+            <!--
+              Features with annotations are added here, so the border around them is drawn correctly.
+            -->
+            {#each getFeaturesWithAnnotation(geoParameters.features.features, annotations, entityType) as feature}
+              <Feature
+                color={getColor(
+                  dataMapping.get(feature.properties[entityType]),
+                  legendData
+                )}
+                hasAnnotation={true}
+                value={dataMapping.get(feature.properties[entityType])}
+                path={roundCoordinatesInPath(geoParameters.path(feature), 1)}
+                {showBubbleMap}
+                {strokeWidth}
+              />
+            {/each}
+          </g>
           {#each annotationLines as annotationLine}
             {#each annotationLine.coordinates as coordinates, index}
               <Annotation
@@ -133,33 +167,18 @@
               />
             {/if}
           {/each}
-          <g>
-            <!--
-              Features with annotations are added here, so the border around them is drawn correctly.
-            -->
-            {#each getFeaturesWithAnnotation(geoParameters.features.features, annotations, entityType) as feature}
-              <Feature
-                color={getColor(
-                  dataMapping.get(feature.properties[entityType]),
-                  legendData
-                )}
-                value={showBubbleMap ? undefined : dataMapping.get(feature.properties[entityType])}
-                path={roundCoordinatesInPath(geoParameters.path(feature), 1)}
-                hasAnnotation={true}
-                {strokeWidth}
-              />
-            {/each}
-          </g>
         </g>
       {/if}
       {#if showBubbleMap}
-        {#each geoParameters.features.features as feature}
+        {#each getFeaturesWithAnnotation(geoParameters.features.features, annotations, entityType) as feature}
           <Bubble
             color={getColor(
               dataMapping.get(feature.properties[entityType]),
               legendData
             )}
             centroid={feature.properties?.centroid}
+            {cssModifier}
+            hasAnnotation={true}
             population={feature.properties?.population}
             {strokeWidth}
             value={dataMapping.get(feature.properties[entityType])}

@@ -3,28 +3,38 @@
   export let value;
   export let path;
   export let hasAnnotation = false;
+  export let showBubbleMap = false;
   export let strokeWidth;
 
-  $: fill = value !== null && value !== undefined
-    ? color.customColor && color.customColor.length > 0
-      ? color.customColor
-      : "currentColor"
-    : "#fff";
-  $: stroke = value !== null && value !== undefined
-    ? "#fff"
-      : color.customColor && color.customColor.length > 0
-        ? color.customColor
-        : "currentColor";
+  function getFillColor() {
+    if (showBubbleMap)
+      return "#f5f5f5";
+    if (!value)
+      return "#fff";
+    if (color.customColor && color.customColor.length > 0)
+      return color.customColor;
+    return "currentColor";
+  }
+
+  function getStrokeColor() {
+    if (showBubbleMap)
+      return "#05032d"; // s-color-gray-9
+    if (value)
+      return "#fff";
+    if (color.customColor && color.customColor.length > 0)
+      return color.customColor;
+    return "currentColor";
+  }
 </script>
 
 <g class={color.colorClass}>
   <path
-    {fill}
-    {stroke}
+    fill={getFillColor()}
+    stroke={getStrokeColor()}
     stroke-width={strokeWidth}
     d={path}
   />
-  {#if hasAnnotation}
+  {#if hasAnnotation && !showBubbleMap}
     <path
       class="s-color-gray-9"
       fill="transparent"
