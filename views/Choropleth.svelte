@@ -85,20 +85,22 @@
             />
           {/each}
         {/if}
-        {#if baseMap.miniMap}
-          <div style="border: 1px solid silver; position: absolute; {baseMap.miniMap.top ? "top: 0" : "bottom: 0"}; {baseMap.miniMap.left ? "left: 0" : "right: 0"}; width: {baseMap.miniMap.width}px;">
-            <GeographicMap
-              {dataMapping}
-              entityType={item.entityType}
-              {legendData}
-              baseMap={baseMap.miniMap.data}
-              contentWidth={baseMap.miniMap.width}
-              {maxHeight}
-              {annotations}
-              {annotationRadius}
-              {showBubbleMap}
-            />
-          </div>
+        {#if baseMap.miniMaps && baseMap.miniMaps.length > 0}
+          {#each baseMap.miniMaps as miniMap}
+            <div style="border: 1px solid silver; position: absolute; {miniMap.top ? "top: 0" : "bottom: 0"}; {miniMap.left ? "left: 0" : "right: 0"}; width: {miniMap.width}px;">
+              <GeographicMap
+                {dataMapping}
+                entityType={item.entityType}
+                {legendData}
+                baseMap={miniMap.data}
+                contentWidth={miniMap.width}
+                {maxHeight}
+                {annotations}
+                {annotationRadius}
+                {showBubbleMap}
+              />
+            </div>
+          {/each}
         {/if}
       </div>
     {/if}
