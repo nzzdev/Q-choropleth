@@ -18,6 +18,8 @@
     "@hapi/catbox-memory": "^5.0.1",
     "@hapi/hapi": "^20.2.1",
     "@hapi/inert": "^6.0.4",
+    "@turf/boolean-overlap": "^6.5.0",
+    "@turf/centroid": "^6.5.0",
     "ajv": "^6.12.6",
     "array2d": "0.0.5",
     "ckmeans": "^2.1.0",

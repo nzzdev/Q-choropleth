@@ -1,4 +1,6 @@
 import { getExtents } from "../helpers/extent.js";
+import booleanOverlap from "@turf/boolean-overlap";
+import centroid from "@turf/centroid";
 
 /**
  * Returns true, if there is at least one annotation on the left or on the right.
@@ -134,61 +136,58 @@ export function getAnnotationsForGeoMap(
       coordinates: [],
     };
 
-    annotation.regions.forEach((region) => {
+    // Find all the geojsons of the selected regions.
+    const foundRegions = [];
+    annotation.regions.forEach(region => {
       let feature = features.find(
         (f) => f.properties[entityType] === region.id
       );
 
       if (feature) {
-        let centroid = path.centroid(feature);
-        let coordinates;
-
-        if (annotation.position === "top" || annotation.position === "left") {
-          // If contentWidth (cssModifier) is narrow, all annotations on the left will be drawn on the top
-          coordinates = getTopCoordinates(
-            centroid[0],
-            centroid[1],
-            0,
-            0,
-            0,
-            annotationStartPosition
-          );
-
-          if (cssModifier !== "narrow" && annotation.position === "left") {
-            coordinates = getLeftCoordinates(
-              centroid[0],
-              centroid[1],
-              0,
-              0,
-              annotationStartPosition
-            );
-          }
-        } else {
-          // If contentWidth (cssModifier) is narrow, all annotations on the right will be drawn on the bottom
-          coordinates = getBottomCoordinates(
-            centroid[0],
-            centroid[1],
-            yMax,
-            0,
-            0,
-            0,
-            annotationStartPosition
-          );
-
-          if (cssModifier !== "narrow" && annotation.position === "right") {
-            coordinates = getRightCoordinates(
-              centroid[0],
-              centroid[1],
-              xMax,
-              0,
-              0,
-              annotationStartPosition
-            );
-          }
-        }
-        annotationLine.coordinates.push(coordinates);
+        foundRegions.push(feature);
       }
     });
+
+    // Cluster regions into ones that only neighbour each-other.
+    const clusters = clusterNeighbouringRegions(foundRegions);
+
+    // For each cluster find the center point.
+    const clusterCenterPointFeatures = [];
+    clusters.forEach(cluster => {
+      const centerPointFeature = centroid({
+        "type": "FeatureCollection",
+        "features": cluster
+      });
+
+      clusterCenterPointFeatures.push(centerPointFeature);
+    });
+
+    // For each center point create the coordinates for the line.
+    clusterCenterPointFeatures.forEach(centerPointFeature => {
+      const centroid = path.centroid(centerPointFeature);
+      const x = centroid[0];
+      const y = centroid[1];
+      let coordinates;
+
+      if (annotation.position === "top" || annotation.position === "left") {
+        // If contentWidth (cssModifier) is narrow, all annotations on the left will be drawn on the top
+        coordinates = getTopCoordinates(x, y, 0, 0, 0, annotationStartPosition);
+
+        if (cssModifier !== "narrow" && annotation.position === "left") {
+          coordinates = getLeftCoordinates(x, y, 0, 0, annotationStartPosition);
+        }
+      } else {
+        // If contentWidth (cssModifier) is narrow, all annotations on the right will be drawn on the bottom
+        coordinates = getBottomCoordinates(x, y, yMax, 0, 0, 0, annotationStartPosition);
+
+        if (cssModifier !== "narrow" && annotation.position === "right") {
+          coordinates = getRightCoordinates(x, y, xMax, 0, 0, annotationStartPosition);
+        }
+      }
+
+      annotationLine.coordinates.push(coordinates);
+    });
+
     annotationLines.push(annotationLine);
   });
 
@@ -382,4 +381,68 @@ function removeDoubleAxisCoordinates(annotationLines, cssModifier) {
     }
   });
   return annotationLines;
+}
+
+/**
+ * Loops over all the regions and clusters them into
+ * groups of regions that are neighbours of each-other.
+ *
+ * @param {Array<GeoJSON.Feature>} regions
+ * @returns {Array<Array<GeoJSON.Feature>>}
+ */
+function clusterNeighbouringRegions(regions) {
+  // Once a region is picked we exclude it from further processing.
+  const excludeList = {};
+  const clusters = [];
+
+  for (let i = 0; i < regions.length; i++) {
+    const region = regions[i];
+
+    // Do not process previously traversed regions.
+    if (excludeList[region.properties.id] !== true) {
+      // Recursive function.
+      const cluster = findAllNeighbours([region], regions, excludeList);
+      clusters.push(cluster);
+    }
+  }
+
+  return clusters;
+}
+
+/**
+ * Recursively find all neighbours expanding as we find each neighbour.
+ * Excludes previously visited regions.
+ *
+ * @param {Array<GeoJSON.Feature} startRegions
+ * @param {Array<GeoJSON.Feature>} regions
+ * @param {Record<string, boolean>} exclude Map of regions to exclude. key = id.
+ * @returns {Array<Array<GeoJSON.Feature>>}
+ */
+function findAllNeighbours(startRegions, regions, exclude = {}) {
+  let neighbours = [];
+
+  for (let i = 0; i < startRegions.length; i++) {
+    const startRegion = startRegions[i];
+
+    exclude[startRegion.properties.id] = true;
+
+    // Iterate over the regions and check if it neighbours the startRegions.
+    regions.forEach(potentialNeighbourRegion => {
+        if (exclude[potentialNeighbourRegion.properties.id] !== true) {
+            const overlaps = booleanOverlap(startRegion, potentialNeighbourRegion);
+
+            if (overlaps) {
+                neighbours.push(potentialNeighbourRegion);
+                exclude[potentialNeighbourRegion.properties.id] = true;
+            }
+        }
+    });
+
+    // If we have neighbours, recurse.
+    if (neighbours.length > 0) {
+        neighbours = [...findAllNeighbours(neighbours, regions, exclude)]
+    }
+  }
+
+  return [...startRegions, ...neighbours];
 }
