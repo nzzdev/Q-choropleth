@@ -1,6 +1,6 @@
 import { getExtents } from "../helpers/extent.js";
 import booleanOverlap from "@turf/boolean-overlap";
-import centroid from "@turf/centroid";
+import { geoCentroid as d3centroid } from "d3-geo";
 
 /**
  * Returns true, if there is at least one annotation on the left or on the right.
@@ -154,12 +154,18 @@ export function getAnnotationsForGeoMap(
     // For each cluster find the center point.
     const clusterCenterPointFeatures = [];
     clusters.forEach(cluster => {
-      const centerPointFeature = centroid({
+      const clusterCenterPointCoordinates = d3centroid({
         "type": "FeatureCollection",
         "features": cluster
       });
 
-      clusterCenterPointFeatures.push(centerPointFeature);
+      clusterCenterPointFeatures.push({
+        "type": "Feature",
+        geometry: {
+          type: "Point",
+          coordinates: clusterCenterPointCoordinates
+        }
+      });
     });
 
     // For each center point create the coordinates for the line.
