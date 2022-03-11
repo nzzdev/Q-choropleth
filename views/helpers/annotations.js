@@ -2,6 +2,8 @@ import { getExtents } from "../helpers/extent.js";
 import booleanOverlap from "@turf/boolean-overlap";
 import { geoCentroid as d3centroid } from "d3-geo";
 
+export const RADIUS = 8;
+
 /**
  * Returns true, if there is at least one annotation on the left or on the right.
  * On narrow viewports (such as mobile screens) no annotations are displayed on the left or right.
@@ -129,12 +131,18 @@ export function getAnnotationsForGeoMap(
   let xMax = geoParameters.bounds[1][0];
   let annotationLines = [];
 
+
+  console.log("geoparams", geoParameters, entityType, annotationStartPosition);
+  const grid = [];
+  const gridMargin = 2; // In pixels.
+
   annotations.forEach((annotation) => {
     let annotationLine = {
       id: annotation.id,
       position: annotation.position,
       coordinates: [],
     };
+
 
     // Find all the geojsons of the selected regions.
     const foundRegions = [];
@@ -175,19 +183,22 @@ export function getAnnotationsForGeoMap(
       const y = centroid[1];
       let coordinates;
 
+      const maxWidthChart = geoParameters.bounds[1][0];
+      const maxHeightChart = geoParameters.bounds[1][1];
+
       if (annotation.position === "top" || annotation.position === "left") {
         // If contentWidth (cssModifier) is narrow, all annotations on the left will be drawn on the top
-        coordinates = getTopCoordinates(x, y, 0, 0, 0, annotationStartPosition);
+        coordinates = getTopCoordinates(maxWidthChart, grid, x, y, 0, 0, 0, annotationStartPosition);
 
         if (cssModifier !== "narrow" && annotation.position === "left") {
-          coordinates = getLeftCoordinates(x, y, 0, 0, annotationStartPosition);
+          coordinates = getLeftCoordinates(maxHeightChart, grid, x, y, 0, 0, annotationStartPosition);
         }
       } else {
         // If contentWidth (cssModifier) is narrow, all annotations on the right will be drawn on the bottom
-        coordinates = getBottomCoordinates(x, y, yMax, 0, 0, 0, annotationStartPosition);
+        coordinates = getBottomCoordinates(maxWidthChart, grid, x, y, yMax, 0, 0, 0, annotationStartPosition);
 
         if (cssModifier !== "narrow" && annotation.position === "right") {
-          coordinates = getRightCoordinates(x, y, xMax, 0, 0, annotationStartPosition);
+          coordinates = getRightCoordinates(maxHeightChart, grid, x, y, xMax, 0, 0, annotationStartPosition);
         }
       }
 
@@ -198,6 +209,8 @@ export function getAnnotationsForGeoMap(
   });
 
   annotationLines = removeDoubleAxisCoordinates(annotationLines, cssModifier);
+
+  console.log("annotationLines", annotationLines);
   return annotationLines;
 }
 
@@ -251,6 +264,8 @@ export function getConnectionLineCoordinates(
 }
 
 function getTopCoordinates(
+  maxWidthChart,
+  grid,
   x,
   y,
   yMin,
@@ -258,16 +273,40 @@ function getTopCoordinates(
   verticalIncrement,
   annotationStartPosition
 ) {
-  return {
-    x: x + horizontalIncrement,
-    y: yMin - annotationStartPosition,
-    lineX1: x + horizontalIncrement,
+
+  const startY = y;
+  // Copy the coordinate so the line will be correctly drawn to the target region
+  // even if the x moves because of overlaps.
+  const lineX2 = x;
+
+  y = yMin - annotationStartPosition;
+
+  x = findNearestAvailableSpotHorizontally(grid, maxWidthChart, x, y);
+
+  // Todo: comment.
+  if (x === null) {
+    x = lineX2;
+  }
+
+  x = x + horizontalIncrement;
+
+  const obj = {
+    x,
+    y,
+    lineX1: x,
     lineY1: yMin - annotationStartPosition / 2,
-    lineX2: x + horizontalIncrement,
-    lineY2: y + verticalIncrement / 2,
+    lineX2: lineX2 + horizontalIncrement,
+    lineY2: startY + verticalIncrement / 2,
     featureX: x,
     featureY: y,
   };
+
+  grid.push({
+    x,
+    y
+  });
+
+  return obj;
 }
 
 function getLeftCoordinates(
@@ -289,7 +328,21 @@ function getLeftCoordinates(
   };
 }
 
+/**
+ *
+ * @param {*} grid
+ * @param {*} x
+ * @param {*} y
+ * @param {*} yMax
+ * @param {*} hexHeight
+ * @param {*} horizontalIncrement
+ * @param {*} verticalIncrement
+ * @param {*} annotationStartPosition
+ * @returns
+ */
 function getBottomCoordinates(
+  maxWidthChart,
+  grid,
   x,
   y,
   yMax,
@@ -298,19 +351,88 @@ function getBottomCoordinates(
   verticalIncrement,
   annotationStartPosition
 ) {
-  return {
-    x: x + horizontalIncrement * 3, // show on right side of hex
-    y: yMax + hexHeight + annotationStartPosition,
-    lineX1: x + horizontalIncrement * 3,
+
+  const startY = y;
+  // Copy the coordinate so the line will be correctly drawn to the target region
+  // even if the x moves because of overlaps.
+  const lineX2 = x;
+
+  y = yMax + hexHeight + annotationStartPosition;
+
+  x = findNearestAvailableSpotHorizontally(grid, maxWidthChart, x, y);
+
+  if (x === null) {
+    x = lineX2;
+  }
+
+
+
+  x = x + horizontalIncrement * 3 // show on right side of hex
+
+
+  const obj = {
+    x,
+    y,
+    lineX1: x,
     lineY1: yMax + hexHeight + annotationStartPosition / 2,
-    lineX2: x + horizontalIncrement * 3,
-    lineY2: y + hexHeight - verticalIncrement / 2,
+    lineX2: lineX2 + horizontalIncrement * 3,
+    lineY2: startY + hexHeight - verticalIncrement / 2,
     featureX: x,
-    featureY: y,
+    featureY: startY,
   };
+
+  grid.push({x, y});
+  return obj;
+}
+
+/**
+ *
+ * @param {Number} maxWidth Max width of chart.
+ * @param {Number} startX StartX of point that is blocking us.
+ * @param {Number} startY Start y of the point that is blocking us.
+ * @returns {Number|null}
+ */
+function findNearestAvailableSpotHorizontally(grid, maxWidth, startX, startY) {
+  // Go to the end of the chart and try to find a free spot.
+  for (let i = startX; i < maxWidth - RADIUS; i++) {
+    if (annotionOverlaps(grid, i, startY) !== true) {
+      return i;
+    }
+  }
+
+  // If no space is found from the startX to the end of the chart.
+  // We will now start again but go the beginning of the chart looking for a free spot.
+  for (let i = startX; i > RADIUS; i--) {
+    if (annotionOverlaps(grid, i, startY) !== true) {
+      return i;
+    }
+  }
+
+  return null;
+}
+
+function findNearestAvailableSpotVertically(grid, maxHeight, startX, startY) {
+  // Go to the end of the chart and try to find a free spot.
+  // for (let i = startY; i < maxWidth - RADIUS; i++) {
+  //   if (annotionOverlaps(grid, i, startY) !== true) {
+  //     return i;
+  //   }
+  // }
+
+  // // If no space is found from the startX to the end of the chart.
+  // // We will now start again but go the beginning of the chart looking for a free spot.
+  // for (let i = startX; i > RADIUS; i--) {
+  //   if (annotionOverlaps(grid, i, startY) !== true) {
+  //     return i;
+  //   }
+  // }
+
+  return null;
 }
 
 function getRightCoordinates(
+  maxHeightChart,
+  grid,
   x,
   y,
   xMax,
@@ -318,16 +440,25 @@ function getRightCoordinates(
   verticalIncrement,
   annotationStartPosition
 ) {
-  return {
+
+  // Copy the coordinate so the line will be correctly drawn to the target region
+  // even if the x moves because of overlaps.
+  const lineY1 = y;
+
+
+  const obj = {
     x: xMax + hexWidth + annotationStartPosition,
     y: y + verticalIncrement,
     lineX1: x + hexWidth,
-    lineY1: y + verticalIncrement,
+    lineY1: lineY1 + verticalIncrement,
     lineX2: xMax + hexWidth + annotationStartPosition / 2,
     lineY2: y + verticalIncrement,
     featureX: x,
     featureY: y,
   };
+
+  grid.push({x, y});
+  return obj;
 }
 
 function removeDoubleAxisCoordinates(annotationLines, cssModifier) {
@@ -446,9 +577,42 @@ function findAllNeighbours(startRegions, regions, exclude = {}) {
 
     // If we have neighbours, recurse.
     if (neighbours.length > 0) {
-        neighbours = [...findAllNeighbours(neighbours, regions, exclude)]
+        neighbours = [...findAllNeighbours(neighbours, regions, exclude)];
     }
   }
 
   return [...startRegions, ...neighbours];
+}
+
+function annotionOverlaps(grid, x, y) {
+  // Todo import radius.
+  const radius = 8;
+
+  const x1 = x - radius;
+  const x2 = x + radius;
+  const y1 = y - radius;
+  const y2 = y + radius;
+
+  for (let i = 0; i < grid.length; i++) {
+    const gridItem = grid[i];
+
+    const gridItemX1 = gridItem.x - radius;
+    const gridItemX2 = gridItem.x + radius;
+    const gridItemY1 = gridItem.y - radius;
+    const gridItemY2 = gridItem.y + radius;
+
+
+    // console.log("a",x1, x2, y1, y2);
+    // console.log("b", gridItemX1, gridItemX2, gridItemY1, gridItemY2);
+
+    if (
+      (x1 >= gridItemX1 && x1 <= gridItemX2
+      && y1 >= gridItemY1 && y1 <= gridItemY1) ||
+      (x2 <= gridItemX2 && x2 >= gridItemX1 && y2 <= gridItemY2 && y2 >= gridItemY2)
+    ) {
+      return true;
+    }
+  }
+
+  return false;
 }
