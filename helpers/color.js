@@ -33,11 +33,16 @@ function getBucketColor(numberBuckets, index, scale, colorOptions) {
   const customColor = colorOptions.colorOverwrites.get(index);
   let colorClass = "";
   let textColor = "";
+  const invertColorScheme = colorOptions.invertColorScheme;
 
   if (scale === "sequential") {
-    colorClass = `s-viz-color-sequential-${colorScheme}-${numberBuckets}-${
-      numberBuckets - index
-    }`;
+    let colorIndex;
+
+    (invertColorScheme) ?
+      colorIndex = numberBuckets - (numberBuckets - 1 - index) :
+      colorIndex = numberBuckets - index;
+
+    colorClass = `s-viz-color-sequential-${colorScheme}-${numberBuckets}-${colorIndex}`;
 
     textColor = getTextColor(customColor, colorClass);
   } else {
@@ -76,8 +81,16 @@ function getBucketColor(numberBuckets, index, scale, colorOptions) {
     let scalePosition;
     if (numberBucketsLeft < numberBucketsRight) {
       scalePosition = scaleSize - numberBuckets + index + 1;
+
+      (invertColorScheme) ?
+        scalePosition = scaleSize - index:
+        scalePosition = scaleSize - numberBuckets + index + 1;
     } else {
       scalePosition = index + 1;
+
+      (invertColorScheme) ?
+        scalePosition = numberBuckets - index :
+        scalePosition = index + 1;
     }
 
     colorClass = `s-viz-color-diverging-${colorScheme}-${scaleSize}-${scalePosition}`;

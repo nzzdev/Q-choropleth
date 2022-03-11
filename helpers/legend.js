@@ -19,6 +19,7 @@ function getBucketsForLegend(
   const colorOptions = {
     colorScheme: options.colorScheme,
     colorOverwrites: customColorMap,
+    invertColorScheme: options.invertColorScheme
   };
 
   if (bucketType === "ckmeans") {
@@ -239,7 +240,7 @@ function getCategoricalLegend(data, options) {
 
   legendData.hasNullValues = categoryObject.hasNullValues;
   legendData.categories = categories;
-  
+
   return legendData;
 }
 
