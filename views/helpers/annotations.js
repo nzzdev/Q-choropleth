@@ -3,6 +3,7 @@ import booleanOverlap from "@turf/boolean-overlap";
 import { geoCentroid as d3centroid } from "d3-geo";
 
 export const RADIUS = 8;
+const MARGINS_BETWEEN_ANNOTATIONS = 2;
 
 /**
  * Returns true, if there is at least one annotation on the left or on the right.
@@ -188,14 +189,14 @@ export function getAnnotationsForGeoMap(
 
       if (annotation.position === "top" || annotation.position === "left") {
         // If contentWidth (cssModifier) is narrow, all annotations on the left will be drawn on the top
-        coordinates = getTopCoordinates(maxWidthChart, grid, x, y, 0, 0, 0, annotationStartPosition);
+        coordinates = getDrawingCoordinatesForTopAnnotation(x, y, 0, 0, 0, annotationStartPosition, maxWidthChart, grid);
 
         if (cssModifier !== "narrow" && annotation.position === "left") {
           coordinates = getLeftCoordinates(maxHeightChart, grid, x, y, 0, 0, annotationStartPosition);
         }
       } else {
         // If contentWidth (cssModifier) is narrow, all annotations on the right will be drawn on the bottom
-        coordinates = getBottomCoordinates(maxWidthChart, grid, x, y, yMax, 0, 0, 0, annotationStartPosition);
+        coordinates = getDrawingCoordinatesForBottomAnnotation(x, y, yMax, 0, 0, 0, annotationStartPosition, maxWidthChart, grid);
 
         if (cssModifier !== "narrow" && annotation.position === "right") {
           coordinates = getRightCoordinates(maxHeightChart, grid, x, y, xMax, 0, 0, annotationStartPosition);
@@ -263,50 +264,47 @@ export function getConnectionLineCoordinates(
   }
 }
 
-function getTopCoordinates(
-  maxWidthChart,
-  grid,
-  x,
-  y,
-  yMin,
-  horizontalIncrement,
-  verticalIncrement,
-  annotationStartPosition
-) {
+function getDrawingCoordinatesForTopAnnotation(featureCenterX, featureCenterY, yMin, horizontalIncrement, verticalIncrement, annotationStartPosition, maxWidthChart, grid) {
+  const y = yMin - annotationStartPosition;
 
-  const startY = y;
-  // Copy the coordinate so the line will be correctly drawn to the target region
-  // even if the x moves because of overlaps.
-  const lineX2 = x;
-
-  y = yMin - annotationStartPosition;
-
-  x = findNearestAvailableSpotHorizontally(grid, maxWidthChart, x, y);
-
-  // Todo: comment.
-  if (x === null) {
-    x = lineX2;
-  }
-
+  let x = findNearestAvailableSpotHorizontally(featureCenterX, y, maxWidthChart, grid);
   x = x + horizontalIncrement;
 
-  const obj = {
+  const coords = {
     x,
     y,
     lineX1: x,
-    lineY1: yMin - annotationStartPosition / 2,
-    lineX2: lineX2 + horizontalIncrement,
-    lineY2: startY + verticalIncrement / 2,
-    featureX: x,
-    featureY: y,
+    lineY1: yMin - (annotationStartPosition / 2),
+    lineX2: featureCenterX + horizontalIncrement,
+    lineY2: featureCenterY + (verticalIncrement / 2),
+    featureX: featureCenterX,
+    featureY: featureCenterY,
   };
 
-  grid.push({
-    x,
-    y
-  });
+  grid.push({x, y});
 
-  return obj;
+  return coords;
+}
+
+function getDrawingCoordinatesForBottomAnnotation(featureCenterX, featureCenterY, yMax, hexHeight, horizontalIncrement, verticalIncrement, annotationStartPosition, maxWidthChart, grid,) {
+  const y = yMax + hexHeight + annotationStartPosition;
+
+  let x = findNearestAvailableSpotHorizontally(featureCenterX, y, maxWidthChart, grid);
+  x = x + horizontalIncrement * 3 // show on right side of hex
+
+  const coords = {
+    x,
+    y,
+    lineX1: x,
+    lineY1: yMax + hexHeight + annotationStartPosition / 2,
+    lineX2: featureCenterX + horizontalIncrement * 3,
+    lineY2: featureCenterY + hexHeight - verticalIncrement / 2,
+    featureX: featureCenterX,
+    featureY: featureCenterY,
+  };
+
+  grid.push({x, y});
+  return coords;
 }
 
 function getLeftCoordinates(
@@ -330,85 +328,30 @@ function getLeftCoordinates(
 
 /**
  *
- * @param {*} grid
- * @param {*} x
- * @param {*} y
- * @param {*} yMax
- * @param {*} hexHeight
- * @param {*} horizontalIncrement
- * @param {*} verticalIncrement
- * @param {*} annotationStartPosition
- * @returns
- */
-function getBottomCoordinates(
-  maxWidthChart,
-  grid,
-  x,
-  y,
-  yMax,
-  hexHeight,
-  horizontalIncrement,
-  verticalIncrement,
-  annotationStartPosition
-) {
-
-  const startY = y;
-  // Copy the coordinate so the line will be correctly drawn to the target region
-  // even if the x moves because of overlaps.
-  const lineX2 = x;
-
-  y = yMax + hexHeight + annotationStartPosition;
-
-  x = findNearestAvailableSpotHorizontally(grid, maxWidthChart, x, y);
-
-  if (x === null) {
-    x = lineX2;
-  }
-
-
-
-  x = x + horizontalIncrement * 3 // show on right side of hex
-
-
-  const obj = {
-    x,
-    y,
-    lineX1: x,
-    lineY1: yMax + hexHeight + annotationStartPosition / 2,
-    lineX2: lineX2 + horizontalIncrement * 3,
-    lineY2: startY + hexHeight - verticalIncrement / 2,
-    featureX: x,
-    featureY: startY,
-  };
-
-  grid.push({x, y});
-  return obj;
-}
-
-/**
- *
  * @param {Number} maxWidth Max width of chart.
  * @param {Number} startX StartX of point that is blocking us.
  * @param {Number} startY Start y of the point that is blocking us.
- * @returns {Number|null}
+ * @returns {Number}
  */
-function findNearestAvailableSpotHorizontally(grid, maxWidth, startX, startY) {
+function findNearestAvailableSpotHorizontally(startX, startY, maxWidth, grid) {
   // Go to the end of the chart and try to find a free spot.
   for (let i = startX; i < maxWidth - RADIUS; i++) {
     if (annotionOverlaps(grid, i, startY) !== true) {
+      console.log("returning coords from right", i);
       return i;
     }
   }
 
-  // If no space is found from the startX to the end of the chart.
-  // We will now start again but go the beginning of the chart looking for a free spot.
+  // If no space is found from the startX to the end of the chart, look from
+  // the startX to the beginning of the chart.
   for (let i = startX; i > RADIUS; i--) {
     if (annotionOverlaps(grid, i, startY) !== true) {
+      console.log("returning coords from left", i);
       return i;
     }
   }
 
-  return null;
+  return startX;
 }
 
 function findNearestAvailableSpotVertically(grid, maxHeight, startX, startY) {
@@ -445,6 +388,10 @@ function getRightCoordinates(
   // even if the x moves because of overlaps.
   const lineY1 = y;
 
+
+  // Todo.
+
+  y = findNearestAvailableSpotVertically(grid, maxHeightChart, x, y);
 
   const obj = {
     x: xMax + hexWidth + annotationStartPosition,
@@ -585,34 +532,41 @@ function findAllNeighbours(startRegions, regions, exclude = {}) {
 }
 
 function annotionOverlaps(grid, x, y) {
-  // Todo import radius.
-  const radius = 8;
-
-  const x1 = x - radius;
-  const x2 = x + radius;
-  const y1 = y - radius;
-  const y2 = y + radius;
+  const x1 = x - RADIUS;
+  const x2 = x + RADIUS;
+  const y1 = y - RADIUS;
+  const y2 = y + RADIUS;
 
   for (let i = 0; i < grid.length; i++) {
     const gridItem = grid[i];
 
-    const gridItemX1 = gridItem.x - radius;
-    const gridItemX2 = gridItem.x + radius;
-    const gridItemY1 = gridItem.y - radius;
-    const gridItemY2 = gridItem.y + radius;
+    // We expand the existing grid item so the annotations have a margin between them.
+    const gridItemX1 = gridItem.x - RADIUS - MARGINS_BETWEEN_ANNOTATIONS;
+    const gridItemX2 = gridItem.x + RADIUS + MARGINS_BETWEEN_ANNOTATIONS;
+    const gridItemY1 = gridItem.y - RADIUS - MARGINS_BETWEEN_ANNOTATIONS;
+    const gridItemY2 = gridItem.y + RADIUS + MARGINS_BETWEEN_ANNOTATIONS;
 
+    const isTopLeftOverlapping = isCoordinateBetween(x1, gridItemX1, gridItemX2) && isCoordinateBetween(y1, gridItemY1, gridItemY2);
+    const isBottomRightOverlapping = isCoordinateBetween(x2, gridItemX1, gridItemX2) && isCoordinateBetween(y2, gridItemY1, gridItemY2);
 
     // console.log("a",x1, x2, y1, y2);
     // console.log("b", gridItemX1, gridItemX2, gridItemY1, gridItemY2);
+    // console.log(isTopLeftOverlapping, isBottomRightOverlapping);
 
-    if (
-      (x1 >= gridItemX1 && x1 <= gridItemX2
-      && y1 >= gridItemY1 && y1 <= gridItemY1) ||
-      (x2 <= gridItemX2 && x2 >= gridItemX1 && y2 <= gridItemY2 && y2 >= gridItemY2)
-    ) {
+    if (isTopLeftOverlapping || isBottomRightOverlapping) {
       return true;
     }
   }
 
   return false;
+}
+
+/**
+ * @param {Number} coordinate
+ * @param {Number} start
+ * @param {Number} end
+ * @returns {Boolean}
+ */
+function isCoordinateBetween(coordinate, start, end) {
+  return (coordinate >= start && coordinate <= end) ? true : false;
 }
