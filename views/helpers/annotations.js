@@ -49,6 +49,10 @@ export function getAnnotationsForHexMap(
 
   const [xMin, xMax] = getExtents(hexagons, ({ x }) => x);
   const [yMin, yMax] = getExtents(hexagons, ({ y }) => y);
+
+  // Grid to store already placed annotations.
+  const grid = [];
+
   annotations.forEach((annotation) => {
     let annotationLine = {
       id: annotation.id,
@@ -68,45 +72,56 @@ export function getAnnotationsForHexMap(
           annotation.position === "top" ||
           (cssModifier === "narrow" && annotation.position === "left")
         ) {
-          coordinates = getTopCoordinates(
-            hexagon.x,
+          coordinates = getDrawingCoordinatesForTopAnnotation(
+            hexagon.x + horizontalIncrement,
             hexagon.y,
             yMin,
-            horizontalIncrement,
             verticalIncrement,
-            annotationStartPosition
+            annotationStartPosition,
+            xMax,
+            grid
           );
         } else if (
           annotation.position === "bottom" ||
           (cssModifier === "narrow" && annotation.position === "right")
         ) {
-          coordinates = getBottomCoordinates(
-            hexagon.x,
+          coordinates = getDrawingCoordinatesForBottomAnnotation(
+            hexagon.x + (horizontalIncrement * 3),
             hexagon.y,
             yMax,
             hexagon.height,
-            horizontalIncrement,
             verticalIncrement,
-            annotationStartPosition
+            annotationStartPosition,
+            xMax,
+            grid
           );
         } else if (annotation.position === "left") {
-          coordinates = getLeftCoordinates(
+          coordinates = getDrawingCoordinatesForLeftAnnotation(
             hexagon.x,
-            hexagon.y,
+            hexagon.y + verticalIncrement,
             xMin,
-            verticalIncrement,
-            annotationStartPosition
+            annotationStartPosition,
+            yMax,
+            grid
           );
         } else if (annotation.position === "right") {
-          coordinates = getRightCoordinates(
+          coordinates = getDrawingCoordinatesForRightAnnotation(
             hexagon.x,
-            hexagon.y,
+            hexagon.y + verticalIncrement,
             xMax,
             hexagon.width,
-            verticalIncrement,
-            annotationStartPosition
+            annotationStartPosition,
+            yMax,
+            grid
           );
         }
+
+        console.log("coords", coordinates);
+        grid.push({
+          x: coordinates.x,
+          y: coordinates.y
+        });
+
         annotationLine.coordinates.push(coordinates);
       }
     });
@@ -181,24 +196,26 @@ export function getAnnotationsForGeoMap(
       const y = centroid[1];
       let coordinates;
 
-      const maxWidthChart = geoParameters.bounds[1][0];
-      const maxHeightChart = geoParameters.bounds[1][1];
-
       if (annotation.position === "top" || annotation.position === "left") {
         // If contentWidth (cssModifier) is narrow, all annotations on the left will be drawn on the top
-        coordinates = getDrawingCoordinatesForTopAnnotation(x, y, 0, 0, 0, annotationStartPosition, maxWidthChart, grid);
+        coordinates = getDrawingCoordinatesForTopAnnotation(x, y, 0, 0, annotationStartPosition, xMax, grid);
 
         if (cssModifier !== "narrow" && annotation.position === "left") {
-          coordinates = getDrawingCoordinatesForLeftAnnotation(x, y, 0, 0, annotationStartPosition, maxHeightChart, grid);
+          coordinates = getDrawingCoordinatesForLeftAnnotation(x, y, 0, annotationStartPosition, yMax, grid);
         }
       } else {
         // If contentWidth (cssModifier) is narrow, all annotations on the right will be drawn on the bottom
-        coordinates = getDrawingCoordinatesForBottomAnnotation(x, y, yMax, 0, 0, 0, annotationStartPosition, maxWidthChart, grid);
+        coordinates = getDrawingCoordinatesForBottomAnnotation(x, y, yMax, 0, 0, annotationStartPosition, xMax, grid);
 
         if (cssModifier !== "narrow" && annotation.position === "right") {
-          coordinates = getDrawingCoordinatesForRightAnnotation(x, y, xMax, 0, 0, annotationStartPosition, maxHeightChart, grid);
+          coordinates = getDrawingCoordinatesForRightAnnotation(x, y, xMax, 0, annotationStartPosition, yMax, grid);
         }
       }
+
+      grid.push({
+        x: coordinates.x,
+        y: coordinates.y
+      });
 
       annotationLine.coordinates.push(coordinates);
     });
@@ -260,88 +277,75 @@ export function getConnectionLineCoordinates(
   }
 }
 
-function getDrawingCoordinatesForTopAnnotation(featureCenterX, featureCenterY, yMin, horizontalIncrement, verticalIncrement, annotationStartPosition, maxWidthChart, grid) {
+function getDrawingCoordinatesForTopAnnotation(featureX, featureY, yMin, verticalIncrement, annotationStartPosition, maxWidthChart, grid) {
   const y = yMin - annotationStartPosition;
-
-  let x = findNearestAvailableSpotHorizontally(featureCenterX, y, maxWidthChart, grid);
-  x = x + horizontalIncrement;
+  let x = findNearestAvailableSpotHorizontally(featureX, y, maxWidthChart, grid);
 
   const coords = {
     x,
     y,
     lineX1: x,
     lineY1: yMin - (annotationStartPosition / 2),
-    lineX2: featureCenterX + horizontalIncrement,
-    lineY2: featureCenterY + (verticalIncrement / 2),
-    featureX: featureCenterX,
-    featureY: featureCenterY,
+    lineX2: featureX,
+    lineY2: featureY + (verticalIncrement / 2),
+    featureX: featureX,
+    featureY: featureY,
   };
-
-  grid.push({x, y});
 
   return coords;
 }
 
-function getDrawingCoordinatesForBottomAnnotation(featureCenterX, featureCenterY, yMax, hexHeight, horizontalIncrement, verticalIncrement, annotationStartPosition, maxWidthChart, grid) {
+function getDrawingCoordinatesForBottomAnnotation(featureX, featureY, yMax, hexHeight, verticalIncrement, annotationStartPosition, maxWidthChart, grid) {
   const y = yMax + hexHeight + annotationStartPosition;
-
-  let x = findNearestAvailableSpotHorizontally(featureCenterX, y, maxWidthChart, grid);
-  x = x + horizontalIncrement * 3 // show on right side of hex
+  let x = findNearestAvailableSpotHorizontally(featureX, y, maxWidthChart, grid);
 
   const coords = {
     x,
     y,
     lineX1: x,
     lineY1: yMax + hexHeight + annotationStartPosition / 2,
-    lineX2: featureCenterX + horizontalIncrement * 3,
-    lineY2: featureCenterY + hexHeight - verticalIncrement / 2,
-    featureX: featureCenterX,
-    featureY: featureCenterY,
+    lineX2: featureX,
+    lineY2: featureY + hexHeight - verticalIncrement / 2,
+    featureX: featureX,
+    featureY: featureY,
   };
 
-  grid.push({x, y});
   return coords;
 }
 
-function getDrawingCoordinatesForLeftAnnotation(featureCenterX, featureCenterY, xMin, verticalIncrement, annotationStartPosition, maxHeightChart, grid) {
+function getDrawingCoordinatesForLeftAnnotation(featureX, featureY, xMin, annotationStartPosition, maxHeightChart, grid) {
   const x = xMin - annotationStartPosition;
-
-  let y = findNearestAvailableSpotVertically(x, featureCenterY, maxHeightChart, grid);
-  y = y + verticalIncrement;
+  let y = findNearestAvailableSpotVertically(x, featureY, maxHeightChart, grid);
 
   const coords = {
     x,
     y,
     lineX1: xMin - (annotationStartPosition / 2),
     lineY1: y,
-    lineX2: featureCenterX,
-    lineY2: featureCenterY + verticalIncrement,
-    featureX: featureCenterX,
-    featureY: featureCenterY,
+    lineX2: featureX,
+    lineY2: featureY,
+    featureX: featureX,
+    featureY: featureY,
   };
 
-  grid.push({x, y});
   return coords;
 }
 
-function getDrawingCoordinatesForRightAnnotation(featureCenterX, featureCenterY, xMax, hexWidth, verticalIncrement, annotationStartPosition, maxHeightChart, grid) {
+function getDrawingCoordinatesForRightAnnotation(featureX, featureY, xMax, hexWidth, annotationStartPosition, maxHeightChart, grid) {
   const x = xMax + hexWidth + annotationStartPosition;
-
-  let y = findNearestAvailableSpotVertically(x, featureCenterY, maxHeightChart, grid);
-  y = y + verticalIncrement;
+  let y = findNearestAvailableSpotVertically(x, featureY, maxHeightChart, grid);
 
   const coords = {
     x,
     y,
-    lineX1: featureCenterX + hexWidth,
-    lineY1: featureCenterY + verticalIncrement,
+    lineX1: featureX + hexWidth,
+    lineY1: featureY,
     lineX2: xMax + hexWidth + (annotationStartPosition / 2),
     lineY2: y,
-    featureX: featureCenterX,
-    featureY: featureCenterY,
+    featureX: featureX,
+    featureY: featureY,
   };
 
-  grid.push({x, y});
   return coords;
 }
 
