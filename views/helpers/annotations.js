@@ -132,10 +132,8 @@ export function getAnnotationsForGeoMap(
   let xMax = geoParameters.bounds[1][0];
   let annotationLines = [];
 
-
-  console.log("geoparams", geoParameters, entityType, annotationStartPosition);
+  // Grid to store already placed annotations.
   const grid = [];
-  const gridMargin = 2; // In pixels.
 
   annotations.forEach((annotation) => {
     let annotationLine = {
@@ -143,7 +141,6 @@ export function getAnnotationsForGeoMap(
       position: annotation.position,
       coordinates: [],
     };
-
 
     // Find all the geojsons of the selected regions.
     const foundRegions = [];
@@ -211,7 +208,6 @@ export function getAnnotationsForGeoMap(
 
   annotationLines = removeDoubleAxisCoordinates(annotationLines, cssModifier);
 
-  console.log("annotationLines", annotationLines);
   return annotationLines;
 }
 
