@@ -116,7 +116,6 @@ export function getAnnotationsForHexMap(
           );
         }
 
-        console.log("coords", coordinates);
         grid.push({
           x: coordinates.x,
           y: coordinates.y
