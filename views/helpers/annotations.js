@@ -116,18 +116,20 @@ export function getAnnotationsForHexMap(
           );
         }
 
-        grid.push({
-          x: coordinates.x,
-          y: coordinates.y
-        });
-
         annotationLine.coordinates.push(coordinates);
       }
     });
+
     annotationLines.push(annotationLine);
+
+    annotationLines = removeDoubleAxisCoordinates(annotationLines, cssModifier);
+
+    grid.push({
+      x: annotationLine.coordinates[0].x,
+      y: annotationLine.coordinates[0].y,
+    });
   });
 
-  annotationLines = removeDoubleAxisCoordinates(annotationLines, cssModifier);
   return annotationLines;
 }
 /**
