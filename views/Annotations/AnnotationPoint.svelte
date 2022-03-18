@@ -1,6 +1,8 @@
 <script>
+  import { RADIUS } from "../helpers/annotations";
+
   export let id = 0;
-  export let radius = 8;
+  export let radius = RADIUS;
   export let x;
   export let y;
 
