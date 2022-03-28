@@ -60,7 +60,7 @@ async function getBasemap(id, validFrom, isWide = true) {
     if (version.miniMaps) {
       retVal.miniMaps = [];
       for (const miniMap of version.miniMaps) {
-        if (isWide && !miniMap.mobile || !isWide && miniMap.mobile) {
+        if (isWide && miniMap.type === "contentWidth" || !isWide && miniMap.type === "mobile") {
           let miniMapCopy = { ...miniMap };
           miniMapCopy.data = await fetchJSON(miniMap.data);
           retVal.miniMaps.push(miniMapCopy);

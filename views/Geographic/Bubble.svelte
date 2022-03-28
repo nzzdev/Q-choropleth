@@ -1,17 +1,17 @@
 <script>
   import { scaleSqrt as d3ScaleSqrt } from "d3-scale";
   
-  export let color;
   export let centroid = [0, 0];
-  export let cssModifier;
+  export let color;
+  export let config;
   export let hasAnnotation = false;
   export let population = 0;
   export let strokeWidth;
   export let value;
 
   const radiusFor = d3ScaleSqrt()
-    .domain([140, 1379302771]) // TODO: get max value from data
-    .range([1.5, cssModifier === "narrow" ? 19 : 25])
+    .domain([config.populationSize.min, config.populationSize.max])
+    .range(config.scaleRange)
 
   function getFillColor() {
     if (!value)
@@ -35,6 +35,7 @@
     fill={getFillColor()}
     opacity=0.9
     stroke={getStrokeColor()}
+    stroke-width={strokeWidth}
     transform="translate({centroid[0]},{centroid[1]})"
     r={radiusFor(population)}
   />

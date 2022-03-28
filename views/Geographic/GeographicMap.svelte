@@ -16,15 +16,15 @@
     getAnnotationsForGeoMap,
   } from "../helpers/annotations";
 
+  export let annotations = [];
+  export let annotationRadius = 8;
+  export let baseMap;
+  export let bubbleMapConfig;
+  export let contentWidth;
   export let dataMapping;
   export let entityType;
   export let legendData;
-  export let contentWidth;
-  export let baseMap;
   export let maxHeight = 550;
-  export let annotations = [];
-  export let annotationRadius = 8;
-  export let showBubbleMap;
 
   const annotationStartPosition = annotationRadius * 2;
   const annotationSpace = 2 * (annotationRadius + annotationStartPosition + 1); // times two, because annotations can be on both sides (top/bottom or left/right)
@@ -34,6 +34,17 @@
     cssModifier = getCssModifier(contentWidth);
     strokeWidth = cssModifier === "narrow" ? 0.15 : 0.3;
     geoParameters = getGeoParameters(baseMap, contentWidth, maxHeight);
+    if (bubbleMapConfig) {
+      bubbleMapConfig.scaleRange = [1.5, cssModifier === "narrow" ? 19 : 25]
+      // sort descending, so that the biggest bubbles are at the bottom
+      geoParameters?.features.features.sort(function(a, b) {
+        let populationA = Number(a.properties.population);
+        let populationB = Number(b.properties.population);
+        if (populationA < populationB) return 1;
+        if (populationA > populationB) return -1;
+        return 0;
+      });
+    }
     bounds = geoParameters ? geoParameters.bounds : undefined;
     svgSize = getSvgSize(bounds, contentWidth, annotations, annotationSpace);
     annotationLines = getAnnotationsForGeoMap(
@@ -85,21 +96,21 @@
               dataMapping.get(feature.properties[entityType]),
               legendData
             )}
-            value={showBubbleMap ? undefined : dataMapping.get(feature.properties[entityType])}
+            value={bubbleMapConfig ? undefined : dataMapping.get(feature.properties[entityType])}
             path={roundCoordinatesInPath(geoParameters.path(feature), 1)}
-            {showBubbleMap}
+            showBubbleMap={bubbleMapConfig ? true : false}
             {strokeWidth}
           />
         {/each}
-        {#if showBubbleMap}
+        {#if bubbleMapConfig}
           {#each getFeaturesWithoutAnnotation(geoParameters.features.features, annotations, entityType) as feature}
             <Bubble
+              centroid={feature.properties?.centroid}
               color={getColor(
                 dataMapping.get(feature.properties[entityType]),
                 legendData
               )}
-              centroid={feature.properties?.centroid}
-              {cssModifier}
+              config={bubbleMapConfig}
               population={feature.properties?.population}
               {strokeWidth}
               value={dataMapping.get(feature.properties[entityType])}
@@ -141,7 +152,7 @@
                 hasAnnotation={true}
                 value={dataMapping.get(feature.properties[entityType])}
                 path={roundCoordinatesInPath(geoParameters.path(feature), 1)}
-                {showBubbleMap}
+                showBubbleMap={bubbleMapConfig ? true : false}
                 {strokeWidth}
               />
             {/each}
@@ -169,15 +180,15 @@
           {/each}
         </g>
       {/if}
-      {#if showBubbleMap}
+      {#if bubbleMapConfig}
         {#each getFeaturesWithAnnotation(geoParameters.features.features, annotations, entityType) as feature}
           <Bubble
+            centroid={feature.properties?.centroid}
             color={getColor(
               dataMapping.get(feature.properties[entityType]),
               legendData
             )}
-            centroid={feature.properties?.centroid}
-            {cssModifier}
+            config={bubbleMapConfig}
             hasAnnotation={true}
             population={feature.properties?.population}
             {strokeWidth}

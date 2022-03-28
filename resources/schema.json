@@ -649,7 +649,7 @@
           }
         },
         "showBubbleMap": {
-          "title": "showBubbleMap",
+          "title": "Bubble-Map anzeigen",
           "type": "boolean",
           "default": false,
           "Q:options": {

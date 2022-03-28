@@ -165,19 +165,18 @@ function getPredefinedContent(baseMap, item) {
       }
     });
   } else if (item.baseMap.includes("geographic")) {
-    predefinedContent = baseMap.data.entities.objects.features.geometries.map(
-      (feature) => {
+    predefinedContent = baseMap.data.entities.objects.features.geometries.flatMap(feature => {
+        if (feature.properties.status && feature.properties.status === "ignore") return [];
         let value;
         if (item.entityType !== "") {
           value = feature.properties[item.entityType];
         } else {
           value = feature.properties[baseMap.data.config.defaultEntityType];
         }
-        return [{ value: value, readOnly: true }];
+        return [[{ value: value, readOnly: true }]];
       }
     );
   }
-
   predefinedContent.sort((a, b) => {
     let valueA = a[0].value;
     let valueB = b[0].value;
