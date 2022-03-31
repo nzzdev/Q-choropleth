@@ -7,8 +7,7 @@ module.exports = [
         validFrom: "2021-01-01T00:00:00.000Z",
         data: {
           source: {
-            url:
-              "https://ec.europa.eu/eurostat/web/gisco/geodata/reference-data/administrative-units-statistical-units/nuts",
+            url: "https://ec.europa.eu/eurostat/web/gisco/geodata/reference-data/administrative-units-statistical-units/nuts",
             label: "© EuroGeographics",
           },
           config: {
@@ -32,8 +31,7 @@ module.exports = [
         validFrom: "2021-01-01T00:00:00.000Z",
         data: {
           source: {
-            url:
-              "https://www.bfs.admin.ch/bfs/de/home/dienstleistungen/geostat/geodaten-bundesstatistik/administrative-grenzen/generalisierte-gemeindegrenzen.html",
+            url: "https://www.bfs.admin.ch/bfs/de/home/dienstleistungen/geostat/geodaten-bundesstatistik/administrative-grenzen/generalisierte-gemeindegrenzen.html",
             label: "© BfS, ThemaKart",
           },
           config: {
@@ -56,8 +54,7 @@ module.exports = [
         validFrom: "2021-01-01T00:00:00.000Z",
         data: {
           source: {
-            url:
-              "https://www.bfs.admin.ch/bfs/de/home/dienstleistungen/geostat/geodaten-bundesstatistik/administrative-grenzen/generalisierte-gemeindegrenzen.html",
+            url: "https://www.bfs.admin.ch/bfs/de/home/dienstleistungen/geostat/geodaten-bundesstatistik/administrative-grenzen/generalisierte-gemeindegrenzen.html",
             label: "© BfS, ThemaKart",
           },
           config: {
@@ -154,6 +151,23 @@ module.exports = [
     title: "Schweiz » Gemeinden",
     versions: [
       {
+        validFrom: "2022-01-01T00:00:00.000Z",
+        data: {
+          source: {
+            url: "https://www.bfs.admin.ch/bfs/de/home/dienstleistungen/geostat/geodaten-bundesstatistik/administrative-grenzen/generalisierte-gemeindegrenzen.html",
+            label: "© BfS, ThemaKart",
+          },
+          config: {
+            defaultEntityType: "id",
+            entityTypes: {
+              id: "BfS Nummer",
+            },
+            projection: "mercator",
+          },
+          entities: require("./basemaps/ch-municipalities-geographic.js"),
+        },
+      },
+      {
         validFrom: "2021-07-01T00:00:00.000Z",
         data: {
           source: {
@@ -174,8 +188,7 @@ module.exports = [
         validFrom: "2021-04-18T00:00:00.000Z",
         data: {
           source: {
-            url:
-              "https://www.bfs.admin.ch/bfs/de/home/dienstleistungen/geostat/geodaten-bundesstatistik/administrative-grenzen/generalisierte-gemeindegrenzen.html",
+            url: "https://www.bfs.admin.ch/bfs/de/home/dienstleistungen/geostat/geodaten-bundesstatistik/administrative-grenzen/generalisierte-gemeindegrenzen.html",
             label: "© BfS, ThemaKart",
           },
           config: {
@@ -192,8 +205,7 @@ module.exports = [
         validFrom: "2021-01-01T00:00:00.000Z",
         data: {
           source: {
-            url:
-              "https://www.bfs.admin.ch/bfs/de/home/dienstleistungen/geostat/geodaten-bundesstatistik/administrative-grenzen/generalisierte-gemeindegrenzen.html",
+            url: "https://www.bfs.admin.ch/bfs/de/home/dienstleistungen/geostat/geodaten-bundesstatistik/administrative-grenzen/generalisierte-gemeindegrenzen.html",
             label: "© BfS, ThemaKart",
           },
           config: {
@@ -210,8 +222,7 @@ module.exports = [
         validFrom: "2020-01-01T00:00:00.000Z",
         data: {
           source: {
-            url:
-              "https://www.bfs.admin.ch/bfs/de/home/dienstleistungen/geostat/geodaten-bundesstatistik/administrative-grenzen/generalisierte-gemeindegrenzen.html",
+            url: "https://www.bfs.admin.ch/bfs/de/home/dienstleistungen/geostat/geodaten-bundesstatistik/administrative-grenzen/generalisierte-gemeindegrenzen.html",
             label: "© BfS, ThemaKart",
           },
           config: {
@@ -228,8 +239,7 @@ module.exports = [
         validFrom: "2019-01-01T00:00:00.000Z",
         data: {
           source: {
-            url:
-              "https://www.bfs.admin.ch/bfs/de/home/dienstleistungen/geostat/geodaten-bundesstatistik/administrative-grenzen/generalisierte-gemeindegrenzen.html",
+            url: "https://www.bfs.admin.ch/bfs/de/home/dienstleistungen/geostat/geodaten-bundesstatistik/administrative-grenzen/generalisierte-gemeindegrenzen.html",
             label: "© BfS, ThemaKart",
           },
           config: {
@@ -252,8 +262,7 @@ module.exports = [
         validFrom: "2021-01-01T00:00:00.000Z",
         data: {
           source: {
-            url:
-              "https://www.bfs.admin.ch/bfs/en/home/statistics/regional-statistics/base-maps/cartographic-bases.assetdetail.15784603.html",
+            url: "https://www.bfs.admin.ch/bfs/en/home/statistics/regional-statistics/base-maps/cartographic-bases.assetdetail.15784603.html",
             label: "© BfS, ThemaKart",
           },
           config: {
@@ -276,8 +285,7 @@ module.exports = [
         validFrom: "2021-01-01T00:00:00.000Z",
         data: {
           source: {
-            url:
-              "https://www.bfs.admin.ch/bfs/en/home/statistics/regional-statistics/base-maps/cartographic-bases.assetdetail.15784603.html",
+            url: "https://www.bfs.admin.ch/bfs/en/home/statistics/regional-statistics/base-maps/cartographic-bases.assetdetail.15784603.html",
             label: "© BfS, ThemaKart",
           },
           config: {
@@ -288,6 +296,29 @@ module.exports = [
             projection: "mercator",
           },
           entities: require("./basemaps/ch-ms-regions-geographic.js"),
+        },
+      },
+    ],
+  },
+  {
+    id: "ch-zurich-city-constituencies-geographic",
+    title: "Schweiz » Zürich » Wahlkreise",
+    versions: [
+      {
+        validFrom: "2021-01-01T00:00:00.000Z",
+        data: {
+          source: {
+            url: "https://www.zh.ch/de/planen-bauen/geoinformation/geodaten/geodatenshop/vorlagen-fuer-administrativer-grenzen-und-karten.html",
+            label: "Statistik Kt. Zürich",
+          },
+          config: {
+            defaultEntityType: "key",
+            entityTypes: {
+              key: "Wahlkreis Bezeichnung",
+            },
+            projection: "mercator",
+          },
+          entities: require("./basemaps/ch-zurich-city-constituencies-geographic.js"),
         },
       },
     ],
@@ -323,8 +354,7 @@ module.exports = [
         validFrom: "2019-01-01T00:00:00.000Z",
         data: {
           source: {
-            url:
-              "https://www.zh.ch/de/planen-bauen/geoinformation/geodaten/geodatenshop/vorlagen-fuer-administrativer-grenzen-und-karten.html",
+            url: "https://www.zh.ch/de/planen-bauen/geoinformation/geodaten/geodatenshop/vorlagen-fuer-administrativer-grenzen-und-karten.html",
             label: "© Statistik Kt. Zürich",
           },
           config: {
@@ -347,8 +377,7 @@ module.exports = [
         validFrom: "2019-01-01T00:00:00.000Z",
         data: {
           source: {
-            url:
-              "https://www.zh.ch/de/planen-bauen/geoinformation/geodaten/geodatenshop/vorlagen-fuer-administrativer-grenzen-und-karten.html",
+            url: "https://www.zh.ch/de/planen-bauen/geoinformation/geodaten/geodatenshop/vorlagen-fuer-administrativer-grenzen-und-karten.html",
             label: "© Statistik Kt. Zürich",
           },
           config: {
@@ -371,8 +400,7 @@ module.exports = [
         validFrom: "2020-01-01T00:00:00.000Z",
         data: {
           source: {
-            url:
-              "https://gdz.bkg.bund.de/index.php/default/digitale-geodaten/verwaltungsgebiete/verwaltungsgebiete-1-1-000-000-ebenen-stand-01-01-vg1000-ebenen-01-01.html",
+            url: "https://gdz.bkg.bund.de/index.php/default/digitale-geodaten/verwaltungsgebiete/verwaltungsgebiete-1-1-000-000-ebenen-stand-01-01-vg1000-ebenen-01-01.html",
             label: "© GeoBasis-DE / BKG",
           },
           config: {
@@ -446,8 +474,7 @@ module.exports = [
         validFrom: "2020-01-01T00:00:00.000Z",
         data: {
           source: {
-            url:
-              "https://gdz.bkg.bund.de/index.php/default/digitale-geodaten/verwaltungsgebiete/verwaltungsgebiete-1-1-000-000-ebenen-stand-01-01-vg1000-ebenen-01-01.html",
+            url: "https://gdz.bkg.bund.de/index.php/default/digitale-geodaten/verwaltungsgebiete/verwaltungsgebiete-1-1-000-000-ebenen-stand-01-01-vg1000-ebenen-01-01.html",
             label: "© GeoBasis-DE / BKG",
           },
           config: {
@@ -468,8 +495,7 @@ module.exports = [
         validFrom: "2018-01-01T00:00:00.000Z",
         data: {
           source: {
-            url:
-              "https://ec.europa.eu/eurostat/web/gisco/geodata/reference-data/administrative-units-statistical-units/nuts",
+            url: "https://ec.europa.eu/eurostat/web/gisco/geodata/reference-data/administrative-units-statistical-units/nuts",
             label: "© EuroGeographics",
           },
           config: {
@@ -486,6 +512,54 @@ module.exports = [
     ],
   },
   {
+    id: "france-departements-geographic",
+    title: "Frankreich » Departements",
+    versions: [
+      {
+        validFrom: "2018-01-01T00:00:00.000Z",
+        data: {
+          source: {
+            url: "https://ec.europa.eu/eurostat/web/gisco/geodata/reference-data/administrative-units-statistical-units/nuts",
+            label: "© EuroGeographics",
+          },
+          config: {
+            defaultEntityType: "name",
+            entityTypes: {
+              name: "Name",
+              nuts: "NUTS",
+            },
+            projection: "mercator",
+          },
+          entities: require("./basemaps/france-departements-geographic.js"),
+        },
+      },
+    ],
+  },
+  {
+    id: "france-departements-paris-geographic",
+    title: "Frankreich » Departements » Paris",
+    versions: [
+      {
+        validFrom: "2018-01-01T00:00:00.000Z",
+        data: {
+          source: {
+            url: "https://ec.europa.eu/eurostat/web/gisco/geodata/reference-data/administrative-units-statistical-units/nuts",
+            label: "© EuroGeographics",
+          },
+          config: {
+            defaultEntityType: "name",
+            entityTypes: {
+              name: "Name",
+              nuts: "NUTS",
+            },
+            projection: "mercator",
+          },
+          entities: require("./basemaps/france-departements-paris-geographic.js"),
+        },
+      },
+    ],
+  },
+  {
     id: "italy-regions-geographic",
     title: "Italien » Regionen",
     versions: [
@@ -493,8 +567,7 @@ module.exports = [
         validFrom: "2021-01-01T00:00:00.000Z",
         data: {
           source: {
-            url:
-              "https://ec.europa.eu/eurostat/web/gisco/geodata/reference-data/administrative-units-statistical-units/nuts",
+            url: "https://ec.europa.eu/eurostat/web/gisco/geodata/reference-data/administrative-units-statistical-units/nuts",
             label: "© EuroGeographics",
           },
           config: {
@@ -518,8 +591,7 @@ module.exports = [
         validFrom: "2019-01-01T00:00:00.000Z",
         data: {
           source: {
-            url:
-              "https://www.census.gov/geographies/mapping-files/time-series/geo/cartographic-boundary.html",
+            url: "https://www.census.gov/geographies/mapping-files/time-series/geo/cartographic-boundary.html",
             label: "© U.S. Census Bureau",
           },
           config: {

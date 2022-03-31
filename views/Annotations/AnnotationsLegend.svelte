@@ -1,8 +1,9 @@
 <script>
   import AnnotationPoint from "./AnnotationPoint.svelte";
+  import { RADIUS } from "../helpers/annotations";
 
   export let annotations = [];
-  export let annotationRadius = 8;
+  export let annotationRadius = RADIUS;
 
   let x = "50%";
   let y = "50%";

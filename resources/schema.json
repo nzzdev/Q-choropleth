@@ -402,6 +402,11 @@
                 }
               }
             },
+            "invertColorScheme": {
+              "title": "Farbschema umkehren",
+              "type": "boolean",
+              "default": false
+            },
             "colorOverwrites": {
               "type": "array",
               "title": "Bucketfarbe",
