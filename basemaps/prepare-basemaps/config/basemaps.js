@@ -612,7 +612,7 @@ module.exports = [
     title: "Welt » Länder",
     versions: [
       {
-        validFrom: "2020-01-01T00:00:00.000Z",
+        validFrom: "2022-01-01T00:00:00.000Z",
         data: {
           source: {
             url: "https://www.naturalearthdata.com/",
@@ -622,7 +622,7 @@ module.exports = [
             defaultEntityType: "name",
             entityTypes: {
               name: "Name",
-              isoAlpha3: "ISO-Code",
+              iso3: "ISO-Code",
             },
             projection: "robinson",
           },
