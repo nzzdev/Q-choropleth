@@ -5,6 +5,7 @@
   import Attribution from "./Attribution.svelte";
   import MethodBox from "./MethodBox.svelte";
   import AnnotationsLegend from "./Annotations/AnnotationsLegend.svelte";
+  import { filterAnnotationsByBaseMap, getMutatedAnnotations } from "./helpers/annotations";
   import { getPopulationSize } from "./helpers/bubbleMap.js";
 
   export let item;
@@ -25,17 +26,6 @@
     : undefined;
 
   let contentWidth;
-
-  function getMutatedAnnotations(mapAnnotations) {
-    if (!mapAnnotations) return [];
-    return mapAnnotations.map((value, index) => {
-      value.id = index + 1;
-      value.regions = value.regions.map((region) => {
-        return { id: region };
-      });
-      return value;
-    });
-  }
 </script>
 
 <div bind:offsetWidth={contentWidth}>
@@ -98,7 +88,7 @@
               style="{miniMap.top ? "top: 0" : "bottom: 0"}; {miniMap.left ? "left: 0" : "right: 0"}; width: {miniMap.width}px;"
             >
               <GeographicMap
-                {annotations}
+                annotations={filterAnnotationsByBaseMap(annotations, miniMap)}
                 {annotationRadius}
                 {bubbleMapConfig}
                 {dataMapping}
@@ -138,6 +128,7 @@
 
   .choropleth-geographic-minimap {
     border: 1px solid currentColor;
+    padding: 4px;
     position: absolute;
   }
 </style>

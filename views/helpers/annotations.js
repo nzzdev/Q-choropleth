@@ -294,6 +294,45 @@ export function getConnectionLineCoordinates(
   }
 }
 
+/**
+ * 
+ * @param {*} mapAnnotations 
+ * @returns 
+ */
+export function getMutatedAnnotations(mapAnnotations) {
+  if (!mapAnnotations) return [];
+  return mapAnnotations.map((value, index) => {
+    value.id = index + 1;
+    value.regions = value.regions.map((region) => {
+      return { id: region };
+    });
+    return value;
+  });
+}
+
+/**
+ * 
+ * @param {*} annotations 
+ * @param {*} baseMap 
+ * @returns 
+ */
+export function filterAnnotationsByBaseMap(annotations, baseMap) {
+  if (!annotations || !baseMap) return [];
+  const localCopy = [...annotations];
+  const retVal = localCopy.filter((annotation) => {
+    localCopy.regions = annotation.regions.filter((region) => {
+      return baseMap.data.entities.objects.features.geometries.some((feature) => {
+        if (feature.properties.name === region.id) return true;
+        return false;
+      });
+    });
+    if (localCopy.regions.length === 0) return false;
+    return true;
+  });
+  console.log("retVal", retVal)
+  return retVal;
+}
+
 function getDrawingCoordinatesForTopAnnotation(featureX, featureY, yMin, verticalIncrement, annotationStartPosition, maxWidthChart, grid) {
   const y = yMin - annotationStartPosition;
   let x = findNearestAvailableSpotHorizontally(featureX, y, maxWidthChart, grid);
