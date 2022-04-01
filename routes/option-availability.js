@@ -58,7 +58,7 @@ module.exports = {
       };
     }
 
-    if (optionName === "showBubbleMap") {
+    if (optionName === "hideBubbleMap") {
       return {
         available: item.baseMap.includes("world-countries-geographic"),
       };

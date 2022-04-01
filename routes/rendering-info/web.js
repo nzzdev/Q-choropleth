@@ -117,7 +117,7 @@ module.exports = {
       }
 
       context.item = item;
-      context.showBubbleMap = item.options.showBubbleMap;
+      context.showBubbleMap = item.baseMap.includes("world-countries-geographic") && !item.options.hideBubbleMap;
 
       const exactPixelWidth = getExactPixelWidth(
         request.payload.toolRuntimeConfig
@@ -127,7 +127,7 @@ module.exports = {
       // if not the client side script will handle client side measuring
       if (typeof exactPixelWidth === "number") {
         context.contentWidth = exactPixelWidth;
-        if (exactPixelWidth <= 400) isWide = false;
+        if (exactPixelWidth < 500) isWide = false;
       }
       console.log("exactPixelWidth", exactPixelWidth, isWide)
 

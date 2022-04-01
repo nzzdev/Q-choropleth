@@ -653,8 +653,8 @@
             }
           }
         },
-        "showBubbleMap": {
-          "title": "Bubble-Map anzeigen",
+        "hideBubbleMap": {
+          "title": "Bubble-Map ausblenden",
           "type": "boolean",
           "default": false,
           "Q:options": {
@@ -662,7 +662,7 @@
               {
                 "type": "ToolEndpoint",
                 "config": {
-                  "endpoint": "option-availability/showBubbleMap",
+                  "endpoint": "option-availability/hideBubbleMap",
                   "fields": ["baseMap"]
                 }
               }
