@@ -105,7 +105,7 @@
             />
           {/each}
           {#each featuresWithoutAnnotation as feature}
-            {#if dataMapping.get(feature.properties[entityType])}
+            {#if dataMapping.get(feature.properties[entityType]) && feature.properties?.status !== "ignore"}
               <Bubble
                 centroid={feature.properties.centroidPlanar}
                 color={getColor(
@@ -176,17 +176,18 @@
           -->
           {#if bubbleMapConfig}
             {#each featuresWithAnnotation as feature}
-              <Bubble
-                centroid={feature.properties.centroidPlanar}
-                color={getColor(
-                  dataMapping.get(feature.properties[entityType]),
-                  legendData
-                )}
-                config={bubbleMapConfig}
-                hasAnnotation={true}
-                population={feature.properties.population}
-                value={dataMapping.get(feature.properties[entityType])}
-              />
+              {#if dataMapping.get(feature.properties[entityType]) && feature.properties?.status !== "ignore"}
+                <Bubble
+                  centroid={feature.properties.centroidPlanar}
+                  color={getColor(
+                    dataMapping.get(feature.properties[entityType]),
+                    legendData
+                  )}
+                  config={bubbleMapConfig}
+                  hasAnnotation={true}
+                  population={feature.properties.population}
+                />
+              {/if}
             {/each}
           {:else}
             {#each featuresWithAnnotation as feature}
