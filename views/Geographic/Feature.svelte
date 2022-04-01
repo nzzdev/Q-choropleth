@@ -4,7 +4,7 @@
   export let path;
   export let hasAnnotation = false;
   export let showBubbleMap = false;
-  export let strokeWidth;
+  export let strokeWidth = 0.4;
 
   function getFillColor() {
     if (!value)

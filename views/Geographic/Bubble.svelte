@@ -6,7 +6,7 @@
   export let config;
   export let hasAnnotation = false;
   export let population = 0;
-  export let strokeWidth;
+  export let strokeWidth = 0.8;
 
   const radiusFor = d3ScaleSqrt()
     .domain([config.populationSize.min, config.populationSize.max])
@@ -19,14 +19,14 @@
   }
 
   function getStrokeColor() {
-    return "#fff";
+    return "#707070";
   }
 </script>
 
 <g class={color.colorClass}>
   <circle
     fill={getFillColor()}
-    opacity=0.8
+    fill-opacity=0.9
     stroke={getStrokeColor()}
     stroke-width={strokeWidth}
     transform="translate({centroid[0]},{centroid[1]})"

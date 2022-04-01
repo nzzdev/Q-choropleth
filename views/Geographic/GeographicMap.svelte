@@ -102,7 +102,6 @@
               )}
               path={roundCoordinatesInPath(geoParameters.path(feature), 1)}
               showBubbleMap={true}
-              strokeWidth={0.4}
             />
           {/each}
           {#each featuresWithoutAnnotation as feature}
@@ -115,7 +114,6 @@
                 )}
                 config={bubbleMapConfig}
                 population={feature.properties.population}
-                strokeWidth={1}
               />
             {/if}
           {/each}
@@ -128,7 +126,6 @@
               )}
               value={dataMapping.get(feature.properties[entityType])}
               path={roundCoordinatesInPath(geoParameters.path(feature), 1)}
-              strokeWidth={0.4}
             />
           {/each}
         {/if}
@@ -138,7 +135,6 @@
           {#each geoParameters.outlines.features as outline}
             <OutlineFeature
               path={roundCoordinatesInPath(geoParameters.path(outline), 1)}
-              strokeWidth={0.4}
             />
           {/each}
         </g>
@@ -189,7 +185,6 @@
                 config={bubbleMapConfig}
                 hasAnnotation={true}
                 population={feature.properties.population}
-                strokeWidth={1}
                 value={dataMapping.get(feature.properties[entityType])}
               />
             {/each}
@@ -203,7 +198,6 @@
                 hasAnnotation={true}
                 value={dataMapping.get(feature.properties[entityType])}
                 path={roundCoordinatesInPath(geoParameters.path(feature), 1)}
-                strokeWidth={0.4}
               />
             {/each}
           {/if}
