@@ -246,7 +246,8 @@ function getAnnotationRegions(baseMap, item) {
 function filterFeaturesByStatus(features, status = "accepted") {
   if (!features) return [];
   return features.filter((feature) => {
-    if (feature.properties.status && feature.properties.status === status) return true;
+    if (!feature.properties.status) return true; // no status, so accept
+    if (feature.properties.status === status) return true;
     return false;
   });
 }
