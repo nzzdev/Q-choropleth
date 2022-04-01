@@ -176,10 +176,25 @@ export function getAnnotationsForGeoMap(
 
     // For each cluster find the center point.
     const clusterCenterPointFeatures = [];
+    
     clusters.forEach(cluster => {
+      const features = cluster.map(feature => {
+        // If there is already a centroid, use it
+        if (feature.properties.centroidSpherical) {
+          return {
+            "type": "Feature",
+            geometry: {
+              type: "Point",
+              coordinates: feature.properties.centroidSpherical
+            }
+          }
+        } else {
+          return feature;
+        }
+      });
       const clusterCenterPointCoordinates = d3centroid({
         "type": "FeatureCollection",
-        "features": cluster
+        "features": features
       });
 
       clusterCenterPointFeatures.push({

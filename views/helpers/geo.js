@@ -21,7 +21,10 @@ export function getGeoParameters(baseMap, width, maxHeight) {
 
   for (const feature of features.features) {
     if (feature.properties.centroid_lat && feature.properties.centroid_lon)
-      feature.properties.centroid = projection([feature.properties.centroid_lat, feature.properties.centroid_lon]);
+      feature.properties.centroidPlanar = projection([feature.properties.centroid_lat, feature.properties.centroid_lon]);
+      feature.properties.centroidSpherical = [feature.properties.centroid_lat, feature.properties.centroid_lon];
+      delete feature.properties.centroid_lat;
+      delete feature.properties.centroid_lon;
   }
 
   return { path, bounds, features, outlines, water };
@@ -57,6 +60,6 @@ export function roundCoordinatesInPath(path, precision = 1) {
       return path.replace(/\d+\.\d+/g, (s) => parseFloat(s).toFixed(precision));
     }
   } catch (error) {
-    console.log(error);
+    // nevermind
   }
 }
