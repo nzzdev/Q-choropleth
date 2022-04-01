@@ -295,9 +295,7 @@ export function getConnectionLineCoordinates(
 }
 
 /**
- * 
- * @param {*} mapAnnotations 
- * @returns 
+ * Add id and regions to annotations
  */
 export function getMutatedAnnotations(mapAnnotations) {
   if (!mapAnnotations) return [];
@@ -311,10 +309,7 @@ export function getMutatedAnnotations(mapAnnotations) {
 }
 
 /**
- * 
- * @param {*} annotations 
- * @param {*} baseMap 
- * @returns 
+ * Filter out annotations that have no region(s) in the given baseMap
  */
 export function filterAnnotationsByBaseMap(annotations, baseMap) {
   if (!annotations || !baseMap) return [];

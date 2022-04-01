@@ -21,11 +21,13 @@ export function getGeoParameters(baseMap, width, maxHeight) {
 
   for (const feature of features.features) {
     if (feature.properties.centroid_lat && feature.properties.centroid_lon) {
+      // If we already have a centroid, use that
       feature.properties.centroidPlanar = projection([feature.properties.centroid_lat, feature.properties.centroid_lon]);
       feature.properties.centroidSpherical = [feature.properties.centroid_lat, feature.properties.centroid_lon];
       delete feature.properties.centroid_lat;
       delete feature.properties.centroid_lon;
     } else {
+      // Otherwise, calculate it from the geometry
       feature.properties.centroidPlanar = path.centroid(feature);
     }
   }
