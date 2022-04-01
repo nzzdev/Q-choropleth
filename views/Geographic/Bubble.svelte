@@ -7,33 +7,26 @@
   export let hasAnnotation = false;
   export let population = 0;
   export let strokeWidth;
-  export let value;
 
   const radiusFor = d3ScaleSqrt()
     .domain([config.populationSize.min, config.populationSize.max])
     .range(config.scaleRange)
 
   function getFillColor() {
-    if (!value)
-      return "#fff";
     if (color.customColor && color.customColor.length > 0)
       return color.customColor;
     return "currentColor";
   }
 
   function getStrokeColor() {
-    if (value)
-      return "#fff";
-    if (color.customColor && color.customColor.length > 0)
-      return color.customColor;
-    return "currentColor";
+    return "#fff";
   }
 </script>
 
 <g class={color.colorClass}>
   <circle
     fill={getFillColor()}
-    opacity=0.9
+    opacity=0.8
     stroke={getStrokeColor()}
     stroke-width={strokeWidth}
     transform="translate({centroid[0]},{centroid[1]})"
@@ -44,7 +37,7 @@
       class="s-color-gray-9"
       fill="transparent"
       stroke="currentColor"
-      stroke-width={strokeWidth + 1}
+      stroke-width=1
       transform="translate({centroid[0]},{centroid[1]})"
       r={radiusFor(population)}
     />

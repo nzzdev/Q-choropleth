@@ -46,6 +46,7 @@
         {formattingOptions}
         {contentWidth}
         {isStatic}
+        {showBubbleMap}
       />
     {/if}
     {#if item.baseMap.includes("hexagon")}
@@ -93,7 +94,7 @@
         {#if baseMap.miniMaps && baseMap.miniMaps.length > 0}
           {#each baseMap.miniMaps as miniMap}
             <div
-              class="choropleth-geographic-minimap"
+              class="choropleth-geographic-minimap s-viz-color-nebel"
               style="{miniMap.top ? "top: 0" : "bottom: 0"}; {miniMap.left ? "left: 0" : "right: 0"}; width: {miniMap.width}px;"
             >
               <GeographicMap
@@ -136,7 +137,7 @@
   }
 
   .choropleth-geographic-minimap {
-    border: 1px solid silver;
+    border: 1px solid currentColor;
     position: absolute;
   }
 </style>
