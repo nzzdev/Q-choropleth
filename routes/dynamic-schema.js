@@ -165,15 +165,14 @@ function getPredefinedContent(baseMap, item) {
       }
     });
   } else if (item.baseMap.includes("geographic")) {
-    predefinedContent = baseMap.data.entities.objects.features.geometries.flatMap(feature => {
-        if (feature.properties.status && feature.properties.status === "ignore") return [];
+    predefinedContent = filterFeaturesByStatus(baseMap.data.entities.objects.features.geometries).map(feature => {
         let value;
         if (item.entityType !== "") {
           value = feature.properties[item.entityType];
         } else {
           value = feature.properties[baseMap.data.config.defaultEntityType];
         }
-        return [[{ value: value, readOnly: true }]];
+        return [{ value: value, readOnly: true }];
       }
     );
   }
@@ -214,7 +213,7 @@ function getAnnotationRegions(baseMap, item) {
         }
       });
     } else if (item.baseMap.includes("geographic")) {
-      baseMap.data.entities.objects.features.geometries.forEach((feature) => {
+      filterFeaturesByStatus(baseMap.data.entities.objects.features.geometries).forEach((feature) => {
         let value;
         if (item.entityType !== "") {
           value = feature.properties[item.entityType];
@@ -242,6 +241,14 @@ function getAnnotationRegions(baseMap, item) {
   } catch {
     return {};
   }
+}
+
+function filterFeaturesByStatus(features, status = "accepted") {
+  if (!features) return [];
+  return features.filter((feature) => {
+    if (feature.properties.status && feature.properties.status === status) return true;
+    return false;
+  });
 }
 
 async function getVersions(document) {
