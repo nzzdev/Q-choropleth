@@ -329,7 +329,6 @@ export function filterAnnotationsByBaseMap(annotations, baseMap) {
     if (localCopy.regions.length === 0) return false;
     return true;
   });
-  console.log("retVal", retVal)
   return retVal;
 }
 
