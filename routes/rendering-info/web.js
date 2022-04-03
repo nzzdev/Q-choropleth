@@ -127,7 +127,7 @@ module.exports = {
       // if not the client side script will handle client side measuring
       if (typeof exactPixelWidth === "number") {
         context.contentWidth = exactPixelWidth;
-        if (exactPixelWidth < 500) isWide = false;
+        if (exactPixelWidth < 450) isWide = false;
       }
       console.log("exactPixelWidth", exactPixelWidth, isWide)
 
