@@ -3,14 +3,13 @@ function getExactPixelWidth(toolRuntimeConfig) {
     return undefined;
   }
   for (let width of toolRuntimeConfig.size.width) {
-    console.log("toolRuntimeConfig.size.width", width)
     if (
       width &&
       width.value &&
-      width.comparison === "=" &&
       (!width.unit || width.unit === "px")
     ) {
-      return width.value;
+      if (width.comparison === "=") return width.value;
+      if (width.comparison === "<") return 0; // temporary solution
     }
   }
   return undefined;
