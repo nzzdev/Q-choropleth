@@ -33,7 +33,6 @@ async function getDocument(id) {
 
 async function getBasemap(id, validFrom, isWide = true) {
   try {
-    console.log("getBasemap", id, validFrom, isWide);
     const retVal = {};
     const document = await this.server.methods.getDocument(id);
     let version = document.versions.find(

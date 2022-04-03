@@ -129,7 +129,7 @@ module.exports = {
         context.contentWidth = exactPixelWidth;
         if (exactPixelWidth < 450) isWide = false;
       }
-      console.log("exactPixelWidth", exactPixelWidth, isWide)
+      if (item.baseMap.includes("world-countries-geographic")) console.log("toolRuntimeConfig", toolRuntimeConfig.toolBaseUrl, exactPixelWidth, isWide)
 
       const baseMapUrl = `${toolRuntimeConfig.toolBaseUrl}/basemap/${item.baseMap}?version=${item.version}&isWide=${isWide}`;
       const staticTemplateRender = staticTemplate.render(context);
