@@ -660,6 +660,12 @@
           "Q:options": {
             "availabilityChecks": [
               {
+                "type": "UserHasRole",
+                "config": {
+                  "role": "expert-choropleth"
+                }
+              },
+              {
                 "type": "ToolEndpoint",
                 "config": {
                   "endpoint": "option-availability/hideBubbleMap",
