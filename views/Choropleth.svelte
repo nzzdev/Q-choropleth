@@ -5,7 +5,7 @@
   import Attribution from "./Attribution.svelte";
   import MethodBox from "./MethodBox.svelte";
   import AnnotationsLegend from "./Annotations/AnnotationsLegend.svelte";
-  import { filterAnnotationsByBaseMap, getMutatedAnnotations } from "./helpers/annotations";
+  import { filterAnnotationsFromMiniMaps, getMutatedAnnotations } from "./helpers/annotations";
   import { getPopulationSize } from "./helpers/bubbleMap.js";
 
   export let item;
@@ -19,7 +19,7 @@
 
   const dataMapping = new Map(item.data);
   const maxHeight = 550;
-  const annotations = getMutatedAnnotations(item.mapAnnotations);
+  const annotations = getMutatedAnnotations(filterAnnotationsFromMiniMaps(item.mapAnnotations, baseMap.miniMaps));
   const annotationRadius = 8;
   const bubbleMapConfig = showBubbleMap
     ? { populationSize: getPopulationSize(baseMap), }
@@ -88,7 +88,6 @@
               style="{miniMap.top ? "top: 0" : "bottom: 0"}; {miniMap.left ? "left: 0" : "right: 0"}; width: {miniMap.width}px;"
             >
               <GeographicMap
-                annotations={filterAnnotationsByBaseMap(annotations, miniMap)}
                 {annotationRadius}
                 {bubbleMapConfig}
                 {dataMapping}

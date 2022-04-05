@@ -309,22 +309,25 @@ export function getMutatedAnnotations(mapAnnotations) {
 }
 
 /**
- * Filter out annotations that have no region(s) in the given baseMap
+ * Filter out all annotations, that have at least one region in the given miniMap(s)
+ * Important: This is a temporary fix until we have a better solution for positioning the annotations inside the miniMap(s)
  */
-export function filterAnnotationsByBaseMap(annotations, baseMap) {
-  if (!annotations || !baseMap) return [];
-  const localCopy = [...annotations];
-  const retVal = localCopy.filter((annotation) => {
-    localCopy.regions = annotation.regions.filter((region) => {
-      return baseMap.data.entities.objects.features.geometries.some((feature) => {
-        if (feature.properties.name === region.id) return true;
-        return false;
+export function filterAnnotationsFromMiniMaps(annotations, miniMaps) {
+  if (!annotations || !miniMaps) return [];
+  let localCopy = [...annotations];
+  for (const miniMap of miniMaps) {
+    localCopy = localCopy.filter((annotation) => {
+      annotation.regions = annotation.regions.filter((region) => {
+        return !miniMap.data.entities.objects.features.geometries.some((feature) => {
+          if (feature.properties.name === region) return true;
+          return false;
+        });
       });
-    });
-    if (localCopy.regions.length === 0) return false;
-    return true;
-  });
-  return retVal;
+      if (annotation.regions.length === 0) return false;
+      return true;
+    }); 
+  }
+  return localCopy;
 }
 
 function getDrawingCoordinatesForTopAnnotation(featureX, featureY, yMin, verticalIncrement, annotationStartPosition, maxWidthChart, grid) {
