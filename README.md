@@ -114,7 +114,7 @@ Since version 2.4.0 it's possible to have multiple maps rendered using the follo
 
 `miniMaps`: Those maps can be positioned in one of the four corners, using a fixed width (in pixel). The `type` property accepts the values: `mobile` (small viewports only), `contentWidth` (big viewports only).
 
-`mobile`: Those maps will be rendered on top of each other and only on smaller viewports. When using this property, the `data` property will be ignored.
+`mobile`: Those maps will be rendered after each other and only on smaller viewports. When using this property, the `data` property will be ignored.
 
 The basemap set in the `data` property of the version will be used to get a list of all the available regions. When using one or both of the properties above make sure, that they don't include additional regions not available in said basemap.
 

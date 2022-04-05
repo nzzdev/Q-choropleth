@@ -31,7 +31,7 @@ async function getDocument(id) {
   }
 }
 
-async function getBasemap(id, validFrom, isWide = true) {
+async function getBasemap(id, validFrom, isMobile = false) {
   try {
     const retVal = {};
     const document = await this.server.methods.getDocument(id);
@@ -46,7 +46,7 @@ async function getBasemap(id, validFrom, isWide = true) {
       version = document.versions.shift();
     }
 
-    if (isWide || !version.mobile) {
+    if (!isMobile || !version.mobile) {
       retVal.data = await fetchJSON(version.data);
     } else {
       retVal.mobile = [];
@@ -59,7 +59,7 @@ async function getBasemap(id, validFrom, isWide = true) {
     if (version.miniMaps) {
       retVal.miniMaps = [];
       for (const miniMap of version.miniMaps) {
-        if (isWide && miniMap.type === "contentWidth" || !isWide && miniMap.type === "mobile") {
+        if (!isMobile && miniMap.type === "contentWidth" || isMobile && miniMap.type === "mobile") {
           let miniMapCopy = { ...miniMap };
           miniMapCopy.data = await fetchJSON(miniMap.data);
           retVal.miniMaps.push(miniMapCopy);
@@ -74,7 +74,6 @@ async function getBasemap(id, validFrom, isWide = true) {
 }
 
 async function fetchJSON(url) {
-  if (!url) return undefined;
   try {
     const response = await fetch(url);
     if (response.ok) {

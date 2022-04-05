@@ -32,7 +32,7 @@ function getScript(id, baseMapUrl, context) {
       };
     }
     function ${functionName}() {
-      fetch("${baseMapUrl}&isWide=" + (${dataObject}.width > ${breakpoint}))
+      fetch("${baseMapUrl}&isMobile=" + (${dataObject}.width < ${breakpoint}))
         .then(function(response) {
           return response.json();
         })

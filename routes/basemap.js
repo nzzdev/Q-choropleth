@@ -12,7 +12,7 @@ module.exports = {
       },
       query: {
         version: Joi.string().required(),
-        isWide: Joi.boolean().default(true),
+        isMobile: Joi.boolean().default(false),
       },
     },
   },
@@ -20,7 +20,7 @@ module.exports = {
     const basemap = await request.server.methods.getBasemap(
       request.params.id,
       request.query.version,
-      request.query.isWide,
+      request.query.isMobile,
     );
     return h
       .response(basemap)
