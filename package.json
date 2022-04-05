@@ -31,7 +31,8 @@
     "nano": "^8.2.3",
     "node-fetch": "^2.6.7",
     "simple-statistics": "^7.7.5",
-    "svelte": "^3.46.4"
+    "svelte": "^3.46.4",
+    "uglify-js": "^3.15.3"
   },
   "devDependencies": {
     "@babel/preset-env": "^7.16.11",
