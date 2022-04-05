@@ -84,19 +84,26 @@
         {#if baseMap.miniMaps && baseMap.miniMaps.length > 0}
           {#each baseMap.miniMaps as miniMap}
             <div
-              class="choropleth-geographic-minimap s-viz-color-nebel"
+              class="choropleth-geographic-minimap-container"
               style="{miniMap.top ? "top: 0" : "bottom: 0"}; {miniMap.left ? "left: 0" : "right: 0"}; width: {miniMap.width}px;"
             >
-              <GeographicMap
-                {annotationRadius}
-                {bubbleMapConfig}
-                {dataMapping}
-                entityType={item.entityType}
-                {legendData}
-                baseMap={miniMap.data}
-                contentWidth={miniMap.width}
-                {maxHeight}
-              />
+              <div class="choropleth-geographic-minimap s-viz-color-nebel">
+                <GeographicMap
+                  {annotationRadius}
+                  {bubbleMapConfig}
+                  {dataMapping}
+                  entityType={item.entityType}
+                  {legendData}
+                  baseMap={miniMap.data}
+                  contentWidth={miniMap.width}
+                  {maxHeight}
+                />
+              </div>
+              {#if miniMap.title}
+                <div class="choropleth-geographic-minimap__title s-font-ui s-viz-color-regen">
+                  {miniMap.title}
+                </div>
+              {/if}
             </div>
           {/each}
         {/if}
@@ -125,9 +132,16 @@
     position: relative;
   }
 
+  .choropleth-geographic-minimap-container {
+    position: absolute;
+  }
+
   .choropleth-geographic-minimap {
     border: 1px solid currentColor;
     padding: 4px;
-    position: absolute;
+  }
+
+  .choropleth-geographic-minimap__title {
+    text-align: center;
   }
 </style>

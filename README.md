@@ -130,6 +130,7 @@ The basemap set in the `data` property of the version will be used to get a list
         {
           "data": "linkToBasemap",
           "type": "mobile",
+          "title": "titleForMinimap", // optional
           "top": false,
           "left": true,
           "width": 120
