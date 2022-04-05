@@ -133,20 +133,49 @@ lab.experiment("stylesheets endpoint", () => {
   });
 });
 
-// all the fixtures render
-lab.experiment("all fixtures render", () => {
+lab.experiment("fixtures", () => {
   const fixtureFiles = glob.sync(
     `${__dirname}/../resources/fixtures/data/*.json`
   );
   for (let fixtureFile of fixtureFiles) {
     const fixture = require(fixtureFile);
-    it(`doesnt fail in rendering fixture ${fixture.title}`, async () => {
+    it(`640px - doesnt fail in rendering fixture ${fixture.title}`, async () => {
       const request = {
         method: "POST",
         url: "/rendering-info/web",
         payload: {
           item: fixture,
-          toolRuntimeConfig: {},
+          toolRuntimeConfig: {
+            size: {
+              width: [
+                {
+                  comparison: "=",
+                  value: 640,
+                },
+              ],
+            },
+          },
+        },
+      };
+      const response = await server.inject(request);
+      expect(response.statusCode).to.be.equal(200);
+    });
+    it(`272px - doesnt fail in rendering fixture ${fixture.title}`, async () => {
+      const request = {
+        method: "POST",
+        url: "/rendering-info/web",
+        payload: {
+          item: fixture,
+          toolRuntimeConfig: {
+            size: {
+              width: [
+                {
+                  comparison: "=",
+                  value: 272,
+                },
+              ],
+            },
+          },
         },
       };
       const response = await server.inject(request);
