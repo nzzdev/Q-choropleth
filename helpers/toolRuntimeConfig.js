@@ -6,12 +6,10 @@ function getExactPixelWidth(toolRuntimeConfig) {
     if (
       width &&
       width.value &&
+      width.comparison === "=" &&
       (!width.unit || width.unit === "px")
     ) {
-      // temporary solution
-      if (width.comparison === "=") return width.value;
-      if (width.comparison === "<") return 0;
-      if (width.comparison === ">") return width.value;
+      return width.value;
     }
   }
   return undefined;

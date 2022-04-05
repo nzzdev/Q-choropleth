@@ -1,13 +1,14 @@
 const Boom = require("@hapi/boom");
 const fs = require("fs");
 const path = require("path");
+const UglifyJS = require("uglify-js");
 
 const legendHelpers = require("../../helpers/legend.js");
 const dataHelpers = require("../../helpers/data.js");
 const methodBoxHelpers = require("../../helpers/methodBox");
 
-const getExactPixelWidth =
-  require("../../helpers/toolRuntimeConfig.js").getExactPixelWidth;
+const getExactPixelWidth = require("../../helpers/toolRuntimeConfig.js").getExactPixelWidth;
+const getScript = require("../../helpers/renderingInfoScript.js").getScript;
 
 const stylesDir = path.join(__dirname, "/../../styles/");
 const styleHashMap = require(path.join(stylesDir, "hashMap.json"));
@@ -66,7 +67,6 @@ module.exports = {
     try {
       const item = request.payload.item;
       const toolRuntimeConfig = request.payload.toolRuntimeConfig;
-      let isWide = true;
 
       // since we do not need header row for further processing we remove it here first
       item.data = dataHelpers.getDataWithoutHeaderRow(item.data);
@@ -127,11 +127,9 @@ module.exports = {
       // if not the client side script will handle client side measuring
       if (typeof exactPixelWidth === "number") {
         context.contentWidth = exactPixelWidth;
-        if (exactPixelWidth < 450) isWide = false;
       }
-      if (item.baseMap.includes("world-countries-geographic")) console.log("toolRuntimeConfig", request.payload.toolRuntimeConfig?.size, exactPixelWidth, isWide)
 
-      const baseMapUrl = `${toolRuntimeConfig.toolBaseUrl}/basemap/${item.baseMap}?version=${item.version}&isWide=${isWide}`;
+      const baseMapUrl = `${toolRuntimeConfig.toolBaseUrl}/basemap/${item.baseMap}?version=${item.version}`;
       const staticTemplateRender = staticTemplate.render(context);
       const renderingInfo = {
         polyfills: [
@@ -153,25 +151,13 @@ module.exports = {
             name: scriptHashMap["default"],
           },
           {
-            content: `
-            (function () {
-              fetch("${baseMapUrl}").then(function(result) {
-                if(result) {
-                  result.json().then(function(baseMap) {
-                    var target = document.querySelector('#${
-                      context.id
-                    }_container');
-                    target.innerHTML = "";
-                    var props = ${JSON.stringify(context)};
-                    props.baseMap = baseMap;
-                    new window._q_choropleth.Choropleth({
-                      "target": target,
-                      "props": props
-                    })
-                  });
-                }
-              });
-            })();`,
+            content: UglifyJS.minify(
+              getScript(
+                context.id,
+                baseMapUrl,
+                context,
+              )
+            ).code,
           },
         ],
         markup: staticTemplateRender.html,
