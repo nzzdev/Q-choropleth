@@ -100,7 +100,7 @@
                 />
               </div>
               {#if miniMap.title}
-                <div class="choropleth-geographic-minimap__title s-font-ui s-viz-color-regen">
+                <div class="choropleth-geographic-minimap__title s-font-note-s s-viz-color-regen">
                   {miniMap.title}
                 </div>
               {/if}
@@ -130,6 +130,10 @@
 <style>
   .choropleth-geographic-container {
     position: relative;
+  }
+  
+  :global(.choropleth-geographic-minimap-container > .choropleth-geographic-minimap > .svg-container) {
+    margin: 0px;
   }
 
   .choropleth-geographic-minimap-container {
