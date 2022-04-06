@@ -153,31 +153,29 @@ function getPredefinedContent(baseMap, item) {
   let predefinedContent = [];
 
   if (item.baseMap.includes("hexagon")) {
-    array2d.eachCell(baseMap.entities, (cell) => {
+    array2d.eachCell(baseMap.data.entities, (cell) => {
       if (cell !== null) {
         let value;
         if (item.entityType !== undefined) {
           value = cell[item.entityType];
         } else {
-          value = cell[baseMap.config.defaultEntityType];
+          value = cell[baseMap.data.config.defaultEntityType];
         }
         predefinedContent.push([{ value: value, readOnly: true }]);
       }
     });
   } else if (item.baseMap.includes("geographic")) {
-    predefinedContent = baseMap.entities.objects.features.geometries.map(
-      (feature) => {
+    predefinedContent = filterFeaturesByStatus(baseMap.data.entities.objects.features.geometries).map(feature => {
         let value;
         if (item.entityType !== "") {
           value = feature.properties[item.entityType];
         } else {
-          value = feature.properties[baseMap.config.defaultEntityType];
+          value = feature.properties[baseMap.data.config.defaultEntityType];
         }
         return [{ value: value, readOnly: true }];
       }
     );
   }
-
   predefinedContent.sort((a, b) => {
     let valueA = a[0].value;
     let valueB = b[0].value;
@@ -206,21 +204,21 @@ function getAnnotationRegions(baseMap, item) {
     let dropDownItems = [];
 
     if (item.baseMap.includes("hexagon")) {
-      array2d.eachCell(baseMap.entities, (cell) => {
+      array2d.eachCell(baseMap.data.entities, (cell) => {
         if (cell !== null) {
           dropDownItems.push({
-            value: cell[baseMap.config.displayEntityType],
-            title: cell[baseMap.config.defaultEntityType],
+            value: cell[baseMap.data.config.displayEntityType],
+            title: cell[baseMap.data.config.defaultEntityType],
           });
         }
       });
     } else if (item.baseMap.includes("geographic")) {
-      baseMap.entities.objects.features.geometries.forEach((feature) => {
+      filterFeaturesByStatus(baseMap.data.entities.objects.features.geometries).forEach((feature) => {
         let value;
         if (item.entityType !== "") {
           value = feature.properties[item.entityType];
         } else {
-          value = feature.properties[baseMap.config.defaultEntityType];
+          value = feature.properties[baseMap.data.config.defaultEntityType];
         }
         dropDownItems.push({
           value: value,
@@ -243,6 +241,15 @@ function getAnnotationRegions(baseMap, item) {
   } catch {
     return {};
   }
+}
+
+function filterFeaturesByStatus(features, status = "accepted") {
+  if (!features) return [];
+  return features.filter((feature) => {
+    if (!feature.properties.status) return true; // no status, so accept
+    if (feature.properties.status === status) return true;
+    return false;
+  });
 }
 
 async function getVersions(document) {
@@ -350,10 +357,10 @@ module.exports = {
       );
 
       return {
-        default: baseMap.config.defaultEntityType,
-        enum: Object.keys(baseMap.config.entityTypes),
+        default: baseMap.data.config.defaultEntityType,
+        enum: Object.keys(baseMap.data.config.entityTypes),
         "Q:options": {
-          enum_titles: Object.values(baseMap.config.entityTypes),
+          enum_titles: Object.values(baseMap.data.config.entityTypes),
         },
       };
     }

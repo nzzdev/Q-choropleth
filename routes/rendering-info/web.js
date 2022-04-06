@@ -1,13 +1,14 @@
 const Boom = require("@hapi/boom");
 const fs = require("fs");
 const path = require("path");
+const UglifyJS = require("uglify-js");
 
 const legendHelpers = require("../../helpers/legend.js");
 const dataHelpers = require("../../helpers/data.js");
 const methodBoxHelpers = require("../../helpers/methodBox");
 
-const getExactPixelWidth =
-  require("../../helpers/toolRuntimeConfig.js").getExactPixelWidth;
+const getExactPixelWidth = require("../../helpers/toolRuntimeConfig.js").getExactPixelWidth;
+const getScript = require("../../helpers/renderingInfoScript.js").getScript;
 
 const stylesDir = path.join(__dirname, "/../../styles/");
 const styleHashMap = require(path.join(stylesDir, "hashMap.json"));
@@ -116,6 +117,7 @@ module.exports = {
       }
 
       context.item = item;
+      context.showBubbleMap = item.baseMap.includes("world-countries-geographic") && !item.options.hideBubbleMap;
 
       const exactPixelWidth = getExactPixelWidth(
         request.payload.toolRuntimeConfig
@@ -149,25 +151,13 @@ module.exports = {
             name: scriptHashMap["default"],
           },
           {
-            content: `
-            (function () {
-              fetch("${baseMapUrl}").then(function(result) {
-                if(result) {
-                  result.json().then(function(baseMap) {
-                    var target = document.querySelector('#${
-                      context.id
-                    }_container');
-                    target.innerHTML = "";
-                    var props = ${JSON.stringify(context)};
-                    props.baseMap = baseMap;
-                    new window._q_choropleth.Choropleth({
-                      "target": target,
-                      "props": props
-                    })
-                  });
-                }
-              });
-            })();`,
+            content: UglifyJS.minify(
+              getScript(
+                context.id,
+                baseMapUrl,
+                context,
+              )
+            ).code,
           },
         ],
         markup: staticTemplateRender.html,

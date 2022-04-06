@@ -3,6 +3,8 @@ import { geoRobinson } from "d3-geo-projection";
 import { feature } from "topojson-client";
 
 export function getGeoParameters(baseMap, width, maxHeight) {
+  if (!baseMap) return undefined;
+  
   const features = getFeatureCollection(baseMap.entities, "features");
   const outlines = getFeatureCollection(baseMap.entities, "outlines");
   const water = getFeatureCollection(baseMap.entities, "water");
@@ -17,6 +19,19 @@ export function getGeoParameters(baseMap, width, maxHeight) {
     bounds = path.bounds(features);
   }
 
+  for (const feature of features.features) {
+    if (feature.properties.centroid_lat && feature.properties.centroid_lon) {
+      // If we already have a centroid, use that
+      feature.properties.centroidPlanar = projection([feature.properties.centroid_lat, feature.properties.centroid_lon]);
+      feature.properties.centroidSpherical = [feature.properties.centroid_lat, feature.properties.centroid_lon];
+      delete feature.properties.centroid_lat;
+      delete feature.properties.centroid_lon;
+    } else {
+      // Otherwise, calculate it from the geometry
+      feature.properties.centroidPlanar = path.centroid(feature);
+    }
+  }
+  
   return { path, bounds, features, outlines, water };
 }
 
@@ -50,6 +65,6 @@ export function roundCoordinatesInPath(path, precision = 1) {
       return path.replace(/\d+\.\d+/g, (s) => parseFloat(s).toFixed(precision));
     }
   } catch (error) {
-    console.log(error);
+    // nevermind
   }
 }

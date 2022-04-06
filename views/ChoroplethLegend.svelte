@@ -3,10 +3,13 @@
     getFormattedValue,
     getFormattedValueForBuckets,
   } from "./helpers/data.js";
+
   export let legendData;
   export let formattingOptions;
   export let contentWidth;
   export let isStatic;
+  export let showBubbleMap = false;
+
   let labelLegend = getLabelLegend(legendData);
 
   const legendBarHeight = 16;
@@ -115,22 +118,22 @@
         </div>
       {/each}
     </div>
-    {#if legendData.hasNullValues}
+    {#if legendData.hasNullValues && !showBubbleMap}
       <div class="s-legend-icon-label">
         <div class="s-legend-item-label__item">
           <svg
-            width="11"
-            height="11"
+            width=11
+            height=11
             class="s-legend-item-label__item__icon legend-info-icon
             legend-info-icon--{getIconClass(isStatic)}"
           >
             <rect
-              width="11"
-              height="11"
+              width=11
+              height=11
               class="s-color-gray-4"
               fill="white"
               stroke="currentColor"
-              stroke-width="2"
+              stroke-width=2
             />
           </svg>
           <div class="s-legend-item-label__item__label">Keine Daten</div>
@@ -240,7 +243,7 @@
                 </div>
               </div>
             {/if}
-            {#if legendData.hasNullValues}
+            {#if legendData.hasNullValues && !showBubbleMap}
               <div
                 class="s-legend-item-label__item
                 legend-info--no-data "
@@ -252,12 +255,12 @@
                   legend-info-icon legend-info-icon--{getIconClass(isStatic)}"
                 >
                   <rect
-                    width="11"
-                    height="11"
+                    width=11
+                    height=11
                     class="s-color-gray-4"
                     fill="white"
                     stroke="currentColor"
-                    stroke-width="2"
+                    stroke-width=2
                   />
                 </svg>
                 <div class="s-legend-item-label__item__label">Keine Daten</div>
@@ -314,10 +317,6 @@
 
   .legend-info--single-bucket {
     margin-right: 16px;
-  }
-
-  .legend-info-icon {
-    margin-right: 8px;
   }
 
   .legend-info-icon--interactive {
