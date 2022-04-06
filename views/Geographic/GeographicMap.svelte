@@ -96,10 +96,7 @@
         {#if bubbleMapConfig}
           {#each geoParameters.features.features as feature}
             <Feature
-              color={getColor(
-                undefined,
-                legendData
-              )}
+              color={getColor(undefined, legendData)}
               path={roundCoordinatesInPath(geoParameters.path(feature), 1)}
               showBubbleMap={true}
             />
@@ -119,14 +116,21 @@
           {/each}
         {:else}
           {#each featuresWithoutAnnotation as feature}
-            <Feature
-              color={getColor(
-                dataMapping.get(feature.properties[entityType]),
-                legendData
-              )}
-              value={dataMapping.get(feature.properties[entityType])}
-              path={roundCoordinatesInPath(geoParameters.path(feature), 1)}
-            />
+            {#if feature.properties?.status !== "ignore"}
+              <Feature
+                color={getColor(
+                  dataMapping.get(feature.properties[entityType]),
+                  legendData
+                )}
+                value={dataMapping.get(feature.properties[entityType])}
+                path={roundCoordinatesInPath(geoParameters.path(feature), 1)}
+              />
+            {:else}
+              <Feature
+                color={getColor(undefined, legendData)}
+                path={roundCoordinatesInPath(geoParameters.path(feature), 1)}
+              />
+            {/if}
           {/each}
         {/if}
       </g>
@@ -191,15 +195,22 @@
             {/each}
           {:else}
             {#each featuresWithAnnotation as feature}
-              <Feature
-                color={getColor(
-                  dataMapping.get(feature.properties[entityType]),
-                  legendData
-                )}
-                hasAnnotation={true}
-                value={dataMapping.get(feature.properties[entityType])}
-                path={roundCoordinatesInPath(geoParameters.path(feature), 1)}
-              />
+              {#if feature.properties?.status !== "ignore"}
+                <Feature
+                  color={getColor(
+                    dataMapping.get(feature.properties[entityType]),
+                    legendData
+                  )}
+                  hasAnnotation={true}
+                  value={dataMapping.get(feature.properties[entityType])}
+                  path={roundCoordinatesInPath(geoParameters.path(feature), 1)}
+                />
+              {:else}
+                <Feature
+                  color={getColor(undefined, legendData)}
+                  path={roundCoordinatesInPath(geoParameters.path(feature), 1)}
+                />
+              {/if}
             {/each}
           {/if}
         </g>

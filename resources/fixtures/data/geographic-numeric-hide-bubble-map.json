@@ -762,6 +762,6 @@
       "colorOverwrites": [],
       "customCategoriesOrder": []
     },
-    "showBubbleMap": false
+    "hideBubbleMap": true
   }
 }
