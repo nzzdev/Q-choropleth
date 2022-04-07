@@ -12,13 +12,15 @@ module.exports = {
       },
       query: {
         version: Joi.string().required(),
+        isMobile: Joi.boolean().default(false),
       },
     },
   },
   handler: async (request, h) => {
     const basemap = await request.server.methods.getBasemap(
       request.params.id,
-      request.query.version
+      request.query.version,
+      request.query.isMobile,
     );
     return h
       .response(basemap)

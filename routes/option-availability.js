@@ -58,6 +58,12 @@ module.exports = {
       };
     }
 
+    if (optionName === "hideBubbleMap") {
+      return {
+        available: item.baseMap.includes("world-countries-geographic"),
+      };
+    }
+
     return Boom.badRequest();
   },
 };

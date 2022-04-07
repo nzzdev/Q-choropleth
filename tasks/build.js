@@ -2,7 +2,7 @@ const fs = require("fs");
 const path = require("path");
 const crypto = require("crypto");
 const rollup = require("rollup");
-const buble = require("@rollup/plugin-buble");
+const { babel } = require("@rollup/plugin-babel")
 const { terser } = require("rollup-plugin-terser");
 const { nodeResolve } = require("@rollup/plugin-node-resolve");
 const commonjs = require("@rollup/plugin-commonjs");
@@ -45,10 +45,20 @@ async function build() {
         }),
         nodeResolve({ browser: true }),
         commonjs(),
-        buble({
-          transforms: {
-            dangerousForOf: true,
-          },
+        babel({
+          babelHelpers: "bundled",
+          extensions: [".js", ".html"],
+          exclude: ["node_modules/@babel/**"],
+          presets: [
+            [
+              "@babel/preset-env",
+              {
+                targets: {
+                  ie: "11"
+                }
+              }
+            ]
+          ]
         }),
         terser(),
       ],

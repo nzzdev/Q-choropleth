@@ -31,8 +31,9 @@ async function getDocument(id) {
   }
 }
 
-async function getBasemap(id, validFrom) {
+async function getBasemap(id, validFrom, isMobile = false) {
   try {
+    const retVal = {};
     const document = await this.server.methods.getDocument(id);
     let version = document.versions.find(
       (versionItem) =>
@@ -45,13 +46,40 @@ async function getBasemap(id, validFrom) {
       version = document.versions.shift();
     }
 
-    if (version.data) {
-      const response = await fetch(version.data);
-      if (response.ok) {
-        return await response.json();
-      } else {
-        return undefined;
+    if (!isMobile || !version.mobile) {
+      retVal.data = await fetchJSON(version.data);
+    } else {
+      retVal.mobile = [];
+      retVal.data = await fetchJSON(version.mobile.shift().data);
+      for (const baseMap of version.mobile) {
+        retVal.mobile.push({ data: await fetchJSON(baseMap.data) });
       }
+    }
+    
+    if (version.miniMaps) {
+      retVal.miniMaps = [];
+      for (const miniMap of version.miniMaps) {
+        if (!isMobile && miniMap.type === "contentWidth" || isMobile && miniMap.type === "mobile") {
+          let miniMapCopy = { ...miniMap };
+          miniMapCopy.data = await fetchJSON(miniMap.data);
+          retVal.miniMaps.push(miniMapCopy);
+        }
+      }
+    }
+
+    return retVal;
+  } catch (error) {
+    return undefined;
+  }
+}
+
+async function fetchJSON(url) {
+  try {
+    const response = await fetch(url);
+    if (response.ok) {
+      return await response.json();
+    } else {
+      return undefined;
     }
   } catch (error) {
     return undefined;

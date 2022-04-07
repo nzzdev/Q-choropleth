@@ -142,6 +142,7 @@ export function getAnnotationsForGeoMap(
   annotationStartPosition,
   cssModifier
 ) {
+  if (!geoParameters) return [];
   let path = geoParameters.path;
   let features = geoParameters.features.features;
   let yMax = geoParameters.bounds[1][1];
@@ -175,10 +176,25 @@ export function getAnnotationsForGeoMap(
 
     // For each cluster find the center point.
     const clusterCenterPointFeatures = [];
+    
     clusters.forEach(cluster => {
+      const features = cluster.map(feature => {
+        // If there is already a centroid, use it
+        if (feature.properties.centroidSpherical) {
+          return {
+            "type": "Feature",
+            geometry: {
+              type: "Point",
+              coordinates: feature.properties.centroidSpherical
+            }
+          }
+        } else {
+          return feature;
+        }
+      });
       const clusterCenterPointCoordinates = d3centroid({
         "type": "FeatureCollection",
-        "features": cluster
+        "features": features
       });
 
       clusterCenterPointFeatures.push({
@@ -276,6 +292,42 @@ export function getConnectionLineCoordinates(
       lineY2: lastRegion.lineY1 - annotationRadius,
     };
   }
+}
+
+/**
+ * Add id and regions to annotations
+ */
+export function getMutatedAnnotations(mapAnnotations) {
+  if (!mapAnnotations) return [];
+  return mapAnnotations.map((value, index) => {
+    value.id = index + 1;
+    value.regions = value.regions.map((region) => {
+      return { id: region };
+    });
+    return value;
+  });
+}
+
+/**
+ * Filter out all annotations, that have at least one region in the given miniMap(s)
+ * Important: This is a temporary fix until we have a better solution for positioning the annotations inside the miniMap(s)
+ */
+export function filterAnnotationsFromMiniMaps(annotations, miniMaps) {
+  if (!annotations || !miniMaps) return [];
+  let localCopy = [...annotations];
+  for (const miniMap of miniMaps) {
+    localCopy = localCopy.filter((annotation) => {
+      annotation.regions = annotation.regions.filter((region) => {
+        return !miniMap.data.entities.objects.features.geometries.some((feature) => {
+          if (feature.properties.name === region) return true;
+          return false;
+        });
+      });
+      if (annotation.regions.length === 0) return false;
+      return true;
+    }); 
+  }
+  return localCopy;
 }
 
 function getDrawingCoordinatesForTopAnnotation(featureX, featureY, yMin, verticalIncrement, annotationStartPosition, maxWidthChart, grid) {

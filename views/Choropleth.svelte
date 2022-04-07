@@ -5,6 +5,8 @@
   import Attribution from "./Attribution.svelte";
   import MethodBox from "./MethodBox.svelte";
   import AnnotationsLegend from "./Annotations/AnnotationsLegend.svelte";
+  import { filterAnnotationsFromMiniMaps, getMutatedAnnotations } from "./helpers/annotations";
+  import { getPopulationSize } from "./helpers/bubbleMap.js";
 
   export let item;
   export let legendData;
@@ -13,23 +15,17 @@
   export let methodBox;
   export let formattingOptions;
   export let isStatic;
+  export let showBubbleMap = false;
 
   const dataMapping = new Map(item.data);
   const maxHeight = 550;
-  const annotations = getMutatedAnnotations(item.mapAnnotations);
+  const annotations = getMutatedAnnotations(filterAnnotationsFromMiniMaps(item.mapAnnotations, baseMap.miniMaps));
   const annotationRadius = 8;
-  let contentWidth;
+  const bubbleMapConfig = showBubbleMap
+    ? { populationSize: getPopulationSize(baseMap), }
+    : undefined;
 
-  function getMutatedAnnotations(mapAnnotations) {
-    if (!mapAnnotations) return [];
-    return mapAnnotations.map((value, index) => {
-      value.id = index + 1;
-      value.regions = value.regions.map((region) => {
-        return { id: region };
-      });
-      return value;
-    });
-  }
+  let contentWidth;
 </script>
 
 <div bind:offsetWidth={contentWidth}>
@@ -40,6 +36,7 @@
         {formattingOptions}
         {contentWidth}
         {isStatic}
+        {showBubbleMap}
       />
     {/if}
     {#if item.baseMap.includes("hexagon")}
@@ -48,7 +45,7 @@
         entityType={item.entityType}
         {valuesOnMap}
         {legendData}
-        {baseMap}
+        baseMap={baseMap.data}
         {contentWidth}
         {formattingOptions}
         {maxHeight}
@@ -57,22 +54,66 @@
       />
     {/if}
     {#if item.baseMap.includes("geographic")}
-      <GeographicMap
-        {dataMapping}
-        entityType={item.entityType}
-        {legendData}
-        {baseMap}
-        {contentWidth}
-        {maxHeight}
-        {annotations}
-        {annotationRadius}
-      />
+      <div class="choropleth-geographic-container">
+        <GeographicMap
+          {annotations}
+          {annotationRadius}
+          {bubbleMapConfig}
+          {dataMapping}
+          entityType={item.entityType}
+          {legendData}
+          baseMap={baseMap.data}
+          {contentWidth}
+          {maxHeight}
+        />
+        {#if baseMap.mobile && baseMap.mobile.length > 0}
+          {#each baseMap.mobile as mobileBaseMap}
+            <GeographicMap
+              {annotations}
+              {annotationRadius}
+              {bubbleMapConfig}
+              {dataMapping}
+              entityType={item.entityType}
+              {legendData}
+              baseMap={mobileBaseMap.data}
+              {contentWidth}
+              {maxHeight}
+            />
+          {/each}
+        {/if}
+        {#if baseMap.miniMaps && baseMap.miniMaps.length > 0}
+          {#each baseMap.miniMaps as miniMap}
+            <div
+              class="choropleth-geographic-minimap-container"
+              style="{miniMap.top ? "top: 0" : "bottom: 0"}; {miniMap.left ? "left: 0" : "right: 0"}; width: {miniMap.width}px;"
+            >
+              <div class="choropleth-geographic-minimap s-viz-color-nebel">
+                <GeographicMap
+                  {annotationRadius}
+                  {bubbleMapConfig}
+                  {dataMapping}
+                  entityType={item.entityType}
+                  {legendData}
+                  baseMap={miniMap.data}
+                  contentWidth={miniMap.width}
+                  {maxHeight}
+                />
+              </div>
+              {#if miniMap.title}
+                <div class="choropleth-geographic-minimap__title s-font-note-s s-viz-color-regen">
+                  {miniMap.title}
+                </div>
+              {/if}
+            </div>
+          {/each}
+        {/if}
+      </div>
     {/if}
     {#if annotations && annotations.length > 0}
       <AnnotationsLegend {annotations} {annotationRadius} />
     {/if}
-    {#if baseMap.source}
-      <Attribution source={baseMap.source} {isStatic} />
+    {#if baseMap.data.source}
+      <Attribution source={baseMap.data.source} {isStatic} />
     {/if}
     {#if legendData.type === "numerical"}
       <MethodBox
@@ -85,3 +126,26 @@
     {/if}
   {/if}
 </div>
+
+<style>
+  .choropleth-geographic-container {
+    position: relative;
+  }
+  
+  :global(.choropleth-geographic-minimap-container > .choropleth-geographic-minimap > .svg-container) {
+    margin: 0px;
+  }
+
+  .choropleth-geographic-minimap-container {
+    position: absolute;
+  }
+
+  .choropleth-geographic-minimap {
+    border: 1px solid currentColor;
+    padding: 4px;
+  }
+
+  .choropleth-geographic-minimap__title {
+    text-align: center;
+  }
+</style>

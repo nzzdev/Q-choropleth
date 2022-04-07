@@ -91,7 +91,7 @@ The tool structure follows the general structure of each Q tool. Further informa
 
 #### Basemaps
 
-The basemaps are stored in a couchdb database. Basemaps are versioned, because administrative regions can change over time. The user can select the desired version when creating the map. The structure looks like this:
+The basemaps are stored in a couchdb database. Basemaps are versioned, because administrative regions can change over time. The user can select the desired version when creating the map. The basic structure looks like this:
 
 ```json
 {
@@ -105,6 +105,45 @@ The basemaps are stored in a couchdb database. Basemaps are versioned, because a
     {
       "validFrom": "1985-01-01T00:00:00.000Z",
       "data": "linkToBasemap"
+    }
+  ]
+}
+```
+
+Since version 2.4.0 it's possible to have multiple maps rendered using the following properties:
+
+`miniMaps`: Those maps can be positioned in one of the four corners, using a fixed width (in pixel). The `type` property accepts the values: `mobile` (small viewports only), `contentWidth` (big viewports only).
+
+`mobile`: Those maps will be rendered after each other and only on smaller viewports. When using this property, the `data` property will be ignored.
+
+The basemap set in the `data` property of the version will be used to get a list of all the available regions. When using one or both of the properties above make sure, that they don't include additional regions not available in said basemap.
+
+```json
+{
+  "_id": "world-countries-geographic",
+  "title": "Welt » Länder",
+  "versions": [
+    {
+      "validFrom": "2022-01-01T00:00:00.000Z",
+      "data": "linkToBasemap",
+      "miniMaps": [
+        {
+          "data": "linkToBasemap",
+          "type": "mobile",
+          "title": "titleForMinimap", // optional
+          "top": false,
+          "left": true,
+          "width": 120
+        }
+      ],
+      "mobile": [
+        {
+          "data": "linkToBasemap1"
+        },
+        {
+          "data": "linkToBasemap2"
+        }
+      ]
     }
   ]
 }
@@ -150,6 +189,12 @@ The function `getPolygonPoints()` will then process those information used to di
 The `entities` property of geographic maps contains a topojson object. This object represents all administrative regions. Optionally an outline object can be added to give more context.
 
 The `d3-geo` library is used to create the svg path of each geographic features. The `GeographicMap` component is responsible to create the svg object and iterate through each geographic feature. The `Feature` and `FeatureOutline` render a single svg path.
+
+Each `Feature` has a property called `properties`. This may include the name of a region, its ISO code, etc. Since version 2.4.0 it's possible to override certain default functionality, when using specific properties:
+
+`centroid_lat`, `centroid_lon`: Calculates the centroid of a `Feature` using those two values, instead of its geometry. Centroid is used for the placement of the annotations and the bubbles of the bubble map.
+
+`status`: Can be `accepted` or `ignore`. If status equals `ignore`, then it's not possible to add a value or an annotation to the `Feature`.
 
 #### Sizing
 
@@ -237,6 +282,10 @@ This option will either show or hide de value displayed inside the hexagon.
 ##### customCategoriesOrder
 
 This option allows to override the default order of the categories in the legend. By default, the categories are sorted by frequency.
+
+#### hideBubbleMap (world map only)
+
+This option hides the by default activated bubble map on the world map. It does not appear on any other basemap.
 
 [to the top](#table-of-contents)
 
