@@ -503,6 +503,7 @@ module.exports = [
             entityTypes: {
               name: "Name",
               nuts: "NUTS",
+              DEP: "DEP"
             },
             projection: "mercator",
           },
@@ -551,6 +552,7 @@ module.exports = [
             entityTypes: {
               name: "Name",
               nuts: "NUTS",
+              DEP: "DEP"
             },
             projection: "mercator",
           },
