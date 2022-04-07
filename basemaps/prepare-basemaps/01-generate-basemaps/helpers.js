@@ -72,7 +72,7 @@ function addProperties(outputFilePath, groupedProperties) {
           Object.assign(matchingFeature.properties, properties);
         } else {
           console.warn(
-            `No matching 'feature' found with id: '${properties.id}', in geojson with name: '${fileName}'.`
+            `No matching 'feature' found with id: '${properties.id}', in geojson with name: '${outputFilePath}'.`
           );
         }
       } else {

@@ -6,10 +6,29 @@ const config = {
     "https://gisco-services.ec.europa.eu/distribution/v2/nuts/download/ref-nuts-2021-10m.geojson.zip",
   featuresPath: "./NUTS_RG_10M_2021_4326_LEVL_3.geojson",
   featuresPropertyMapping: {
+    id: "NUTS_ID",
     name: "NAME_LATN",
     nuts: "NUTS_ID",
   },
   rewriteProperties: {},
+  addProperties: [
+    {
+      id: "FR101",
+      DEP: "75",
+    },
+    {
+      id: "FR105",
+      DEP: "92",
+    },
+    {
+      id: "FR106",
+      DEP: "93",
+    },
+    {
+      id: "FR107",
+      DEP: "94",
+    },
+  ],
   bbox: "-5.66,41.0,10.8,51.51",
 };
 
@@ -42,6 +61,7 @@ module.exports = {
       config.rewriteProperties
     );
 
+    helpers.addProperties(outputFeaturesPath, config.addProperties);
     helpers.convertToTopojson(outputFeaturesPath, "features");
   },
 };
