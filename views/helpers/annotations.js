@@ -313,7 +313,8 @@ export function getMutatedAnnotations(mapAnnotations) {
  * Important: This is a temporary fix until we have a better solution for positioning the annotations inside the miniMap(s)
  */
 export function filterAnnotationsFromMiniMaps(annotations, miniMaps) {
-  if (!annotations || !miniMaps) return [];
+  if (!annotations) return [];
+  if (!miniMaps) return annotations;
   let localCopy = [...annotations];
   for (const miniMap of miniMaps) {
     localCopy = localCopy.filter((annotation) => {
