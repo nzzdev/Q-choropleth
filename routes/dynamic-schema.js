@@ -323,7 +323,8 @@ module.exports = {
     ) {
       const baseMap = await request.server.methods.getBasemap(
         item.baseMap,
-        item.version
+        item.version,
+        false // we always need contentWidth version of basemap here, because only there are all the regions available
       );
 
       if (baseMap) {
@@ -338,7 +339,8 @@ module.exports = {
     ) {
       const baseMap = await request.server.methods.getBasemap(
         item.baseMap,
-        item.version
+        item.version,
+        false // we always need contentWidth version of basemap here, because only there are all the regions available
       );
 
       if (baseMap) {
@@ -353,7 +355,8 @@ module.exports = {
     ) {
       const baseMap = await request.server.methods.getBasemap(
         item.baseMap,
-        item.version
+        item.version,
+        false // we always need contentWidth version of basemap here, because only there are all the regions available
       );
 
       return {
