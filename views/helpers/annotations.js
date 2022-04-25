@@ -176,7 +176,7 @@ export function getAnnotationsForGeoMap(
 
     // For each cluster find the center point.
     const clusterCenterPointFeatures = [];
-    
+
     clusters.forEach(cluster => {
       const features = cluster.map(feature => {
         // If there is already a centroid, use it
@@ -229,18 +229,18 @@ export function getAnnotationsForGeoMap(
         }
       }
 
-      grid.push({
-        x: coordinates.x,
-        y: coordinates.y
-      });
-
       annotationLine.coordinates.push(coordinates);
     });
 
     annotationLines.push(annotationLine);
-  });
 
-  annotationLines = removeDoubleAxisCoordinates(annotationLines, cssModifier);
+    annotationLines = removeDoubleAxisCoordinates(annotationLines, cssModifier);
+
+    grid.push({
+      x: annotationLine.coordinates[0].x,
+      y: annotationLine.coordinates[0].y,
+    });
+  });
 
   return annotationLines;
 }
@@ -326,7 +326,7 @@ export function filterAnnotationsFromMiniMaps(annotations, miniMaps) {
       });
       if (annotation.regions.length === 0) return false;
       return true;
-    }); 
+    });
   }
   return localCopy;
 }
