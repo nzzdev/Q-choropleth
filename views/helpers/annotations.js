@@ -522,8 +522,10 @@ function clusterNeighbouringRegions(regions) {
   for (let i = 0; i < regions.length; i++) {
     const region = regions[i];
 
+    const regionId = region.properties.id || region.properties.name;
+
     // Do not process previously traversed regions.
-    if (excludeList[region.properties.id] !== true) {
+    if (excludeList[regionId] !== true) {
       // Recursive function.
       const cluster = findAllNeighbours([region], regions, excludeList);
       clusters.push(cluster);
@@ -548,7 +550,9 @@ function findAllNeighbours(startRegions, regions, exclude = {}) {
   for (let i = 0; i < startRegions.length; i++) {
     const startRegion = startRegions[i];
 
-    exclude[startRegion.properties.id] = true;
+    const regionId = startRegion.properties.id || startRegion.properties.name;
+
+    exclude[regionId] = true;
 
     // Iterate over the regions and check if it neighbours the startRegions.
     regions.forEach(potentialNeighbourRegion => {
