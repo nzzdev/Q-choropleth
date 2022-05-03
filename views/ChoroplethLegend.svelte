@@ -4,11 +4,11 @@
     getFormattedValueForBuckets,
   } from "./helpers/data.js";
 
-  export let legendData;
-  export let formattingOptions;
+  export let bubbleMapConfig;
   export let contentWidth;
+  export let formattingOptions;
   export let isStatic;
-  export let showBubbleMap = false;
+  export let legendData;
 
   let labelLegend = getLabelLegend(legendData);
 
@@ -118,7 +118,7 @@
         </div>
       {/each}
     </div>
-    {#if legendData.hasNullValues && !showBubbleMap}
+    {#if legendData.hasNullValues && !bubbleMapConfig}
       <div class="s-legend-icon-label">
         <div class="s-legend-item-label__item">
           <svg
@@ -243,7 +243,7 @@
                 </div>
               </div>
             {/if}
-            {#if legendData.hasNullValues && !showBubbleMap}
+            {#if legendData.hasNullValues && !bubbleMapConfig}
               <div
                 class="s-legend-item-label__item
                 legend-info--no-data "
@@ -328,7 +328,8 @@
   }
 
   .legend--numerical {
+    align-items: center;
     display: flex;
-    justify-content: center;
+    flex-direction: column;
   }
 </style>

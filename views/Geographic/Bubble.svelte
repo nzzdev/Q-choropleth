@@ -1,16 +1,10 @@
 <script>
-  import { scaleSqrt as d3ScaleSqrt } from "d3-scale";
-  
   export let centroid = [0, 0];
   export let color;
   export let config;
   export let hasAnnotation = false;
   export let population = 0;
   export let strokeWidth = 0.8;
-
-  const radiusFor = d3ScaleSqrt()
-    .domain([config.populationSize.min, config.populationSize.max])
-    .range(config.scaleRange)
 
   function getFillColor() {
     if (color.customColor && color.customColor.length > 0)
@@ -30,7 +24,7 @@
     stroke={getStrokeColor()}
     stroke-width={strokeWidth}
     transform="translate({centroid[0]},{centroid[1]})"
-    r={radiusFor(population)}
+    r={config.radiusFor(population)}
   />
   {#if hasAnnotation}
     <circle
@@ -39,7 +33,7 @@
       stroke="currentColor"
       stroke-width=1
       transform="translate({centroid[0]},{centroid[1]})"
-      r={radiusFor(population)}
+      r={config.radiusFor(population)}
     />
   {/if}
 </g>
