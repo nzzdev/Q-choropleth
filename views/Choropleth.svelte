@@ -13,6 +13,7 @@
   export let legendData;
   export let valuesOnMap;
   export let baseMap;
+  export let measuringUnit;
   export let methodBox;
   export let formattingOptions;
   export let isStatic;
@@ -41,6 +42,7 @@
         {formattingOptions}
         {isStatic}
         {legendData}
+        {measuringUnit}
       />
     {/if}
     {#if item.baseMap.includes("hexagon")}

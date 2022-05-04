@@ -11,6 +11,7 @@
   export let formattingOptions;
   export let isStatic;
   export let legendData;
+  export let measuringUnit;
 
   let labelLegend = getLabelLegend(legendData);
 
@@ -148,15 +149,17 @@
       <div class="legend-container" style="width: {widthConfig.legend}%">
         <div class="legend-value-container">
           <span
-            class="legend-value-container--minVal s-font-note s-font-note--tabularnums"
+            class="legend-value__minVal s-font-note s-font-note--tabularnums"
+            class:legend-value__minVal--measuringUnit={measuringUnit ? true : false}
           >
             {getFormattedValueForBuckets(
               formattingOptions,
               legendData.minValue
             )}
+            {measuringUnit || ""}
           </span>
           <span
-            class="legend-value-container--maxVal s-font-note s-font-note--tabularnums"
+            class="legend-value__maxVal s-font-note s-font-note--tabularnums"
           >
             {getFormattedValueForBuckets(
               formattingOptions,
@@ -302,12 +305,18 @@
     justify-content: space-between;
   }
 
-  .legend-value-container--minVal {
-    margin-left: 2px;
+  .legend-value__minVal {
+    margin-left: -4px;
   }
 
-  .legend-value-container--maxVal {
-    margin-right: 2px;
+  .legend-value__minVal--measuringUnit {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .legend-value__maxVal {
+    margin-right: -4px;
   }
 
   .legend-border-container {

@@ -104,6 +104,7 @@ module.exports = {
           context.formattingOptions.maxDigitsAfterComma
         );
 
+        context.measuringUnit = item.options.numericalOptions.measuringUnit;
         context.valuesOnMap = !item.options.numericalOptions.noValuesOnMap;
         context.methodBox = methodBoxHelpers.getMethodBoxInfo(
           item.options.numericalOptions.bucketType
