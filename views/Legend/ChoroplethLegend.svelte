@@ -1,11 +1,13 @@
 <script>
+  import LegendBubbles from "./LegendBubbles.svelte";
   import {
     getFormattedValue,
     getFormattedValueForBuckets,
-  } from "./helpers/data.js";
+  } from "../helpers/data.js";
 
   export let bubbleMapConfig;
   export let contentWidth;
+  export let cssModifier;
   export let formattingOptions;
   export let isStatic;
   export let legendData;
@@ -269,6 +271,12 @@
           </div>
         {/if}
       </div>
+      {#if bubbleMapConfig}
+        <LegendBubbles
+          {bubbleMapConfig}
+          {cssModifier}
+        />
+      {/if}
     </div>
   {/if}
 {/if}

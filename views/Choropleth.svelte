@@ -1,7 +1,7 @@
 <script>
   import HexagonMap from "./Hexagon/HexagonMap.svelte";
   import GeographicMap from "./Geographic/GeographicMap.svelte";
-  import ChoroplethLegend from "./ChoroplethLegend.svelte";
+  import ChoroplethLegend from "./Legend/ChoroplethLegend.svelte";
   import Attribution from "./Attribution.svelte";
   import MethodBox from "./MethodBox.svelte";
   import AnnotationsLegend from "./Annotations/AnnotationsLegend.svelte";
@@ -37,6 +37,7 @@
       <ChoroplethLegend
         {bubbleMapConfig}
         {contentWidth}
+        {cssModifier}
         {formattingOptions}
         {isStatic}
         {legendData}
