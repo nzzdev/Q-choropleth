@@ -171,6 +171,8 @@ export function getAnnotationsForGeoMap(
       }
     });
 
+    if (foundRegions.length === 0) return;
+
     // Cluster regions into ones that only neighbour each-other.
     const clusters = clusterNeighbouringRegions(foundRegions);
 
@@ -192,6 +194,7 @@ export function getAnnotationsForGeoMap(
           return feature;
         }
       });
+
       const clusterCenterPointCoordinates = d3centroid({
         "type": "FeatureCollection",
         "features": features
