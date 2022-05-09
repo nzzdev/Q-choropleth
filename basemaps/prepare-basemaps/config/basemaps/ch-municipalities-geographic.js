@@ -2,6 +2,16 @@ const unzipper = require("unzipper");
 const fetch = require("node-fetch");
 
 const config = {
+  "2022-05-01T00:00:00.000Z": {
+    dataUrl: "https://dam-api.bfs.admin.ch/hub/api/dam/assets/22484210/master",
+    featuresPath: "./ag-b-00.03-875-gg22/ggg_2022_LV95/shp/k4g22_20220501.shp",
+    waterPath: "./ag-b-00.03-875-gg22/ggg_2022_LV95/shp/k4s22.shp",
+    featuresPropertyMapping: {
+      id: "GMDNR",
+      name: "GMDNAME",
+    },
+    rewriteProperties: {},
+  },
   "2022-01-01T00:00:00.000Z": {
     dataUrl: "https://www.bfs.admin.ch/bfsstatic/dam/assets/21224783/master",
     featuresPath: "./ggg_2022_LV95/shp/k4g22.shp",
