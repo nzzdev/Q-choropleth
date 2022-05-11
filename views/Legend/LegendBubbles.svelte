@@ -39,5 +39,6 @@
     align-items: center;
     display: flex;
     justify-content: space-between;
+    max-width: 380px;
   }
 </style>
