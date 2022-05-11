@@ -3,6 +3,7 @@
 
   export let bubbleMapConfig;
   export let description;
+  export let noteClass;
   export let population;
 
   $: radius = bubbleMapConfig.radiusFor(population) + 0.4; // compensate for the stroke width
@@ -18,7 +19,7 @@
     />
   </svg>
   <span
-    class="legend-bubbles__bubble__description s-font-note"
+    class="legend-bubbles__bubble__description {noteClass}"
     class:legend-bubbles__bubble__description--big={population > 100000000}
   >
     {description}
