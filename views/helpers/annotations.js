@@ -171,12 +171,14 @@ export function getAnnotationsForGeoMap(
       }
     });
 
+    if (foundRegions.length === 0) return;
+
     // Cluster regions into ones that only neighbour each-other.
     const clusters = clusterNeighbouringRegions(foundRegions);
 
     // For each cluster find the center point.
     const clusterCenterPointFeatures = [];
-    
+
     clusters.forEach(cluster => {
       const features = cluster.map(feature => {
         // If there is already a centroid, use it
@@ -192,6 +194,7 @@ export function getAnnotationsForGeoMap(
           return feature;
         }
       });
+
       const clusterCenterPointCoordinates = d3centroid({
         "type": "FeatureCollection",
         "features": features
@@ -229,18 +232,18 @@ export function getAnnotationsForGeoMap(
         }
       }
 
-      grid.push({
-        x: coordinates.x,
-        y: coordinates.y
-      });
-
       annotationLine.coordinates.push(coordinates);
     });
 
     annotationLines.push(annotationLine);
-  });
 
-  annotationLines = removeDoubleAxisCoordinates(annotationLines, cssModifier);
+    annotationLines = removeDoubleAxisCoordinates(annotationLines, cssModifier);
+
+    grid.push({
+      x: annotationLine.coordinates[0].x,
+      y: annotationLine.coordinates[0].y,
+    });
+  });
 
   return annotationLines;
 }
@@ -326,7 +329,7 @@ export function filterAnnotationsFromMiniMaps(annotations, miniMaps) {
       });
       if (annotation.regions.length === 0) return false;
       return true;
-    }); 
+    });
   }
   return localCopy;
 }
@@ -522,8 +525,10 @@ function clusterNeighbouringRegions(regions) {
   for (let i = 0; i < regions.length; i++) {
     const region = regions[i];
 
+    const regionId = region.properties.id || region.properties.name;
+
     // Do not process previously traversed regions.
-    if (excludeList[region.properties.id] !== true) {
+    if (excludeList[regionId] !== true) {
       // Recursive function.
       const cluster = findAllNeighbours([region], regions, excludeList);
       clusters.push(cluster);
@@ -548,7 +553,9 @@ function findAllNeighbours(startRegions, regions, exclude = {}) {
   for (let i = 0; i < startRegions.length; i++) {
     const startRegion = startRegions[i];
 
-    exclude[startRegion.properties.id] = true;
+    const regionId = startRegion.properties.id || startRegion.properties.name;
+
+    exclude[regionId] = true;
 
     // Iterate over the regions and check if it neighbours the startRegions.
     regions.forEach(potentialNeighbourRegion => {
