@@ -257,6 +257,13 @@
             ]
           },
           "properties": {
+            "measuringUnit": {
+              "title": "Masseinheit",
+              "type": "string",
+              "Q:options": {
+                "placeholder": "z.B. Tonnen, Prozent, Währung, etc."
+              }
+            },
             "noValuesOnMap": {
               "title": "Beschriftung der Werte auf der Karte entfernen",
               "type": "boolean",
