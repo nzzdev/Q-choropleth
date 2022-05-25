@@ -1,17 +1,19 @@
 <script>
   import HexagonMap from "./Hexagon/HexagonMap.svelte";
   import GeographicMap from "./Geographic/GeographicMap.svelte";
-  import ChoroplethLegend from "./ChoroplethLegend.svelte";
+  import ChoroplethLegend from "./Legend/ChoroplethLegend.svelte";
   import Attribution from "./Attribution.svelte";
   import MethodBox from "./MethodBox.svelte";
   import AnnotationsLegend from "./Annotations/AnnotationsLegend.svelte";
   import { filterAnnotationsFromMiniMaps, getMutatedAnnotations } from "./helpers/annotations";
-  import { getPopulationSize } from "./helpers/bubbleMap.js";
+  import { getRadiusFunction } from "./helpers/bubbleMap.js";
+  import { getCssModifier } from "./helpers/cssModifier.js";
 
   export let item;
   export let legendData;
   export let valuesOnMap;
   export let baseMap;
+  export let measuringUnit;
   export let methodBox;
   export let formattingOptions;
   export let isStatic;
@@ -21,22 +23,26 @@
   const maxHeight = 550;
   const annotations = getMutatedAnnotations(filterAnnotationsFromMiniMaps(item.mapAnnotations, baseMap.miniMaps));
   const annotationRadius = 8;
-  const bubbleMapConfig = showBubbleMap
-    ? { populationSize: getPopulationSize(baseMap), }
-    : undefined;
 
   let contentWidth;
+
+  $: cssModifier = getCssModifier(contentWidth);
+  $: bubbleMapConfig = showBubbleMap
+    ? { radiusFor: getRadiusFunction(baseMap, cssModifier) }
+    : undefined;
 </script>
 
 <div bind:offsetWidth={contentWidth}>
   {#if contentWidth}
     {#if !(legendData.type === "categorical" && valuesOnMap)}
       <ChoroplethLegend
-        {legendData}
-        {formattingOptions}
+        {bubbleMapConfig}
         {contentWidth}
+        {cssModifier}
+        {formattingOptions}
         {isStatic}
-        {showBubbleMap}
+        {legendData}
+        {measuringUnit}
       />
     {/if}
     {#if item.baseMap.includes("hexagon")}
@@ -47,6 +53,7 @@
         {legendData}
         baseMap={baseMap.data}
         {contentWidth}
+        {cssModifier}
         {formattingOptions}
         {maxHeight}
         {annotations}
@@ -64,6 +71,7 @@
           {legendData}
           baseMap={baseMap.data}
           {contentWidth}
+          {cssModifier}
           {maxHeight}
         />
         {#if baseMap.mobile && baseMap.mobile.length > 0}
@@ -77,6 +85,7 @@
               {legendData}
               baseMap={mobileBaseMap.data}
               {contentWidth}
+              {cssModifier}
               {maxHeight}
             />
           {/each}
@@ -96,6 +105,7 @@
                   {legendData}
                   baseMap={miniMap.data}
                   contentWidth={miniMap.width}
+                  {cssModifier}
                   {maxHeight}
                 />
               </div>

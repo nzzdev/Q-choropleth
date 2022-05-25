@@ -1,14 +1,17 @@
 <script>
+  import LegendBubbles from "./LegendBubbles.svelte";
   import {
     getFormattedValue,
     getFormattedValueForBuckets,
-  } from "./helpers/data.js";
+  } from "../helpers/data.js";
 
-  export let legendData;
-  export let formattingOptions;
+  export let bubbleMapConfig;
   export let contentWidth;
+  export let cssModifier;
+  export let formattingOptions;
   export let isStatic;
-  export let showBubbleMap = false;
+  export let legendData;
+  export let measuringUnit;
 
   let labelLegend = getLabelLegend(legendData);
 
@@ -118,7 +121,7 @@
         </div>
       {/each}
     </div>
-    {#if legendData.hasNullValues && !showBubbleMap}
+    {#if legendData.hasNullValues && !bubbleMapConfig}
       <div class="s-legend-icon-label">
         <div class="s-legend-item-label__item">
           <svg
@@ -146,15 +149,17 @@
       <div class="legend-container" style="width: {widthConfig.legend}%">
         <div class="legend-value-container">
           <span
-            class="legend-value-container--minVal s-font-note s-font-note--tabularnums"
+            class="legend-value__minVal s-font-note s-font-note--tabularnums"
+            class:legend-value__minVal--measuringUnit={measuringUnit ? true : false}
           >
             {getFormattedValueForBuckets(
               formattingOptions,
               legendData.minValue
             )}
+            {measuringUnit || ""}
           </span>
           <span
-            class="legend-value-container--maxVal s-font-note s-font-note--tabularnums"
+            class="legend-value__maxVal s-font-note s-font-note--tabularnums"
           >
             {getFormattedValueForBuckets(
               formattingOptions,
@@ -243,7 +248,7 @@
                 </div>
               </div>
             {/if}
-            {#if legendData.hasNullValues && !showBubbleMap}
+            {#if legendData.hasNullValues && !bubbleMapConfig}
               <div
                 class="s-legend-item-label__item
                 legend-info--no-data "
@@ -269,6 +274,12 @@
           </div>
         {/if}
       </div>
+      {#if bubbleMapConfig}
+        <LegendBubbles
+          {bubbleMapConfig}
+          {cssModifier}
+        />
+      {/if}
     </div>
   {/if}
 {/if}
@@ -294,12 +305,18 @@
     justify-content: space-between;
   }
 
-  .legend-value-container--minVal {
-    margin-left: 2px;
+  .legend-value__minVal {
+    margin-left: -4px;
   }
 
-  .legend-value-container--maxVal {
-    margin-right: 2px;
+  .legend-value__minVal--measuringUnit {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .legend-value__maxVal {
+    margin-right: -4px;
   }
 
   .legend-border-container {
@@ -328,7 +345,8 @@
   }
 
   .legend--numerical {
+    align-items: center;
     display: flex;
-    justify-content: center;
+    flex-direction: column;
   }
 </style>

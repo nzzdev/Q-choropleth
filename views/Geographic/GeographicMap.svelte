@@ -7,9 +7,8 @@
   import Annotation from "../Annotations/Annotation.svelte";
   import AnnotationConnectionLine from "../Annotations/AnnotationConnectionLine.svelte";
   import { round } from "../helpers/data.js";
-  import { compareByPopulation, getScaleRange } from "../helpers/bubbleMap.js";
+  import { compareByPopulation } from "../helpers/bubbleMap.js";
   import { getColor } from "../helpers/color.js";
-  import { getCssModifier } from "../helpers/cssModifier.js";
   import { getAspectRatioViewBox } from "../helpers/svg.js";
   import { getGeoParameters, roundCoordinatesInPath } from "../helpers/geo.js";
   import {
@@ -22,6 +21,7 @@
   export let baseMap;
   export let bubbleMapConfig;
   export let contentWidth;
+  export let cssModifier;
   export let dataMapping;
   export let entityType;
   export let legendData;
@@ -32,16 +32,13 @@
 
   let annotationLines,
       bounds,
-      cssModifier,
       featuresWithAnnotation = [],
       featuresWithoutAnnotation = [],
       geoParameters,
       svgSize;
   $: {
-    cssModifier = getCssModifier(contentWidth);
     geoParameters = getGeoParameters(baseMap, contentWidth, maxHeight);
     if (bubbleMapConfig) {
-      bubbleMapConfig.scaleRange = getScaleRange(cssModifier);
       geoParameters?.features.features.sort(compareByPopulation);
     }
     bounds = geoParameters ? geoParameters.bounds : undefined;
