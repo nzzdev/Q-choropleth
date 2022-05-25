@@ -20,7 +20,7 @@
 <g class={color.colorClass}>
   <circle
     fill={getFillColor()}
-    fill-opacity=0.9
+    fill-opacity=0.8
     stroke={getStrokeColor()}
     stroke-width={strokeWidth}
     transform="translate({centroid[0]},{centroid[1]})"

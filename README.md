@@ -253,6 +253,10 @@ There are two types of maps: the `numerical` and the `categorical` one. Dependin
 
 #### numericalOptions
 
+##### measuringUnit
+
+This option allows to describe the used data more precisely (e.g. tons, percent, currency, etc.). The text will be displayed above the color legend, between the min and max number.
+
 ##### noValuesOnMap
 
 This option will either show or hide de value displayed inside the hexagon.
