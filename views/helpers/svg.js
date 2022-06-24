@@ -1,6 +1,4 @@
 import { round } from "../helpers/data.js";
-import { getCssModifier } from "../helpers/cssModifier.js";
-import { hasAnnotationOnTopOrBottom } from "../helpers/annotations.js";
 
 export function getAspectRatioViewBox(
   xMin,
@@ -11,13 +9,10 @@ export function getAspectRatioViewBox(
   annotations,
   annotationSpace
 ) {
-  let cssModifier = getCssModifier(contentWidth);
-
   if (annotations.length > 0) {
-    if (hasAnnotationOnTopOrBottom(annotations, cssModifier)) {
-      yMin += -(annotationSpace * 1.5);
-      height += (annotationSpace * 3) + 2;
-    }
+    // always add space on top and bottom of the map for annotations
+    yMin += -(annotationSpace * 1.5);
+    height += (annotationSpace * 3) + 2;
   }
 
   const viewBox = [xMin, yMin, width, height]

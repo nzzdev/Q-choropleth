@@ -29,7 +29,7 @@
   const miniMaps = [];
   const dataMapping = new Map(item.data);
   const maxHeight = 550;
-  const annotations = getMutatedAnnotations(item.mapAnnotations, baseMap.miniMaps);
+  const annotations = getMutatedAnnotations(item.mapAnnotations);
   const annotationRadius = 8;
   const annotationStartPosition = annotationRadius * 2;
 
@@ -166,9 +166,9 @@
     const retVal = [];
     const geoParameters = getGeoParameters(
       baseMap,
-      cssModifier === "narrow" || parentMap ? contentWidth : contentWidth - 49,
+      cssModifier === "narrow" || parentMap ? contentWidth : contentWidth - 50,
       maxHeight
-    ); // contentWidth - 2*24+1 on desktop AND annotations on left/right
+    ); // contentWidth - 2*24+2 on desktop AND annotations on left/right
     const annotationLines = getAnnotationsForGeoMap(
       annotations,
       geoParameters,
@@ -209,7 +209,7 @@
   }
 
   function getMinimapPositionX(config, contentWidth, width, hasAnnotation) {
-    const annotationSpace = hasAnnotation ? (annotationStartPosition * 1.5) + 1 : 0;
+    const annotationSpace = cssModifier === "narrow" || !hasAnnotation ? 0 : (annotationStartPosition * 1.5) + 1;
     if (config.left) {
       return annotationSpace;
     } else {
