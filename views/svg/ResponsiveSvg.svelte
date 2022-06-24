@@ -11,8 +11,6 @@
 <style>
   .svg-container {
     position: relative;
-    margin-top: 8px;
-    margin-bottom: 8px;
   }
 
   .svg-container :global(svg) {

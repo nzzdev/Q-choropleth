@@ -28,8 +28,8 @@ function getPopulationSize(baseMap) {
   if (baseMap.miniMaps) baseMaps.push(...baseMap.miniMaps);
 
   return [
-    getMathFunctionResult(Math.min, baseMaps),
-    getMathFunctionResult(Math.max, baseMaps)
+    getAggregatedPopulationSize(Math.min, baseMaps),
+    getAggregatedPopulationSize(Math.max, baseMaps)
   ];
 }
 
@@ -47,10 +47,14 @@ function getScaleRange(cssModifier) {
     ]
 }
 
-function getMathFunctionResult(mathFunction, baseMaps) {
+function getAggregatedPopulationSize(mathFunction, baseMaps) {
   return mathFunction(
     ...baseMaps.map((item) => {
-      return mathFunction(...item.data.entities.objects.features.geometries.map((geometry) => geometry.properties.population))
+      return mathFunction(...item.data.entities.objects.features.geometries.flatMap((geometry) => 
+        geometry.properties.population
+          ? [geometry.properties.population]
+          : []
+      ))
     })
   ) || 0;
 }

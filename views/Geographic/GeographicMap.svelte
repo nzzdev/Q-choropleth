@@ -4,71 +4,28 @@
   import OutlineFeature from "./OutlineFeature.svelte";
   import WaterFeature from "./WaterFeature.svelte";
   import ResponsiveSvg from "../svg/ResponsiveSvg.svelte";
-  import Annotation from "../Annotations/Annotation.svelte";
-  import AnnotationConnectionLine from "../Annotations/AnnotationConnectionLine.svelte";
-  import { round } from "../helpers/data.js";
   import { compareByPopulation } from "../helpers/bubbleMap.js";
   import { getColor } from "../helpers/color.js";
-  import { getAspectRatioViewBox } from "../helpers/svg.js";
-  import { getGeoParameters, roundCoordinatesInPath } from "../helpers/geo.js";
-  import {
-    regionHasAnnotation,
-    getAnnotationsForGeoMap,
-  } from "../helpers/annotations";
+  import { roundCoordinatesInPath } from "../helpers/geo.js";
+  import { regionHasAnnotation } from "../helpers/annotations";
 
   export let annotations = [];
-  export let annotationRadius = 8;
-  export let baseMap;
   export let bubbleMapConfig;
-  export let contentWidth;
-  export let cssModifier;
   export let dataMapping;
   export let entityType;
   export let legendData;
-  export let maxHeight = 550;
-  
-  const annotationStartPosition = annotationRadius * 2;
-  const annotationSpace = 2 * (annotationRadius + annotationStartPosition + 1); // times two, because annotations can be on both sides (top/bottom or left/right)
+  export let geoParameters;
+  export let svgSize;
+  export let title = undefined;
 
-  let annotationLines,
-      bounds,
-      featuresWithAnnotation = [],
-      featuresWithoutAnnotation = [],
-      geoParameters,
-      svgSize;
+  let featuresWithAnnotation = [],
+      featuresWithoutAnnotation = [];
   $: {
-    geoParameters = getGeoParameters(baseMap, contentWidth, maxHeight);
     if (bubbleMapConfig) {
       geoParameters?.features.features.sort(compareByPopulation);
     }
-    bounds = geoParameters ? geoParameters.bounds : undefined;
-    svgSize = getSvgSize(bounds, contentWidth, annotations, annotationSpace);
     featuresWithoutAnnotation = getFeaturesWithoutAnnotation(geoParameters?.features.features, annotations, entityType);
     featuresWithAnnotation = getFeaturesWithAnnotation(geoParameters?.features.features, annotations, entityType);
-    annotationLines = getAnnotationsForGeoMap(
-      annotations,
-      geoParameters,
-      entityType,
-      annotationStartPosition,
-      cssModifier
-    );
-  }
-
-  function getSvgSize(bounds, contentWidth, annotations, annotationSpace) {
-    if (!bounds) return { aspectRatio: 1, viewBox: [0, 0, contentWidth, maxHeight] };
-    let xMin = bounds[0][0];
-    let yMin = bounds[0][1];
-    let width = bounds[1][0];
-    let height = round(bounds[1][1]);
-    return getAspectRatioViewBox(
-      xMin,
-      yMin,
-      width,
-      height,
-      contentWidth,
-      annotations,
-      annotationSpace
-    );
   }
 
   function getFeaturesWithoutAnnotation(features, annotations, entityType) {
@@ -87,7 +44,11 @@
 </script>
 
 <ResponsiveSvg aspectRatio={svgSize.aspectRatio}>
-  <svg viewbox={svgSize.viewBox}>
+  <svg
+    class="s-viz-color-nebel"
+    class:choropleth-geographic--border={title}
+    viewbox={svgSize.viewBox}
+  >
     {#if geoParameters}
       <g>
         {#if bubbleMapConfig}
@@ -150,28 +111,7 @@
         </g>
       {/if}
       {#if annotations && annotations.length > 0}
-        <g class="annotations">
-          {#each annotationLines as annotationLine}
-            {#each annotationLine.coordinates as coordinates, index}
-              <Annotation
-                id={annotationLine.id}
-                {index}
-                {annotationRadius}
-                {coordinates}
-                {cssModifier}
-                annotationPosition={annotationLine.position}
-                isLastItem={index === annotationLine.coordinates.length - 1}
-                hasMultipleAnnotations={annotationLine.coordinates.length > 1}
-              />
-            {/each}
-            {#if annotationLine.coordinates.length > 1}
-              <AnnotationConnectionLine
-                {annotationLine}
-                {annotationRadius}
-                {cssModifier}
-              />
-            {/if}
-          {/each}
+        <g class="choropleth-annotations">
           <!--
             Features with annotations are added here, so the border around them is drawn correctly.
           -->
@@ -215,3 +155,19 @@
     {/if}
   </svg>
 </ResponsiveSvg>
+{#if title}
+  <div class="choropleth-geographic__title s-font-note-s s-viz-color-regen">
+    {title}
+  </div>
+{/if}
+
+<style>
+  .choropleth-geographic--border {
+    border: 1px solid currentColor;
+    padding: 4px;
+  }
+
+  .choropleth-geographic__title {
+    text-align: center;
+  }
+</style>
