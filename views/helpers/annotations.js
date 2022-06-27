@@ -163,7 +163,7 @@ export function getAnnotationsForGeoMap(
     const foundRegions = [];
     annotation.regions.forEach(region => {
       let feature = features.find(
-        (f) => f.properties[entityType] === region.id
+        (f) => f.properties[entityType] === region.id && f.properties?.status !== "ignore"
       );
 
       if (feature) {
@@ -309,29 +309,6 @@ export function getMutatedAnnotations(mapAnnotations) {
     });
     return value;
   });
-}
-
-/**
- * Filter out all annotations, that have at least one region in the given miniMap(s)
- * Important: This is a temporary fix until we have a better solution for positioning the annotations inside the miniMap(s)
- */
-export function filterAnnotationsFromMiniMaps(annotations, miniMaps) {
-  if (!annotations) return [];
-  if (!miniMaps) return annotations;
-  let localCopy = [...annotations];
-  for (const miniMap of miniMaps) {
-    localCopy = localCopy.filter((annotation) => {
-      annotation.regions = annotation.regions.filter((region) => {
-        return !miniMap.data.entities.objects.features.geometries.some((feature) => {
-          if (feature.properties.name === region) return true;
-          return false;
-        });
-      });
-      if (annotation.regions.length === 0) return false;
-      return true;
-    });
-  }
-  return localCopy;
 }
 
 function getDrawingCoordinatesForTopAnnotation(featureX, featureY, yMin, verticalIncrement, annotationStartPosition, maxWidthChart, grid) {
