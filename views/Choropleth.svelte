@@ -5,6 +5,7 @@
   import Attribution from "./Attribution.svelte";
   import MethodBox from "./MethodBox.svelte";
   import AnnotationsLegend from "./Annotations/AnnotationsLegend.svelte";
+  import MiniMap from "./Geographic/MiniMap.svelte";
   import { getMutatedAnnotations } from "./helpers/annotations";
   import { getRadiusFunction } from "./helpers/bubbleMap.js";
   import { getCssModifier } from "./helpers/cssModifier.js";
@@ -85,83 +86,6 @@
     }
   }
 
-  function fixMinimapAnnotationCoordinates(coordinates, position, config, heightParentMap, widthMiniMap, heightMiniMap, annotationStartPosition) {
-    if (config.top && config.left) {
-      if (cssModifier === "narrow") {
-        if (position === "bottom" || position === "right") {
-          coordinates.y = heightParentMap - (annotationStartPosition * 2 + 2);
-          coordinates.lineY1 = heightParentMap - (annotationStartPosition * 2 + 2);
-        }
-        // top and left are already fine
-      } else {
-        if (position === "bottom") {
-          coordinates.y = heightParentMap - (annotationStartPosition * 2 + 2);
-          coordinates.lineY1 = heightParentMap - (annotationStartPosition * 2 + 2);
-        }
-        if (position === "right") {
-          coordinates.x = contentWidth - (annotationStartPosition * 2 + 2);
-          coordinates.lineX2 = contentWidth - (annotationStartPosition * 2 + 2);
-        }
-      }
-    }
-    if (!config.top && config.left) {
-      if (cssModifier === "narrow") {
-        if (position === "top" || position === "left") {
-          coordinates.y = -(heightParentMap - heightMiniMap - (annotationStartPosition * 2 + 2));
-          coordinates.lineY1 = -(heightParentMap - heightMiniMap - (annotationStartPosition * 2 + 2));
-        }
-        // bottom and right are already fine
-      } else {
-        if (position === "top") {
-          coordinates.y = -(heightParentMap - heightMiniMap - (annotationStartPosition * 2 + 2));
-          coordinates.lineY1 = -(heightParentMap - heightMiniMap - (annotationStartPosition * 2 + 2));
-        }
-        if (position === "right") {
-          coordinates.x = contentWidth - (annotationStartPosition * 2 + 2);
-          coordinates.lineX2 = contentWidth - (annotationStartPosition * 2 + 2);
-        }
-      }
-    }
-    if (config.top && !config.left) {
-      if (cssModifier === "narrow") {
-        if (position === "bottom" || position === "right") {
-          coordinates.y = heightParentMap - (annotationStartPosition * 2 + 2);
-          coordinates.lineY1 = heightParentMap - (annotationStartPosition * 2 + 2);
-        }
-        // top and left are already fine
-      } else {
-        if (position === "bottom") {
-          coordinates.y = heightParentMap - (annotationStartPosition * 2 + 2);
-          coordinates.lineY1 = heightParentMap - (annotationStartPosition * 2 + 2);
-        }
-        if (position === "left") {
-          // TODO
-          coordinates.x = -(contentWidth - widthMiniMap - (annotationStartPosition * 2 + 2));
-          coordinates.lineX1 = -(contentWidth - widthMiniMap - (annotationStartPosition * 2 + 2));
-        }
-      }
-    }
-    if (!config.top && !config.left) {
-      if (cssModifier === "narrow") {
-        if (position === "top" || position === "left") {
-          coordinates.y = -(heightParentMap - heightMiniMap - (annotationStartPosition * 2 + 2));
-          coordinates.lineY1 = -(heightParentMap - heightMiniMap - (annotationStartPosition * 2 + 2));
-        }
-        // bottom and right are already fine
-      } else {
-        if (position === "top") {
-          coordinates.y = -(heightParentMap - heightMiniMap - (annotationStartPosition * 2 + 2));
-          coordinates.lineY1 = -(heightParentMap - heightMiniMap - (annotationStartPosition * 2 + 2));
-        }
-        if (position === "left") {
-          // TODO
-          coordinates.x = -(contentWidth - widthMiniMap - (annotationStartPosition * 2 + 2));
-          coordinates.lineX1 = -(contentWidth - widthMiniMap - (annotationStartPosition * 2 + 2));
-        }
-      }
-    }
-  }
-
   function getBaseMaps(baseMap, contentWidth, maxHeight, config, parentMap) {
     const retVal = [];
     const geoParameters = getGeoParameters(
@@ -176,15 +100,11 @@
       annotationStartPosition,
       cssModifier
     );
-    let svgSize;
+    let parentMapViewBox, svgSize;
 
     if (parentMap) {
+      parentMapViewBox = parentMap.svgSize.viewBox;
       svgSize = getSvgSize(geoParameters?.bounds, contentWidth, []);
-      for (const annotationLine of annotationLines) {
-        for (const coordinates of annotationLine.coordinates) {
-          fixMinimapAnnotationCoordinates(coordinates, annotationLine.position, config, parentMap.svgSize.viewBox[3], svgSize.viewBox[2], svgSize.viewBox[3], annotationStartPosition);
-        }
-      }
     } else {
       // TODO: add check, if annotations really there
       svgSize = getSvgSize(geoParameters?.bounds, contentWidth, annotations, annotationStartPosition);
@@ -194,36 +114,19 @@
       annotationLines,
       config,
       geoParameters,
+      parentMapViewBox,
       svgSize,
     });
 
     return retVal;
   }
 
-  function addUpHeightOfPreviousMaps(baseMapIndex) {
+  function addUpHeightOfMaps(baseMapIndex) {
     let position = 0;
     for (let index = 0; index < baseMapIndex; index++) {
       position += baseMaps[index].svgSize.viewBox[3];
     }
     return position;
-  }
-
-  function getMinimapPositionX(config, contentWidth, width, hasAnnotation) {
-    const annotationSpace = cssModifier === "narrow" || !hasAnnotation ? 0 : (annotationStartPosition * 1.5) + 1;
-    if (config.left) {
-      return annotationSpace;
-    } else {
-      return contentWidth - width - annotationSpace;
-    }
-  }
-
-  function getMinimapPositionY(config, contentHeight, height, hasAnnotation) {
-    const annotationSpace = hasAnnotation ? (annotationStartPosition * 1.5) + 1 : 0;
-    if (config.top) {
-      return annotationSpace;
-    } else {
-      return contentHeight - height - annotationSpace;
-    }
   }
 </script>
 
@@ -257,11 +160,15 @@
     {/if}
     {#if item.baseMap.includes("geographic")}
       <div class="choropleth-geographic-container">
-        <svg height={addUpHeightOfPreviousMaps(baseMaps.length)} width={contentWidth} viewBox="0 0 {contentWidth} {addUpHeightOfPreviousMaps(baseMaps.length)}">
+        <svg
+          height={addUpHeightOfMaps(baseMaps.length)}
+          width={contentWidth}
+          viewBox="0 0 {contentWidth} {addUpHeightOfMaps(baseMaps.length)}"
+        >
           {#each baseMaps as baseMap, index}
             <foreignObject
               x=0
-              y={index > 0 ? addUpHeightOfPreviousMaps(index) : 0}
+              y={index > 0 ? addUpHeightOfMaps(index) : 0}
               width={contentWidth}
               height={baseMap.svgSize.viewBox[3]}
             >
@@ -275,51 +182,13 @@
                 svgSize={baseMap.svgSize}
               />
             </foreignObject>
-            <g style="transform: translate({(contentWidth - baseMap.svgSize.viewBox[2]) / 2}px, {index > 0 ? addUpHeightOfPreviousMaps(index) + annotationStartPosition * 1.5 + 1 : annotationStartPosition * 1.5 + 1}px);">
-              {#each baseMap.annotationLines as annotationLine}
-                <g>
-                  {#each annotationLine.coordinates as coordinates, index}
-                    <Annotation
-                      id={annotationLine.id}
-                      {index}
-                      {annotationRadius}
-                      {coordinates}
-                      {cssModifier}
-                      annotationPosition={annotationLine.position}
-                      isLastItem={index === annotationLine.coordinates.length - 1}
-                      hasMultipleAnnotations={annotationLine.coordinates.length > 1}
-                    />
-                  {/each}
-                  {#if annotationLine.coordinates.length > 1}
-                    <AnnotationConnectionLine
-                      {annotationLine}
-                      {annotationRadius}
-                      {cssModifier}
-                    />
-                  {/if}
-                </g>
-              {/each}
-            </g>
-          {/each}
-          {#each miniMaps as baseMap}
-            <foreignObject
-              x={getMinimapPositionX(baseMap.config, contentWidth, baseMap.svgSize.viewBox[2], baseMap.annotationLines.length > 0)}
-              y={getMinimapPositionY(baseMap.config, addUpHeightOfPreviousMaps(baseMaps.length), baseMap.svgSize.viewBox[3], baseMap.annotationLines.length > 0)}
-              width={baseMap.svgSize.viewBox[2]}
-              height={baseMap.config.title ? baseMap.svgSize.viewBox[3] + 16 : baseMap.svgSize.viewBox[3]}
+            <g
+              style="transform:
+                translate(
+                  {(contentWidth - baseMap.svgSize.viewBox[2]) / 2}px,
+                  {index > 0 ? addUpHeightOfMaps(index) + annotationStartPosition * 1.5 + 1 : annotationStartPosition * 1.5 + 1}px
+                );"
             >
-              <GeographicMap
-                {annotations}
-                {bubbleMapConfig}
-                {dataMapping}
-                entityType={item.entityType}
-                {legendData}
-                geoParameters={baseMap.geoParameters}
-                svgSize={baseMap.svgSize}
-                title={baseMap.config.title}
-              />
-            </foreignObject>
-            <g style="transform: translate({getMinimapPositionX(baseMap.config, contentWidth, baseMap.svgSize.viewBox[2], baseMap.annotationLines.length > 0)}px, {getMinimapPositionY(baseMap.config, addUpHeightOfPreviousMaps(baseMaps.length), baseMap.svgSize.viewBox[3], baseMap.annotationLines.length > 0)}px);">
               {#each baseMap.annotationLines as annotationLine}
                 <g>
                   {#each annotationLine.coordinates as coordinates, index}
@@ -345,6 +214,19 @@
               {/each}
             </g>
           {/each}
+          <MiniMap
+            {annotationRadius}
+            {annotationStartPosition}
+            {annotations}
+            {bubbleMapConfig}
+            {contentWidth}
+            {cssModifier}
+            {dataMapping}
+            entityType={item.entityType}
+            heightOfPreviousMaps={addUpHeightOfMaps(baseMaps.length)}
+            {legendData}
+            {miniMaps}
+          />
         </svg>
       </div>
     {/if}
