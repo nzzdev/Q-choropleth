@@ -50,7 +50,10 @@ function getScaleRange(cssModifier) {
 function getMathFunctionResult(mathFunction, baseMaps) {
   return mathFunction(
     ...baseMaps.map((item) => {
-      return mathFunction(...item.data.entities.objects.features.geometries.map((geometry) => geometry.properties.population))
+      return mathFunction(...item.data.entities.objects.features.geometries.map((geometry) => {
+        if (!geometry.properties.population) return [];
+        return [Number(geometry.properties.population)];
+      }))
     })
   ) || 0;
 }
