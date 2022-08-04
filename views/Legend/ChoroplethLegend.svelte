@@ -145,7 +145,7 @@
     {/if}
   {:else if legendData.type === "numerical"}
     <!-- display bucket legend -->
-    <div class="legend--numerical">
+    <div class="legend--centered">
       <div class="legend-container" style="width: {widthConfig.legend}%">
         <div class="legend-value-container">
           <span
@@ -274,12 +274,14 @@
           </div>
         {/if}
       </div>
-      {#if bubbleMapConfig}
-        <LegendBubbles
-          {bubbleMapConfig}
-          {cssModifier}
-        />
-      {/if}
+    </div>
+  {/if}
+  {#if bubbleMapConfig}
+    <div class="legend--centered">
+      <LegendBubbles
+        {bubbleMapConfig}
+        {cssModifier}
+      />
     </div>
   {/if}
 {/if}
@@ -344,7 +346,7 @@
     margin-top: 1px;
   }
 
-  .legend--numerical {
+  .legend--centered {
     align-items: center;
     display: flex;
     flex-direction: column;
