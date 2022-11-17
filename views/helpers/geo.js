@@ -1,4 +1,4 @@
-import { geoPath, geoAlbersUsa, geoAzimuthalEqualArea, geoMercator } from "d3-geo";
+import { geoPath, geoAlbersUsa, geoMercator } from "d3-geo";
 import { geoRobinson } from "d3-geo-projection";
 import { feature } from "topojson-client";
 
@@ -40,8 +40,6 @@ function getProjection(baseMap) {
     return geoRobinson();
   } else if (baseMap.config.projection === "albersUsa") {
     return geoAlbersUsa();
-  } else if (baseMap.config.projection === "azimuthalEqualArea") {
-    return geoAzimuthalEqualArea();
   } else {
     return geoMercator();
   }
