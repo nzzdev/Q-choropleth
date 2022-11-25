@@ -24,7 +24,7 @@
     stroke={getStrokeColor()}
     stroke-width={strokeWidth}
     transform="translate({centroid[0]},{centroid[1]})"
-    r={config.radiusFor(population)}
+    r={config?.radiusFor(population) || 6}
   />
   {#if hasAnnotation}
     <circle
@@ -33,7 +33,7 @@
       stroke="currentColor"
       stroke-width=1
       transform="translate({centroid[0]},{centroid[1]})"
-      r={config.radiusFor(population)}
+      r={config?.radiusFor(population) || 6}
     />
   {/if}
 </g>

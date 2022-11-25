@@ -30,12 +30,14 @@
   const annotationStartPosition = annotationRadius * 2;
   const annotationSpace = 2 * (annotationRadius + annotationStartPosition + 1); // times two, because annotations can be on both sides (top/bottom or left/right)
 
-  let annotationLines,
-      bounds,
-      featuresWithAnnotation = [],
-      featuresWithoutAnnotation = [],
-      geoParameters,
-      svgSize;
+  let annotationLines;
+  let bounds;
+  let featuresWithAnnotation = [];
+  let featuresWithoutAnnotation = [];
+  let featuresShownAsBubble = [];
+  let geoParameters;
+  let svgSize;
+
   $: {
     geoParameters = getGeoParameters(baseMap, contentWidth, maxHeight);
     if (bubbleMapConfig) {
@@ -45,6 +47,7 @@
     svgSize = getSvgSize(bounds, contentWidth, annotations, annotationSpace);
     featuresWithoutAnnotation = getFeaturesWithoutAnnotation(geoParameters?.features.features, annotations, entityType);
     featuresWithAnnotation = getFeaturesWithAnnotation(geoParameters?.features.features, annotations, entityType);
+    featuresShownAsBubble = getFeaturesShownAsBubble(geoParameters?.features.features);
     annotationLines = getAnnotationsForGeoMap(
       annotations,
       geoParameters,
@@ -74,14 +77,21 @@
   function getFeaturesWithoutAnnotation(features, annotations, entityType) {
     if (!features) return [];
     return features.filter((f) => {
-      return !regionHasAnnotation(annotations, f.properties[entityType]);
+      return !regionHasAnnotation(annotations, f.properties[entityType]) && f.properties.showAsBubble !== "true";
     });
   }
 
   function getFeaturesWithAnnotation(features, annotations, entityType) {
     if (!features) return [];
     return features.filter((f) => {
-      return regionHasAnnotation(annotations, f.properties[entityType]);
+      return regionHasAnnotation(annotations, f.properties[entityType]) && f.properties.showAsBubble !== "true";
+    });
+  }
+
+  function getFeaturesShownAsBubble(features) {
+    if (!features) return [];
+    return features.filter((feature) => {
+      return feature.properties.showAsBubble === "true";
     });
   }
 </script>
@@ -212,6 +222,17 @@
           {/if}
         </g>
       {/if}
+      <g>
+        {#each featuresShownAsBubble as feature}
+          <Bubble
+            centroid={feature.properties.centroidPlanar}
+            color={getColor(
+              dataMapping.get(feature.properties[entityType]),
+              legendData
+            )}
+          />
+        {/each}
+      </g>
     {/if}
   </svg>
 </ResponsiveSvg>
