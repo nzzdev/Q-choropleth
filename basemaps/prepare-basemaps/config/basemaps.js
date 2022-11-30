@@ -668,7 +668,7 @@ module.exports = [
               name: "Name",
               iso3: "ISO-Code",
             },
-            projection: "mercator",
+            projection: "d3.geoIdentity",
           },
           entities: require("./basemaps/europe-countries-geographic.js"),
         },

@@ -86,9 +86,9 @@ function addProperties(outputFilePath, groupedProperties) {
   }
 }
 
-function convertToTopojson(inputFilePath, name) {
+function convertToTopojson(inputFilePath, name, commandExtension = "") {
   shell.exec(
-    `npx mapshaper -i ${inputFilePath} encoding=utf8 -proj wgs84 -rename-layers ${name} -o ${inputFilePath} force format=topojson `
+    `npx mapshaper -i ${inputFilePath} encoding=utf8 -proj init=wgs84 -rename-layers ${name} ${commandExtension} -o ${inputFilePath} force format=topojson `
   );
 }
 
