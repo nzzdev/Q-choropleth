@@ -230,6 +230,7 @@
               dataMapping.get(feature.properties[entityType]),
               legendData
             )}
+            hasAnnotation={regionHasAnnotation(annotations, feature.properties[entityType])}
           />
         {/each}
       </g>
