@@ -1,9 +1,9 @@
 const shell = require("shelljs");
 const fs = require("fs");
 
-function convertToGeojson(inputPath, outputPath, commandExtension) {
+function convertToGeojson(inputFilePath, outputFilePath, commandExtension) {
   shell.exec(
-    `npx mapshaper -i ${inputPath} encoding=utf8 -proj wgs84 ${commandExtension} -o ${outputPath} force format=geojson`
+    `npx mapshaper -i ${inputFilePath} encoding=utf8 -proj wgs84 ${commandExtension} -o ${outputFilePath} force format=geojson`
   );
 }
 
@@ -26,8 +26,8 @@ function rewritePropertyValue(propertyValue, propertyValuesToRewrite) {
   return propertyValue;
 }
 
-function setProperties(fileName, propertyMapping, propertyValuesToRewrite) {
-  const geojson = require(fileName);
+function setProperties(inputFilePath, propertyMapping, propertyValuesToRewrite) {
+  const geojson = require(inputFilePath);
   for (let feature of geojson.features) {
     const properties = {};
 
@@ -50,7 +50,7 @@ function setProperties(fileName, propertyMapping, propertyValuesToRewrite) {
 
     feature.properties = properties;
   }
-  fs.writeFileSync(fileName, JSON.stringify(geojson));
+  fs.writeFileSync(inputFilePath, JSON.stringify(geojson));
 }
 
 /**
@@ -86,22 +86,22 @@ function addProperties(outputFilePath, groupedProperties) {
   }
 }
 
-function convertToTopojson(path, name) {
+function convertToTopojson(inputFilePath, name, commandExtension = "") {
   shell.exec(
-    `npx mapshaper -i ${path} encoding=utf8 -proj wgs84 -rename-layers ${name} -o ${path} force format=topojson `
+    `npx mapshaper -i ${inputFilePath} encoding=utf8 -proj init=wgs84 -rename-layers ${name} ${commandExtension} -o ${inputFilePath} force format=topojson `
   );
 }
 
-function mergeTopojsons(firstPath, secondPath, outputPath) {
+function mergeTopojsons(firstPath, secondPath, outputFilePath) {
   shell.exec(
-    `npx mapshaper -i combine-files ${firstPath} ${secondPath}  -o ${outputPath} force format=topojson`
+    `npx mapshaper -i combine-files ${firstPath} ${secondPath} -o ${outputFilePath} force format=topojson`
   );
 }
 
 module.exports = {
-  setProperties,
   addProperties,
   convertToGeojson,
   convertToTopojson,
   mergeTopojsons,
+  setProperties,
 };
