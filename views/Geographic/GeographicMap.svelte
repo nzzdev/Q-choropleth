@@ -77,14 +77,14 @@
   function getFeaturesWithoutAnnotation(features, annotations, entityType) {
     if (!features) return [];
     return features.filter((f) => {
-      return !regionHasAnnotation(annotations, f.properties[entityType]) && f.properties.showAsBubble !== "true";
+      return !regionHasAnnotation(annotations, f.properties[entityType]) && f.properties.showAsBubble !== "true"; // don't render features which'll be rendered as bubbles
     });
   }
 
   function getFeaturesWithAnnotation(features, annotations, entityType) {
     if (!features) return [];
     return features.filter((f) => {
-      return regionHasAnnotation(annotations, f.properties[entityType]) && f.properties.showAsBubble !== "true";
+      return regionHasAnnotation(annotations, f.properties[entityType]) && f.properties.showAsBubble !== "true"; // don't render features which'll be rendered as bubbles
     });
   }
 

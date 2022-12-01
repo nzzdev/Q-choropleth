@@ -6,6 +6,8 @@
   export let population = 0;
   export let strokeWidth = 0.8;
 
+  const defaultRadius = 6;
+
   function getFillColor() {
     if (color.customColor && color.customColor.length > 0)
       return color.customColor;
@@ -24,7 +26,7 @@
     stroke={getStrokeColor()}
     stroke-width={strokeWidth}
     transform="translate({centroid[0]},{centroid[1]})"
-    r={config?.radiusFor(population) || 6}
+    r={config?.radiusFor(population) || defaultRadius}
   />
   {#if hasAnnotation}
     <circle
@@ -33,7 +35,7 @@
       stroke="currentColor"
       stroke-width=1
       transform="translate({centroid[0]},{centroid[1]})"
-      r={config?.radiusFor(population) || 6}
+      r={config?.radiusFor(population) || defaultRadius}
     />
   {/if}
 </g>

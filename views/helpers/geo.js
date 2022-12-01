@@ -45,6 +45,8 @@ function getProjection(baseMap) {
   } else if (baseMap.config.projection === "d3.geoIdentity") {
     // since the baseMap is already in projected coordinates, we just need to adjust it to the viewport — this is why we use d3.geoIdentity
     return geoIdentity();
+  } else {
+    throw new Error(`Projection '${baseMap.config.projection}' is not supported.`);
   }
 }
 
