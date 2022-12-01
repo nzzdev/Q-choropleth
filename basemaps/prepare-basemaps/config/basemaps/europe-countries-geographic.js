@@ -3,7 +3,7 @@ const d3Geo = require("d3-geo");
 const d3GeoProj = require("d3-geo-projection");
 
 const config = {
-  featuresFile: "choropleth_europa_laender_fuer_d3.json",
+  featuresFile: "FINAL_laender_fuer_choropleth_europa.json",
   featuresPropertyMapping: {
     name: "NAME_EN",
     iso3: "ADM0_A3_UA",
