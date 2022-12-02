@@ -10,6 +10,7 @@ const json = require("@rollup/plugin-json");
 const svelte = require("rollup-plugin-svelte");
 const css = require("rollup-plugin-css-only");
 
+const production = !process.env.npm_config_dev;
 const scriptsDir = path.join(__dirname, "/../scripts_src/");
 
 function writeHashmap(hashmapPath, file, fileext) {
@@ -60,7 +61,7 @@ async function build() {
             ]
           ]
         }),
-        terser(),
+        production && terser(),
       ],
     };
     const outputOptions = {

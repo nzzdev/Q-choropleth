@@ -1,4 +1,4 @@
-import { geoPath, geoAlbersUsa, geoMercator } from "d3-geo";
+import { geoPath, geoAlbersUsa, geoMercator, geoIdentity } from "d3-geo";
 import { geoRobinson } from "d3-geo-projection";
 import { feature } from "topojson-client";
 
@@ -40,8 +40,13 @@ function getProjection(baseMap) {
     return geoRobinson();
   } else if (baseMap.config.projection === "albersUsa") {
     return geoAlbersUsa();
-  } else {
+  } else if (baseMap.config.projection === "mercator") {
     return geoMercator();
+  } else if (baseMap.config.projection === "d3.geoIdentity") {
+    // since the baseMap is already in projected coordinates, we just need to adjust it to the viewport — this is why we use d3.geoIdentity
+    return geoIdentity();
+  } else {
+    throw new Error(`Projection '${baseMap.config.projection}' is not supported.`);
   }
 }
 

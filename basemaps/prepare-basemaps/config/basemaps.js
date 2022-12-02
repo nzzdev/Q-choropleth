@@ -651,4 +651,28 @@ module.exports = [
       },
     ],
   },
+  {
+    id: "europe-countries-geographic",
+    title: "Europa » Länder",
+    versions: [
+      {
+        validFrom: "2022-01-01T00:00:00.000Z",
+        data: {
+          source: {
+            url: "https://www.naturalearthdata.com/",
+            label: "© Natural Earth",
+          },
+          config: {
+            defaultEntityType: "name",
+            entityTypes: {
+              name: "Name",
+              iso3: "ISO-Code",
+            },
+            projection: "d3.geoIdentity",
+          },
+          entities: require("./basemaps/europe-countries-geographic.js"),
+        },
+      },
+    ],
+  },
 ];
