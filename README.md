@@ -196,6 +196,8 @@ Each `Feature` has a property called `properties`. This may include the name of 
 
 `status`: Can be `accepted` or `ignore`. If status equals `ignore`, then it's not possible to add a value or an annotation to the `Feature`.
 
+`showAsBubble`: The administrative region will be rendered as a `Bubble` and not as a `Feature` (useful for very small regions).
+
 #### Sizing
 
 All calculations we use for sizing is based from the [redblobgames hexagons guide](https://www.redblobgames.com/grids/hexagons/). The functions used are in the `hexagon.js` helper-file.
@@ -295,6 +297,6 @@ This option hides the by default activated bubble map on the world map. It does 
 
 ## License
 
-Copyright (c) 2020 Neue Zürcher Zeitung. All rights reserved.
+Copyright (c) 2022 Neue Zürcher Zeitung. All rights reserved.
 
 This software is published under the MIT license.
