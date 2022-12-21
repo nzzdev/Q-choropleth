@@ -1,0 +1,256 @@
+{
+  "title": "FIXTURE: Geographisch Europakarte - Nummerisch",
+  "subtitle": "Veränderung der Bevölkerung zwischen 2019 und 2020",
+  "baseMap": "europe-countries-geographic",
+  "version": "2022-01-01T00:00:00.000Z",
+  "data": [
+    [
+      "ID",
+      "Wert"
+    ],
+    [
+      "Albania",
+      "-0.11"
+    ],
+    [
+      "Andorra",
+      "0.16"
+    ],
+    [
+      "Austria",
+      "0.57"
+    ],
+    [
+      "Belarus",
+      "-0.03"
+    ],
+    [
+      "Belgium",
+      "0.44"
+    ],
+    [
+      "Bosnia and Herzegovina",
+      "-0.61"
+    ],
+    [
+      "Bulgaria",
+      "-0.74"
+    ],
+    [
+      "Croatia",
+      "-0.61"
+    ],
+    [
+      "Cyprus",
+      null
+    ],
+    [
+      "Czech Republic",
+      "0.18"
+    ],
+    [
+      "Denmark",
+      "0.35"
+    ],
+    [
+      "Estonia",
+      "0.07"
+    ],
+    [
+      "Faroe Islands",
+      "0.38"
+    ],
+    [
+      "Finland",
+      "0.15"
+    ],
+    [
+      "France",
+      "0.22"
+    ],
+    [
+      "Germany",
+      "0.32"
+    ],
+    [
+      "Greece",
+      "-0.48"
+    ],
+    [
+      "Guernsey",
+      null
+    ],
+    [
+      "Hungary",
+      "-0.25"
+    ],
+    [
+      "Iceland",
+      "0.65"
+    ],
+    [
+      "Ireland",
+      "1.13"
+    ],
+    [
+      "Isle of Man",
+      "0.53"
+    ],
+    [
+      "Italy",
+      "-0.15"
+    ],
+    [
+      "Jersey",
+      null
+    ],
+    [
+      "Kosovo",
+      null
+    ],
+    [
+      "Latvia",
+      "-1.08"
+    ],
+    [
+      "Liechtenstein",
+      "0.29"
+    ],
+    [
+      "Lithuania",
+      "-1.35"
+    ],
+    [
+      "Luxembourg",
+      "1.66"
+    ],
+    [
+      "Malta",
+      "0.27"
+    ],
+    [
+      "Moldova",
+      "-0.23"
+    ],
+    [
+      "Monaco",
+      "0.71"
+    ],
+    [
+      "Montenegro",
+      "0.01"
+    ],
+    [
+      "Netherlands",
+      "0.22"
+    ],
+    [
+      "North Macedonia",
+      "0.00"
+    ],
+    [
+      "Norway",
+      "0.79"
+    ],
+    [
+      "Poland",
+      "-0.11"
+    ],
+    [
+      "Portugal",
+      "-0.29"
+    ],
+    [
+      "Romania",
+      "-0.66"
+    ],
+    [
+      "Russia",
+      "0.04"
+    ],
+    [
+      "San Marino",
+      "0.21"
+    ],
+    [
+      "Serbia",
+      "-0.40"
+    ],
+    [
+      "Slovakia",
+      "0.05"
+    ],
+    [
+      "Slovenia",
+      "0.01"
+    ],
+    [
+      "Spain",
+      "0.04"
+    ],
+    [
+      "Sweden",
+      "0.63"
+    ],
+    [
+      "Switzerland",
+      "0.74"
+    ],
+    [
+      "Turkey",
+      null
+    ],
+    [
+      "Ukraine",
+      "-0.59"
+    ],
+    [
+      "United Kingdom",
+      "0.53"
+    ],
+    [
+      "Vatican City",
+      "0.25"
+    ]
+  ],
+  "mapAnnotations": [
+    {
+      "regions": [
+        "Luxembourg"
+      ],
+      "annotation": "Luxemburg hat das größte Bevölkerungswachstum zu verzeichnen",
+      "position": "top"
+    }
+  ],
+  "sources": [
+    {
+      "link": {
+        "url": "https://www.worldometers.info",
+        "isValid": true
+      },
+      "text": "Worldometer"
+    }
+  ],
+  "options": {
+    "choroplethType": "numerical",
+    "numericalOptions": {
+      "noValuesOnMap": false,
+      "labelLegend": "noLabel",
+      "bucketType": "ckmeans",
+      "numberBuckets": 6,
+      "scale": "border-3",
+      "colorScheme": "one",
+      "invertColorScheme": false,
+      "colorOverwrites": [],
+      "measuringUnit": "Prozent"
+    },
+    "categoricalOptions": {
+      "valuesOnMap": false,
+      "colorOverwrites": [],
+      "customCategoriesOrder": []
+    },
+    "hideBubbleMap": false
+  },
+  "tool": "choropleth",
+  "entityType": "name"
+}
