@@ -2,11 +2,13 @@
   export let centroid = [0, 0];
   export let color;
   export let config;
+  export let cssModifier;
   export let hasAnnotation = false;
   export let population = 0;
   export let strokeWidth = 0.8;
 
-  const defaultRadius = 6;
+  const fillOpacity = config ? 0.8 : 1; // if we have a bubble map, we render the bubble a bit more transparent (aesthetic reasons)
+  const radius = config?.radiusFor(population) ?? (cssModifier === "narrow" ? 4.5 : 6);
 
   function getFillColor() {
     if (color.customColor && color.customColor.length > 0)
@@ -22,11 +24,11 @@
 <g class={color.colorClass}>
   <circle
     fill={getFillColor()}
-    fill-opacity=0.8
+    fill-opacity={fillOpacity}
     stroke={getStrokeColor()}
     stroke-width={strokeWidth}
     transform="translate({centroid[0]},{centroid[1]})"
-    r={config?.radiusFor(population) || defaultRadius}
+    r={radius}
   />
   {#if hasAnnotation}
     <circle
@@ -35,7 +37,7 @@
       stroke="currentColor"
       stroke-width=1
       transform="translate({centroid[0]},{centroid[1]})"
-      r={config?.radiusFor(population) || defaultRadius}
+      r={radius}
     />
   {/if}
 </g>

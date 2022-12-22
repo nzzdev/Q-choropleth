@@ -666,7 +666,8 @@ module.exports = [
             defaultEntityType: "name",
             entityTypes: {
               name: "Name",
-              iso3: "ISO-Code",
+              iso2: "ISO-Code 2",
+              iso3: "ISO-Code 3",
             },
             projection: "d3.geoIdentity",
           },
