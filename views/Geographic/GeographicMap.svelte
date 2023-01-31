@@ -117,6 +117,7 @@
                   legendData
                 )}
                 config={bubbleMapConfig}
+                hasValue={true}
                 population={feature.properties.population}
               />
             {/if}
@@ -196,6 +197,7 @@
                   )}
                   config={bubbleMapConfig}
                   hasAnnotation={true}
+                  hasValue={true}
                   population={feature.properties.population}
                 />
               {/if}
@@ -232,6 +234,7 @@
             )}
             {cssModifier}
             hasAnnotation={regionHasAnnotation(annotations, feature.properties[entityType])}
+            hasValue={dataMapping.get(feature.properties[entityType]) ? true : false}
           />
         {/each}
       </g>

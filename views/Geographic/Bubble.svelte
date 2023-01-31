@@ -4,6 +4,7 @@
   export let config;
   export let cssModifier;
   export let hasAnnotation = false;
+  export let hasValue = false;
   export let population = 0;
   export let strokeWidth = 0.8;
 
@@ -11,6 +12,8 @@
   const radius = config?.radiusFor(population) ?? (cssModifier === "narrow" ? 4.5 : 6);
 
   function getFillColor() {
+    if (!hasValue)
+      return "#f5f5f5";
     if (color.customColor && color.customColor.length > 0)
       return color.customColor;
     return "currentColor";
