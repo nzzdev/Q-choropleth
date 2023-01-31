@@ -32,6 +32,7 @@
 
   let annotationLines;
   let bounds;
+  let defaultBubbleRadius = cssModifier === "narrow" ? 4.5 : 6;
   let featuresWithAnnotation = [];
   let featuresWithoutAnnotation = [];
   let featuresShownAsBubble = [];
@@ -48,6 +49,7 @@
     featuresWithoutAnnotation = getFeaturesWithoutAnnotation(geoParameters?.features.features, annotations, entityType);
     featuresWithAnnotation = getFeaturesWithAnnotation(geoParameters?.features.features, annotations, entityType);
     featuresShownAsBubble = getFeaturesShownAsBubble(geoParameters?.features.features);
+    fixSvgHeight(featuresShownAsBubble)
     annotationLines = getAnnotationsForGeoMap(
       annotations,
       geoParameters,
@@ -94,10 +96,20 @@
       return feature.properties.showAsBubble === "true";
     });
   }
+
+  // Fixes an issue with out of bound bubbles
+  // TODO: find a better way to do this
+  function fixSvgHeight(features) {
+    for (const feature of features) {
+      if (feature.properties.centroidPlanar[1] + 6 >= svgSize.viewBox[3]) {
+        svgSize.viewBox[3] = round(feature.properties.centroidPlanar[1]) + defaultBubbleRadius + 1;
+      }
+    }
+  }
 </script>
 
 <ResponsiveSvg aspectRatio={svgSize.aspectRatio}>
-  <svg viewbox={svgSize.viewBox}>
+  <svg viewbox={svgSize.viewBox.join(" ")}>
     {#if geoParameters}
       <g>
         {#if bubbleMapConfig}
@@ -232,7 +244,7 @@
               dataMapping.get(feature.properties[entityType]),
               legendData
             )}
-            {cssModifier}
+            defaultRadius={defaultBubbleRadius}
             hasAnnotation={regionHasAnnotation(annotations, feature.properties[entityType])}
             hasValue={dataMapping.get(feature.properties[entityType]) ? true : false}
           />

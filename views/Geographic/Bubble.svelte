@@ -2,14 +2,14 @@
   export let centroid = [0, 0];
   export let color;
   export let config;
-  export let cssModifier;
+  export let defaultRadius = 0;
   export let hasAnnotation = false;
   export let hasValue = false;
   export let population = 0;
   export let strokeWidth = 0.8;
 
   const fillOpacity = config ? 0.8 : 1; // if we have a bubble map, we render the bubble a bit more transparent (aesthetic reasons)
-  const radius = config?.radiusFor(population) ?? (cssModifier === "narrow" ? 4.5 : 6);
+  const radius = config?.radiusFor(population) ?? defaultRadius;
 
   function getFillColor() {
     if (!hasValue)
