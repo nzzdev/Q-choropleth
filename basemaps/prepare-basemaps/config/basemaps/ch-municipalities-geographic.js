@@ -2,6 +2,16 @@ const unzipper = require("unzipper");
 const fetch = require("node-fetch");
 
 const config = {
+  "2023-01-01T00:00:00.000Z": {
+    dataUrl: "https://dam-api.bfs.admin.ch/hub/api/dam/assets/24106754/master",
+    featuresPath: "./ag-b-00.03-875-gg23/ggg_2023_LV95/shp/k4g23.shp",
+    waterPath: "./ag-b-00.03-875-gg23/ggg_2023_LV95/shp/k4s23.shp",
+    featuresPropertyMapping: {
+      id: "GMDNR",
+      name: "GMDNAME",
+    },
+    rewriteProperties: {},
+  },
   "2022-05-01T00:00:00.000Z": {
     dataUrl: "https://dam-api.bfs.admin.ch/hub/api/dam/assets/22484210/master",
     featuresPath: "./ag-b-00.03-875-gg22/ggg_2022_LV95/shp/k4g22_20220501.shp",
@@ -91,6 +101,7 @@ module.exports = {
       basemap.id
     }/${version.validFrom}/${config[version.validFrom].featuresPath}`;
     const outputFeaturesPath = `${__dirname}/../../01-generate-basemaps/data/${basemap.id}/${version.validFrom}/${basemap.id}.json`;
+
     helpers.convertToGeojson(inputFeaturesPath, outputFeaturesPath, "");
     helpers.setProperties(
       outputFeaturesPath,
@@ -104,11 +115,13 @@ module.exports = {
       basemap.id
     }/${version.validFrom}/${config[version.validFrom].waterPath}`;
     const outputWaterPath = `${__dirname}/../../01-generate-basemaps/data/${basemap.id}/${version.validFrom}/water.json`;
+
     helpers.convertToGeojson(inputWaterPath, outputWaterPath, "-drop fields=*");
     helpers.convertToTopojson(outputWaterPath, "water");
 
     // merge features and water into single topojson file
     const outputPath = `${__dirname}/../../01-generate-basemaps/data/${basemap.id}/${version.validFrom}/${basemap.id}.json`;
+    
     helpers.mergeTopojsons(outputFeaturesPath, outputWaterPath, outputPath);
   },
 };
