@@ -28,8 +28,7 @@ export function getAspectRatioViewBox(
   }
 
   const viewBox = [xMin, yMin, width, height]
-    .map((value) => round(value))
-    .join(" ");
+    .map((value) => round(value));
   const aspectRatio = contentWidth / height;
 
   return { aspectRatio, viewBox };
