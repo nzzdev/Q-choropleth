@@ -131,7 +131,7 @@
     {/if}
     {#if showMicroStates}
       <div class="choropleth-geographic__micro-states s-font-note-s s-font-note-s--light">
-        Die Kreise repräsentieren die darunterliegenden Mikrostaaten und sollen diese erkennbar machen.
+        Die Kreise repräsentieren die darunterliegenden Kleinstaaten und sollen diese erkennbar machen.
       </div>
     {/if}
     {#if legendData.type === "numerical"}
