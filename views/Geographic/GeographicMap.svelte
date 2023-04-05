@@ -79,16 +79,42 @@
 
   function getFeaturesWithoutAnnotation(features, annotations, entityType) {
     if (!features) return [];
-    return features.filter((f) => {
-      return !regionHasAnnotation(annotations, f.properties[entityType]) && f.properties.showAsBubble !== "true"; // don't render features which'll be rendered as bubbles
+
+    let retVal = features;
+
+    // all features without annotations
+    retVal = retVal.filter((f) => {
+      return !regionHasAnnotation(annotations, f.properties[entityType]);
     });
+
+    // don't render features which'll be rendered as bubbles
+    if (showMicroStates === true) {
+      retVal = retVal.filter((f) => {
+        return f.properties.showAsBubble !== "true";
+      });
+    }
+
+    return retVal;
   }
 
   function getFeaturesWithAnnotation(features, annotations, entityType) {
     if (!features) return [];
-    return features.filter((f) => {
-      return regionHasAnnotation(annotations, f.properties[entityType]) && f.properties.showAsBubble !== "true"; // don't render features which'll be rendered as bubbles
+
+    let retVal = features;
+
+    // all features without annotations
+    retVal = retVal.filter((f) => {
+      return regionHasAnnotation(annotations, f.properties[entityType]);
     });
+
+    // don't render features which'll be rendered as bubbles
+    if (showMicroStates === true) {
+      retVal = retVal.filter((f) => {
+        return f.properties.showAsBubble !== "true";
+      });
+    }
+
+    return retVal;
   }
 
   function getFeaturesShownAsBubble(features) {
