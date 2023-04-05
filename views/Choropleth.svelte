@@ -129,6 +129,11 @@
     {#if baseMap.data.source}
       <Attribution source={baseMap.data.source} {isStatic} />
     {/if}
+    {#if showMicroStates}
+      <div class="choropleth-geographic__micro-states s-font-note-s s-font-note-s--light">
+        Die Kreise repräsentieren die darunterliegenden Mikrostaaten und sollen diese erkennbar machen.
+      </div>
+    {/if}
     {#if legendData.type === "numerical"}
       <MethodBox
         {legendData}
@@ -161,5 +166,9 @@
 
   .choropleth-geographic-minimap__title {
     text-align: center;
+  }
+
+  .choropleth-geographic__micro-states {
+    margin-bottom: 8px;
   }
 </style>
