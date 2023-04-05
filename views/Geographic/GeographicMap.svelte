@@ -26,6 +26,7 @@
   export let entityType;
   export let legendData;
   export let maxHeight = 550;
+  export let showMicroStates = false;
   
   const annotationStartPosition = annotationRadius * 2;
   const annotationSpace = 2 * (annotationRadius + annotationStartPosition + 1); // times two, because annotations can be on both sides (top/bottom or left/right)
@@ -236,20 +237,22 @@
           {/if}
         </g>
       {/if}
-      <g>
-        {#each featuresShownAsBubble as feature}
-          <Bubble
-            centroid={feature.properties.centroidPlanar}
-            color={getColor(
-              dataMapping.get(feature.properties[entityType]),
-              legendData
-            )}
-            defaultRadius={defaultBubbleRadius}
-            hasAnnotation={regionHasAnnotation(annotations, feature.properties[entityType])}
-            hasValue={dataMapping.get(feature.properties[entityType]) ? true : false}
-          />
-        {/each}
-      </g>
+      {#if showMicroStates}
+        <g>
+          {#each featuresShownAsBubble as feature}
+            <Bubble
+              centroid={feature.properties.centroidPlanar}
+              color={getColor(
+                dataMapping.get(feature.properties[entityType]),
+                legendData
+              )}
+              defaultRadius={defaultBubbleRadius}
+              hasAnnotation={regionHasAnnotation(annotations, feature.properties[entityType])}
+              hasValue={dataMapping.get(feature.properties[entityType]) ? true : false}
+            />
+          {/each}
+        </g>
+      {/if}
     {/if}
   </svg>
 </ResponsiveSvg>

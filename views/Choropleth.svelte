@@ -18,6 +18,7 @@
   export let formattingOptions;
   export let isStatic;
   export let showBubbleMap = false;
+  export let showMicroStates = false;
 
   const dataMapping = new Map(item.data);
   const maxHeight = 550;
@@ -73,6 +74,7 @@
           {contentWidth}
           {cssModifier}
           {maxHeight}
+          {showMicroStates}
         />
         {#if baseMap.mobile && baseMap.mobile.length > 0}
           {#each baseMap.mobile as mobileBaseMap}
@@ -87,6 +89,7 @@
               {contentWidth}
               {cssModifier}
               {maxHeight}
+              {showMicroStates}
             />
           {/each}
         {/if}
@@ -107,6 +110,7 @@
                   contentWidth={miniMap.width}
                   {cssModifier}
                   {maxHeight}
+                  {showMicroStates}
                 />
               </div>
               {#if miniMap.title}
