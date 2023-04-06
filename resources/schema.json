@@ -681,6 +681,28 @@
               }
             ]
           }
+        },
+        "hideMicroStates": {
+          "title": "Mikrostaaten ausblenden",
+          "type": "boolean",
+          "default": true,
+          "Q:options": {
+            "availabilityChecks": [
+              {
+                "type": "UserHasRole",
+                "config": {
+                  "role": "expert-choropleth"
+                }
+              },
+              {
+                "type": "ToolEndpoint",
+                "config": {
+                  "endpoint": "option-availability/hideMicroStates",
+                  "fields": ["baseMap"]
+                }
+              }
+            ]
+          }
         }
       }
     }

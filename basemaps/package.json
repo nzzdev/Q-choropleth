@@ -17,9 +17,9 @@
     "d3-geo-projection": "^2.9.0",
     "form-data": "^4.0.0",
     "nano": "^8.2.1",
-    "node-fetch": "^2.6.1",
+    "node-fetch": "^2.6.9",
     "promptly": "^3.2.0",
-    "shelljs": "^0.8.4",
+    "shelljs": "^0.8.5",
     "unzipper": "^0.10.11"
   }
 }

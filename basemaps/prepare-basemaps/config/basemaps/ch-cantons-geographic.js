@@ -2,6 +2,25 @@ const unzipper = require("unzipper");
 const fetch = require("node-fetch");
 
 const config = {
+  "2023-01-01T00:00:00.000Z": {
+    dataUrl: "https://dam-api.bfs.admin.ch/hub/api/dam/assets/24106754/master",
+    featuresPath: "./ag-b-00.03-875-gg23/ggg_2023_LV95/shp/k4k23.shp",
+    waterPath: "./ag-b-00.03-875-gg23/ggg_2023_LV95/shp/k4s23.shp",
+    featuresPropertyMapping: {
+      id: "KTNR",
+      name: "KTNAME",
+    },
+    rewriteProperties: {
+      "Bern / Berne": "Bern",
+      "Fribourg / Freiburg": "Freiburg",
+      "Graubünden / Grigioni / Grischun": "Graubünden",
+      Ticino: "Tessin",
+      Vaud: "Waadt",
+      "Valais / Wallis": "Wallis",
+      Neuchâtel: "Neuenburg",
+      Genève: "Genf",
+    },
+  },
   "2021-01-01T00:00:00.000Z": {
     dataUrl: "https://www.bfs.admin.ch/bfsstatic/dam/assets/16804410/master",
     featuresPath: "./ggg_2021-LV95/shp/k4k21.shp",

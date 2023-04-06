@@ -3,14 +3,26 @@ const d3Geo = require("d3-geo");
 const d3GeoProj = require("d3-geo-projection");
 
 const config = {
-  featuresFile: "FINAL_laender_fuer_choropleth_europa.json",
-  featuresPropertyMapping: {
-    name: "NAME_EN",
-    iso2: "ISO_A2_EH",
-    iso3: "ADM0_A3_UA",
-    showAsBubble: "showAsBubble",
+  "2023-01-31T00:00:00.000Z": {
+    featuresFile: "230122_FINAL_Update.json",
+    featuresPropertyMapping: {
+      name: "NAME_EN",
+      iso2: "ISO_A2_EH",
+      iso3: "ADM0_A3_UA",
+      showAsBubble: "showAsBubble",
+    },
+    rewriteProperties: {},
   },
-  rewriteProperties: {},
+  "2022-01-01T00:00:00.000Z": {
+    featuresFile: "FINAL_laender_fuer_choropleth_europa.json",
+    featuresPropertyMapping: {
+      name: "NAME_EN",
+      iso2: "ISO_A2_EH",
+      iso3: "ADM0_A3_UA",
+      showAsBubble: "showAsBubble",
+    },
+    rewriteProperties: {},
+  },
 };
 
 function setShowAsBubbleProperty(inputFilePath, regions = []) {
@@ -28,8 +40,8 @@ module.exports = {
     console.log("Nothing to download. Please copy the GeoJSON file(s) to here:", `${__dirname}/../../00-download-basemaps/data/${basemap.id}/${version.validFrom}/`);
   },
   transform: async function (helpers, basemap, version) {
-    const inputFeaturesPath = `${__dirname}/../../00-download-basemaps/data/${basemap.id}/${version.validFrom}/${config.featuresFile}`;
-    const outputFeaturesPath = `${__dirname}/../../01-generate-basemaps/data/${basemap.id}/${version.validFrom}/${config.featuresFile}`;
+    const inputFeaturesPath = `${__dirname}/../../00-download-basemaps/data/${basemap.id}/${version.validFrom}/${config[version.validFrom].featuresFile}`;
+    const outputFeaturesPath = `${__dirname}/../../01-generate-basemaps/data/${basemap.id}/${version.validFrom}/${config[version.validFrom].featuresFile}`;
     
     // read geojson and project the data using the azimuthalEqualArea projection
     // example: https://observablehq.com/@recifs/project-and-clip
@@ -50,6 +62,8 @@ module.exports = {
           [100, 100],
           {
             type: "MultiPoint",
+            // point coordinates
+            // [-east/+west, +north/-south]
             coordinates: [ [-10, 27], [60, 65] ]
           }
         )
@@ -68,8 +82,8 @@ module.exports = {
     // map properties using featuresPropertyMapping from config above
     helpers.setProperties(
       outputFeaturesPath,
-      config.featuresPropertyMapping,
-      config.rewriteProperties
+      config[version.validFrom].featuresPropertyMapping,
+      config[version.validFrom].rewriteProperties
     );
 
     // render these regions as a bubble (circle), instead as a feature (path)
