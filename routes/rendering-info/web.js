@@ -119,6 +119,7 @@ module.exports = {
 
       context.item = item;
       context.showBubbleMap = item.baseMap.includes("world-countries-geographic") && !item.options.hideBubbleMap;
+      context.showMicroStates = item.baseMap.includes("europe-countries-geographic") && !item.options.hideMicroStates;
 
       const exactPixelWidth = getExactPixelWidth(
         request.payload.toolRuntimeConfig

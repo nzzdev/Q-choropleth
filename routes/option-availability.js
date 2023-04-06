@@ -64,6 +64,12 @@ module.exports = {
       };
     }
 
+    if (optionName === "hideMicroStates") {
+      return {
+        available: item.baseMap.includes("europe-countries-geographic"),
+      };
+    }
+
     return Boom.badRequest();
   },
 };
