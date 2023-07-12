@@ -552,14 +552,17 @@ function findAllNeighbours(startRegions, regions, exclude = {}) {
 
   for (let i = 0; i < startRegions.length; i++) {
     const startRegion = startRegions[i];
-
     const regionId = startRegion.properties.id || startRegion.properties.name;
 
     exclude[regionId] = true;
 
     // Iterate over the regions and check if it neighbours the startRegions.
     regions.forEach(potentialNeighbourRegion => {
-        if (exclude[potentialNeighbourRegion.properties.id] !== true) {
+        if (
+          exclude[potentialNeighbourRegion.properties.id] !== true &&
+          startRegion.geometry !== null &&
+          potentialNeighbourRegion.geometry !== null
+        ) {
             const overlaps = booleanOverlap(startRegion, potentialNeighbourRegion);
 
             if (overlaps) {
