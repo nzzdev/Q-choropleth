@@ -26,15 +26,27 @@ async function main() {
           version.data.entities = require(path + `${basemapId}.json`);
         } else {
           fs.readdirSync(path)
-            .filter(file => file.endsWith(".json"))
+            .filter((file) => file.endsWith(".json"))
             .forEach((file, index) => {
               if (index === 0) {
                 version.data.entities = require(path + file);
                 version.file = file.replace(".json", "");
               } else {
-                newVersions.push(JSON.parse(JSON.stringify(version))); // Deep copy
-                newVersions[newVersions.length - 1].data.entities = require(path + file);
-                newVersions[newVersions.length - 1].file = file.replace(".json", "");
+                const deepCopy = JSON.parse(JSON.stringify(version));
+
+                // TODO: 'Ozeanien' (from basemap 'world-countries-geographic') needs mercator projection. Replace this hack with a proper solution.
+                if (file.startsWith("ozeanien")) {
+                  deepCopy.data.config.projection = "mercator";
+                }
+
+                newVersions.push(deepCopy);
+                newVersions[
+                  newVersions.length - 1
+                ].data.entities = require(path + file);
+                newVersions[newVersions.length - 1].file = file.replace(
+                  ".json",
+                  ""
+                );
               }
             });
         }

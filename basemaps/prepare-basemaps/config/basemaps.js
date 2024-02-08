@@ -169,6 +169,23 @@ module.exports = [
     title: "Schweiz » Gemeinden",
     versions: [
       {
+        validFrom: "2024-01-01T00:00:00.000Z",
+        data: {
+          source: {
+            url: "https://www.bfs.admin.ch/bfs/de/home/dienstleistungen/geostat/geodaten-bundesstatistik/administrative-grenzen/generalisierte-gemeindegrenzen.html",
+            label: "© BfS, ThemaKart",
+          },
+          config: {
+            defaultEntityType: "id",
+            entityTypes: {
+              id: "BfS Nummer",
+            },
+            projection: "mercator",
+          },
+          entities: require("./basemaps/ch-municipalities-geographic.js"),
+        },
+      },
+      {
         validFrom: "2023-01-01T00:00:00.000Z",
         data: {
           source: {
@@ -685,6 +702,24 @@ module.exports = [
     versions: [
       {
         validFrom: "2022-01-01T00:00:00.000Z",
+        data: {
+          source: {
+            url: "https://www.naturalearthdata.com/",
+            label: "© Natural Earth",
+          },
+          config: {
+            defaultEntityType: "name",
+            entityTypes: {
+              name: "Name",
+              iso3: "ISO-Code",
+            },
+            projection: "robinson",
+          },
+          entities: require("./basemaps/world-countries-geographic.js"),
+        },
+      },
+      {
+        validFrom: "2024-01-01T00:00:00.000Z",
         data: {
           source: {
             url: "https://www.naturalearthdata.com/",
