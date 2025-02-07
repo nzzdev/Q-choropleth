@@ -172,7 +172,7 @@ module.exports = [
         validFrom: "2024-01-01T00:00:00.000Z",
         data: {
           source: {
-            url: "https://www.bfs.admin.ch/bfs/de/home/dienstleistungen/geostat/geodaten-bundesstatistik/administrative-grenzen/generalisierte-gemeindegrenzen.html",
+            url: "https://www.bfs.admin.ch/bfs/de/home/dienstleistungen/geostat/geodaten-bundesstatistik/raumgliederungen/generalisierte-gemeindegrenzen.html",
             label: "© BfS, ThemaKart",
           },
           config: {
@@ -189,7 +189,7 @@ module.exports = [
         validFrom: "2023-01-01T00:00:00.000Z",
         data: {
           source: {
-            url: "https://www.bfs.admin.ch/bfs/de/home/dienstleistungen/geostat/geodaten-bundesstatistik/administrative-grenzen/generalisierte-gemeindegrenzen.html",
+            url: "https://www.bfs.admin.ch/bfs/de/home/dienstleistungen/geostat/geodaten-bundesstatistik/raumgliederungen/generalisierte-gemeindegrenzen.html",
             label: "© BfS, ThemaKart",
           },
           config: {
@@ -206,7 +206,7 @@ module.exports = [
         validFrom: "2022-05-01T00:00:00.000Z",
         data: {
           source: {
-            url: "https://www.bfs.admin.ch/bfs/de/home/dienstleistungen/geostat/geodaten-bundesstatistik/administrative-grenzen/generalisierte-gemeindegrenzen.html",
+            url: "https://www.bfs.admin.ch/bfs/de/home/dienstleistungen/geostat/geodaten-bundesstatistik/raumgliederungen/generalisierte-gemeindegrenzen.html",
             label: "© BfS, ThemaKart",
           },
           config: {
@@ -223,7 +223,7 @@ module.exports = [
         validFrom: "2022-01-01T00:00:00.000Z",
         data: {
           source: {
-            url: "https://www.bfs.admin.ch/bfs/de/home/dienstleistungen/geostat/geodaten-bundesstatistik/administrative-grenzen/generalisierte-gemeindegrenzen.html",
+            url: "https://www.bfs.admin.ch/bfs/de/home/dienstleistungen/geostat/geodaten-bundesstatistik/raumgliederungen/generalisierte-gemeindegrenzen.html",
             label: "© BfS, ThemaKart",
           },
           config: {
@@ -240,7 +240,7 @@ module.exports = [
         validFrom: "2021-07-01T00:00:00.000Z",
         data: {
           source: {
-            url: "https://www.bfs.admin.ch/bfs/de/home/dienstleistungen/geostat/geodaten-bundesstatistik/administrative-grenzen/generalisierte-gemeindegrenzen.html",
+            url: "https://www.bfs.admin.ch/bfs/de/home/dienstleistungen/geostat/geodaten-bundesstatistik/raumgliederungen/generalisierte-gemeindegrenzen.html",
             label: "© BfS, ThemaKart",
           },
           config: {
@@ -257,7 +257,7 @@ module.exports = [
         validFrom: "2021-04-18T00:00:00.000Z",
         data: {
           source: {
-            url: "https://www.bfs.admin.ch/bfs/de/home/dienstleistungen/geostat/geodaten-bundesstatistik/administrative-grenzen/generalisierte-gemeindegrenzen.html",
+            url: "https://www.bfs.admin.ch/bfs/de/home/dienstleistungen/geostat/geodaten-bundesstatistik/raumgliederungen/generalisierte-gemeindegrenzen.html",
             label: "© BfS, ThemaKart",
           },
           config: {
@@ -274,7 +274,7 @@ module.exports = [
         validFrom: "2021-01-01T00:00:00.000Z",
         data: {
           source: {
-            url: "https://www.bfs.admin.ch/bfs/de/home/dienstleistungen/geostat/geodaten-bundesstatistik/administrative-grenzen/generalisierte-gemeindegrenzen.html",
+            url: "https://www.bfs.admin.ch/bfs/de/home/dienstleistungen/geostat/geodaten-bundesstatistik/raumgliederungen/generalisierte-gemeindegrenzen.html",
             label: "© BfS, ThemaKart",
           },
           config: {
@@ -291,7 +291,7 @@ module.exports = [
         validFrom: "2020-01-01T00:00:00.000Z",
         data: {
           source: {
-            url: "https://www.bfs.admin.ch/bfs/de/home/dienstleistungen/geostat/geodaten-bundesstatistik/administrative-grenzen/generalisierte-gemeindegrenzen.html",
+            url: "https://www.bfs.admin.ch/bfs/de/home/dienstleistungen/geostat/geodaten-bundesstatistik/raumgliederungen/generalisierte-gemeindegrenzen.html",
             label: "© BfS, ThemaKart",
           },
           config: {
@@ -308,7 +308,7 @@ module.exports = [
         validFrom: "2019-01-01T00:00:00.000Z",
         data: {
           source: {
-            url: "https://www.bfs.admin.ch/bfs/de/home/dienstleistungen/geostat/geodaten-bundesstatistik/administrative-grenzen/generalisierte-gemeindegrenzen.html",
+            url: "https://www.bfs.admin.ch/bfs/de/home/dienstleistungen/geostat/geodaten-bundesstatistik/raumgliederungen/generalisierte-gemeindegrenzen.html",
             label: "© BfS, ThemaKart",
           },
           config: {
