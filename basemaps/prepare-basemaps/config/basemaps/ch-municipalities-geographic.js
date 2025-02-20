@@ -9,6 +9,7 @@ const config = {
     featuresPropertyMapping: {
       id: "GMDNR",
       name: "GMDNAME",
+      canton: "KTNR",
     },
     rewriteProperties: {},
   },
@@ -19,6 +20,7 @@ const config = {
     featuresPropertyMapping: {
       id: "GMDNR",
       name: "GMDNAME",
+      canton: "KTNR",
     },
     rewriteProperties: {},
   },
@@ -29,6 +31,7 @@ const config = {
     featuresPropertyMapping: {
       id: "GMDNR",
       name: "GMDNAME",
+      canton: "KTNR",
     },
     rewriteProperties: {},
   },
@@ -39,6 +42,7 @@ const config = {
     featuresPropertyMapping: {
       id: "GMDNR",
       name: "GMDNAME",
+      canton: "KTNR",
     },
     rewriteProperties: {},
   },
@@ -49,6 +53,7 @@ const config = {
     featuresPropertyMapping: {
       id: "GMDNR",
       name: "GMDNAME",
+      canton: "KTNR",
     },
     rewriteProperties: {},
   },
@@ -59,6 +64,7 @@ const config = {
     featuresPropertyMapping: {
       id: "GMDNR",
       name: "GMDNAME",
+      canton: "KTNR",
     },
     rewriteProperties: {},
   },
@@ -69,6 +75,7 @@ const config = {
     featuresPropertyMapping: {
       id: "GMDNR",
       name: "GMDNAME",
+      canton: "KTNR",
     },
     rewriteProperties: {},
   },
@@ -79,6 +86,7 @@ const config = {
     featuresPropertyMapping: {
       id: "GMDNR",
       name: "GMDNAME",
+      canton: "KTNR",
     },
     rewriteProperties: {},
   },
